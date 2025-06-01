@@ -171,12 +171,10 @@ class Purchasing extends CI_Controller {
 
 		$module['module'] = "purchasing/po_list";
 		$module['map_link']   = "sales->quotations";  
-		
-		$module['quotations'] = $this->core->load_core_data('quotations','','id,quotation_number','confirmed=1');
+		 
+		$module['customers'] = $this->core->load_core_data('clients');
 
-		$module['clients'] = $this->core->load_core_data('clients');
-
-		$module['projects'] = $this->core->load_core_data('projects');
+		$module['vehicles'] = $this->core->load_core_data('vehicles');
 		
 		$module['users'] = $this->core->load_core_data('account','','id,name');
 
@@ -197,12 +195,10 @@ class Purchasing extends CI_Controller {
 
 		$module['module'] = "purchasing/create_po";
 		$module['map_link']   = "sales->quotations";  
-		
-		$module['quotations'] = $this->core->load_core_data('quotations','','id,quotation_number,version,project_id','confirmed=1');
+		  
+		$module['customers'] = $this->core->load_core_data('clients');
 
-		$module['clients'] = $this->core->load_core_data('clients');
-
-		$module['projects'] = $this->core->load_core_data('projects');
+		$module['vehicles'] = $this->core->load_core_data('vehicles');
 		
 		$module['users'] = $this->core->load_core_data('account','','id,name');
 

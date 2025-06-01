@@ -23,10 +23,19 @@ select, .text_input {
       </div>
       <div class="modal-body">
         <br />
-        
+          
+          <div class="row mb-3">
+            <div class="col-md-3 col-sm-3 col-xs-12">
+            <img height="150" src="<?php 
+              if(file_exists('./assets/images/clients/logo-'.$clients->id.'.png')){
+                echo base_url('assets/images/clients/logo-'.$clients->id.'.png?'.time());
+                }else{
+                echo base_url('assets/images/img.png'); }?>">
+              </div>
+          </div> 
 
           <div class="row mb-3">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name"> Update Company Logo
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name"> Update Customer Logo
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
               <input type="file" name="logo" class="form-control col-md-7 col-xs-12">
@@ -34,7 +43,7 @@ select, .text_input {
           </div> 
 
           <div class="row mb-3">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Client Code
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Customer Code
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
               <input type="text" readonly value="<?php echo @$clients->code?>" class="form-control col-md-7 col-xs-12">
@@ -42,7 +51,15 @@ select, .text_input {
           </div>  
 
           <div class="row mb-3">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">clients Name
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">QID
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="text" name="qid" value="<?php echo @$clients->qid?>" class="form-control col-md-7 col-xs-12">
+            </div>
+          </div> 
+
+          <div class="row mb-3">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Customer Name
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
               <input type="text" name="name" value="<?php echo @$clients->name?>" class="form-control col-md-7 col-xs-12">
@@ -120,14 +137,7 @@ select, .text_input {
               <input type="text" name="website" value="<?php echo @$clients->website?>" class="form-control col-md-7 col-xs-12">
             </div>
           </div>
-
-          <div class="row mb-3">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Quotation Attention To
-            </label>
-            <div class="col-md-6 col-sm-6 col-xs-12">
-              <input type="text" name="attension_to" value="<?php echo @$clients->attension_to?>" class="form-control col-md-7 col-xs-12">
-            </div>
-          </div>  
+ 
         
            
           </div>

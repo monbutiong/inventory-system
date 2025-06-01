@@ -1,22 +1,20 @@
 <div class="row">
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
-      <div class="x_title">
-        <h2>Filemaintenance <small>Create Record</small></h2>
-        <ul class="nav navbar-right panel_toolbox">
-           
-           
-          <li><a data-bs-dismiss="modal"><i class="fa fa-close"></i> close</a>
-          </li>
-        </ul>
-        <div class="clearfix"></div>
+
+      <form method="post" id="frm_validation" action="<?php echo base_url();?>maintenance/add_new_table_data/<?php echo $table_name;?>" data-bs-toggle="validator" class="form-horizontal form-label-left">
+      
+      <div class="modal-header">
+          <h5 class="modal-title" id="mySmallModalLabel">Create New Record</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Close"></button>
       </div>
-      <div class="x_content">
-        <br />
-        <form method="post" id="frm_validation" action="<?php echo base_url();?>maintenance/add_new_table_data/<?php echo $table_name;?>" data-bs-toggle="validator" class="form-horizontal form-label-left">
+      <div class="modal-body">
+
+        
 
            
-          <div class="form-group">
+          <div class="row mb-3">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">
                 <?php if($table_name=='fm_currency_rate'){?>
                   Currency
@@ -32,7 +30,7 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="row mb-3">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ds">
               <?php if($table_name=='fm_currency_rate'){?>
                 Convertion rate to QAR
@@ -65,7 +63,7 @@
 
           <?php if($table_name=='fm_inventory_accounts'){?>  
 
-            <div class="form-group">
+            <div class="row mb-3">
               <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">Overhead Cost <span class="required"> </span>
               </label>
               <div class="col-md-6 col-sm-6 col-xs-12">
@@ -81,7 +79,7 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="row mb-3">
               <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">Is in Inventory Monitoring <span class="required"> </span>
               </label>
               <div class="col-md-6 col-sm-6 col-xs-12">
@@ -95,7 +93,7 @@
           <?php }?>
 
           <?php if($table_name=='fm_issue_type'){?>
-            <div class="form-group">
+            <div class="row mb-3">
               <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">Cost<span class="required">*</span>
               </label>
               <div class="col-md-6 col-sm-6 col-xs-12">
@@ -110,7 +108,7 @@
           <?php }?>
 
           <?php if($table_name=='fm_currency_type'){?>
-            <div class="form-group">
+            <div class="row mb-3">
               <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">Rate <span class="required">*</span>
               </label>
               <div class="col-md-6 col-sm-6 col-xs-12">
@@ -119,13 +117,37 @@
             </div>
           <?php }?>
 
-  
-          <div class="ln_solid"></div>
-          <div class="form-group">
-            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-              <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Cancel</button> 
-              <button type="submit" class="btn btn-success">Save</button>
+          <?php if($table_name=='fm_models'){?>
+            <div class="row mb-3">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">Manufacturer <span class="required">*</span>
+              </label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select required name="manufacturer_id" class="form-control col-md-7 col-xs-12 select2">
+                  <option value=""></option>
+                  <?php 
+                  if(@$manufacturers){
+                    foreach($manufacturers as $rs){
+                  ?>
+                  <option value="<?=$rs->id?>"><?=$rs->title?></option>
+                  <?php }}?>
+                 </select>
+              </div>
             </div>
+
+            <div class="row mb-3">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">Model Year <span class="required">*</span>
+              </label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="number" id="model_year" name="model_year" required="required" class="form-control col-md-7 col-xs-12" autofocus>
+              </div>
+            </div>
+          <?php }?>
+
+  
+          </div>
+          <div class="modal-footer">
+              <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Cancel</button> 
+                <button type="submit" class="btn btn-success">Save</button>
           </div>
 
           <input type="hidden" name="table_name" value="<?php echo $table_name;?>"></input>

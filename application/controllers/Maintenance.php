@@ -45,6 +45,11 @@ class Maintenance extends CI_Controller {
 
 		$module['module'] = "maintenance/main_table";
 		$module['map_link']   = "maintenance > $table_name"; 
+		 
+		if($table_name_sql == 'fm_models'){
+			$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+			$module['manufacturers'] = $result['maintenance_data'];
+		}
  
 
 		$this->load->view('admin/index',$module);
@@ -52,16 +57,24 @@ class Maintenance extends CI_Controller {
 	}
 
 	public function add_table_data_content($table_name){
- 
 
 		$module['table_name'] = $table_name;
+
+		if($table_name == 'fm_models'){
+			$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+			$module['manufacturers'] = $result['maintenance_data'];
+		}
+
 		$this->load->view('admin/maintenance/add_table_data_content',$module);
 
 	}
 
 	public function edit_table_data_content($table_name,$id){
 
-	 
+	 	if($table_name == 'fm_models'){
+	 		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+	 		$module['manufacturers'] = $result['maintenance_data'];
+	 	}
 
 		$result = $this->maintenance_model->load_table_data_one($table_name,$id);
 		$module['table_data'] = $result['table_data']; 

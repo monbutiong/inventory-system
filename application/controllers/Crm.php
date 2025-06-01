@@ -120,40 +120,7 @@ class Crm extends CI_Controller {
 
 	}
 
-	public function manage_client($id, $active_tab = null){
-
-		$module = $this->system_menu;
-
-		$module['client'] = $this->core->load_core_data('clients', $id);
-
-		$module['cd'] = $this->core->load_core_data('clients_documents','','','client_id='.$id);
-
-		$module['quotations'] = $this->core->load_core_data('quotations','','project_id,id,date_created,user_id,quotation_number,version,confirmed_date,confirmed,quotation_date,att_to,date_modified,version','client_id='.$id);
-
-		$module['projects'] = $this->core->load_core_data('projects','','','client_id='.$id);
-
-		$module['jo'] = $this->core->load_core_data('projects_job_order','','id,job_order_number,date_created,user_id,project_id','client_id='.$id);
- 
-		$module['module'] = "crm/manage_client"; 
-		$module['map_link']   = "crm->manage_client"; 
-		  
-		$module['users'] = $this->core->load_core_data('account','','id,name,avatar');
-
-		$module['active_tab'] = $active_tab;
-
-		$result = $this->admin_model->load_filemaintenance('fm_client_document_type');
-		$module['document_type'] = $result['maintenance_data'];
-
-		$result = $this->admin_model->load_filemaintenance('fm_client_activity_type');
-		$module['activity_type'] = $result['maintenance_data'];
-
-		$module['progress_data'] = $this->core->load_core_data('projects_progress','','','client_id='.$id); 
-
-		$module['documents_data'] = $this->core->load_core_data('projects_documents','','','client_id='.$id); 
-
-		$this->load->view('admin/index',$module);
-
-	}
+	 
 
 	public function save_clients($modal = '')
 	{

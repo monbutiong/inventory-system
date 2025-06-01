@@ -11,7 +11,7 @@
  Target Server Version : 100427
  File Encoding         : 65001
 
- Date: 01/06/2025 12:06:49
+ Date: 01/06/2025 17:57:50
 */
 
 SET NAMES utf8mb4;
@@ -90,7 +90,7 @@ CREATE TABLE `audit_trail`  (
   `log` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of audit_trail
@@ -107,6 +107,19 @@ INSERT INTO `audit_trail` VALUES (9, 2, 'login page', 'login to account.', '2025
 INSERT INTO `audit_trail` VALUES (10, 2, 'login page', 'login to account.', '2025-06-01 10:10:21', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (11, 2, 'account page', 'logout to account.', '2025-06-01 10:11:40', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (12, 2, 'login page', 'login to account.', '2025-06-01 10:11:42', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (13, 2, 'file maintenance > models > add new data', 'add new data in models maintenance table, id : 1', '2025-06-01 14:40:30', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (14, 2, 'file maintenance > models > add new data', 'add new data in models maintenance table, id : 2', '2025-06-01 14:40:42', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (15, 2, 'file maintenance > models > add new data', 'add new data in models maintenance table, id : 3', '2025-06-01 14:41:09', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (16, 2, 'file maintenance > manufacturers > add new data', 'add new data in manufacturers maintenance table, id : 1', '2025-06-01 14:41:33', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (17, 2, 'file maintenance > manufacturers > add new data', 'add new data in manufacturers maintenance table, id : 2', '2025-06-01 14:41:41', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (18, 2, 'file maintenance > manufacturers > add new data', 'add new data in manufacturers maintenance table, id : 3', '2025-06-01 14:41:50', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (19, 2, 'file maintenance > models > update data', 'update data in models , id : 1', '2025-06-01 15:21:39', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (20, 2, 'file maintenance > models > update data', 'update data in models , id : 2', '2025-06-01 15:21:49', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (21, 2, 'file maintenance > models > update data', 'update data in models , id : 3', '2025-06-01 15:24:29', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (22, 2, 'file maintenance > models > add new data', 'add new data in models maintenance table, id : 4', '2025-06-01 15:24:59', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (23, 2, 'file maintenance > models > add new data', 'add new data in models maintenance table, id : 5', '2025-06-01 15:25:35', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (24, 2, 'file maintenance > models > add new data', 'add new data in models maintenance table, id : 6', '2025-06-01 15:26:01', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (25, 2, 'file maintenance > models > add new data', 'add new data in models maintenance table, id : 7', '2025-06-01 15:26:46', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for clients
@@ -143,93 +156,93 @@ CREATE TABLE `clients`  (
 -- ----------------------------
 -- Records of clients
 -- ----------------------------
-INSERT INTO `clients` VALUES (1, '', NULL, 0, '', NULL, '', NULL, 'LULWA SALMAN J D DARWISH', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CN100001', NULL, NULL);
-INSERT INTO `clients` VALUES (2, '', NULL, 0, '', NULL, '', NULL, 'AMIRI GUARD', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CN100002', NULL, NULL);
-INSERT INTO `clients` VALUES (3, '', NULL, 0, '', NULL, '', NULL, 'SOUND ON WHEELS', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00001', NULL, NULL);
-INSERT INTO `clients` VALUES (4, '', NULL, 0, '', NULL, '', NULL, 'AL BORAQ AUTOMOBILES CO', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00002', NULL, NULL);
-INSERT INTO `clients` VALUES (5, '', NULL, 0, '', NULL, '', NULL, 'JUAN MIGUEL RAMIREZ ESCALANTE', NULL, NULL, '', '33399601 ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00003', NULL, NULL);
-INSERT INTO `clients` VALUES (6, '', NULL, 0, '', NULL, '', NULL, 'JUST FOR FUN LLC', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00004', NULL, NULL);
-INSERT INTO `clients` VALUES (7, '', NULL, 0, '', NULL, '', NULL, 'DOHA OASIS REAL ESTATE INVESTMENT CO', NULL, NULL, '', ' ', '4928 AL KHALEEJ STREET, MUSHAIREB ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00005', NULL, NULL);
-INSERT INTO `clients` VALUES (8, '', NULL, 0, '', NULL, '', NULL, 'TECHMAN SOLUTIONS', NULL, NULL, '44278078', ' ', '  QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00006', NULL, NULL);
-INSERT INTO `clients` VALUES (9, '', NULL, 0, '', NULL, '', NULL, 'ALI ABDULRAHMAN A A AL-MOHANNADI', NULL, NULL, '', ' ', '  DOHA QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00007', NULL, NULL);
-INSERT INTO `clients` VALUES (10, '', NULL, 0, '', NULL, '', NULL, 'QATAR MUSEUMS AUTHOR ITY', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00008', NULL, NULL);
-INSERT INTO `clients` VALUES (11, '', NULL, 0, '', NULL, '', NULL, 'MODOLUCE', NULL, NULL, '', ' 33885343', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00009', NULL, NULL);
-INSERT INTO `clients` VALUES (12, '', NULL, 0, '', NULL, '', NULL, 'QATAR ELECTRO MECHANICAL', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00010', NULL, NULL);
-INSERT INTO `clients` VALUES (13, '', NULL, 0, '', NULL, '', NULL, 'IBRAHIM ALI CONSTRUC TION AND TRADING', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00011', NULL, NULL);
-INSERT INTO `clients` VALUES (14, '', NULL, 0, '', NULL, '', NULL, 'M/S. MARCOMLUX EVENTS LLC', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00012', NULL, NULL);
-INSERT INTO `clients` VALUES (15, '', NULL, 0, '', NULL, '', NULL, 'SHEIKH AHMAD BIN ALI AL THANI', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00013', NULL, NULL);
-INSERT INTO `clients` VALUES (16, '', NULL, 0, '', NULL, '', NULL, 'M/S. CREATIVE COMMUNICATION GROUP', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00014', NULL, NULL);
-INSERT INTO `clients` VALUES (17, '', NULL, 0, '', NULL, '', NULL, 'MRS. AISHA AL DARWISH', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00015', NULL, NULL);
-INSERT INTO `clients` VALUES (18, '', NULL, 0, '', NULL, '', NULL, 'AL TAMYEZ SECURITY SYSTEMS', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00016', NULL, NULL);
-INSERT INTO `clients` VALUES (19, '', NULL, 0, '', NULL, '', NULL, 'YOUSEF AL DARWISH', NULL, NULL, '', '70000321 ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00017', NULL, NULL);
-INSERT INTO `clients` VALUES (20, '', NULL, 0, '', NULL, '', NULL, 'M/S. TECHNO BLUE', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00018', NULL, NULL);
-INSERT INTO `clients` VALUES (21, '', NULL, 0, '', NULL, '', NULL, 'MR. ABDULLAH AL JAMI', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00019', NULL, NULL);
-INSERT INTO `clients` VALUES (22, '', NULL, 0, '', NULL, '', NULL, 'MR. PAUL JOHN', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00020', NULL, NULL);
-INSERT INTO `clients` VALUES (23, '', NULL, 0, '', NULL, '', NULL, 'MR. ADEL DARWISH', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00021', NULL, NULL);
-INSERT INTO `clients` VALUES (24, '', NULL, 0, '', NULL, '', NULL, 'SHEIKH AHMED BIN HAMAD AL THANI', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00022', NULL, NULL);
-INSERT INTO `clients` VALUES (25, '', NULL, 0, '', NULL, '', NULL, 'MR. MOHAMED SHAWQY', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00023', NULL, NULL);
-INSERT INTO `clients` VALUES (26, '', NULL, 0, '', NULL, '', NULL, 'SUPREME COMMITTEE FO R DELIVERY &amp; LEGACY', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00024', NULL, NULL);
-INSERT INTO `clients` VALUES (27, '', NULL, 0, '', NULL, '', NULL, 'MOHAMMED ALI NAMA TRADING &amp; CONTG EST', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00025', NULL, NULL);
-INSERT INTO `clients` VALUES (28, '', NULL, 0, '', NULL, '', NULL, 'DR. HESHAM ALI A A AL-SALOOS', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00026', NULL, NULL);
-INSERT INTO `clients` VALUES (29, '', NULL, 0, '', NULL, '', NULL, 'AL HARIB SECURITY SYSTEM', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00027', NULL, NULL);
-INSERT INTO `clients` VALUES (30, '', NULL, 0, '', NULL, '', NULL, 'ARAB MERCHANTS TRADING', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00028', NULL, NULL);
-INSERT INTO `clients` VALUES (31, '', NULL, 0, '', NULL, '', NULL, 'M/S. MAYFAIR HOSPITALITY', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00029', NULL, NULL);
-INSERT INTO `clients` VALUES (32, '', NULL, 0, '', NULL, '', NULL, 'DIGITAL VISUAL SERVICES', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00030', NULL, NULL);
-INSERT INTO `clients` VALUES (33, '', NULL, 0, '', NULL, '', NULL, 'M/S. QATAR SIGNALS AND SYSTEMS W.L.L', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00031', NULL, NULL);
-INSERT INTO `clients` VALUES (34, '', NULL, 0, '', NULL, '', NULL, 'MR. YOUSUF DARWISH', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00032', NULL, NULL);
-INSERT INTO `clients` VALUES (35, '', NULL, 0, '', NULL, '', NULL, 'FACILITY MANAGEMENT SERVICES', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00033', NULL, NULL);
-INSERT INTO `clients` VALUES (36, '', NULL, 0, '', NULL, '', NULL, 'MARSA ARABIA RESORT', NULL, NULL, '', '44460005 ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00034', NULL, NULL);
-INSERT INTO `clients` VALUES (37, '', NULL, 0, '', NULL, '', NULL, 'EZDAN HOLDING GROUP', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00035', NULL, NULL);
-INSERT INTO `clients` VALUES (38, '', NULL, 0, '', NULL, '', NULL, 'QATAR SITE &amp; POWER WLL', NULL, NULL, '', '44405150 ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00036', NULL, NULL);
-INSERT INTO `clients` VALUES (39, '', NULL, 0, '', NULL, '', NULL, 'SIDRA MEDICINE', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00037', NULL, NULL);
-INSERT INTO `clients` VALUES (40, '', NULL, 0, '', NULL, '', NULL, 'INCLUSIVE TECHNOLOGI ES &amp; ENGINEERING CONTROLS WLL', NULL, NULL, '', '40290062 ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00038', NULL, NULL);
-INSERT INTO `clients` VALUES (41, '', NULL, 0, '', NULL, '', NULL, 'AHMAD AL RAMEHI', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00039', NULL, NULL);
-INSERT INTO `clients` VALUES (42, '', NULL, 0, '', NULL, '', NULL, 'PROMOFIX LLC', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00040', NULL, NULL);
-INSERT INTO `clients` VALUES (43, '', NULL, 0, '', NULL, '', NULL, 'K &amp; H SONS OF M AL MANA CO.', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00041', NULL, NULL);
-INSERT INTO `clients` VALUES (44, '', NULL, 0, '', NULL, '', NULL, 'VODAFONE QATAR P.Q.S.C', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00042', NULL, NULL);
-INSERT INTO `clients` VALUES (45, '', NULL, 0, '', NULL, '', NULL, 'M/S. MOWASALAT', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00043', NULL, NULL);
-INSERT INTO `clients` VALUES (46, '', NULL, 0, '', NULL, '', NULL, 'CONCORD COMPUTER TRADING &amp; MAINT.', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00044', NULL, NULL);
-INSERT INTO `clients` VALUES (47, '', NULL, 0, '', NULL, '', NULL, 'GENERAL AUTHORITY OF CUSTOMS', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00045', NULL, NULL);
-INSERT INTO `clients` VALUES (48, '', NULL, 0, '', NULL, '', NULL, 'ABDULRAHMAN DARWISH', NULL, NULL, '', ' 77712233', '  DOHA QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00046', NULL, NULL);
-INSERT INTO `clients` VALUES (49, '', NULL, 0, '', NULL, '', NULL, 'QATAR LUXURY CO. WLL', NULL, NULL, '77712233', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00047', NULL, NULL);
-INSERT INTO `clients` VALUES (50, '', NULL, 0, '', NULL, '', NULL, 'CONSTREITE QATAR FOR CONSTRUCTION MAINTE', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00048', NULL, NULL);
-INSERT INTO `clients` VALUES (51, '', NULL, 0, '', NULL, '', NULL, 'H.E.AMER ABDULLA AL HEMAIDI', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00049', NULL, NULL);
-INSERT INTO `clients` VALUES (52, '', NULL, 0, '', NULL, '', NULL, 'MRS. MARIYAM', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00050', NULL, NULL);
-INSERT INTO `clients` VALUES (53, '', NULL, 0, '', NULL, '', NULL, 'LUCIA SHERATON HOTEL', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00051', NULL, NULL);
-INSERT INTO `clients` VALUES (54, '', NULL, 0, '', NULL, '', NULL, 'AL MANA SERVICES', NULL, NULL, '', ' ', '1391  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00052', NULL, NULL);
-INSERT INTO `clients` VALUES (55, '', NULL, 0, '', NULL, '', NULL, 'DARWISH ABDULLA D AL DARWISH', NULL, NULL, '', ' 55946292', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00053', NULL, NULL);
-INSERT INTO `clients` VALUES (56, '', NULL, 0, '', NULL, '', NULL, 'POWER AND LIGHT CENTER WLL.', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00054', NULL, NULL);
-INSERT INTO `clients` VALUES (57, '', NULL, 0, '', NULL, '', NULL, 'ABDUL RAHMAN AL DARWISH', NULL, NULL, '', ' 55512233', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00055', NULL, NULL);
-INSERT INTO `clients` VALUES (58, '', NULL, 0, '', NULL, '', NULL, 'MR. KHALIFA SAEED AL SULAITI', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00056', NULL, NULL);
-INSERT INTO `clients` VALUES (59, '', NULL, 0, '', NULL, '', NULL, 'AHLI BANK (Q.P.S.C)', NULL, NULL, '', '44232392 50910777', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00057', NULL, NULL);
-INSERT INTO `clients` VALUES (60, '', NULL, 0, '', NULL, '', NULL, 'THE PEARL OWNERS CORPORATION', NULL, NULL, '44095217', ' ', '28886  DOHA', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00058', NULL, NULL);
-INSERT INTO `clients` VALUES (61, '', NULL, 0, '', NULL, '', NULL, 'DAR ALKARAM', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00059', NULL, NULL);
-INSERT INTO `clients` VALUES (62, '', NULL, 0, '', NULL, '', NULL, 'STYLE DE VIE', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00060', NULL, NULL);
-INSERT INTO `clients` VALUES (63, '', NULL, 0, '', NULL, '', NULL, 'THE ST. REGIS MARSA ARABIA ISLAND', NULL, NULL, '40204444', ' ', '14875  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00061', NULL, NULL);
-INSERT INTO `clients` VALUES (64, '', NULL, 0, '', NULL, '', NULL, 'ALFARDAN HOTELS &amp; RESORTS', NULL, NULL, '', ' ', '908  MUSCAT, OMAN', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00062', NULL, NULL);
-INSERT INTO `clients` VALUES (65, '', NULL, 0, '', NULL, '', NULL, 'ALHAZM REAL ESTATE PROJ MANAG', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00063', NULL, NULL);
-INSERT INTO `clients` VALUES (66, '', NULL, 0, '', NULL, '', NULL, 'POWERTECH', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00064', NULL, NULL);
-INSERT INTO `clients` VALUES (67, '', NULL, 0, '', NULL, '', NULL, 'AL EMADI ENTERPRISES', NULL, NULL, '', ' 66707226', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00065', NULL, NULL);
-INSERT INTO `clients` VALUES (68, '', NULL, 0, '', NULL, '', NULL, 'PREMIER SECURITY EQUIPMENT &amp; SEV.', NULL, NULL, '44519927', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00066', NULL, NULL);
-INSERT INTO `clients` VALUES (69, '', NULL, 0, '', NULL, '', NULL, 'GULF CONTRACTING CO. WLL', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00067', NULL, NULL);
-INSERT INTO `clients` VALUES (70, '', NULL, 0, '', NULL, '', NULL, 'AL BADER BAWASIR SALOON', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00068', NULL, NULL);
-INSERT INTO `clients` VALUES (71, '', NULL, 0, '', NULL, '', NULL, 'MINISTRY OF INTERIOR', NULL, NULL, 'For Inquiry', '44849444 ', '4020  DOHA', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00069', NULL, NULL);
-INSERT INTO `clients` VALUES (72, '', NULL, 0, '', NULL, '', NULL, 'SWEET HOUSE FOR DESIGN AND DECOR', NULL, NULL, '44775848', ' ', '4810 AL JAZEERA AL ARABIA STREET QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00070', NULL, NULL);
-INSERT INTO `clients` VALUES (73, '', NULL, 0, '', NULL, '', NULL, 'LACASA ARCHITECTS &amp; ENGINEERING CONSULTA NTS', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00071', NULL, NULL);
-INSERT INTO `clients` VALUES (74, '', NULL, 0, '', NULL, '', NULL, 'AMIRI GUARD', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00072', NULL, NULL);
-INSERT INTO `clients` VALUES (75, '', NULL, 0, '', NULL, '', NULL, 'BANYAN TREE HOTELS AND RESORTS', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00073', NULL, NULL);
-INSERT INTO `clients` VALUES (76, '', NULL, 0, '', NULL, '', NULL, 'BLUEPRINT', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00074', NULL, NULL);
-INSERT INTO `clients` VALUES (77, '', NULL, 0, '', NULL, '', NULL, 'CARNEGIE MELLON UNIVERSITY', NULL, NULL, '', ' ', '24866  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00075', NULL, NULL);
-INSERT INTO `clients` VALUES (78, '', NULL, 0, '', NULL, '', NULL, 'ASPIRE ZONE FOUNDATION', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00076', NULL, NULL);
-INSERT INTO `clients` VALUES (79, '', NULL, 0, '', NULL, '', NULL, 'HYPERX COMPUTERS TRA DING &amp; MAINTENANCE', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00077', NULL, NULL);
-INSERT INTO `clients` VALUES (80, '', NULL, 0, '', NULL, '', NULL, 'DONGLIANG HE', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00078', NULL, NULL);
-INSERT INTO `clients` VALUES (81, '', NULL, 0, '', NULL, '', NULL, 'TAV TECHNOLOGIES WLL', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00079', NULL, NULL);
-INSERT INTO `clients` VALUES (82, '', NULL, 0, '', NULL, '', NULL, 'KARMA LOUNGE', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00080', NULL, NULL);
-INSERT INTO `clients` VALUES (83, '', NULL, 0, '', NULL, '', NULL, 'VENTUM TECH FOR SERVICES &amp; SEC', NULL, NULL, '', ' ', '23619  DOHA QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00081', NULL, NULL);
-INSERT INTO `clients` VALUES (84, '', NULL, 0, '', NULL, '', NULL, 'BU HAMOUR FOODS', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00082', NULL, NULL);
-INSERT INTO `clients` VALUES (85, '', NULL, 0, '', NULL, '', NULL, 'HILIGHT SUADI CO.', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00083', NULL, NULL);
-INSERT INTO `clients` VALUES (86, '', NULL, 0, '', NULL, '', NULL, 'NUCTECH COMPANY LIMITED', NULL, NULL, '', ' 60054272', '  CHINA', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00084', NULL, NULL);
-INSERT INTO `clients` VALUES (87, '', NULL, 0, '', NULL, '', NULL, 'ARTEVO CONSULTING', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00085', NULL, NULL);
+INSERT INTO `clients` VALUES (1, '', NULL, 1, '2025-06-01 18:08:42', 2, '', NULL, 'Mohammed Al-Farsi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CN100001', NULL, NULL);
+INSERT INTO `clients` VALUES (2, '', NULL, 0, '', NULL, '2025-06-01 21:38:33', 2, 'Ahmed Al-Mansoori', '', '', '', ' ', '  ', NULL, NULL, NULL, '', NULL, '', '5419631', 'CN100002', '', '000328429');
+INSERT INTO `clients` VALUES (3, '', NULL, 0, '', NULL, '', NULL, 'Omar Al-Hamadi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00001', NULL, NULL);
+INSERT INTO `clients` VALUES (4, '', NULL, 0, '', NULL, '', NULL, 'Ali Al-Khatib', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00002', NULL, NULL);
+INSERT INTO `clients` VALUES (5, '', NULL, 0, '', NULL, '', NULL, 'Yousef Al-Najjar', NULL, NULL, '', '33399601 ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00003', NULL, NULL);
+INSERT INTO `clients` VALUES (6, '', NULL, 0, '', NULL, '', NULL, 'Hassan Al-Rashid', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00004', NULL, NULL);
+INSERT INTO `clients` VALUES (7, '', NULL, 0, '', NULL, '', NULL, 'Khalid Al-Jabari', NULL, NULL, '', ' ', '4928 AL KHALEEJ STREET, MUSHAIREB ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00005', NULL, NULL);
+INSERT INTO `clients` VALUES (8, '', NULL, 0, '', NULL, '', NULL, 'Faisal Al-Ahmad', NULL, NULL, '44278078', ' ', '  QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00006', NULL, NULL);
+INSERT INTO `clients` VALUES (9, '', NULL, 0, '', NULL, '', NULL, 'Saeed Al-Karim', NULL, NULL, '', ' ', '  DOHA QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00007', NULL, NULL);
+INSERT INTO `clients` VALUES (10, '', NULL, 0, '', NULL, '', NULL, 'Ibrahim Al-Fahad', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00008', NULL, NULL);
+INSERT INTO `clients` VALUES (11, '', NULL, 0, '', NULL, '', NULL, 'Tariq Al-Harbi', NULL, NULL, '', ' 33885343', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00009', NULL, NULL);
+INSERT INTO `clients` VALUES (12, '', NULL, 0, '', NULL, '', NULL, 'Salim Al-Dhaheri', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00010', NULL, NULL);
+INSERT INTO `clients` VALUES (13, '', NULL, 0, '', NULL, '', NULL, 'Majid Al-Mutairi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00011', NULL, NULL);
+INSERT INTO `clients` VALUES (14, '', NULL, 0, '', NULL, '', NULL, 'Hamad Al-Shamrani', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00012', NULL, NULL);
+INSERT INTO `clients` VALUES (15, '', NULL, 0, '', NULL, '', NULL, 'Abdullah Al-Sabah', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00013', NULL, NULL);
+INSERT INTO `clients` VALUES (16, '', NULL, 0, '', NULL, '', NULL, 'Waleed Al-Hashimi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00014', NULL, NULL);
+INSERT INTO `clients` VALUES (17, '', NULL, 0, '', NULL, '', NULL, 'Nasser Al-Tamimi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00015', NULL, NULL);
+INSERT INTO `clients` VALUES (18, '', NULL, 0, '', NULL, '', NULL, 'Zayed Al-Naimi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00016', NULL, NULL);
+INSERT INTO `clients` VALUES (19, '', NULL, 0, '', NULL, '', NULL, 'Rashid Al-Qassimi', NULL, NULL, '', '70000321 ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00017', NULL, NULL);
+INSERT INTO `clients` VALUES (20, '', NULL, 0, '', NULL, '', NULL, 'Adel Al-Badawi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00018', NULL, NULL);
+INSERT INTO `clients` VALUES (21, '', NULL, 0, '', NULL, '', NULL, 'Jamal Al-Ali', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00019', NULL, NULL);
+INSERT INTO `clients` VALUES (22, '', NULL, 0, '', NULL, '', NULL, 'Bassam Al-Saleh', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00020', NULL, NULL);
+INSERT INTO `clients` VALUES (23, '', NULL, 0, '', NULL, '', NULL, 'Farid Al-Lami', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00021', NULL, NULL);
+INSERT INTO `clients` VALUES (24, '', NULL, 0, '', NULL, '', NULL, 'Ziyad Al-Hatmi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00022', NULL, NULL);
+INSERT INTO `clients` VALUES (25, '', NULL, 0, '', NULL, '', NULL, 'Mansour Al-Baz', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00023', NULL, NULL);
+INSERT INTO `clients` VALUES (26, '', NULL, 0, '', NULL, '', NULL, 'Fahad Al-Qadi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00024', NULL, NULL);
+INSERT INTO `clients` VALUES (27, '', NULL, 0, '', NULL, '', NULL, 'Yahya Al-Kuwaiti', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00025', NULL, NULL);
+INSERT INTO `clients` VALUES (28, '', NULL, 0, '', NULL, '', NULL, 'Rami Al-Sharif', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00026', NULL, NULL);
+INSERT INTO `clients` VALUES (29, '', NULL, 0, '', NULL, '', NULL, 'Bilal Al-Amiri', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00027', NULL, NULL);
+INSERT INTO `clients` VALUES (30, '', NULL, 0, '', NULL, '', NULL, 'Tamer Al-Hussain', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00028', NULL, NULL);
+INSERT INTO `clients` VALUES (31, '', NULL, 0, '', NULL, '', NULL, 'Sultan Al-Hassan', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00029', NULL, NULL);
+INSERT INTO `clients` VALUES (32, '', NULL, 0, '', NULL, '', NULL, 'Marwan Al-Makki', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00030', NULL, NULL);
+INSERT INTO `clients` VALUES (33, '', NULL, 0, '', NULL, '', NULL, 'Kareem Al-Mousa', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00031', NULL, NULL);
+INSERT INTO `clients` VALUES (34, '', NULL, 0, '', NULL, '', NULL, 'Issam Al-Kilani', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00032', NULL, NULL);
+INSERT INTO `clients` VALUES (35, '', NULL, 0, '', NULL, '', NULL, 'Mustafa Al-Nouri', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00033', NULL, NULL);
+INSERT INTO `clients` VALUES (36, '', NULL, 0, '', NULL, '', NULL, 'Bashir Al-Jamal', NULL, NULL, '', '44460005 ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00034', NULL, NULL);
+INSERT INTO `clients` VALUES (37, '', NULL, 0, '', NULL, '', NULL, 'Nabil Al-Samarrai', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00035', NULL, NULL);
+INSERT INTO `clients` VALUES (38, '', NULL, 0, '', NULL, '', NULL, 'Raed Al-Taher', NULL, NULL, '', '44405150 ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00036', NULL, NULL);
+INSERT INTO `clients` VALUES (39, '', NULL, 0, '', NULL, '', NULL, 'Zaher Al-Mansour', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00037', NULL, NULL);
+INSERT INTO `clients` VALUES (40, '', NULL, 0, '', NULL, '', NULL, 'Ayman Al-Obaidi', NULL, NULL, '', '40290062 ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00038', NULL, NULL);
+INSERT INTO `clients` VALUES (41, '', NULL, 0, '', NULL, '', NULL, 'Sami Al-Rawi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00039', NULL, NULL);
+INSERT INTO `clients` VALUES (42, '', NULL, 0, '', NULL, '', NULL, 'Walid Al-Attar', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00040', NULL, NULL);
+INSERT INTO `clients` VALUES (43, '', NULL, 0, '', NULL, '', NULL, 'Imad Al-Amin', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00041', NULL, NULL);
+INSERT INTO `clients` VALUES (44, '', NULL, 0, '', NULL, '', NULL, 'Amjad Al-Farouq', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00042', NULL, NULL);
+INSERT INTO `clients` VALUES (45, '', NULL, 0, '', NULL, '', NULL, 'Hani Al-Kurdi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00043', NULL, NULL);
+INSERT INTO `clients` VALUES (46, '', NULL, 0, '', NULL, '', NULL, 'Mahmoud Al-Hilal', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00044', NULL, NULL);
+INSERT INTO `clients` VALUES (47, '', NULL, 0, '', NULL, '', NULL, 'Younes Al-Mirza', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00045', NULL, NULL);
+INSERT INTO `clients` VALUES (48, '', NULL, 0, '', NULL, '', NULL, 'Osama Al-Atrash', NULL, NULL, '', ' 77712233', '  DOHA QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00046', NULL, NULL);
+INSERT INTO `clients` VALUES (49, '', NULL, 0, '', NULL, '', NULL, 'Fadi Al-Kabbani', NULL, NULL, '77712233', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00047', NULL, NULL);
+INSERT INTO `clients` VALUES (50, '', NULL, 0, '', NULL, '', NULL, 'Hazem Al-Qadi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00048', NULL, NULL);
+INSERT INTO `clients` VALUES (51, '', NULL, 0, '', NULL, '', NULL, 'Wael Al-Din', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00049', NULL, NULL);
+INSERT INTO `clients` VALUES (52, '', NULL, 0, '', NULL, '', NULL, 'Samir Al-Nabhan', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00050', NULL, NULL);
+INSERT INTO `clients` VALUES (53, '', NULL, 0, '', NULL, '', NULL, 'Malek Al-Karaki', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00051', NULL, NULL);
+INSERT INTO `clients` VALUES (54, '', NULL, 0, '', NULL, '', NULL, 'Abbas Al-Farhan', NULL, NULL, '', ' ', '1391  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00052', NULL, NULL);
+INSERT INTO `clients` VALUES (55, '', NULL, 0, '', NULL, '', NULL, 'Luay Al-Hadid', NULL, NULL, '', ' 55946292', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00053', NULL, NULL);
+INSERT INTO `clients` VALUES (56, '', NULL, 0, '', NULL, '', NULL, 'Nashat Al-Ajmi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00054', NULL, NULL);
+INSERT INTO `clients` VALUES (57, '', NULL, 0, '', NULL, '', NULL, 'Hisham Al-Sudani', NULL, NULL, '', ' 55512233', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00055', NULL, NULL);
+INSERT INTO `clients` VALUES (58, '', NULL, 0, '', NULL, '', NULL, 'Alaa Al-Nasser', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00056', NULL, NULL);
+INSERT INTO `clients` VALUES (59, '', NULL, 0, '', NULL, '', NULL, 'Yazeed Al-Tikriti', NULL, NULL, '', '44232392 50910777', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00057', NULL, NULL);
+INSERT INTO `clients` VALUES (60, '', NULL, 0, '', NULL, '', NULL, 'Othman Al-Qattan', NULL, NULL, '44095217', ' ', '28886  DOHA', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00058', NULL, NULL);
+INSERT INTO `clients` VALUES (61, '', NULL, 0, '', NULL, '', NULL, 'Jaber Al-Nour', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00059', NULL, NULL);
+INSERT INTO `clients` VALUES (62, '', NULL, 0, '', NULL, '', NULL, 'Nizar Al-Talib', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00060', NULL, NULL);
+INSERT INTO `clients` VALUES (63, '', NULL, 0, '', NULL, '', NULL, 'Abdelrahman Al-Shafi', NULL, NULL, '40204444', ' ', '14875  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00061', NULL, NULL);
+INSERT INTO `clients` VALUES (64, '', NULL, 0, '', NULL, '', NULL, 'Munir Al-Din', NULL, NULL, '', ' ', '908  MUSCAT, OMAN', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00062', NULL, NULL);
+INSERT INTO `clients` VALUES (65, '', NULL, 0, '', NULL, '', NULL, 'Ihab Al-Muqbil', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00063', NULL, NULL);
+INSERT INTO `clients` VALUES (66, '', NULL, 0, '', NULL, '', NULL, 'Ghassan Al-Sheikh', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00064', NULL, NULL);
+INSERT INTO `clients` VALUES (67, '', NULL, 0, '', NULL, '', NULL, 'Sabah Al-Kazemi', NULL, NULL, '', ' 66707226', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00065', NULL, NULL);
+INSERT INTO `clients` VALUES (68, '', NULL, 0, '', NULL, '', NULL, 'Rami Al-Fahri', NULL, NULL, '44519927', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00066', NULL, NULL);
+INSERT INTO `clients` VALUES (69, '', NULL, 0, '', NULL, '', NULL, 'Badr Al-Ameen', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00067', NULL, NULL);
+INSERT INTO `clients` VALUES (70, '', NULL, 0, '', NULL, '', NULL, 'Khalil Al-Quraishi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00068', NULL, NULL);
+INSERT INTO `clients` VALUES (71, '', NULL, 0, '', NULL, '', NULL, 'Saad Al-Lami', NULL, NULL, 'For Inquiry', '44849444 ', '4020  DOHA', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00069', NULL, NULL);
+INSERT INTO `clients` VALUES (72, '', NULL, 0, '', NULL, '', NULL, 'Jawad Al-Mahdi', NULL, NULL, '44775848', ' ', '4810 AL JAZEERA AL ARABIA STREET QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00070', NULL, NULL);
+INSERT INTO `clients` VALUES (73, '', NULL, 0, '', NULL, '', NULL, 'Tamim Al-Jabbari', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00071', NULL, NULL);
+INSERT INTO `clients` VALUES (74, '', NULL, 0, '', NULL, '', NULL, 'Shadi Al-Maghribi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00072', NULL, NULL);
+INSERT INTO `clients` VALUES (75, '', NULL, 0, '', NULL, '', NULL, 'Naeem Al-Tahan', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00073', NULL, NULL);
+INSERT INTO `clients` VALUES (76, '', NULL, 0, '', NULL, '', NULL, 'Jalal Al-Karim', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00074', NULL, NULL);
+INSERT INTO `clients` VALUES (77, '', NULL, 0, '', NULL, '', NULL, 'Ragheb Al-Faruqi', NULL, NULL, '', ' ', '24866  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00075', NULL, NULL);
+INSERT INTO `clients` VALUES (78, '', NULL, 0, '', NULL, '', NULL, 'Nadim Al-Saad', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00076', NULL, NULL);
+INSERT INTO `clients` VALUES (79, '', NULL, 0, '', NULL, '', NULL, 'Zuhair Al-Awadi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00077', NULL, NULL);
+INSERT INTO `clients` VALUES (80, '', NULL, 0, '', NULL, '', NULL, 'Tayseer Al-Barqawi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00078', NULL, NULL);
+INSERT INTO `clients` VALUES (81, '', NULL, 0, '', NULL, '', NULL, 'Adnan Al-Zaheri', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00079', NULL, NULL);
+INSERT INTO `clients` VALUES (82, '', NULL, 0, '', NULL, '', NULL, 'Fouad Al-Omari', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00080', NULL, NULL);
+INSERT INTO `clients` VALUES (83, '', NULL, 0, '', NULL, '', NULL, 'Bassel Al-Banna', NULL, NULL, '', ' ', '23619  DOHA QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00081', NULL, NULL);
+INSERT INTO `clients` VALUES (84, '', NULL, 0, '', NULL, '', NULL, 'Rafat Al-Qari', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00082', NULL, NULL);
+INSERT INTO `clients` VALUES (85, '', NULL, 0, '', NULL, '', NULL, 'Zain Al-Dulaimi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00083', NULL, NULL);
+INSERT INTO `clients` VALUES (86, '', NULL, 0, '', NULL, '', NULL, 'Talal Al-Kanaan', NULL, NULL, '', ' 60054272', '  CHINA', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00084', NULL, NULL);
+INSERT INTO `clients` VALUES (87, '', NULL, 0, '', NULL, '', NULL, 'Kamel Al-Shalhoub', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00085', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for clients_documents
@@ -1096,11 +1109,14 @@ CREATE TABLE `fm_manufacturers`  (
   `dc` date NULL DEFAULT NULL,
   `user_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of fm_manufacturers
 -- ----------------------------
+INSERT INTO `fm_manufacturers` VALUES (1, 'Toyota', 'Toyota', '2025-06-01', 2);
+INSERT INTO `fm_manufacturers` VALUES (2, 'Honda', 'Honda', '2025-06-01', 2);
+INSERT INTO `fm_manufacturers` VALUES (3, 'Porsche', 'Porsche', '2025-06-01', 2);
 
 -- ----------------------------
 -- Table structure for fm_models
@@ -1112,13 +1128,21 @@ CREATE TABLE `fm_models`  (
   `ds` varchar(225) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `dc` date NULL DEFAULT NULL,
   `user_id` int NULL DEFAULT NULL,
-  `year_model` int NULL DEFAULT NULL,
+  `model_year` int NULL DEFAULT NULL,
+  `manufacturer_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of fm_models
 -- ----------------------------
+INSERT INTO `fm_models` VALUES (1, '911 Turbo', '911 Turbo', '2025-06-01', 2, 2024, 3);
+INSERT INTO `fm_models` VALUES (2, '911 Turbo RS', '911 Turbo RS', '2025-06-01', 2, 2024, 3);
+INSERT INTO `fm_models` VALUES (3, 'Cayanne', 'Cayanne', '2025-06-01', 2, 2024, 3);
+INSERT INTO `fm_models` VALUES (4, 'Yaris', 'Yaris Sedan', '2025-06-01', 2, 2022, 1);
+INSERT INTO `fm_models` VALUES (5, 'Innova G', 'Base Model of Innova', '2025-06-01', 2, 2023, 1);
+INSERT INTO `fm_models` VALUES (6, 'Civic RS', 'Civic RS', '2025-06-01', 2, 2023, 2);
+INSERT INTO `fm_models` VALUES (7, 'City G', 'City G', '2025-06-01', 2, 2022, 2);
 
 -- ----------------------------
 -- Table structure for fm_project_status
@@ -1516,7 +1540,7 @@ INSERT INTO `menu_main` VALUES (16, 'Receiving', NULL, 5, 'fa-arrow-down', NULL,
 INSERT INTO `menu_main` VALUES (17, 'Customer', NULL, 0, 'fa-users', NULL, 1);
 INSERT INTO `menu_main` VALUES (18, 'Issuance', NULL, 6, 'fa-arrow-up', NULL, 1);
 INSERT INTO `menu_main` VALUES (19, 'Vehicles', NULL, 3, 'fa-car', NULL, 1);
-INSERT INTO `menu_main` VALUES (20, 'Receipt', NULL, 12, 'fa-money', NULL, 1);
+INSERT INTO `menu_main` VALUES (20, 'Receipt', NULL, 12, 'fa-money-bill', NULL, 1);
 INSERT INTO `menu_main` VALUES (21, 'Adjustments', NULL, 7, 'fa-adjust', NULL, 1);
 
 -- ----------------------------
@@ -1581,8 +1605,8 @@ INSERT INTO `menu_sub` VALUES (118, 'Confirmed Sales Order', NULL, 3, NULL, 'out
 INSERT INTO `menu_sub` VALUES (119, 'Vehicle Masterlist', NULL, 1, NULL, 'vehicles/masterlist', 1, 19, 1, NULL);
 INSERT INTO `menu_sub` VALUES (122, 'Terms and Condition Temaplates', NULL, 7, NULL, 'purchasing/terms_and_conditions', 1, 3, 1, 'System Tables');
 INSERT INTO `menu_sub` VALUES (123, 'Suppliers', NULL, 6, NULL, 'purchasing/supplier_po', 1, 3, 1, 'Supplier Masterfile');
-INSERT INTO `menu_sub` VALUES (124, 'Model', NULL, 2, NULL, 'maintenance/table/models', 1, 19, 0, NULL);
-INSERT INTO `menu_sub` VALUES (126, 'Manufacturer', NULL, 3, NULL, 'maintenance/table/manufacturers', 1, 19, 0, NULL);
+INSERT INTO `menu_sub` VALUES (124, 'Model', NULL, 3, NULL, 'maintenance/table/models', 1, 19, 0, NULL);
+INSERT INTO `menu_sub` VALUES (126, 'Manufacturer', NULL, 2, NULL, 'maintenance/table/manufacturers', 1, 19, 0, NULL);
 INSERT INTO `menu_sub` VALUES (127, 'Create Stock Adjustments', NULL, 2, NULL, 'inventory/create_stock_adjustments', 1, 21, 1, 'Adjustment Transactions');
 INSERT INTO `menu_sub` VALUES (128, 'Stock Adjustments Records', NULL, 3, NULL, 'inventory/stock_adjustments', 1, 21, 0, NULL);
 INSERT INTO `menu_sub` VALUES (129, 'Confirmed Stock Adjustments', NULL, 4, NULL, 'inventory/confirmed_stock_adjustments', 1, 21, 0, NULL);
@@ -1597,196 +1621,6 @@ INSERT INTO `menu_sub` VALUES (137, 'Account Receivable G/L Number', NULL, 5, NU
 INSERT INTO `menu_sub` VALUES (138, 'Cash Control Account', NULL, 6, NULL, 'maintenance/table/cash_control_account', 0, 20, 0, NULL);
 INSERT INTO `menu_sub` VALUES (141, 'GRV Transport', NULL, 20, NULL, 'maintenance/table/grv_transport', 1, 16, 0, NULL);
 INSERT INTO `menu_sub` VALUES (142, 'Reports', NULL, 3, NULL, 'receipt/reports', 1, 20, 0, NULL);
-
--- ----------------------------
--- Table structure for projects
--- ----------------------------
-DROP TABLE IF EXISTS `projects`;
-CREATE TABLE `projects`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `user_id` int NULL DEFAULT NULL,
-  `deleted` int NULL DEFAULT 0,
-  `date_deleted` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `deleted_by` int NULL DEFAULT NULL,
-  `date_modified` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `modified_by` int NULL DEFAULT NULL,
-  `name` varchar(125) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `control_number` varchar(125) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `project_status_id` int NULL DEFAULT NULL,
-  `project_category_id` int NULL DEFAULT NULL,
-  `selling_price` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `project_ref` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  `description` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  `client_id` int NULL DEFAULT NULL,
-  `contact_person` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `contact_number` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `email` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `project_manager` int NULL DEFAULT NULL,
-  `notes` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  `location` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of projects
--- ----------------------------
-
--- ----------------------------
--- Table structure for projects_documents
--- ----------------------------
-DROP TABLE IF EXISTS `projects_documents`;
-CREATE TABLE `projects_documents`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `user_id` int NULL DEFAULT NULL,
-  `deleted` int NULL DEFAULT 0,
-  `date_deleted` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `deleted_by` int NULL DEFAULT NULL,
-  `date_modified` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `modified_by` int NULL DEFAULT NULL,
-  `project_id` int NULL DEFAULT NULL,
-  `description` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  `attachments` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  `document_type_id` int NULL DEFAULT NULL,
-  `client_id` int NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of projects_documents
--- ----------------------------
-
--- ----------------------------
--- Table structure for projects_job_order
--- ----------------------------
-DROP TABLE IF EXISTS `projects_job_order`;
-CREATE TABLE `projects_job_order`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `user_id` int NULL DEFAULT NULL,
-  `deleted` int NULL DEFAULT 0,
-  `date_deleted` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `deleted_by` int NULL DEFAULT NULL,
-  `date_modified` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `modified_by` int NULL DEFAULT NULL,
-  `title` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  `description` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  `quotation_id` int NULL DEFAULT NULL,
-  `project_id` int NULL DEFAULT NULL,
-  `client_id` int NULL DEFAULT NULL,
-  `job_order_number` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `status` int NULL DEFAULT 1,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of projects_job_order
--- ----------------------------
-
--- ----------------------------
--- Table structure for projects_job_order_clock_in
--- ----------------------------
-DROP TABLE IF EXISTS `projects_job_order_clock_in`;
-CREATE TABLE `projects_job_order_clock_in`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `user_id` int NULL DEFAULT NULL,
-  `deleted` int NULL DEFAULT 0,
-  `date_deleted` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `deleted_by` int NULL DEFAULT NULL,
-  `date_modified` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `modified_by` int NULL DEFAULT NULL,
-  `job_order_id` int NULL DEFAULT NULL,
-  `employee_id` int NULL DEFAULT NULL,
-  `date` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `time_in` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1',
-  `time_out` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `comment` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  `loc_in` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `loc_out` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of projects_job_order_clock_in
--- ----------------------------
-
--- ----------------------------
--- Table structure for projects_job_order_labor
--- ----------------------------
-DROP TABLE IF EXISTS `projects_job_order_labor`;
-CREATE TABLE `projects_job_order_labor`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `user_id` int NULL DEFAULT NULL,
-  `deleted` int NULL DEFAULT 0,
-  `date_deleted` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `deleted_by` int NULL DEFAULT NULL,
-  `date_modified` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `modified_by` int NULL DEFAULT NULL,
-  `job_order_id` int NULL DEFAULT NULL,
-  `quotation_item_id` int NULL DEFAULT NULL,
-  `qty` int NULL DEFAULT NULL,
-  `remarks` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of projects_job_order_labor
--- ----------------------------
-
--- ----------------------------
--- Table structure for projects_progress
--- ----------------------------
-DROP TABLE IF EXISTS `projects_progress`;
-CREATE TABLE `projects_progress`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `user_id` int NULL DEFAULT NULL,
-  `deleted` int NULL DEFAULT 0,
-  `date_deleted` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `deleted_by` int NULL DEFAULT NULL,
-  `date_modified` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `modified_by` int NULL DEFAULT NULL,
-  `project_id` int NULL DEFAULT NULL,
-  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `description` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  `date_cover` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `attachments` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  `activity_type_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `client_id` int NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of projects_progress
--- ----------------------------
-
--- ----------------------------
--- Table structure for projects_recent
--- ----------------------------
-DROP TABLE IF EXISTS `projects_recent`;
-CREATE TABLE `projects_recent`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `user_id` int NULL DEFAULT NULL,
-  `deleted` int NULL DEFAULT 0,
-  `date_deleted` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `deleted_by` int NULL DEFAULT NULL,
-  `date_modified` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `modified_by` int NULL DEFAULT NULL,
-  `project_id` int NULL DEFAULT NULL,
-  `table` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `date_cover` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `ref_id` int NULL DEFAULT NULL,
-  `client_id` int NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of projects_recent
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for purchase_order
@@ -1861,243 +1695,6 @@ INSERT INTO `purchase_order_items` VALUES (3, '2025-05-29 20:05', 2, 0, '', NULL
 INSERT INTO `purchase_order_items` VALUES (4, '2025-05-29 20:10', 2, 0, '', NULL, '', NULL, 2, '8789056435', 'sdfsdf gare', '54', 3454.000000, 2147483647, 0, 4, 2);
 INSERT INTO `purchase_order_items` VALUES (5, '2025-05-29 20:10', 2, 0, '', NULL, '', NULL, 2, '5675890006', 'tres ret 809', '14', 233.000000, 2147483647, 0, 5, 2);
 INSERT INTO `purchase_order_items` VALUES (6, '2025-05-29 20:10', 2, 0, '', NULL, '', NULL, 2, '7800787', 'test desc', '354', 343.000000, 2147483647, 0, 6, 2);
-
--- ----------------------------
--- Table structure for quotations
--- ----------------------------
-DROP TABLE IF EXISTS `quotations`;
-CREATE TABLE `quotations`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `user_id` int NULL DEFAULT NULL,
-  `deleted` int NULL DEFAULT 0,
-  `date_deleted` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `deleted_by` int NULL DEFAULT NULL,
-  `date_modified` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `modified_by` int NULL DEFAULT NULL,
-  `quotation_id` int NULL DEFAULT 0,
-  `project_id` int NULL DEFAULT NULL,
-  `client_id` int NULL DEFAULT NULL,
-  `att_to` varchar(225) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `validity` varchar(125) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `quotation_date` varchar(125) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `description` varchar(125) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `terms_and_conditions` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  `margin` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `quotation_number` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `draft` int NULL DEFAULT 1,
-  `version` int NULL DEFAULT 0,
-  `confirmed` int NULL DEFAULT 0,
-  `confirmed_by` int NULL DEFAULT NULL,
-  `confirmed_date` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `sla_desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `sla_amount` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `sla_margin` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `confirmed_hide` int NULL DEFAULT 0,
-  `print_logs` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  `completion_date` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `quotation_amount` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `master_confirmed` int NULL DEFAULT 0,
-  `start_date` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of quotations
--- ----------------------------
-
--- ----------------------------
--- Table structure for quotations_items
--- ----------------------------
-DROP TABLE IF EXISTS `quotations_items`;
-CREATE TABLE `quotations_items`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `user_id` int NULL DEFAULT NULL,
-  `deleted` int NULL DEFAULT 0,
-  `date_deleted` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `deleted_by` int NULL DEFAULT NULL,
-  `date_modified` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `modified_by` int NULL DEFAULT NULL,
-  `quotation_id` int NULL DEFAULT 0,
-  `project_id` int NULL DEFAULT NULL,
-  `item_code` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `item_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `brand` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `supplier` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `qty` int NULL DEFAULT NULL,
-  `quotation_location_id` int NULL DEFAULT NULL,
-  `unit_cost` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `discount_percentage` int NULL DEFAULT 0,
-  `landed_cost_rate_id` int NULL DEFAULT NULL,
-  `is_manpower` int NULL DEFAULT 0,
-  `is_local` int NULL DEFAULT 0,
-  `margin` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `inventory_id` int NULL DEFAULT NULL,
-  `edited_margin` int NULL DEFAULT 0,
-  `other` int NULL DEFAULT NULL,
-  `package_id` int NULL DEFAULT NULL,
-  `inventory_quotation_id` int NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of quotations_items
--- ----------------------------
-
--- ----------------------------
--- Table structure for quotations_landed_cost_rate
--- ----------------------------
-DROP TABLE IF EXISTS `quotations_landed_cost_rate`;
-CREATE TABLE `quotations_landed_cost_rate`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `user_id` int NULL DEFAULT NULL,
-  `deleted` int NULL DEFAULT 0,
-  `date_deleted` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `deleted_by` int NULL DEFAULT NULL,
-  `date_modified` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `modified_by` int NULL DEFAULT NULL,
-  `landed_cost_rate` varchar(125) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `conversion_factor` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `freight_percent` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `custom_percent` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `landed_cost_factor` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `currency_symbol` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `local_purchase` int NULL DEFAULT 0,
-  `quotation_id` int NULL DEFAULT NULL,
-  `id_orig` int NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of quotations_landed_cost_rate
--- ----------------------------
-
--- ----------------------------
--- Table structure for quotations_legalization_fees
--- ----------------------------
-DROP TABLE IF EXISTS `quotations_legalization_fees`;
-CREATE TABLE `quotations_legalization_fees`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `user_id` int NULL DEFAULT NULL,
-  `deleted` int NULL DEFAULT 0,
-  `date_deleted` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `deleted_by` int NULL DEFAULT NULL,
-  `date_modified` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `modified_by` int NULL DEFAULT NULL,
-  `amount_from` varchar(225) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `amount_to` varchar(125) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `fees` varchar(125) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `percent_of_invoice_val` int NULL DEFAULT 0,
-  `quotation_id` int NULL DEFAULT NULL,
-  `id_orig` int NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of quotations_legalization_fees
--- ----------------------------
-
--- ----------------------------
--- Table structure for quotations_locations
--- ----------------------------
-DROP TABLE IF EXISTS `quotations_locations`;
-CREATE TABLE `quotations_locations`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `user_id` int NULL DEFAULT NULL,
-  `deleted` int NULL DEFAULT 0,
-  `date_deleted` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `deleted_by` int NULL DEFAULT NULL,
-  `date_modified` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `modified_by` int NULL DEFAULT NULL,
-  `quotation_id` int NULL DEFAULT 0,
-  `project_id` int NULL DEFAULT NULL,
-  `location_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `description` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of quotations_locations
--- ----------------------------
-
--- ----------------------------
--- Table structure for quotations_others
--- ----------------------------
-DROP TABLE IF EXISTS `quotations_others`;
-CREATE TABLE `quotations_others`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(225) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `ds` varchar(225) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `dc` date NULL DEFAULT NULL,
-  `user_id` int NULL DEFAULT NULL,
-  `deleted` int NULL DEFAULT 0,
-  `amount` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `created_by` int NULL DEFAULT NULL,
-  `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `modified_by` int NULL DEFAULT NULL,
-  `date_modified` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of quotations_others
--- ----------------------------
-INSERT INTO `quotations_others` VALUES (1, 'Sub Contractor', 'Sub Contractor', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `quotations_others` VALUES (2, 'Tools', 'Tools', NULL, NULL, 0, '45', NULL, NULL, 2, '2024-05-11 16:01:45');
-INSERT INTO `quotations_others` VALUES (3, 'External Manpower', 'External Manpower', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `quotations_others` VALUES (4, 'Royalties', 'Royalties', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL);
-
--- ----------------------------
--- Table structure for quotations_package
--- ----------------------------
-DROP TABLE IF EXISTS `quotations_package`;
-CREATE TABLE `quotations_package`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `user_id` int NULL DEFAULT NULL,
-  `deleted` int NULL DEFAULT 0,
-  `date_deleted` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `deleted_by` int NULL DEFAULT NULL,
-  `date_modified` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `modified_by` int NULL DEFAULT NULL,
-  `package_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `quotation_id` int NULL DEFAULT NULL,
-  `price` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `quotation_location_id` int NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of quotations_package
--- ----------------------------
-
--- ----------------------------
--- Table structure for quotations_package_items
--- ----------------------------
-DROP TABLE IF EXISTS `quotations_package_items`;
-CREATE TABLE `quotations_package_items`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `user_id` int NULL DEFAULT NULL,
-  `deleted` int NULL DEFAULT 0,
-  `date_deleted` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `deleted_by` int NULL DEFAULT NULL,
-  `date_modified` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `modified_by` int NULL DEFAULT NULL,
-  `quotation_items_id` int NULL DEFAULT NULL,
-  `quotation_id` int NULL DEFAULT NULL,
-  `package_id` int NULL DEFAULT NULL,
-  `quotation_location_id` int NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of quotations_package_items
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for receiving
@@ -2884,18 +2481,22 @@ CREATE TABLE `vehicles`  (
   `customer_id` int NULL DEFAULT NULL,
   `vehicle_model_id` int NULL DEFAULT NULL,
   `manufacturer_id` int NULL DEFAULT NULL,
-  `plate_number` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `plate_no` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `vin` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `picture_1` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `picture_2` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `picture_3` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `last_transactions` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of vehicles
 -- ----------------------------
-INSERT INTO `vehicles` VALUES (1, '', NULL, 0, '', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `vehicles` VALUES (2, '', NULL, 0, '', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `vehicles` VALUES (3, '2025-06-01 21:05:02', 2, 0, '', NULL, '2025-06-01 22:12:54', 2, 2, 6, 2, '554190', 'AD00430589223XAAA', 'LnyOpB8w7YmTEdPUQNf9.jpg', 'ohxGp2N013kHCeTIVafy.jpg', 'aZAn6PvI7VBdMm9NDl4S.jpg', NULL);
+INSERT INTO `vehicles` VALUES (4, '2025-06-01 21:09:19', 2, 1, '2025-06-01 21:54:33', 2, '', NULL, 5, 4, 1, '88211', 'YOSD04358234922', NULL, NULL, NULL, NULL);
+INSERT INTO `vehicles` VALUES (5, '2025-06-01 21:27:33', 2, 1, '2025-06-01 21:55:30', 2, '', NULL, 5, 3, 3, '9921', 'PIS23023928081', NULL, NULL, NULL, NULL);
+INSERT INTO `vehicles` VALUES (6, '2025-06-01 21:29:33', 2, 0, '', NULL, '', NULL, 4, 3, 3, '7214', 'JS0980578234', '9JO3DcbnU2AfIqeGwrpv.jpg', NULL, NULL, NULL);
+INSERT INTO `vehicles` VALUES (7, '2025-06-01 21:56:58', 2, 0, '', NULL, '', NULL, 84, 6, 2, '458844', 'C092793409007170927X2', 'Kocmlh2kXMYSRpqQ56E3.jpg', 'IYyAm0pW6d3PTu4gzVrv.jpg', NULL, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

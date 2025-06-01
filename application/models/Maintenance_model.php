@@ -67,6 +67,17 @@ class Maintenance_model extends CI_model
 			'dc' 	 		       => date("Y-m-d G:i")
 			 );
 
+		}elseif($table_name=='fm_models'){
+
+			$data = array( 
+			'title' 		  	   => $this->input->post('title',TRUE),
+			'ds' 			 	   => $this->input->post('ds',TRUE),
+			'manufacturer_id'      => $this->input->post('manufacturer_id',TRUE), 
+			'model_year'           => $this->input->post('model_year',TRUE), 
+			'user_id'	           => $this->session->user_id,
+			'dc' 	 		       => date("Y-m-d G:i")
+			 );
+
 		}else{
 
 			$data = array( 
@@ -132,6 +143,10 @@ class Maintenance_model extends CI_model
 		}	
 		if($table_name=='fm_issue_type'){
 		$this->db->set('is_project',$this->input->post('is_project',TRUE)); 
+		}	
+		if($table_name=='fm_models'){
+		$this->db->set('manufacturer_id',$this->input->post('manufacturer_id',TRUE)); 
+		$this->db->set('model_year',$this->input->post('model_year',TRUE)); 
 		}	
 		$this->db->set('user_id',$this->session->user_id);  
 		$this->db->set('dc',date("Y-m-d G:i"));   

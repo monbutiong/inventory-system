@@ -2,31 +2,26 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Maintenance <small><?php echo str_replace('Bib','BIB',$table_name);?></small></h2>
-        <ul class="nav navbar-right panel_toolbox">
-          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-          </li>
-          <!--
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>  
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">Settings 1</a>
-              </li>
-              <li><a href="#">Settings 2</a>
-              </li>
-            </ul>
-           
-          </li> 
-          -->
-          <li><a href="<?php echo base_url();?>maintenance/add_table_data_content/<?php echo $table_name_sql;?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"  title="add new user"><i class="fa fa-plus"></i></a>
-          </li>
-        </ul>
-        <div class="clearfix"></div>
+ 
+
+
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-md-8"> 
+                    <h6 class="page-title"><?php echo $table_name;?></h6>
+                </div>
+                <div class="col-md-4">
+                    <div class="float-end d-none d-md-block">
+                        <a class="btn btn-md btn-primary load_modal_details" href="<?php echo base_url();?>maintenance/add_table_data_content/<?php echo $table_name_sql;?>" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">Create New Record</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
       </div>
       <div class="x_content">
-        <p class="text-muted font-13 m-b-30">
-          Maintenance list used in the system.
-        </p>
+        
         <table id="datatable" class="table table-striped table-bordered table-hover">
           <thead>
             <tr>
@@ -47,6 +42,17 @@
                 <th>Default Rate (if no BSP rate)</th>
               <?php }elseif($table_name_sql=='fm_issue_type'){?>
                 <th>Cost To Project</th>
+              <?php }elseif($table_name_sql=='fm_models'){
+
+                if(@$manufacturers){
+                  foreach($manufacturers as $rs){
+                    $arr_manu[$rs->id] = $rs->title;
+                  }
+                }
+
+                ?>
+                <th>Manufacturer</th>
+                <th>Model Year</th>
               <?php }?>
               <th>Option</th>
             </tr>
@@ -80,11 +86,14 @@
                 <td><?=$rs->vs_peso_rate?></td>
               <?php }elseif($table_name_sql=='fm_issue_type'){?>
                 <td><?=$rs->is_project==1 ? 'Yes' : 'No'?></td>
+              <?php }elseif($table_name_sql=='fm_models'){?>
+                <td><?=@$arr_manu[$rs->manufacturer_id]?></td>
+                <td><?=$rs->model_year?></td>
               <?php }?>
               <th>
-                <a href="<?php echo base_url();?>maintenance/edit_table_data_content/<?php echo $table_name_sql;?>/<?php echo $rs->id;?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-pencil"></i> edit</a>
+                <a href="<?php echo base_url();?>maintenance/edit_table_data_content/<?php echo $table_name_sql;?>/<?php echo $rs->id;?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-edit"></i> edit</a>
                 | 
-                <a href="Javascript:remove_data(<?php echo $rs->id;?>);"><i class="fa fa-trash-o"></i> remove</a>
+                <a href="Javascript:remove_data(<?php echo $rs->id;?>);"><i class="fa fa-trash"></i> remove</a>
                
               </th>
             </tr> 

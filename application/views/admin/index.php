@@ -78,45 +78,7 @@
                             </div>
                         </form>
 
-                        <div class="dropdown d-none d-md-block ms-2">
-                            <button type="button" class="btn header-item waves-effect" data-bs-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false">
-                                <img class="me-2" src="<?=base_url('assets/template/assets')?>/images/flags/us_flag.jpg" alt="Header Language" height="16"> English
-                                <span class="mdi mdi-chevron-down"></span>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end">
-
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <img src="<?=base_url('assets/template/assets')?>/images/flags/germany_flag.jpg" alt="user-image" class="me-1" height="12"> <span
-                                        class="align-middle"> German </span>
-                                </a>
-
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <img src="<?=base_url('assets/template/assets')?>/images/flags/italy_flag.jpg" alt="user-image" class="me-1" height="12"> <span
-                                        class="align-middle"> Italian </span>
-                                </a>
-
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <img src="<?=base_url('assets/template/assets')?>/images/flags/french_flag.jpg" alt="user-image" class="me-1" height="12"> <span
-                                        class="align-middle"> French </span>
-                                </a>
-
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <img src="<?=base_url('assets/template/assets')?>/images/flags/spain_flag.jpg" alt="user-image" class="me-1" height="12"> <span
-                                        class="align-middle"> Spanish </span>
-                                </a>
-
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <img src="<?=base_url('assets/template/assets')?>/images/flags/russia_flag.jpg" alt="user-image" class="me-1" height="12"> <span
-                                        class="align-middle"> Russian </span>
-                                </a>
-                            </div>
-                        </div>
+                      
 
                         <div class="dropdown d-none d-lg-inline-block">
                             <button type="button" class="btn header-item noti-icon waves-effect" data-bs-toggle="fullscreen">
@@ -124,122 +86,7 @@
                             </button>
                         </div>
 
-                        <div class="dropdown d-inline-block">
-                            <button type="button" class="btn header-item noti-icon waves-effect"
-                                id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false">
-                                <i class="mdi mdi-bell-outline"></i>
-                                <span class="badge bg-danger rounded-pill">3</span>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                                aria-labelledby="page-header-notifications-dropdown">
-                                <div class="p-3">
-                                    <div class="row align-items-center">
-                                        <div class="col">
-                                            <h5 class="m-0 font-size-16"> Notifications (258) </h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div data-simplebar style="max-height: 230px;">
-                                    <a href="" class="text-reset notification-item">
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0 me-3">
-                                                <div class="avatar-xs">
-                                                    <span class="avatar-title bg-success rounded-circle font-size-16">
-                                                        <i class="mdi mdi-cart-outline"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1">
-                                                <h6 class="mb-1">Your order is placed</h6>
-                                                <div class="font-size-12 text-muted">
-                                                    <p class="mb-1">Dummy text of the printing and typesetting.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-
-                                    <a href="" class="text-reset notification-item">
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0 me-3">
-                                                <div class="avatar-xs">
-                                                    <span class="avatar-title bg-warning rounded-circle font-size-16">
-                                                        <i class="mdi mdi-message-text-outline"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1">
-                                                <h6 class="mb-1">New Message received</h6>
-                                                <div class="font-size-12 text-muted">
-                                                    <p class="mb-1">You have 87 unread messages</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-
-                                    <a href="" class="text-reset notification-item">
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0 me-3">
-                                                <div class="avatar-xs">
-                                                    <span class="avatar-title bg-info rounded-circle font-size-16">
-                                                        <i class="mdi mdi-glass-cocktail"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1">
-                                                <h6 class="mb-1">Your item is shipped</h6>
-                                                <div class="font-size-12 text-muted">
-                                                    <p class="mb-1">It is a long established fact that a reader will</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-
-                                    <a href="" class="text-reset notification-item">
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0 me-3">
-                                                <div class="avatar-xs">
-                                                    <span class="avatar-title bg-primary rounded-circle font-size-16">
-                                                        <i class="mdi mdi-cart-outline"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1">
-                                                <h6 class="mb-1">Your order is placed</h6>
-                                                <div class="font-size-12 text-muted">
-                                                    <p class="mb-1">Dummy text of the printing and typesetting industry.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-
-                                    <a href="" class="text-reset notification-item">
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0 me-3">
-                                                <div class="avatar-xs">
-                                                    <span class="avatar-title bg-danger rounded-circle font-size-16">
-                                                        <i class="mdi mdi-message-text-outline"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1">
-                                                <h6 class="mb-1">New Message received</h6>
-                                                <div class="font-size-12 text-muted">
-                                                    <p class="mb-1">You have 87 unread messages</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="p-2 border-top">
-                                    <div class="d-grid">
-                                        <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
-                                            View all
-                                        </a>
-                                    </div>    
-                                </div>
-                            </div>
-                        </div>
+                         
 
                         <div class="dropdown d-inline-block">
                             <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
@@ -469,32 +316,51 @@
 
         <script type="text/javascript">
 
-          $('.select2_').select2(); 
-          
-          $("body").on("click", ".load_modal_details", function(event){  
-          //$(".load_modal_details").click(function(){    //before
-            $("#load_modal_fields_large").html('<span style="padding:10px;"> <i class="fa fa-circle-o-notch fa-spin"></i>  LOADING... </span>');
-            var href = $(this).attr('href');  
-            setTimeout(function() {  
-            $("#load_modal_fields_large").load(href, function(){
-                 
-                 $('.select2_').select2();
-                 $('#select2-tags').select2({
-                   tags: true
-                 }); 
-
-                 $('#datatable_modal2').DataTable();
-
-                 $('.color_picker').colorpicker();
-
-                 $('div.dataTables_filter input', table.table().container()).focus();
-                 init_wysiwyg();
-
+          if($('.select2_').length){
+            $('.select2_').select2(); 
+          }
+          if($('.select2-tags_').length){
+            $('.select2-tags_').select2({  
+                tags: true 
             }); 
-            }, 1000);
-          });
+          }
 
+         $("body").on("click", ".load_modal_details", function(event) {
+             var href = $(this).attr('href');
+             
+             $("#load_modal_fields_large").html('<div class="p-3 text-center"><i class="fa fa-circle-o-notch fa-spin"></i> LOADING...</div>');
+             
+             setTimeout(function() {
+                 $("#load_modal_fields_large").load(href, function() {
+                     $('#global_modal').modal('show');
 
+                     if ($('.select2-tags').length) {
+                         $('.select2-tags').select2({
+                             tags: true,
+                             width: '100%',
+                             dropdownParent: $('#global_modal')
+                         });
+                     }
+
+                     if ($('.select2').length) {
+                         $('.select2').select2({
+                             width: '100%',
+                             dropdownParent: $('#global_modal')
+                         });
+                     }
+
+                     if ($('#datatable_modal').length) {
+                         $('#datatable_modal').DataTable();
+                     }
+
+                     if ($('.color_picker').length) {
+                         $('.color_picker').colorpicker();
+                     }
+                 });
+             }, 300);
+         });
+
+ 
           <?php if(isset($_SESSION["error"])){?>
             Swal.fire({
             title: "Error!",
@@ -531,6 +397,91 @@
                        window.location.href = "<?php echo base_url('admin/logout')?>";
                    }
                });
+          }
+
+          function prompt(title,desc,link,form=null) {
+            Swal.fire({
+                title: title,
+                text: desc,
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',          // Red confirm button
+                cancelButtonColor: '#d33',        // Blue cancel button
+                confirmButtonText: 'Continue',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if(form){
+                      form.submit();
+                    }else{
+                      window.location.href = link;
+                    } 
+                }
+            });
+          }
+
+          if($(".select2-ajax").length){
+
+                $(".select2-ajax").select2({
+                 placeholder: "Select Item", 
+                 ajax: { 
+                  url: "<?=base_url("outgoing/load_issued_items")?>",
+                  type: "post",
+                  dataType: 'json',
+                  delay: 250,
+                  dropdownAutoWidth : true,
+                  data: function (params) {
+                   return {
+                     searchTerm: params, // search term
+                     excluded_ids: $('#selected_ids').val(),
+                     job_order_id:  $('#job_order_id').val()
+                   };
+                  },
+                  results: function (data, page) {
+                  return {
+                      results: $.map(data, function(obj) {   
+                        console.log('obj', obj);
+                           return { 
+                              id: obj.id,
+                              text: obj.text,
+                              item_code: obj.item_code,
+                              item_name: obj.item_name,
+                              qty: obj.qty,
+                              inventory_id: obj.inventory_id,
+                              sales_order_number: obj.sales_order_number,
+                              issued_date: obj.issued_date,
+                              issuance_id: obj.issuance_id
+                            }; 
+                      })
+                  };
+                  },
+                  cache: true
+                 }
+                }); 
+               
+              $(".select2-ajax").on("select2-selecting", function(e) {
+                  
+                  c+=1;
+                   
+                  console.log('slected', e.object);
+
+                    if($('#added'+e.object.id).length == 0) {
+
+                      $('#selected_ids').val($('#selected_ids').val() + '(' + e.object.id + ')-');
+                     
+                      $('#item_selector').before('<tr id="tr' + e.object.id + '"><td>'+e.object.sales_order_number+'<input type="hidden" name="issuance_id'+e.object.id+'"  value="'+e.object.issuance_id+'"/></td><td>'+e.object.issued_date+'<input type="hidden" name="date_issued'+e.object.id+'" value="'+e.object.issued_date+'"></td><td>'+e.object.item_code+'<input type="hidden" name="items['+e.object.id+']" id="added'+e.object.id+'" value="'+e.object.id+'"/><input type="hidden" name="inventory_id'+e.object.id+'" value="'+e.object.inventory_id+'"/></td><td>'+e.object.item_name+'</td><td align="center" id="t_qty'+e.object.id+'">'+e.object.qty+'<input type="hidden" name="issued_qty'+e.object.id+'" value="'+e.object.qty+'"></td><td align="center"><input type="number" id="qty'+e.object.id+'" name="qty'+e.object.id+'" required style="border: 0px; text-align: center; width: 75px;" value="'+e.object.qty+'" min="1" max="'+e.object.qty+'"> </td><td><input type="text" name="remarks'+e.object.id+'" style="border: 0px; width: 100%;" > </td><td align="center"><a href="Javascript:remove_item('+c+','+e.object.id+')"><i title="remove" class="fa fa-close"></i></a></td></tr>');
+                    }
+              
+
+                  $('.add_item .select2-container .select2-choice').html('(+) add more item'); 
+                  //$('.selecta'+c).select2();
+                  all+=1;
+
+                  $('#row_counter').val(c);
+              }); 
+
+              $(".select2-ajax").val('').trigger('change');
+
           }
 
         </script>

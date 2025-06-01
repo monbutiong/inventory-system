@@ -12,7 +12,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="float-end d-none d-md-block">
-                            <a class="btn btn-sm btn-primary load_modal_details" href="<?php echo base_url('crm/add_clients');?>" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">New Client</a>
+                            <a class="btn btn-md btn-primary load_modal_details" href="<?php echo base_url('crm/add_clients');?>" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">Create New Customer</a>
                         </div>
                     </div>
                 </div>
@@ -54,7 +54,11 @@
                 echo base_url('assets/images/clients/logo-'.$rs->id.'.png?'.time());
                 }else{
                 echo base_url('assets/images/img.png'); }?>"></td>
-              <td><?=$rs->name?><br/>Customer Code: <?=$rs->code?></td>
+              <td>
+                <?=$rs->name?>
+                <br/>Customer Code: <?=$rs->code?>
+                <?php if($rs->qid){?><br/>QID: <?=$rs->qid?><?php }?>
+              </td>
               <td><?=$rs->address?><br/>
                 
                 <small>
@@ -63,7 +67,8 @@
 
               </td>
               <td>
-                <small>
+                <?=$rs->phone?><br/>
+                <small> 
                   <?=$rs->contact_person_1 ? $rs->contact_person_1.' | '.$rs->contact_number_1 : ''?><br/>
                   <?=$rs->contact_person_2 ? $rs->contact_person_2.' | '.$rs->contact_number_2 : ''?>
                 </small>
@@ -75,7 +80,7 @@
                  | 
                 <a href="<?php echo base_url('crm/view_clients/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-eye"></i> view</a>
                  | 
-                <a href="Javascript:delete_bib(<?=$rs->id?>)" class="load_modal_details"><i class="fa fa-trash"></i> Delete</a>
+                <a href="Javascript:prompt('Delete','Delete Customer?','<?=base_url('crm/delete_clients/'.$rs->id)?>')" class="load_modal_details"><i class="fa fa-trash"></i> Delete</a>
                  
                  
               </td>
@@ -92,19 +97,6 @@
    
 </div>
 
-<script type="text/javascript">
-function delete_bib(id){
-  reset(); 
-
-  alertify.confirm("delete client information? this will permanently delete selected client records.", function (e) {
-        if (e) {  
-            alertify.log("deleting...");
-            location.href = "<?php echo base_url();?>crm/delete_clients/"+id;
-        } else {
-            alertify.log("cancelled");
-        }
-    }, "Confirm");
-}
-</script>
+ 
  
 

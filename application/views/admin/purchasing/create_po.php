@@ -33,13 +33,20 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Purchasing <small>Create Purchase Order</small></h2> 
- 
-          <div class="input-group-btn pull-right" style="padding-right: 110px;">
-                  <a class="btn btn-sm btn-primary" href="Javascript:save_po()"  >Save P.O.</a>
-              </div>
-           
-        <div class="clearfix"></div>
+       
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-md-8"> 
+                    <h6 class="page-title">Create Purchase Order</h6>
+                </div>
+                <div class="col-md-4">
+                    <div class="float-end d-none d-md-block">
+                        <a class="btn btn-md btn-primary" href="Javascript:save_po()" >Create New Record</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
       </div>
       <div class="x_content">
         <p class="text-muted font-13 m-b-30">
@@ -52,7 +59,7 @@
             </div>
 
             <div class="col-md-3 col-sm-12 ">
-              <label >Quotation - Project <font color="red"></font></label>
+              <label >Vehicle / Customer <font color="red"></font></label>
               <select name="quotation_id" id="quotation_id" class="form-control select2_" onchange="update_link(0)" >
                 <option value="0">N/A</option> 
                 <?php 
@@ -150,7 +157,7 @@
             <tr id="last_row">
               <td colspan="4">
                 
-                <table width="100%" border="0">
+                <table width="100%">
                   <tr>
                     <td class="add_item">
                        

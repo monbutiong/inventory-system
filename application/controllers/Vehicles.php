@@ -32,7 +32,7 @@ class Vehicles extends CI_Controller {
 		        if ($user) {
 		            $this->session->set_userdata([
 		                'user_id'       => $user->id,
-		                'name_of_user'  => $user->name_of_user,
+		                'name_of_user'  => $user->name,
 		                'account'       => $user->account,
 		                'department_id' => $user->department_id,
 		                'username'      => $user->username,

@@ -342,7 +342,7 @@
                          });
                      }
 
-                     if ($('.select2').length) {
+                     if ($('.select2').length && $(".select2-ajax").length==0) {
                          $('.select2').select2({
                              width: '100%',
                              dropdownParent: $('#global_modal')
@@ -420,69 +420,128 @@
             });
           }
 
-          if($(".select2-ajax").length){
+          if ($(".select2-ajax").length) {
 
-                $(".select2-ajax").select2({
-                 placeholder: "Select Item", 
-                 ajax: { 
-                  url: "<?=base_url("outgoing/load_issued_items")?>",
-                  type: "post",
-                  dataType: 'json',
-                  delay: 250,
-                  dropdownAutoWidth : true,
-                  data: function (params) {
-                   return {
-                     searchTerm: params, // search term
-                     excluded_ids: $('#selected_ids').val(),
-                     job_order_id:  $('#job_order_id').val()
-                   };
-                  },
-                  results: function (data, page) {
+            $(".select2-ajax").select2({
+              placeholder: "Select Item",
+              ajax: {
+                url: "<?=base_url('purchasing/check_item_if_in_inv')?>",
+                type: "post",
+                dataType: 'json',
+                delay: 250,
+                dropdownAutoWidth: true,
+                data: function (params) {
                   return {
-                      results: $.map(data, function(obj) {   
-                        console.log('obj', obj);
-                           return { 
-                              id: obj.id,
-                              text: obj.text,
-                              item_code: obj.item_code,
-                              item_name: obj.item_name,
-                              qty: obj.qty,
-                              inventory_id: obj.inventory_id,
-                              sales_order_number: obj.sales_order_number,
-                              issued_date: obj.issued_date,
-                              issuance_id: obj.issuance_id
-                            }; 
-                      })
+                    searchTerm: params.term, // support params.term or params (your original)
+                    excluded_ids: $('#selected_ids').val()
                   };
-                  },
-                  cache: true
-                 }
-                }); 
-               
-              $(".select2-ajax").on("select2-selecting", function(e) {
-                  
-                  c+=1;
-                   
-                  console.log('slected', e.object);
+                },
+                // NOTE: Select2 v4 expects 'processResults' instead of 'results' to parse AJAX response
+                processResults: function (data, page) {
+                  return {
+                    results: $.map(data, function (obj) {
+                      return {
+                        id: obj.id,
+                        text: obj.text,
+                        item_code: obj.item_code,
+                        item_name: obj.item_name,
+                        qty: obj.qty,
+                        manufacturer_price: obj.manufacturer_price,
+                        image_url: obj.image_url || '<?=base_url("assets/images/no-image.png")?>'
+                      };
+                    })
+                  };
+                },
+                cache: true
+              }, 
+              // Format dropdown items as table-like with image
+              templateResult: function(item) {
+                if (!item.id) {
+                  return item.text;  // placeholder or loading text
+                }
+                var markup =
+                  '<div style="display:flex; align-items:center;">' +
+                    '<div style="flex:0 0 40px; margin-right:8px;">' +
+                      '<img src="' + item.image_url + '" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" />' +
+                    '</div>' +
+                    '<div style="flex:1;">' +
+                      '<div><strong>Code:</strong> ' + item.item_code + '</div>' +
+                      '<div><strong>Name:</strong> ' + item.item_name + '</div>' +
+                    '</div>' +
+                    '<div style="flex:0 0 80px; text-align:right; font-weight:bold;">' +
+                      'Stock: ' + item.qty +
+                    '</div>' +
+                  '</div>';
+                return markup;
+              },
 
-                    if($('#added'+e.object.id).length == 0) {
+              // Format selection box text
+              templateSelection: function(item) {
+                if (!item.id) {
+                  return item.text;
+                }
+                return item.item_code + ' - ' + item.item_name;
+              },
 
-                      $('#selected_ids').val($('#selected_ids').val() + '(' + e.object.id + ')-');
-                     
-                      $('#item_selector').before('<tr id="tr' + e.object.id + '"><td>'+e.object.sales_order_number+'<input type="hidden" name="issuance_id'+e.object.id+'"  value="'+e.object.issuance_id+'"/></td><td>'+e.object.issued_date+'<input type="hidden" name="date_issued'+e.object.id+'" value="'+e.object.issued_date+'"></td><td>'+e.object.item_code+'<input type="hidden" name="items['+e.object.id+']" id="added'+e.object.id+'" value="'+e.object.id+'"/><input type="hidden" name="inventory_id'+e.object.id+'" value="'+e.object.inventory_id+'"/></td><td>'+e.object.item_name+'</td><td align="center" id="t_qty'+e.object.id+'">'+e.object.qty+'<input type="hidden" name="issued_qty'+e.object.id+'" value="'+e.object.qty+'"></td><td align="center"><input type="number" id="qty'+e.object.id+'" name="qty'+e.object.id+'" required style="border: 0px; text-align: center; width: 75px;" value="'+e.object.qty+'" min="1" max="'+e.object.qty+'"> </td><td><input type="text" name="remarks'+e.object.id+'" style="border: 0px; width: 100%;" > </td><td align="center"><a href="Javascript:remove_item('+c+','+e.object.id+')"><i title="remove" class="fa fa-close"></i></a></td></tr>');
-                    }
-              
+              escapeMarkup: function(markup) { return markup; } // allow html in templateResult
+            });
 
-                  $('.add_item .select2-container .select2-choice').html('(+) add more item'); 
-                  //$('.selecta'+c).select2();
-                  all+=1;
 
-                  $('#row_counter').val(c);
-              }); 
+            var c = 0;
+            var all = 0;
 
-              $(".select2-ajax").val('').trigger('change');
+            // Updated event listener for Select2 v4
+            $(".select2-ajax").on("select2:select", function(e) {
+              var e_obj = e.params.data;
+
+              c += 1;
+
+              if (e_obj.id == 0) { // ==== this is for new ITEM
+                $('#openNewItemModal').click();
+              } else { // === this is for existing item
+
+                console.log('selected', e_obj);
+
+                if ($('#added' + e_obj.id).length == 0) {
+
+                  $('#selected_ids').val($('#selected_ids').val() + '(' + e_obj.id + ')-');
+
+                  var id = 88888888888 + e_obj.id;
+                  var part_no = e_obj.item_code;
+                  var desc = e_obj.item_name;
+                  var qty = 1;
+                  var unit_cost = e_obj.manufacturer_price;
+                  var rate_text = $('#rate_type').val();
+                  var ttl = qty * unit_cost;
+                  var ttl_nf = ttl.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+
+                  var newRowHtml =
+                    '<tr id="irow' + id + '" class="all_po_itm">' +
+                    '<td><input type="hidden" name="items[' + id + ']" value="' + id + '">' + part_no + '<input type="hidden" name="item_code' + id + '" value="' + part_no + '"><input type="hidden" name="lcr' + id + '" value="0"><input type="hidden" name="inv_id' + id + '" value="0"></td>' +
+                    '<td>' + desc + '<input type="hidden" name="item_name' + id + '" value="' + desc + '"><input type="hidden" name="quotation_id' + id + '" value="0"></td>' +
+                    '<td><input type="number" id="i_qty' + id + '" name="i_qty' + id + '" onkeyup="comp(' + id + ')" value="' + qty + '" style="border: 0;"></td>' +
+                    '<td align="right" nowrap><font class="rater">' + rate_text + '</font> <input type="number" name="i_unit_cost' + id + '" id="i_unit_cost' + id + '" onkeyup="comp(' + id + ')" value="' + unit_cost + '" style="border: 0; text-align: right;"></td>' +
+                    '<td align="right"><input type="hidden" class="all_ttl" id="i_ttl' + id + '" value="' + ttl + '"><span id="ttl' + id + '">' + ttl_nf + '</span></td>' +
+                    '<td><a href="javascript:idel(' + id + ')"><i class="fa fa-trash" style="color: red;"></i></a></td>' +
+                    '</tr>';
+
+                  $('#last_row').before(newRowHtml);
+
+                }
+              }
+
+              $('.add_item .select2-container .select2-choice').html('(+) add more item');
+              $('.selecta' + c).select2();
+              all += 1;
+
+              $('#row_counter').val(c);
+            });
+
+            $(".select2-ajax").val('').trigger('change');
 
           }
+
+
 
         </script>
 

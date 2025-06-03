@@ -15,21 +15,20 @@ select, .text_input {
  <div class="row">
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
-      <div class="x_title">
-        <h2>Purchase Order<small>Add new Item</small></h2>
-        <ul class="nav navbar-right panel_toolbox">
-           
-           
-          <li><a data-bs-dismiss="modal"><i class="fa fa-close"></i> close</a>
-          </li>
-        </ul>
-        <div class="clearfix"></div>
+
+      <form method="post" id="frm_validation" action="#" data-bs-toggle="validator" class="form-horizontal form-label-left">
+        
+      <div class="modal-header">
+          <h5 class="modal-title" id="mySmallModalLabel">Create New Item</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Close"></button>
       </div>
-      <div class="x_content">
+      <div class="modal-body">
+
         <br />
-        <form method="post" id="frm_validation" action="#" data-bs-toggle="validator" class="form-horizontal form-label-left">
+        
  
-          <div class="form-group">
+          <div class="row mb-3">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Part Number 
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -37,7 +36,7 @@ select, .text_input {
             </div>
           </div> 
 
-          <div class="form-group">
+          <div class="row mb-3">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Description
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -45,7 +44,7 @@ select, .text_input {
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="row mb-3">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Quantity
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -53,7 +52,7 @@ select, .text_input {
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="row mb-3">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Unit Cost
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -61,20 +60,18 @@ select, .text_input {
             </div>
           </div>  
 
-           
-           
-          <div class="ln_solid"></div>
-          <div class="form-group">
-            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-               
-                <button id="close_new" class="btn btn-primary" type="button" data-bs-dismiss="modal">Cancel</button> 
-                <button type="button" onclick="add_item_line()" class="btn btn-success">Save</button>
-  
-            </div>
+          
+          </div>
+          <div class="modal-footer">
+              <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Cancel</button> 
+                <button type="button" onclick="add_item_line()" class="btn btn-success">Add</button>
           </div>
 
-        </form>
+            
+
+        
       </div>
+    </form>
     </div>
   </div>
 </div> 
@@ -104,29 +101,64 @@ select, .text_input {
       });
    }
 
-   function add_item_line(){ 
-
-      var id = 9999999999+$('#row_counter').val();
-
-      var part_no = $('#item_code').val();
-      var desc = $('#item_name').val();
-      var qty = $('#qty').val();
-      var unit_cost = $('#unit_cost').val();
-
+   function add_item_line() {
+     var id = 9999999999 + $('#row_counter').val();
+     var part_no = $('#item_code').val();
+     var desc = $('#item_name').val();
+     var qty = $('#qty').val();
+     var unit_cost = $('#unit_cost').val();
      var cur_val = $('#curr_val option:selected').text();
 
-      if(cur_val == 'Select'){cur_val = '';}
+     if (cur_val == 'Select') cur_val = '';
 
-      var ttl = qty * unit_cost;
+     var ttl = qty * unit_cost;
+     var ttl_nf = ttl.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 
-      var ttl_nf = ttl.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+     var newRowHtml = `
+       <tr id="irow${id}" class="all_po_itm">
+         <td>
+           <input type="hidden" name="items[${id}]" value="${id}">
+           ${part_no}
+           <input type="hidden" name="item_code${id}" value="${part_no}">
+           <input type="hidden" name="lcr${id}" value="0">
+           <input type="hidden" name="inv_id${id}" value="0">
+         </td>
+         <td>
+           ${desc}
+           <input type="hidden" name="item_name${id}" value="${desc}">
+           <input type="hidden" name="quotation_id${id}" value="0">
+         </td>
+         <td>
+           <input type="number" id="i_qty${id}" name="i_qty${id}" onkeyup="comp(${id})" value="${qty}" style="border: 0; width: 70px;">
+         </td>
+         <td align="right" nowrap>
+           <font class="rater">${cur_val}</font>
+           <input type="number" name="i_unit_cost${id}" id="i_unit_cost${id}" onkeyup="comp(${id})" value="${unit_cost}" style="border: 0; text-align: right;">
+         </td>
+         <td align="right">
+           <input type="hidden" class="all_ttl" id="i_ttl${id}" value="${ttl}">
+           <span id="ttl${id}">${ttl_nf}</span>
+         </td>
+         <td>
+           <a href="javascript:idel(${id})"><i class="fa fa-trash" style="color: red;"></i></a>
+         </td>
+       </tr>
+     `;
 
-      var newRowHtml = '<tr id="irow' + id + '" class="all_po_itm"><td><input type="hidden" name="items[' + id + ']" value="' + id + '">'+part_no+'<input type="hidden" name="item_code' + id + '" value="' + part_no + '"><input type="hidden" name="lcr' + id + '" value="0"><input type="hidden" name="inv_id' + id + '" value="0"></td><td>'+desc+'<input type="hidden" name="item_name' + id + '" value="' + desc + '"><input type="hidden" name="quotation_id' + id + '" value="0"></td><td><input type="number" id="i_qty' + id + '" name="i_qty' + id + '" onkeyup="comp(' + id + ')" value="'+qty+'" style="border: 0; width: 70px;"></td><td align="right" nowrap><small class="rater">'+cur_val+'</small> <input type="number" name="i_unit_cost' + id + '" id="i_unit_cost' + id + '" onkeyup="comp(' + id + ')" value="'+unit_cost+'" style="border: 0; text-align: right; width: 100px;"></td><td align="right"><input type="hidden" class="all_ttl" id="i_ttl' + id + '" value="'+ttl+'"><span id="ttl' + id + '">'+ttl_nf+'</span></td><td><a href="javascript:idel(' + id + ')"><i class="fa fa-remove"></i></a></td></tr>';
-       
-      $('#last_row').before(newRowHtml);
+     $('#last_row').before(newRowHtml);
 
-      $('#close_new').click();
+     // Close modal properly
+     $('#newItemModal').modal('hide'); // if using Bootstrap modal
+     // or fallback
+     $('#close_new').click();
 
+     // Reset select2 dropdown input inside modal
+     setTimeout(function() {
+       $('#item_code').val(null).trigger('change');
+       $('#item_name').val('');
+       $('#qty').val('');
+       $('#unit_cost').val('');
+     }, 300);
    }
 
 

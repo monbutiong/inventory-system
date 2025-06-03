@@ -196,9 +196,12 @@ class Purchasing extends CI_Controller {
 		$module['module'] = "purchasing/create_po";
 		$module['map_link']   = "sales->quotations";  
 		  
-		$module['customers'] = $this->core->load_core_data('clients');
+		$module['customers'] = $this->core->load_core_data('clients','','id,name');
 
 		$module['vehicles'] = $this->core->load_core_data('vehicles');
+
+		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+		$module['manufacturers'] = $result['maintenance_data'];
 		
 		$module['users'] = $this->core->load_core_data('account','','id,name');
 
@@ -269,8 +272,19 @@ class Purchasing extends CI_Controller {
 		$this->db->like('item_code', $search); 
 		$this->db->or_like('item_name', $search);
 		$this->db->group_end();
-		$this->db->limit(6,0);
-		$i = $this->db->select('id, item_code, item_name, manufacturer_price')->get('inventory')->result();
+		$this->db->limit(7,0);
+		$i = $this->db->select('id, item_code, item_name, manufacturer_price, qty')->get('inventory')->result();
+
+		$json[] = [
+			'id'=>0, 
+			'text'=>'Add New Item (not listed in the inventory masterlist)', 
+			'find'=>$search,  
+			'item_code'=>'',
+			'item_name'=>'',
+			'manufacturer_price'=>0,
+			'image_url'=>'',
+			'qty'=>0
+		];
 
 		if(@$i){
 			foreach ($i as $r) {
@@ -280,19 +294,14 @@ class Purchasing extends CI_Controller {
 					 'find'=>$search, 
 					 'item_code'=>$r->item_code,  
 					 'item_name'=>$r->item_name,
-					 'manufacturer_price'=>$r->manufacturer_price   
+					 'manufacturer_price'=>$r->manufacturer_price,
+					 'image_url'=>'',
+					 'qty'=>$r->qty 
 				];
 			}
 		} 
 
-		$json[] = [
-			'id'=>0, 
-			'text'=>'Add New Item (not listed in the inventory masterlist)', 
-			'find'=>$search,  
-			'item_code'=>'',
-			'item_name'=>'',
-			'manufacturer_price'=>0
-		];
+
 		 	 
 		print_r(json_encode($json));
 
@@ -300,15 +309,12 @@ class Purchasing extends CI_Controller {
 
 	public function save_po(){
 
-		$q = $this->db->get_where('quotations',['id'=>$this->input->post('quotation_id',TRUE)])->row();
 
-		  
 		$po = $this->db->insert('purchase_order',[
 			'date_created' => date('Y-m-d H:i'),
 			'user_id' => $this->session->user_id,
-			'po_number' => $this->input->post('po_number',TRUE),
-			'quotation_id' => $this->input->post('quotation_id',TRUE),
-			'project_id' => @$q->project_id,
+			'po_number' => $this->input->post('po_number',TRUE), 
+			'vehicle_id' => $this->input->post('vehicle_id',TRUE),
 			'supplier_id' => $this->input->post('supplier_id',TRUE),
 			'att_to' => $this->input->post('att_to',TRUE),
 			'supplier_email' => $this->input->post('supplier_email',TRUE),
@@ -316,7 +322,7 @@ class Purchasing extends CI_Controller {
 			'description' => $this->input->post('description',TRUE),
 			'less_desc' => $this->input->post('less_desc',TRUE),
 			'less_amount' => $this->input->post('less_amount',TRUE),
-			'terms_conditions' => $this->input->post('terms_and_conditions'),
+			'terms_conditions' => @$this->input->post('terms_and_conditions'),
 			'rate_id' => $this->input->post('rate_id',TRUE),
 			'exchange_rate' => $this->input->post('exchange_rate',TRUE)
 		]); 
@@ -340,7 +346,7 @@ class Purchasing extends CI_Controller {
 						'qty' => $this->input->post('i_qty'.$item_id,TRUE),
 						'price' => $this->input->post('i_unit_cost'.$item_id,TRUE),
 						'inventory_quotation_id' => $item_id,
-						'quotation_id' => $this->input->post('quotation_id'.$item_id,TRUE), 
+						'vehicle_id' => $this->input->post('vehicle_id'.$item_id,TRUE), 
 						'inventory_id' => $inv_id,
 						'rate_id' => $this->input->post('rate_id',TRUE)
 					]); 

@@ -41,7 +41,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="float-end d-none d-md-block">
-                        <a class="btn btn-md btn-primary" href="Javascript:save_po()" >Create New Record</a>
+                        <a class="btn btn-md btn-primary" href="Javascript:save_po()" >Save Purchase Order</a>
                     </div>
                 </div>
             </div>
@@ -60,26 +60,30 @@
 
             <div class="col-md-3 col-sm-12 ">
               <label >Vehicle / Customer <font color="red"></font></label>
-              <select name="quotation_id" id="quotation_id" class="form-control select2_" onchange="update_link(0)" >
+              <select name="vehicle_id" id="vehicle_id" class="form-control select2_" >
                 <option value="0">N/A</option> 
                 <?php 
-                if(@$projects){
-                  foreach ($projects as $rs) {
-                    $arr_prj[$rs->id] = $rs->name;
-                  }
-                }
+                if($customers){
+                  foreach ($customers as $rs) {
+                    $cust[$rs->id] = $rs->name;
+                }}
 
-                if($quotations){
-                  foreach ($quotations as $rs) {
+                if($manufacturers){
+                  foreach ($manufacturers as $rs) {
+                    $manu[$rs->id] = $rs->title;
+                }}
+
+                if($vehicles){
+                  foreach ($vehicles as $rs) {
                 ?>
-                <option  value="<?=$rs->id?>"><?=$rs->quotation_number?> <?php if($rs->version>0){echo ' Rev'.$rs->version;}?> | <?=@$arr_prj[$rs->project_id]?></option>
+                <option  value="<?=$rs->id?>"><?=@$manu[$rs->manufacturer_id].' '.$rs->plate_no.' - '.@$cust[$rs->customer_id]?></option>
               <?php }}?>
               </select>
             </div>
              
             <div class="col-md-3 col-sm-12 ">
               <label >Supplier <font color="red">*</font> </label>
-              <select name="supplier_id" id="supplier_id" class="form-control select2_" onchange="update_link(this.value)">
+              <select name="supplier_id" id="supplier_id" class="form-control select2_"  >
                 <option value="0">select</option> 
                 <?php 
                 if($suppliers){
@@ -155,21 +159,21 @@
             </thead> 
             <tbody>
             <tr id="last_row">
-              <td colspan="4">
+              <td colspan="3">
                 
-                <table width="100%">
+                <table width="100%" style="border: 0 !important;">
                   <tr>
                     <td class="add_item">
                        
                        <div class="select2-ajax" style="width: 100%;"> 
                        </div>
 
-                    </td>
-                    <td align="right">Total</td>
+                    </td> 
                   </tr>
                 </table>
 
               </td>
+              <td align="right">Total</td>
               <td align="right"><span id="totals">0.00</span></td>
               <td></td>
             </tr> 
@@ -193,8 +197,7 @@
         <table class="table" id="add_item_section" style="display: none;">
           <tr>
             <td colspan="6" id="add_row">
-
-              
+ 
               <a id="add_item_link" class="btn btn-info load_modal_details" href="<?php echo base_url('purchasing/add_items');?>" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-plus"></i> Add Item(s) From Quotation</a>
 
               <a href="<?=base_url('purchasing/add_new_item')?>" class="load_modal_details" id="openNewItemModal" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"  style="display: none;" >new item</a>
@@ -211,116 +214,7 @@
         
       </div>
 
-      <div class="form-group" >
-         <label class="control-label col-md-12" for="last-name">Terms & Conditions *<br/> 
-        <select onchange="load_template(this.value)">
-          <option value="">select tempalate</option>
-          <?php 
-          if(@$tnc){
-            foreach ($tnc as $rs) {
-          ?>
-          <option value="<?=$rs->id?>"><?=$rs->title?></option>
-          <?php }}?>
-          </select> </label>
-
-                <div class="col-md-6 col-sm-12 col-xs-12 ">  
-                 <div class="form-group" onclick="repli()">
-                    
-                       <div id="alerts"></div>
-                       <div class="btn-toolbar editor" data-role="editor-toolbar" data-bs-target="#editor-one">
-                         <div class="btn-group">
-                           <a class="btn dropdown-toggle" data-bs-toggle="dropdown" title="Font"><i class="fa fa-font"></i><b class="caret"></b></a>
-                           <ul class="dropdown-menu">
-                           </ul>
-                         </div>
-
-                         <div class="btn-group">
-                           <a class="btn dropdown-toggle" data-bs-toggle="dropdown" title="Font Size"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>
-                           <ul class="dropdown-menu">
-                             <li>
-                               <a data-edit="fontSize 5">
-                                 <p style="font-size:17px">Huge</p>
-                               </a>
-                             </li>
-                             <li>
-                               <a data-edit="fontSize 3">
-                                 <p style="font-size:14px">Normal</p>
-                               </a>
-                             </li>
-                             <li>
-                               <a data-edit="fontSize 1">
-                                 <p style="font-size:11px">Small</p>
-                               </a>
-                             </li>
-                           </ul>
-                         </div>
-
-                         <div class="btn-group">
-                           <a class="btn" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a>
-                           <a class="btn" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a>
-                           <a class="btn" data-edit="strikethrough" title="Strikethrough"><i class="fa fa-strikethrough"></i></a>
-                           <a class="btn" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a>
-                         </div>
-
-                         <div class="btn-group">
-                           <a class="btn" data-edit="insertunorderedlist" title="Bullet list"><i class="fa fa-list-ul"></i></a>
-                           <a class="btn" data-edit="insertorderedlist" title="Number list"><i class="fa fa-list-ol"></i></a>
-                           <a class="btn" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="fa fa-dedent"></i></a>
-                           <a class="btn" data-edit="indent" title="Indent (Tab)"><i class="fa fa-indent"></i></a>
-                         </div>
-
-                         <div class="btn-group">
-                           <a class="btn" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a>
-                           <a class="btn" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a>
-                           <a class="btn" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a>
-                           <a class="btn" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a>
-                         </div>
-
-                         <div class="btn-group">
-                           <a class="btn dropdown-toggle" data-bs-toggle="dropdown" title="Hyperlink"><i class="fa fa-link"></i></a>
-                           <div class="dropdown-menu input-append">
-                             <input class="span2" placeholder="URL" type="text" data-edit="createLink" />
-                             <button class="btn" type="button">Add</button>
-                           </div>
-                           <a class="btn" data-edit="unlink" title="Remove Hyperlink"><i class="fa fa-cut"></i></a>
-                         </div>
-
-                         <div class="btn-group">
-                             <a class="btn dropdown-toggle" data-bs-toggle="dropdown" title="Font Color"><i class="fa fa-paint-brush"></i></a>
-                             <ul class="dropdown-menu">
-                                 <li>
-                                     <a data-edit="foreColor #000000" style="color: #000000;">Black</a>
-                                 </li>
-                                 <li>
-                                     <a data-edit="foreColor #FF0000" style="color: #FF0000;">Red</a>
-                                 </li>
-                                 <li>
-                                     <a data-edit="foreColor #2697de" style="color: #2697de;">Blue</a>
-                                 </li>
-                                 <!-- Add more color options as needed -->
-                             </ul>
-                         </div>
-
-                         <!-- <div class="btn-group">
-                           <a class="btn" title="Insert picture (or just drag & drop)" id="pictureBtn"><i class="fa fa-picture-o"></i></a>
-                           <input type="file" data-role="magic-overlay" data-bs-target="#pictureBtn" data-edit="insertImage" />
-                         </div>
-        -->
-                         <div class="btn-group">
-                           <a class="btn" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a>
-                           <a class="btn" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
-                         </div>
-                       </div>
-
-
-                       <div id="editor-one" class="editor-wrapper" onkeyup="repli()"></div>
-
-                       <textarea name="terms_and_conditions" id="terms_and_conditions" style="display:none;"></textarea>
-        
-                     </div>
-                 </div>
-             </div>
-    </div>
+       
   </div> 
    
 </div>
@@ -450,36 +344,56 @@ function comp_ttl(){
   $('#grand_total').html(grand_total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
 }
 
-function save_po(){
+function save_po() {
+  if ($('#ttl_item_amt').val() <= 0) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Invalid Amount',
+      text: 'The total amount must be greater than zero.'
+    });
+  } else if ($('#rate_type').val() == '') {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Missing Currency',
+      text: 'Please select a currency before saving.'
+    });
+  } else if ($('#po_number').val() == '') {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Missing P.O. Number',
+      text: 'Please enter the Purchase Order number.'
+    });
+  } else {
+    Swal.fire({
+      title: 'Save Purchase Order?',
+      text: "Are you sure you want to save this purchase order?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#aaa',
+      confirmButtonText: 'Yes, save it',
+      cancelButtonText: 'No, cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Saving...',
+          text: 'Your purchase order is being saved.',
+          showConfirmButton: false,
+          timer: 1000
+        });
+        document.frm_po.submit();
+      } else {
+        Swal.fire({
+          icon: 'info',
+          title: 'Cancelled',
+          text: 'The purchase order was not saved.'
+        });
+      }
+    });
+  }
+}
 
-    if($('#ttl_item_amt').val() <= 0){
-
-      alertify.error("invalid total amount");
-
-    }else if($('#rate_type').val() == ''){
-
-      alertify.error("Currency required");
-
-    }else if($('#po_number').val() == ''){
-
-      alertify.error("P.O. Number required");
-
-    }else{
-
-      reset(); 
-
-      alertify.confirm("Save Purchase order?", function (e) {
-            if (e) {  
-                alertify.log("deleting...");
-                document.frm_po.submit();
-            } else {
-                alertify.log("cancelled");
-            }
-        }, "Confirm");
-
-    }
-  
-} 
 
 function idel(id){
   $('#irow'+id).remove(); 

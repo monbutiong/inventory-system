@@ -11,7 +11,7 @@
  Target Server Version : 100427
  File Encoding         : 65001
 
- Date: 01/06/2025 17:57:50
+ Date: 03/06/2025 17:56:54
 */
 
 SET NAMES utf8mb4;
@@ -46,7 +46,7 @@ CREATE TABLE `account`  (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 0, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, '09f08665d46e4209f59a42270adbc8780d73bc9dc6425cd962162c6c5ce9b0ed', '2025-06-01 10:11:42');
+INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 0, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, 'a8d2c52776b5bcc828ed8716b94d9d3a1f8f77a5aef8421b65bfe4a359524c50', '2025-06-02 09:50:14');
 INSERT INTO `account` VALUES (37, '', NULL, '2024-05-15', 'silambu', '$2a$08$j.FhunOL0ywwPrANlITow.mveuu/bCghDmEQGlCdBxKtElgkiprMC', 1, NULL, 'Accounts', NULL, 0, 'Silambu', 0, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
@@ -90,7 +90,7 @@ CREATE TABLE `audit_trail`  (
   `log` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of audit_trail
@@ -120,6 +120,7 @@ INSERT INTO `audit_trail` VALUES (22, 2, 'file maintenance > models > add new da
 INSERT INTO `audit_trail` VALUES (23, 2, 'file maintenance > models > add new data', 'add new data in models maintenance table, id : 5', '2025-06-01 15:25:35', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (24, 2, 'file maintenance > models > add new data', 'add new data in models maintenance table, id : 6', '2025-06-01 15:26:01', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (25, 2, 'file maintenance > models > add new data', 'add new data in models maintenance table, id : 7', '2025-06-01 15:26:46', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (26, 2, 'login page', 'login to account.', '2025-06-02 09:50:14', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for clients
@@ -1652,14 +1653,16 @@ CREATE TABLE `purchase_order`  (
   `rate_id` int NULL DEFAULT NULL,
   `print_logs` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `exchange_rate` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `vehicle_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of purchase_order
 -- ----------------------------
-INSERT INTO `purchase_order` VALUES (1, '2025-05-29 20:05', 2, 0, '', NULL, '', NULL, 'PO000001', 0, NULL, 1, 'apple@gmail.com', '909874534', 'ttest', '<b><font color=\"#2697de\">Terms &amp; Conditions:&nbsp;</font></b><div><font color=\"#2697de\">1- </font>Invoices to be issued in the name of Ventum Tech Security Systems and Services.&nbsp;</div><div><font color=\"#2697de\">2-</font> Payment Terms: As per agreement&nbsp;</div><div><font color=\"#2697de\">3-</font> Delivery: Immediate&nbsp;</div><div><font color=\"#2697de\">4-</font> If no PO confirmation nor comments/remarks are received within 2 working days from official PO transmittal date, this PO including all its content is considered in effect.&nbsp;&nbsp;</div>', '', 0.000000, 'Mohammad Saleh', 1, '2025-05-29 20:05', 2, 1, NULL, '1.000000');
-INSERT INTO `purchase_order` VALUES (2, '2025-05-29 20:10', 2, 0, '', NULL, '', NULL, 'PO000002', 0, NULL, 2, 'laccoustics@mail.com', '9675445345', 'twsad', '<font color=\"#2697de\">T<b>erms &amp; Conditions:&nbsp;</b></font><div>1- Invoices to be issued in the name of Ventum Tech Security Systems and Services.&nbsp;</div><div>2- Payment Terms: As per agreement&nbsp;</div><div>3- Delivery: Immediate&nbsp;</div><div>4- If no PO confirmation nor comments/remarks are received within 2 working days from official PO transmittal date, this PO including all its content is considered in effect.&nbsp;</div><div>5- Ventum Tech is not held responsible in any way for not accepting the goods or services described above if it proves to be not conforming to the agreement and specifications or late delivery.</div>', '', 0.000000, 'Mohhamad Fali', 1, '2025-05-29 20:10', 2, 2, NULL, '4.521300');
+INSERT INTO `purchase_order` VALUES (1, '2025-05-29 20:05', 2, 0, '', NULL, '', NULL, 'PO000001', 0, NULL, 1, 'apple@gmail.com', '909874534', 'ttest', '<b><font color=\"#2697de\">Terms &amp; Conditions:&nbsp;</font></b><div><font color=\"#2697de\">1- </font>Invoices to be issued in the name of Ventum Tech Security Systems and Services.&nbsp;</div><div><font color=\"#2697de\">2-</font> Payment Terms: As per agreement&nbsp;</div><div><font color=\"#2697de\">3-</font> Delivery: Immediate&nbsp;</div><div><font color=\"#2697de\">4-</font> If no PO confirmation nor comments/remarks are received within 2 working days from official PO transmittal date, this PO including all its content is considered in effect.&nbsp;&nbsp;</div>', '', 0.000000, 'Mohammad Saleh', 1, '2025-05-29 20:05', 2, 1, NULL, '1.000000', NULL);
+INSERT INTO `purchase_order` VALUES (2, '2025-05-29 20:10', 2, 0, '', NULL, '', NULL, 'PO000002', 0, NULL, 2, 'laccoustics@mail.com', '9675445345', 'twsad', '<font color=\"#2697de\">T<b>erms &amp; Conditions:&nbsp;</b></font><div>1- Invoices to be issued in the name of Ventum Tech Security Systems and Services.&nbsp;</div><div>2- Payment Terms: As per agreement&nbsp;</div><div>3- Delivery: Immediate&nbsp;</div><div>4- If no PO confirmation nor comments/remarks are received within 2 working days from official PO transmittal date, this PO including all its content is considered in effect.&nbsp;</div><div>5- Ventum Tech is not held responsible in any way for not accepting the goods or services described above if it proves to be not conforming to the agreement and specifications or late delivery.</div>', '', 0.000000, 'Mohhamad Fali', 1, '2025-05-29 20:10', 2, 2, NULL, '4.521300', NULL);
+INSERT INTO `purchase_order` VALUES (3, '2025-06-03 22:44', 2, 0, '', NULL, '', NULL, 'PO000003', NULL, NULL, 1, 'dfdfg@sdfsd', 'PO435345', 'sdfsdf sdf sdf sdf', NULL, 'discounter', 340.000000, 'dfgdf dfg', 0, NULL, NULL, 1, NULL, '1.000000', 6);
 
 -- ----------------------------
 -- Table structure for purchase_order_items
@@ -1683,18 +1686,22 @@ CREATE TABLE `purchase_order_items`  (
   `quotation_id` int NULL DEFAULT NULL,
   `inventory_id` int NULL DEFAULT NULL,
   `rate_id` int NULL DEFAULT 0,
+  `vehicle_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of purchase_order_items
 -- ----------------------------
-INSERT INTO `purchase_order_items` VALUES (1, '2025-05-29 20:05', 2, 0, '', NULL, '', NULL, 1, '2345345', 'test part 1', '0', 344.000000, 2147483647, 0, 1, 1);
-INSERT INTO `purchase_order_items` VALUES (2, '2025-05-29 20:05', 2, 0, '', NULL, '', NULL, 1, '65663345', 'test part 2', '19', 533.000000, 2147483647, 0, 2, 1);
-INSERT INTO `purchase_order_items` VALUES (3, '2025-05-29 20:05', 2, 0, '', NULL, '', NULL, 1, '00978', 'test23', '13', 44.000000, 2147483647, 0, 3, 1);
-INSERT INTO `purchase_order_items` VALUES (4, '2025-05-29 20:10', 2, 0, '', NULL, '', NULL, 2, '8789056435', 'sdfsdf gare', '54', 3454.000000, 2147483647, 0, 4, 2);
-INSERT INTO `purchase_order_items` VALUES (5, '2025-05-29 20:10', 2, 0, '', NULL, '', NULL, 2, '5675890006', 'tres ret 809', '14', 233.000000, 2147483647, 0, 5, 2);
-INSERT INTO `purchase_order_items` VALUES (6, '2025-05-29 20:10', 2, 0, '', NULL, '', NULL, 2, '7800787', 'test desc', '354', 343.000000, 2147483647, 0, 6, 2);
+INSERT INTO `purchase_order_items` VALUES (1, '2025-05-29 20:05', 2, 0, '', NULL, '', NULL, 1, '2345345', 'test part 1', '0', 344.000000, 2147483647, 0, 1, 1, NULL);
+INSERT INTO `purchase_order_items` VALUES (2, '2025-05-29 20:05', 2, 0, '', NULL, '', NULL, 1, '65663345', 'test part 2', '19', 533.000000, 2147483647, 0, 2, 1, NULL);
+INSERT INTO `purchase_order_items` VALUES (3, '2025-05-29 20:05', 2, 0, '', NULL, '', NULL, 1, '00978', 'test23', '13', 44.000000, 2147483647, 0, 3, 1, NULL);
+INSERT INTO `purchase_order_items` VALUES (4, '2025-05-29 20:10', 2, 0, '', NULL, '', NULL, 2, '8789056435', 'sdfsdf gare', '54', 3454.000000, 2147483647, 0, 4, 2, NULL);
+INSERT INTO `purchase_order_items` VALUES (5, '2025-05-29 20:10', 2, 0, '', NULL, '', NULL, 2, '5675890006', 'tres ret 809', '14', 233.000000, 2147483647, 0, 5, 2, NULL);
+INSERT INTO `purchase_order_items` VALUES (6, '2025-05-29 20:10', 2, 0, '', NULL, '', NULL, 2, '7800787', 'test desc', '354', 343.000000, 2147483647, 0, 6, 2, NULL);
+INSERT INTO `purchase_order_items` VALUES (7, '2025-06-03 22:44', 2, 0, '', NULL, '', NULL, 3, '2345345', 'test part 1', '13', 342.000000, 2147483647, NULL, 0, 1, NULL);
+INSERT INTO `purchase_order_items` VALUES (8, '2025-06-03 22:44', 2, 0, '', NULL, '', NULL, 3, '8789056435', 'sdfsdf gare', '14', 234.000000, 2147483647, NULL, 0, 1, NULL);
+INSERT INTO `purchase_order_items` VALUES (9, '2025-06-03 22:44', 2, 0, '', NULL, '', NULL, 3, 'PR345435', 'sdfsdfsdf', '13', 466.000000, 2147483647, NULL, 0, 1, NULL);
 
 -- ----------------------------
 -- Table structure for receiving

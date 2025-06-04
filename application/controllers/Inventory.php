@@ -61,16 +61,133 @@ class Inventory extends CI_Controller {
 
 		$module['module'] = "inventory/masterlist";
 		$module['map_link']   = "inventory->masterlist";  
-
-		$module['inventory'] = $this->core->load_core_data('inventory','','id,item_name,item_code,qty,unit_cost_price,manufacturer_price');
+ 
   
 		$this->load->view('admin/index',$module);
 
 	}
 
+	public function get_inventory_ajax() {
+	    $table = 'inventory i';
+
+	    // Columns to order by (index matches DataTable column)
+	    $column_order = ['i.picture_1', 'i.item_code', 'i.item_name', 'b.title', 'c.title', 't.title', 'i.qty', null, null, null];
+	    $column_search = ['i.item_code', 'i.item_name'];
+	    $order = ['i.item_name' => 'asc'];
+
+	    $this->db->select('i.*, 
+	        b.title as brand,
+	        c.title as category,
+	        t.title as type,
+	        CONCAT(manu.title, " ", m.title, " - ", m.model_year) as primary_model
+	    ');
+	    $this->db->from($table);
+	    $this->db->join('fm_item_brand b', 'b.id = i.item_brand_id', 'left');
+	    $this->db->join('fm_item_category c', 'c.id = i.item_category_id', 'left');
+	    $this->db->join('fm_item_type t', 't.id = i.item_type_id', 'left');
+	    $this->db->join('fm_models m', 'm.id = i.primary_vehicle_model_id', 'left');
+	    $this->db->join('fm_manufacturers manu', 'manu.id = m.manufacturer_id', 'left');
+
+	    // Search filter
+	    if (!empty($_POST['search']['value'])) {
+	        $this->db->group_start();
+	        foreach ($column_search as $i => $item) {
+	            $method = $i == 0 ? 'like' : 'or_like';
+	            $this->db->$method($item, $_POST['search']['value']);
+	        }
+	        $this->db->group_end();
+	    }
+
+	    // Ordering
+	    if (isset($_POST['order'])) {
+	        $col_index = $_POST['order']['0']['column'];
+	        $col_dir = $_POST['order']['0']['dir'];
+	        if (isset($column_order[$col_index])) {
+	            $this->db->order_by($column_order[$col_index], $col_dir);
+	        }
+	    } else {
+	        $this->db->order_by(key($order), $order[key($order)]);
+	    }
+
+	    // Paging
+	    if ($_POST['length'] != -1) {
+	        $this->db->limit($_POST['length'], $_POST['start']);
+	    }
+
+	    $query = $this->db->get();
+	    $data = [];
+	    foreach ($query->result() as $rs) {
+	        $item_image = $rs->picture_1 ? base_url('assets/uploads/inventory/' . $rs->picture_1) : base_url('assets/images/no-image.png');
+	        $bin_location = trim($rs->bin_1 . ($rs->bin_2 ? ' | ' . $rs->bin_2 : '') . ($rs->bin_3 ? ' | ' . $rs->bin_3 : ''));
+
+	        $data[] = [
+	            'picture' => '<a target="_blank" href="' . $item_image . '"><img src="' . $item_image . '" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" /></a>',
+	            'item_code' => $rs->item_code,
+	            'item_name' => $rs->item_name,
+	            'brand' => $rs->brand,
+	            'category' => $rs->category,
+	            'type' => $rs->type,
+	            'qty' => $rs->qty,
+	            'bin_location' => $bin_location,
+	            'primary_model' => $rs->primary_model,
+	            'options' => '
+	                <a href="' . base_url('inventory/view_inventory/' . $rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><i class="fa fa-eye"></i> view</a> |
+	                <a href="' . base_url('inventory/edit_inventory/' . $rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><i class="fa fa-edit"></i> edit</a> |
+	                <a href="Javascript:delete_bib(' . $rs->id . ')"><i class="fa fa-trash"></i> Delete</a> |
+	                <a href="' . base_url('inventory/inventory_movement/' . $rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><i class="fa fa-edit"></i> movement</a>'
+	        ];
+	    }
+
+	    // Count total
+	    $this->db->reset_query();
+	    $this->db->from($table);
+	    $total_records = $this->db->count_all_results();
+
+	    // Count filtered
+	    $this->db->select('i.id');
+	    $this->db->from($table);
+	    $this->db->join('fm_item_brand b', 'b.id = i.item_brand_id', 'left');
+	    $this->db->join('fm_item_category c', 'c.id = i.item_category_id', 'left');
+	    $this->db->join('fm_item_type t', 't.id = i.item_type_id', 'left');
+	    $this->db->join('fm_models m', 'm.id = i.primary_vehicle_model_id', 'left');
+	    $this->db->join('fm_manufacturers manu', 'manu.id = m.manufacturer_id', 'left');
+	    if (!empty($_POST['search']['value'])) {
+	        $this->db->group_start();
+	        foreach ($column_search as $i => $item) {
+	            $method = $i == 0 ? 'like' : 'or_like';
+	            $this->db->$method($item, $_POST['search']['value']);
+	        }
+	        $this->db->group_end();
+	    }
+	    $filtered_records = $this->db->count_all_results();
+
+	    echo json_encode([
+	        "draw" => intval($_POST['draw']),
+	        "recordsTotal" => $total_records,
+	        "recordsFiltered" => $filtered_records,
+	        "data" => $data
+	    ]);
+	}
+
+
 	public function add_inventory(){
+
+		$result = $this->admin_model->load_filemaintenance('fm_item_type');
+		$module['item_types'] = $result['maintenance_data'];
+
+		$result = $this->admin_model->load_filemaintenance('fm_item_category');
+		$module['item_category'] = $result['maintenance_data'];
+
+		$result = $this->admin_model->load_filemaintenance('fm_item_brand');
+		$module['item_brand'] = $result['maintenance_data'];
+
+		$result = $this->admin_model->load_filemaintenance('fm_models');
+		$module['models'] = $result['maintenance_data'];
+		
+		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+		$module['manufacturers'] = $result['maintenance_data'];
   
-		$this->load->view('admin/inventory/add_item');
+		$this->load->view('admin/inventory/add_item',$module);
 
 	}
 
@@ -79,6 +196,56 @@ class Inventory extends CI_Controller {
 		$model = $this->core->global_query(1,'inventory'); 
 
 		if($model['result']){ 
+
+			$inv_id = $model['query_id'];
+
+			$targetDir = "./assets/uploads/inventory/";
+			if (!file_exists($targetDir)) {
+			    mkdir($targetDir, 0755, true);
+			} 
+
+			$this->load->library('image_lib');
+			$this->load->helper('string');
+
+			for ($pic_count = 1; $pic_count <= 3; $pic_count++) {
+			    $field_name = 'picture_' . $pic_count;
+
+			    // Check if file exists and no upload error
+			    if (isset($_FILES[$field_name]) && $_FILES[$field_name]['error'] === UPLOAD_ERR_OK) {
+			        $fileTmp = $_FILES[$field_name]['tmp_name'];
+			        $fileExt = pathinfo($_FILES[$field_name]['name'], PATHINFO_EXTENSION);
+			        $random = random_string('alnum', 20) . '.' . strtolower($fileExt);
+			        $fullPath = $targetDir . $random;
+
+			        if (move_uploaded_file($fileTmp, $fullPath)) {
+			            log_message('debug', 'File uploaded to: ' . $fullPath);
+
+			            // Resize
+			            $config['image_library']  = 'gd2';
+			            $config['source_image']   = $fullPath;
+			            $config['maintain_ratio'] = TRUE;
+			            $config['width']          = 800;
+			            $config['height']         = 600;
+			            $config['new_image']      = $fullPath;
+
+			            $this->image_lib->initialize($config);
+			            if (!$this->image_lib->resize()) {
+			                log_message('error', 'Image resize failed: ' . $this->image_lib->display_errors());
+			            }
+			            $this->image_lib->clear();
+
+			            // Save random filename to DB
+			            $this->db->where('id', $inv_id)->update('inventory', [
+			                $field_name => $random
+			            ]);
+
+			            $this->session->set_flashdata("error", "Saved to DB field `$field_name` with value `$random`");
+			        } else {
+			            log_message('error', "Failed to move uploaded file: $field_name");
+			        }
+			    }
+			}
+
 
 			$this->db->insert('inventory_movement',[
 				'inventory_id'=>$model['query_id'],
@@ -105,7 +272,20 @@ class Inventory extends CI_Controller {
 
 	public function edit_inventory(int $id){
 
-		$module['i'] = $this->core->load_core_data('inventory',$id);
+		$module['item'] = $this->db->get_where('inventory', ['id' => $id])->row();
+	     
+	    if (!$module['item']) {
+	        show_404();
+	        return;
+	    }
+ 
+	    // Load supporting dropdown data
+	    $module['item_category'] = $this->db->get('fm_item_category')->result();
+	    $module['item_types'] = $this->db->get('fm_item_type')->result();
+	    $module['item_brand'] = $this->db->get('fm_item_brand')->result();
+
+	    $module['manufacturers'] = $this->db->get('fm_manufacturers')->result();
+	    $module['models'] = $this->db->get('fm_models')->result();
   
 		$this->load->view('admin/inventory/edit_item',$module);
 
@@ -116,8 +296,58 @@ class Inventory extends CI_Controller {
 		$model = $this->core->global_query(2,'inventory',$id); 
 
 		if($model['result']){ 
- 
-			$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
+
+			$inv_id = $id;
+
+			$targetDir = "./assets/uploads/inventory/";
+			if (!file_exists($targetDir)) {
+			    mkdir($targetDir, 0755, true);
+			} 
+
+			$this->load->library('image_lib');
+			$this->load->helper('string');
+
+			for ($pic_count = 1; $pic_count <= 3; $pic_count++) {
+			    $field_name = 'picture_' . $pic_count;
+
+			    // Check if file exists and no upload error
+			    if (isset($_FILES[$field_name]) && $_FILES[$field_name]['error'] === UPLOAD_ERR_OK) {
+			        $fileTmp = $_FILES[$field_name]['tmp_name'];
+			        $fileExt = pathinfo($_FILES[$field_name]['name'], PATHINFO_EXTENSION);
+			        $random = random_string('alnum', 20) . '.' . strtolower($fileExt);
+			        $fullPath = $targetDir . $random;
+
+			        if (move_uploaded_file($fileTmp, $fullPath)) {
+			            log_message('debug', 'File uploaded to: ' . $fullPath);
+
+			            // Resize
+			            $config['image_library']  = 'gd2';
+			            $config['source_image']   = $fullPath;
+			            $config['maintain_ratio'] = TRUE;
+			            $config['width']          = 800;
+			            $config['height']         = 600;
+			            $config['new_image']      = $fullPath;
+
+			            $this->image_lib->initialize($config);
+			            if (!$this->image_lib->resize()) {
+			                log_message('error', 'Image resize failed: ' . $this->image_lib->display_errors());
+			            }
+			            $this->image_lib->clear();
+
+			            // Save random filename to DB
+			            $this->db->where('id', $inv_id)->update('inventory', [
+			                $field_name => $random
+			            ]);
+
+			            $this->session->set_flashdata("error", "Saved to DB field `$field_name` with value `$random`");
+			        } else {
+			            log_message('error', "Failed to move uploaded file: $field_name");
+			        }
+			    }
+			}
+
+			$this->session->set_flashdata("success", $this->system_menu['clang'][$l = "successfuly saved."] ?? $l);
+
 			  
 		}else{
 
@@ -126,6 +356,27 @@ class Inventory extends CI_Controller {
 		}
 
 		redirect("inventory/masterlist","refresh");
+
+	}
+
+	public function view_inventory(int $id){
+
+		$module['item'] = $this->db->get_where('inventory', ['id' => $id])->row();
+	     
+	    if (!$module['item']) {
+	        show_404();
+	        return;
+	    }
+	
+	    // Load supporting dropdown data
+	    $module['item_category'] = $this->db->get('fm_item_category')->result();
+	    $module['item_types'] = $this->db->get('fm_item_type')->result();
+	    $module['item_brand'] = $this->db->get('fm_item_brand')->result();
+
+	    $module['manufacturers'] = $this->db->get('fm_manufacturers')->result();
+	    $module['models'] = $this->db->get('fm_models')->result();
+	 
+		$this->load->view('admin/inventory/view_item',$module);
 
 	}
 
@@ -169,7 +420,7 @@ class Inventory extends CI_Controller {
 
 		$module['users'] = $this->core->load_core_data('account','','id,name');
 
-		$module['projects'] = $this->core->load_core_data('projects');
+		$module['vehicles'] = $this->core->load_core_data('vehicles');
 
 		$module['inv'] = $this->core->load_core_data('inventory',$id);
 		

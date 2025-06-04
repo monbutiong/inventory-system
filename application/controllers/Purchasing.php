@@ -245,66 +245,86 @@ class Purchasing extends CI_Controller {
 
 	}
 
-	public function check_item_if_in_inv(){
+	public function check_item_if_in_inv($simple = '') {
+	    $json = [];
 
-		$excluded_id = '';
+	    // Check if specific IDs are passed (single or multiple)
+	    $ids = $this->input->post('id', TRUE);  // can be a single id or array or CSV string
 
-		if(@$this->input->post('excluded_ids',TRUE)){
-			foreach(explode('-',$this->input->post('excluded_ids',TRUE)) as $id){
-				if($id){
-					$excluded_id.=' AND id!='.$id;
-				}
-			}
-		}
+	    if ($ids) {
+	        // Normalize $ids to an array
+	        if (!is_array($ids)) {
+	            // If comma-separated string, convert to array
+	            if (strpos($ids, ',') !== false) {
+	                $ids = explode(',', $ids);
+	            } else {
+	                $ids = [$ids];
+	            }
+	        }
 
-		if($excluded_id){
-			$excluded_id = '('.$excluded_id.')';
-			$excluded_id = str_replace('( AND','(',$excluded_id);
-		}
+	        // Query by these IDs only
+	        $this->db->where_in('id', $ids);
+	        $items = $this->db->select('id, item_code, item_name, manufacturer_price, qty, picture_1')
+	                          ->get('inventory')
+	                          ->result();
 
-		$search = @$this->input->post('searchTerm');
-		
-		if($excluded_id){
-			$this->db->where($excluded_id);
-		}
-		
-		$this->db->group_start();
-		$this->db->like('item_code', $search); 
-		$this->db->or_like('item_name', $search);
-		$this->db->group_end();
-		$this->db->limit(7,0);
-		$i = $this->db->select('id, item_code, item_name, manufacturer_price, qty')->get('inventory')->result();
+	        foreach ($items as $r) {
+	            $json[] = [
+	                'id' => $r->id,
+	                'text' => $r->item_code . ' | ' . $r->item_name,
+	                'item_code' => $r->item_code,
+	                'item_name' => $r->item_name,
+	                'manufacturer_price' => $r->manufacturer_price,
+	                'image_url' => $r->picture_1, 
+	                'qty' => $r->qty
+	            ];
+	        }
 
-		$json[] = [
-			'id'=>0, 
-			'text'=>'Add New Item (not listed in the inventory masterlist)', 
-			'find'=>$search,  
-			'item_code'=>'',
-			'item_name'=>'',
-			'manufacturer_price'=>0,
-			'image_url'=>'',
-			'qty'=>0
-		];
+	        print_r(json_encode($json));
+	        return;  // Stop execution here because we already returned the results
+	    }
 
-		if(@$i){
-			foreach ($i as $r) {
-				$json[] = [
-					 'id'=>$r->id, 
-					 'text'=>''.$r->item_code.' | '.$r->item_name,
-					 'find'=>$search, 
-					 'item_code'=>$r->item_code,  
-					 'item_name'=>$r->item_name,
-					 'manufacturer_price'=>$r->manufacturer_price,
-					 'image_url'=>'',
-					 'qty'=>$r->qty 
-				];
-			}
-		} 
+	    // Continue with original logic if no ids requested
 
+	    $excluded_id = '';
 
-		 	 
-		print_r(json_encode($json));
+	    if ($this->input->post('excluded_ids', TRUE)) {
+	        foreach (explode('-', $this->input->post('excluded_ids', TRUE)) as $id) {
+	            if ($id) {
+	                $excluded_id .= ' AND id != ' . $id;
+	            }
+	        }
+	    }
 
+	    if ($excluded_id) {
+	        $excluded_id = '(' . $excluded_id . ')';
+	        $excluded_id = str_replace('( AND', '(', $excluded_id);
+	        $this->db->where($excluded_id);
+	    }
+
+	    $search = $this->input->post('searchTerm');
+
+	    $this->db->group_start();
+	    $this->db->like('item_code', $search);
+	    $this->db->or_like('item_name', $search);
+	    $this->db->group_end();
+	    $this->db->limit(7, 0);
+
+	    $items = $this->db->select('id, item_code, item_name, manufacturer_price, qty,picture_1')->get('inventory')->result();
+
+	    foreach ($items as $r) {
+	        $json[] = [
+	            'id' => $r->id,
+	            'text' => $r->item_code . ' | ' . $r->item_name,
+	            'item_code' => $r->item_code,
+	            'item_name' => $r->item_name,
+	            'manufacturer_price' => $r->manufacturer_price,
+	            'image_url' => $r->picture_1,
+	            'qty' => $r->qty
+	        ];
+	    }
+
+	    print_r(json_encode($json));
 	}
 
 	public function save_po(){

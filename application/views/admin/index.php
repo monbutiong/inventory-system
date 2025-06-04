@@ -249,16 +249,7 @@
         <!-- Right bar overlay-->
         <div class="rightbar-overlay"></div>
 
-        <!-- SYSTEM MODAL -->
-        <div class="modal fade" id="system_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content"> 
-                <i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i> 
-            </div>
-          </div>
-        </div>
-
-
+        <!-- SYSTEM MODAL --> 
         <div class="modal fade bs-example-modal-lg" id="global_modal" role="dialog" aria-labelledby="myLargeModalLabel">
           <div id="gmodal" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -327,6 +318,12 @@
 
          $("body").on("click", ".load_modal_details", function(event) {
              var href = $(this).attr('href');
+             var modalSize = $(this).data('modal-size') || 'lg'; //  
+             // Remove any existing size class
+             $('#gmodal').removeClass('modal-lg modal-xl');
+
+             // Add the correct size class
+             $('#gmodal').addClass('modal-' + modalSize);
              
              $("#load_modal_fields_large").html('<div class="p-3 text-center"><i class="fa fa-circle-o-notch fa-spin"></i> LOADING...</div>');
              
@@ -349,6 +346,28 @@
                          });
                      }
 
+                     if ($('.select2item').length && $(".select2-ajax").length==0) {
+                         $('.select2item').select2({
+                             width: '100%',
+                             dropdownParent: $('#global_modal'),
+                             templateSelection: function(item) {
+                                 if (!item.id) return item.text;
+
+                                 // Fallback for non-AJAX
+                                 if (!item.item_code || !item.item_name) {
+                                     return item.text;
+                                 }
+
+                                 return `
+                                     <span style="display:inline-flex; align-items:center; gap:5px;">
+                                         ${item.item_code} - ${item.item_name}
+                                     </span> 
+                                 `;
+                             },
+                             escapeMarkup: function(markup) { return markup; }
+                         });
+                     } 
+
                      if ($('#datatable_modal').length) {
                          $('#datatable_modal').DataTable();
                      }
@@ -356,6 +375,111 @@
                      if ($('.color_picker').length) {
                          $('.color_picker').colorpicker();
                      }
+
+
+                     if ($(".select2-ajax-modal").length) {
+
+                       var preselectedIds = [2, 5];
+                       var $select = $(".select2-ajax-modal");
+
+                       // Initialize Select2
+                       $select.select2({
+                         dropdownParent: $('#global_modal'),
+                         placeholder: "Select Item",
+                         ajax: {
+                           url: "<?=base_url('purchasing/check_item_if_in_inv/simple')?>",
+                           type: "post",
+                           dataType: 'json',
+                           delay: 250,
+                           dropdownAutoWidth: true,
+                           data: function(params) {
+                             return {
+                               searchTerm: params.term,
+                               excluded_ids: $('#selected_ids').val()
+                             };
+                           },
+                           processResults: function(data) {
+                             return {
+                               results: $.map(data, function(obj) {
+                                 return {
+                                   id: obj.id,
+                                   text: obj.text,
+                                   item_code: obj.item_code,
+                                   item_name: obj.item_name,
+                                   qty: obj.qty,
+                                   manufacturer_price: obj.manufacturer_price,
+                                   image_url: obj.image_url 
+                                       ? '<?=base_url("assets/uploads/inventory/")?>' + obj.image_url 
+                                       : '<?=base_url("assets/images/no-image.png")?>'
+                                 };
+                               })
+                             };
+                           },
+                           cache: true
+                         },
+                         templateResult: function(item) {
+                           if (!item.id) return item.text;
+                           var markup = 
+                             '<div style="display:flex; align-items:center;">' +
+                               '<div style="flex:0 0 40px; margin-right:8px;">' +
+                                 '<img src="' + item.image_url + '" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" />' +
+                               '</div>' +
+                               '<div style="flex:1;">' +
+                                 '<div><strong>Code:</strong> ' + item.item_code + '</div>' +
+                                 '<div><strong>Name:</strong> ' + item.item_name + '</div>' +
+                                 '<div><small>QOH: ' + item.qty + '</small></div>' +
+                               '</div>' +
+                             '</div>';
+                           return markup;
+                         },
+                         templateSelection: function(item) {
+                           if (!item.id) return item.text;
+
+                           // If item_code and item_name missing on item, try fallback from DOM data
+                           let code = item.item_code || $(item.element).data('item_code') || 'N/A';
+                           let name = item.item_name || $(item.element).data('item_name') || 'N/A';
+                           let qty = item.qty || $(item.element).data('qty') || 0;
+
+                           return `
+                             <span style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                               <span>${code} - ${name}</span>
+                               <small style="margin-left: 10px; color: #888;">QOH: ${qty}</small>
+                             </span>
+                           `;
+                         },
+                         escapeMarkup: function(markup) { return markup; }
+                       });
+
+                       // Load preselected items from backend in one call
+                       $.ajax({
+                         type: 'POST',
+                         url: "<?=base_url('purchasing/check_item_if_in_inv/simple')?>",
+                         data: { id: preselectedIds.join(',') }, // send all ids as CSV
+                         dataType: 'json'
+                       }).then(function(data) {
+                         data.forEach(function(item) {
+                           var option = new Option(item.text, item.id, true, true);
+                           
+                           // Attach extra data to option element
+                           option.dataset.item_code = item.item_code;
+                           option.dataset.item_name = item.item_name;
+                           option.dataset.qty = item.qty;
+
+                           // Also store the extra data on the option's jQuery data, so Select2 can access it in templateSelection
+                           $(option).data({
+                             item_code: item.item_code,
+                             item_name: item.item_name,
+                             qty: item.qty
+                           });
+
+                           $select.append(option);
+                         });
+                         $select.trigger('change'); // notify select2 about new options
+                       });
+
+                     }
+
+
                  });
              }, 300);
          });
@@ -447,7 +571,9 @@
                         item_name: obj.item_name,
                         qty: obj.qty,
                         manufacturer_price: obj.manufacturer_price,
-                        image_url: obj.image_url || '<?=base_url("assets/images/no-image.png")?>'
+                        image_url: obj.image_url 
+                            ? '<?=base_url("assets/uploads/inventory/")?>' + obj.image_url 
+                            : '<?=base_url("assets/images/no-image.png")?>'
                       };
                     })
                   };
@@ -469,7 +595,7 @@
                       '<div><strong>Name:</strong> ' + item.item_name + '</div>' +
                     '</div>' +
                     '<div style="flex:0 0 80px; text-align:right; font-weight:bold;">' +
-                      'Stock: ' + item.qty +
+                      'QOH: ' + item.qty +
                     '</div>' +
                   '</div>';
                 return markup;
@@ -517,7 +643,7 @@
 
                   var newRowHtml =
                     '<tr id="irow' + id + '" class="all_po_itm">' +
-                    '<td><input type="hidden" name="items[' + id + ']" value="' + id + '">' + part_no + '<input type="hidden" name="item_code' + id + '" value="' + part_no + '"><input type="hidden" name="lcr' + id + '" value="0"><input type="hidden" name="inv_id' + id + '" value="0"></td>' +
+                    '<td><input type="hidden" name="items[' + id + ']" value="' + id + '"><a href="<?=base_url('inventory/view_inventory')?>/' + e_obj.id + '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl">' + part_no + '</a><input type="hidden" name="item_code' + id + '" value="' + part_no + '"><input type="hidden" name="lcr' + id + '" value="0"><input type="hidden" name="inv_id' + id + '" value="0"></td>' +
                     '<td>' + desc + '<input type="hidden" name="item_name' + id + '" value="' + desc + '"><input type="hidden" name="quotation_id' + id + '" value="0"></td>' +
                     '<td><input type="number" id="i_qty' + id + '" name="i_qty' + id + '" onkeyup="comp(' + id + ')" value="' + qty + '" style="border: 0;"></td>' +
                     '<td align="right" nowrap><font class="rater">' + rate_text + '</font> <input type="number" name="i_unit_cost' + id + '" id="i_unit_cost' + id + '" onkeyup="comp(' + id + ')" value="' + unit_cost + '" style="border: 0; text-align: right;"></td>' +
@@ -538,6 +664,35 @@
             });
 
             $(".select2-ajax").val('').trigger('change');
+
+          }
+
+
+          if($('#datatable_inventory').length){
+
+
+              $(document).ready(function () {
+                $('#datatable_inventory').DataTable({
+                  processing: true,
+                  serverSide: true,
+                  ajax: {
+                    url: "<?= base_url('inventory/get_inventory_ajax') ?>",
+                    type: "POST"
+                  },
+                  columns: [
+                    { data: 'picture', orderable: false },
+                    { data: 'item_code' },
+                    { data: 'item_name' },
+                    { data: 'brand' },
+                    { data: 'category' },
+                    { data: 'type' },
+                    { data: 'qty' },
+                    { data: 'bin_location' },
+                    { data: 'primary_model' },
+                    { data: 'options', orderable: false }
+                  ]
+                });
+              });
 
           }
 

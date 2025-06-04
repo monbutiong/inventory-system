@@ -192,17 +192,7 @@ class Receiving extends CI_Controller {
 
 			$quo_ids_q = '';
 
-			if(@$module['po']){
-				foreach ($module['po'] as $rs) {
-					if(@$quo_ids_q){ 
-						$quo_ids_q.=' OR quotation_id='.$rs->quotation_id;
-					}else{ 
-						$quo_ids_q.='quotation_id='.$rs->quotation_id;
-					}
-				}
-			}
-			
-			$module['lcr'] = $this->core->load_core_data('quotations_landed_cost_rate','','',$quo_ids_q);
+			 
 
 			$this->load->view('admin/receiving/load_supplier_po_items',$module);
 

@@ -33,7 +33,7 @@ select, .text_input {
 <div class="row">
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
-      <form method="post" id="frm_validation" action="<?=base_url('inventory/update_item/'.$item->id)?>" data-bs-toggle="validator" class="form-horizontal form-label-left" enctype="multipart/form-data">
+      <form method="post" id="frm_inv_view" name="frm_inv_view" action="#" data-bs-toggle="validator" class="form-horizontal form-label-left" enctype="multipart/form-data">
       <div class="x_title">
 
         <div class="modal-header">
@@ -267,37 +267,14 @@ select, .text_input {
                 </div> 
 
                   
-                <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Picture (main)
-                  </label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="file" id="picture_1" name="picture_1" class="form-control col-md-7 col-xs-12">
-                  </div> 
-                </div> 
-
-                <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Picture
-                  </label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="file" id="picture_2" name="picture_2" class="form-control col-md-7 col-xs-12">
-                  </div> 
-                </div> 
-
-                <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Picture
-                  </label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="file" id="picture_3" name="picture_3" class="form-control col-md-7 col-xs-12">
-                  </div> 
-                </div> 
+                 
 
               </div>
             </div>
           </div>
           <br />
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
           </div>
 
         </div>
@@ -305,4 +282,24 @@ select, .text_input {
     </div>
   </div>
 </div>
- 
+
+<script type="text/javascript">
+  $(function() {
+    const $form = $('#frm_inv_view'); // Replace with your form ID or class
+
+    // Disable all input, textarea, select, button
+    $form.find('input, textarea, select').prop('disabled', true);
+
+    // Handle Select2 specifically
+    $form.find('select.select2').each(function() {
+      $(this).select2('destroy'); // Destroy Select2 to show native disabled look
+      $(this).prop('disabled', true);
+    });
+
+    // Add dashed border to all fields
+    $form.find('input, textarea, select').css({
+      'border': '1px dashed #999',
+      'background-color': '#f9f9f9' // optional for visual cue
+    });
+  });
+</script>

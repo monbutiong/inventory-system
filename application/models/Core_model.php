@@ -66,14 +66,26 @@ class Core_model extends CI_model
 			$arr_allow_field[$rs] = 1;
 		}
 
-		foreach($_POST as $key => $value){
-			if(@$arr_allow_field[$key] && $key != 'images' && $key != 'bsp_rates' && $key != 'attacments'){
-		    	$data[$key] = $this->input->post($key,TRUE);
-			}elseif($key == 'bsp_rates'){
-				$data['rate'] = json_encode($this->input->post($key,TRUE));
-			}elseif($key == 'qprojects'){
-				$data['projects'] = json_encode($this->input->post($key,TRUE));
-			}  
+		foreach($_POST as $key => $post_val){
+		    if (@$arr_allow_field[$key] && $key != 'images' && $key != 'bsp_rates' && $key != 'attacments') {
+		        $value = $this->input->post($key, TRUE);
+
+		        if (is_array($value)) {
+		            // If you want to store arrays as JSON strings (like in your examples)
+		            $data[$key] = json_encode($value);
+		        } elseif(isset($_FILES[$key]) && $_FILES[$key]['error'] !== UPLOAD_ERR_NO_FILE) {
+		            $data[$key] = $value;
+		        }
+
+		    } elseif ($key == 'bsp_rates') {
+		        $data['rate'] = json_encode($this->input->post($key, TRUE));
+		    } elseif ($key == 'qprojects') {
+		        $data['projects'] = json_encode($this->input->post($key, TRUE));
+		    } elseif ($key == 'applicable_vehicle_model_ids') {
+		        $data['applicable_vehicle_model_ids'] = json_encode($this->input->post($key, TRUE));
+		    } elseif ($key == 'cross_compatible_part_ids') {
+		        $data['cross_compatible_part_ids'] = json_encode($this->input->post($key, TRUE));
+		    }
 		}
 
 		if($additional_input){
@@ -118,6 +130,7 @@ class Core_model extends CI_model
 		    $data['modified_by'] = $user_id;
 
 		    $this->db->where('id',$id); 
+		     
 			$result = $this->db->update($table, $data); 
 			$result = ($this->db->affected_rows() != 1) ? false : true;
 

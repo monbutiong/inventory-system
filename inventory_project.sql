@@ -11,7 +11,7 @@
  Target Server Version : 100427
  File Encoding         : 65001
 
- Date: 03/06/2025 17:56:54
+ Date: 04/06/2025 17:48:50
 */
 
 SET NAMES utf8mb4;
@@ -46,7 +46,7 @@ CREATE TABLE `account`  (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 0, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, 'a8d2c52776b5bcc828ed8716b94d9d3a1f8f77a5aef8421b65bfe4a359524c50', '2025-06-02 09:50:14');
+INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 1, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, '6e6d4e1fde1844c586293e9e19b9639997ea4a82aa946aff889ae351737e5b99', '2025-06-04 14:26:03');
 INSERT INTO `account` VALUES (37, '', NULL, '2024-05-15', 'silambu', '$2a$08$j.FhunOL0ywwPrANlITow.mveuu/bCghDmEQGlCdBxKtElgkiprMC', 1, NULL, 'Accounts', NULL, 0, 'Silambu', 0, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
@@ -90,7 +90,7 @@ CREATE TABLE `audit_trail`  (
   `log` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 98 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of audit_trail
@@ -121,6 +121,77 @@ INSERT INTO `audit_trail` VALUES (23, 2, 'file maintenance > models > add new da
 INSERT INTO `audit_trail` VALUES (24, 2, 'file maintenance > models > add new data', 'add new data in models maintenance table, id : 6', '2025-06-01 15:26:01', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (25, 2, 'file maintenance > models > add new data', 'add new data in models maintenance table, id : 7', '2025-06-01 15:26:46', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (26, 2, 'login page', 'login to account.', '2025-06-02 09:50:14', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (27, 2, 'login page', 'login to account.', '2025-06-04 07:54:53', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (28, 2, 'home > system user > update user roles', 'update system user restriction, user id : 37', '2025-06-04 09:37:29', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (29, 2, 'home > system user > update user roles', 'update system user restriction, user id : 2', '2025-06-04 09:39:16', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (30, 2, 'file maintenance > item category > add new data', 'add new data in item category maintenance table, id : 1', '2025-06-04 09:39:46', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (31, 2, 'file maintenance > item category > add new data', 'add new data in item category maintenance table, id : 2', '2025-06-04 09:39:58', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (32, 2, 'file maintenance > item category > add new data', 'add new data in item category maintenance table, id : 3', '2025-06-04 09:40:26', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (33, 2, 'file maintenance > item category > add new data', 'add new data in item category maintenance table, id : 4', '2025-06-04 09:40:38', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (34, 2, 'file maintenance > item category > add new data', 'add new data in item category maintenance table, id : 5', '2025-06-04 09:40:54', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (35, 2, 'file maintenance > item category > add new data', 'add new data in item category maintenance table, id : 6', '2025-06-04 09:41:09', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (36, 2, 'file maintenance > item category > add new data', 'add new data in item category maintenance table, id : 7', '2025-06-04 09:41:23', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (37, 2, 'file maintenance > item category > add new data', 'add new data in item category maintenance table, id : 8', '2025-06-04 09:41:48', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (38, 2, 'file maintenance > item category > add new data', 'add new data in item category maintenance table, id : 9', '2025-06-04 09:42:01', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (39, 2, 'file maintenance > item category > add new data', 'add new data in item category maintenance table, id : 10', '2025-06-04 09:42:13', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (40, 2, 'file maintenance > item category > add new data', 'add new data in item category maintenance table, id : 11', '2025-06-04 09:42:26', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (41, 2, 'file maintenance > item category > add new data', 'add new data in item category maintenance table, id : 12', '2025-06-04 09:42:36', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (42, 2, 'file maintenance > item category > add new data', 'add new data in item category maintenance table, id : 13', '2025-06-04 09:42:46', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (43, 2, 'file maintenance > item category > add new data', 'add new data in item category maintenance table, id : 14', '2025-06-04 09:42:57', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (44, 2, 'file maintenance > item category > add new data', 'add new data in item category maintenance table, id : 15', '2025-06-04 09:43:10', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (45, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 1', '2025-06-04 09:43:30', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (46, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 2', '2025-06-04 09:43:41', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (47, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 3', '2025-06-04 09:43:51', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (48, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 4', '2025-06-04 09:44:03', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (49, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 5', '2025-06-04 09:44:15', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (50, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 6', '2025-06-04 09:44:27', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (51, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 7', '2025-06-04 09:44:40', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (52, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 8', '2025-06-04 09:44:49', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (53, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 9', '2025-06-04 09:44:58', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (54, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 10', '2025-06-04 09:45:09', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (55, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 11', '2025-06-04 09:45:19', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (56, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 12', '2025-06-04 09:45:29', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (57, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 13', '2025-06-04 09:45:39', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (58, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 14', '2025-06-04 09:45:49', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (59, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 15', '2025-06-04 09:46:02', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (60, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 16', '2025-06-04 09:46:13', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (61, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 17', '2025-06-04 09:46:24', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (62, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 18', '2025-06-04 09:46:57', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (63, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 19', '2025-06-04 09:47:06', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (64, 2, 'file maintenance > item type > add new data', 'add new data in item type maintenance table, id : 20', '2025-06-04 09:47:16', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (65, 2, 'home > system user > update user roles', 'update system user restriction, user id : 2', '2025-06-04 09:57:11', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (66, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 1', '2025-06-04 09:57:43', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (67, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 2', '2025-06-04 09:57:50', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (68, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 3', '2025-06-04 09:57:56', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (69, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 4', '2025-06-04 09:58:02', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (70, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 5', '2025-06-04 09:58:08', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (71, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 6', '2025-06-04 09:58:17', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (72, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 7', '2025-06-04 09:58:24', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (73, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 8', '2025-06-04 09:58:30', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (74, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 9', '2025-06-04 09:58:36', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (75, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 10', '2025-06-04 09:58:43', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (76, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 11', '2025-06-04 09:58:49', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (77, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 12', '2025-06-04 09:58:57', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (78, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 13', '2025-06-04 09:59:03', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (79, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 14', '2025-06-04 09:59:16', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (80, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 15', '2025-06-04 09:59:23', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (81, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 16', '2025-06-04 09:59:37', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (82, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 17', '2025-06-04 09:59:47', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (83, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 18', '2025-06-04 10:02:01', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (84, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 19', '2025-06-04 10:02:11', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (85, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 20', '2025-06-04 10:02:22', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (86, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 21', '2025-06-04 10:02:33', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (87, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 22', '2025-06-04 10:02:40', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (88, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 23', '2025-06-04 10:02:48', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (89, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 24', '2025-06-04 10:03:07', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (90, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 25', '2025-06-04 10:03:14', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (91, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 26', '2025-06-04 10:03:22', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (92, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 27', '2025-06-04 10:03:29', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (93, 2, 'file maintenance > item brand > add new data', 'add new data in item brand maintenance table, id : 28', '2025-06-04 10:03:42', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (94, 2, 'login page', 'login to account.', '2025-06-04 11:59:50', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (95, 2, 'login page', 'login to account.', '2025-06-04 12:06:46', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (96, 2, 'login page', 'login to account.', '2025-06-04 14:26:03', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (97, 2, 'account page', 'logout to account.', '2025-06-04 14:26:59', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for clients
@@ -1044,6 +1115,120 @@ INSERT INTO `fm_grv_transport` VALUES (1, 'DHL', 'DHL', '2024-05-15', 2);
 INSERT INTO `fm_grv_transport` VALUES (2, 'Talabat Express', 'Talabat Express', '2024-05-15', 2);
 
 -- ----------------------------
+-- Table structure for fm_item_brand
+-- ----------------------------
+DROP TABLE IF EXISTS `fm_item_brand`;
+CREATE TABLE `fm_item_brand`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(225) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `ds` varchar(225) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `dc` date NULL DEFAULT NULL,
+  `user_id` int NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of fm_item_brand
+-- ----------------------------
+INSERT INTO `fm_item_brand` VALUES (1, 'Denso', 'Denso', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (2, 'NGK', 'NGK', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (3, 'Bosch', 'Bosch', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (4, 'Mahle', 'Mahle', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (5, 'NPR', 'NPR', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (6, 'Federal-Mogul', 'Federal-Mogul', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (7, 'KYB', 'KYB', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (8, 'Monroe', 'Monroe', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (9, 'TRW', 'TRW', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (10, 'Lemförder', 'Lemförder', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (11, 'Moog', 'Moog', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (12, 'Brembo', 'Brembo', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (13, 'Akebono', 'Akebono', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (14, 'ATE', 'ATE', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (15, 'Nissin', 'Nissin', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (16, 'Sakura', 'Sakura', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (17, 'MANN', 'MANN', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (18, 'ACDelco', 'ACDelco', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (19, 'Nissens', 'Nissens', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (20, 'Valeo', 'Valeo', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (21, 'Behr', 'Behr', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (22, 'Delphi', 'Delphi', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (23, 'Walbro', 'Walbro', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (24, 'Toyota Genuine Parts', 'Toyota Genuine Parts', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (25, 'Honda Genuine Parts', 'Honda Genuine Parts', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (26, 'Mopar', 'Mopar', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (27, 'Motorcraft', 'Motorcraft', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (28, 'Hyundai Mobis', 'Hyundai Mobis', '2025-06-04', 2);
+
+-- ----------------------------
+-- Table structure for fm_item_category
+-- ----------------------------
+DROP TABLE IF EXISTS `fm_item_category`;
+CREATE TABLE `fm_item_category`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(225) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `ds` varchar(225) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `dc` date NULL DEFAULT NULL,
+  `user_id` int NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of fm_item_category
+-- ----------------------------
+INSERT INTO `fm_item_category` VALUES (1, 'Engine Components', 'Engine Components', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (2, 'Electrical', 'Electrical', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (3, 'Suspension & Steering', 'Suspension and steering components', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (4, 'Brake System', 'Brake-related components', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (5, 'Transmission', 'Gearbox, clutch, etc.', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (6, 'Exhaust System', 'Exhaust pipes, mufflers, etc.', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (7, 'Cooling System', 'Radiator, thermostat, etc.', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (8, 'Filters', 'Air, fuel, oil filters', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (9, 'Body & Trim', 'Doors, lights, bumpers', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (10, 'Tires & Wheels', 'Tires, rims, wheel accessories', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (11, 'Fuel System', 'Fuel pump, injectors, lines', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (12, 'Lubricants & Fluids', 'Oils, brake fluid, coolants', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (13, 'Accessories', 'Floor mats, covers, electronics', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (14, 'HVAC System', 'Air conditioning, blower motors', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (15, 'Tools & Equipment', 'Tools used in servicing vehicles', '2025-06-04', 2);
+
+-- ----------------------------
+-- Table structure for fm_item_type
+-- ----------------------------
+DROP TABLE IF EXISTS `fm_item_type`;
+CREATE TABLE `fm_item_type`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(225) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `ds` varchar(225) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `dc` date NULL DEFAULT NULL,
+  `user_id` int NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of fm_item_type
+-- ----------------------------
+INSERT INTO `fm_item_type` VALUES (1, 'Oil Filter', 'Removes contaminants from engine oil', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (2, 'Air Filter', 'Filters air going into engine', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (3, 'Brake Pad', 'Friction part for braking', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (4, 'Spark Plug', 'Ignites air-fuel mixture', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (5, 'Timing Belt', 'Synchronizes engine rotation', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (6, 'Radiator', 'Cools engine coolant', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (7, 'Headlight', 'Front lighting', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (8, 'Alternator', 'Generates electrical power', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (9, 'Battery', 'Stores electrical energy', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (10, 'Shock Absorber', 'Part of suspension', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (11, 'Clutch Disc', 'Connects engine to transmission', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (12, 'Muffler', 'Reduces engine noise', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (13, 'Windshield Wiper Blade', 'Clears windshield', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (14, 'Fuel Pump', 'Pumps fuel to engine', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (15, 'Engine Oil', 'Lubricates engine', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (16, 'Brake Fluid', 'Transmits braking force', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (17, 'AC Compressor', 'Compresses refrigerant', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (18, 'Wheel Bearing', 'Supports wheel rotation', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (19, 'Tie Rod End', 'Steering mechanism part', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (20, 'Fuse Box', 'Houses electrical fuses', '2025-06-04', 2);
+
+-- ----------------------------
 -- Table structure for fm_local_charges
 -- ----------------------------
 DROP TABLE IF EXISTS `fm_local_charges`;
@@ -1189,18 +1374,48 @@ CREATE TABLE `inventory`  (
   `receiving_history` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `issuance_history` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `manufacturer_price` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `applicable_vehicle_model_ids` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `cross_compatible_part_ids` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `item_type_id` int NULL DEFAULT NULL,
+  `item_category_id` int NULL DEFAULT NULL,
+  `item_brand_id` int NULL DEFAULT NULL,
+  `bin_1` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `bin_2` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `bin_3` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `min_qty` int NULL DEFAULT NULL,
+  `max_qty` int NULL DEFAULT NULL,
+  `picture_1` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `picture_2` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `picture_3` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `unit_price_b2b` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `unit_price_b2c` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `primary_vehicle_model_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC STATS_AUTO_RECALC = 1;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC STATS_AUTO_RECALC = 1;
 
 -- ----------------------------
 -- Records of inventory
 -- ----------------------------
-INSERT INTO `inventory` VALUES (1, '2025-05-29 20:05', 2, 0, '', NULL, '', NULL, '2345345', 'test part 1', 0, 'po', '0', '0', '0', 0, NULL, NULL, NULL);
-INSERT INTO `inventory` VALUES (2, '2025-05-29 20:05', 2, 0, '', NULL, '', NULL, '65663345', 'test part 2', 0, 'po', '0', '0', '0', 0, NULL, NULL, NULL);
-INSERT INTO `inventory` VALUES (3, '2025-05-29 20:05', 2, 0, '', NULL, '', NULL, '00978', 'test23', 0, 'po', '0', '0', '0', 0, NULL, NULL, NULL);
-INSERT INTO `inventory` VALUES (4, '2025-05-29 20:10', 2, 0, '', NULL, '', NULL, '8789056435', 'sdfsdf gare', 0, 'po', '0', '0', '0', 0, NULL, NULL, NULL);
-INSERT INTO `inventory` VALUES (5, '2025-05-29 20:10', 2, 0, '', NULL, '', NULL, '5675890006', 'tres ret 809', 0, 'po', '0', '0', '0', 0, NULL, NULL, NULL);
-INSERT INTO `inventory` VALUES (6, '2025-05-29 20:10', 2, 0, '', NULL, '', NULL, '7800787', 'test desc', 0, 'po', '0', '0', '0', 0, NULL, NULL, NULL);
+INSERT INTO `inventory` VALUES (1, '2025-06-04', 1, 0, '', NULL, '2025-06-04 21:02:19', 2, 'PART001', 'Oil Filter', 10, 'system', '5.00', '8.00', '4.50', 5, NULL, NULL, '675', '[\"4\",\"6\"]', '[\"2\",\"7\"]', 1, 1, 1, 'A1', 'B1', 'C1', 5, 50, '', '', '', '74.50', '8.50', 3);
+INSERT INTO `inventory` VALUES (2, '2025-06-04', 2, 0, '', NULL, '2025-06-04 22:18:55', 2, 'PART002', 'Brake Pad Set', 15, 'system', '12.00', '18.00', '10.00', 10, NULL, NULL, '66', '[\"3\",\"6\"]', '[\"2\",\"5\"]', 2, 2, 1, 'A2', 'B2', 'C2', 5, 100, 'G5gVMtpquRQwHy3WExSB.jpg', '', '', '417.00', '19.00', 1);
+INSERT INTO `inventory` VALUES (3, '2025-06-04', 1, 0, '', NULL, '2025-06-04 22:00:35', 2, 'PART003', 'Air Filter', 20, 'system', '3.00', '6.00', '2.50', 8, NULL, NULL, '75', '[\"4\",\"6\"]', '[\"2\",\"5\"]', 1, 3, 2, 'A3', 'B3', 'C3', 5, 80, '', '', '', '55.50', '6.50', 1);
+INSERT INTO `inventory` VALUES (4, '2025-06-04', 3, 0, '', NULL, '2025-06-04 22:21:19', 2, 'PART004', 'Fuel Pump', 5, 'system', '50.00', '75.00', '45.00', 3, NULL, NULL, '457', '[\"4\",\"6\"]', '[\"2\",\"5\"]', 2, 1, 3, 'A4', 'B4', 'C4', 2, 20, '8d1NI4JTMB6aLqzUHvVF.jpg', 'GHOckFyPv06ZL7ox1Tb2.jpg', NULL, '570.00', '78.00', 2);
+INSERT INTO `inventory` VALUES (5, '2025-06-04', 2, 0, '', NULL, '2025-06-04 21:38:12', 2, 'PART005', 'Headlight Assembly', 7, 'system', '30.00', '45.00', '28.00', 4, NULL, NULL, '775', '[\"1\",\"4\",\"6\",\"7\"]', '[\"2\",\"5\"]', 3, 2, 2, 'A5', 'B5', 'C5', 3, 30, '', '', '', '643.00', '47.00', 3);
+INSERT INTO `inventory` VALUES (6, '2025-06-04', 1, 0, '', NULL, '2025-06-04 22:36:01', 2, 'PART006', 'Alternator', 3, 'system', '75.00', '120.00', '70.00', 2, NULL, NULL, '500', '[\"1\",\"4\"]', '[\"2\",\"5\"]', 1, 2, 1, 'A6', 'B6', 'C6', 1, 10, NULL, NULL, NULL, '115.00', '125.00', 3);
+INSERT INTO `inventory` VALUES (7, '2025-06-04', 2, 0, '', NULL, '', NULL, 'PART007', 'Spark Plug', 50, 'system', '2.00', '4.00', '1.80', 30, NULL, NULL, '760', NULL, NULL, 2, 3, 2, 'A7', 'B7', 'C7', 20, 200, NULL, NULL, NULL, '356.50', '4.50', 4);
+INSERT INTO `inventory` VALUES (8, '2025-06-04', 3, 0, '', NULL, '2025-06-04 21:56:34', 2, 'PART008', 'Timing Belt', 8, 'system', '20.00', '35.00', '18.00', 5, NULL, NULL, '56', '[\"2\",\"3\"]', '[\"2\",\"5\"]', 3, 1, 3, 'A8', 'B8', 'C8', 3, 25, '', '', '', '33.00', '36.00', 5);
+INSERT INTO `inventory` VALUES (9, '2025-06-04', 1, 0, '', NULL, '', NULL, 'PART009', 'Battery 12V', 6, 'system', '40.00', '60.00', '38.00', 4, NULL, NULL, '54', NULL, NULL, 1, 1, 1, 'A9', 'B9', 'C9', 2, 15, NULL, NULL, NULL, '58.00', '62.00', 4);
+INSERT INTO `inventory` VALUES (10, '2025-06-04', 2, 0, '', NULL, '', NULL, 'PART010', 'Radiator Hose', 25, 'system', '6.00', '10.00', '5.50', 12, NULL, NULL, '67', NULL, NULL, 2, 2, 3, 'A10', 'B10', 'C10', 10, 60, NULL, NULL, NULL, '569.50', '10.50', 6);
+INSERT INTO `inventory` VALUES (11, '2025-06-04', 1, 0, '', NULL, '2025-06-04 22:00:00', 2, 'PART011', 'Wheel Bearing', 12, 'system', '15.00', '25.00', '13.00', 6, NULL, NULL, '65', '[\"4\",\"5\",\"6\"]', '[\"2\",\"5\"]', 1, 3, 2, 'A11', 'B11', 'C11', 4, 40, '', NULL, '', '24.00', '26.00', 4);
+INSERT INTO `inventory` VALUES (12, '2025-06-04', 2, 0, '', NULL, '', NULL, 'PART012', 'Muffler', 4, 'system', '55.00', '80.00', '50.00', 3, NULL, NULL, '76', NULL, NULL, 3, 1, 1, 'A12', 'B12', 'C12', 2, 12, NULL, NULL, NULL, '78.00', '82.00', 2);
+INSERT INTO `inventory` VALUES (13, '2025-06-04', 3, 0, '', NULL, '', NULL, 'PART013', 'Clutch Plate', 9, 'system', '22.00', '35.00', '20.00', 5, NULL, NULL, '45', NULL, NULL, 2, 2, 3, 'A13', 'B13', 'C13', 3, 30, NULL, NULL, NULL, '33.00', '36.00', 3);
+INSERT INTO `inventory` VALUES (14, '2025-06-04', 1, 0, '', NULL, '', NULL, 'PART014', 'Shock Absorber', 6, 'system', '60.00', '90.00', '55.00', 4, NULL, NULL, '56', NULL, NULL, 3, 3, 2, 'A14', 'B14', 'C14', 2, 18, NULL, NULL, NULL, '88.00', '92.00', 2);
+INSERT INTO `inventory` VALUES (15, '2025-06-04', 2, 0, '', NULL, '', NULL, 'PART015', 'CV Joint', 7, 'system', '35.00', '55.00', '33.00', 4, NULL, NULL, '777', NULL, NULL, 1, 1, 1, 'A15', 'B15', 'C15', 3, 22, NULL, NULL, NULL, '53.00', '57.00', 2);
+INSERT INTO `inventory` VALUES (16, '2025-06-04', 3, 0, '', NULL, '', NULL, 'PART016', 'Thermostat', 14, 'system', '4.00', '7.00', '3.50', 7, NULL, NULL, '675', NULL, NULL, 2, 2, 3, 'A16', 'B16', 'C16', 6, 50, NULL, NULL, NULL, '6.50', '7.50', 1);
+INSERT INTO `inventory` VALUES (17, '2025-06-04', 1, 0, '', NULL, '', NULL, 'PART017', 'Radiator', 5, 'system', '65.00', '100.00', '60.00', 3, NULL, NULL, '45', NULL, NULL, 3, 1, 2, 'A17', 'B17', 'C17', 2, 15, NULL, NULL, NULL, '95.00', '105.00', 2);
+INSERT INTO `inventory` VALUES (18, '2025-06-04', 2, 0, '', NULL, '', NULL, 'PART018', 'Oil Pan', 4, 'system', '25.00', '40.00', '23.00', 2, NULL, NULL, '34', NULL, NULL, 1, 3, 3, 'A18', 'B18', 'C18', 2, 10, NULL, NULL, NULL, '38.00', '42.00', 3);
+INSERT INTO `inventory` VALUES (19, '2025-06-04', 3, 0, '', NULL, '', NULL, 'PART019', 'Drive Shaft', 3, 'system', '70.00', '110.00', '65.00', 2, NULL, NULL, '450', NULL, NULL, 2, 2, 1, 'A19', 'B19', 'C19', 1, 12, NULL, NULL, NULL, '108.00', '112.00', 4);
+INSERT INTO `inventory` VALUES (20, '2025-06-04', 1, 0, '', NULL, '', NULL, 'PART020', 'Fan Belt', 20, 'system', '3.00', '6.00', '2.50', 10, NULL, NULL, '454', NULL, NULL, 3, 3, 2, 'A20', 'B20', 'C20', 10, 60, NULL, NULL, NULL, '5.80', '6.20', 5);
 
 -- ----------------------------
 -- Table structure for inventory_adjustments
@@ -1560,7 +1775,7 @@ CREATE TABLE `menu_sub`  (
   `border_top` int NULL DEFAULT 0,
   `group_title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 143 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 146 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of menu_sub
@@ -1622,6 +1837,9 @@ INSERT INTO `menu_sub` VALUES (137, 'Account Receivable G/L Number', NULL, 5, NU
 INSERT INTO `menu_sub` VALUES (138, 'Cash Control Account', NULL, 6, NULL, 'maintenance/table/cash_control_account', 0, 20, 0, NULL);
 INSERT INTO `menu_sub` VALUES (141, 'GRV Transport', NULL, 20, NULL, 'maintenance/table/grv_transport', 1, 16, 0, NULL);
 INSERT INTO `menu_sub` VALUES (142, 'Reports', NULL, 3, NULL, 'receipt/reports', 1, 20, 0, NULL);
+INSERT INTO `menu_sub` VALUES (143, 'Item Category', NULL, 9, NULL, 'maintenance/table/item_category', 1, 11, 0, NULL);
+INSERT INTO `menu_sub` VALUES (144, 'Item Type', NULL, 10, NULL, 'maintenance/table/item_type', 1, 11, 0, NULL);
+INSERT INTO `menu_sub` VALUES (145, 'Item Brand', NULL, 11, NULL, 'maintenance/table/item_brand', 1, 11, 0, NULL);
 
 -- ----------------------------
 -- Table structure for purchase_order
@@ -1978,7 +2196,7 @@ CREATE TABLE `user_roles`  (
   `sub_menu_id` int NOT NULL,
   `main_menu_id` int NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2281 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2366 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_roles
@@ -2420,57 +2638,55 @@ INSERT INTO `user_roles` VALUES (2226, 29, 136, 20);
 INSERT INTO `user_roles` VALUES (2227, 29, 139, 17);
 INSERT INTO `user_roles` VALUES (2228, 29, 140, 17);
 INSERT INTO `user_roles` VALUES (2229, 29, 142, 20);
-INSERT INTO `user_roles` VALUES (2230, 2, 8, 1);
-INSERT INTO `user_roles` VALUES (2231, 2, 45, 1);
-INSERT INTO `user_roles` VALUES (2232, 2, 50, 11);
-INSERT INTO `user_roles` VALUES (2233, 2, 54, 14);
-INSERT INTO `user_roles` VALUES (2234, 2, 83, 1);
-INSERT INTO `user_roles` VALUES (2235, 2, 89, 17);
-INSERT INTO `user_roles` VALUES (2236, 2, 90, 14);
-INSERT INTO `user_roles` VALUES (2237, 2, 101, 14);
-INSERT INTO `user_roles` VALUES (2238, 2, 102, 14);
-INSERT INTO `user_roles` VALUES (2239, 2, 103, 14);
-INSERT INTO `user_roles` VALUES (2240, 2, 104, 14);
-INSERT INTO `user_roles` VALUES (2241, 2, 105, 3);
-INSERT INTO `user_roles` VALUES (2242, 2, 106, 3);
-INSERT INTO `user_roles` VALUES (2243, 2, 107, 3);
-INSERT INTO `user_roles` VALUES (2244, 2, 108, 16);
-INSERT INTO `user_roles` VALUES (2245, 2, 109, 16);
-INSERT INTO `user_roles` VALUES (2246, 2, 110, 18);
-INSERT INTO `user_roles` VALUES (2247, 2, 111, 18);
-INSERT INTO `user_roles` VALUES (2248, 2, 114, 16);
-INSERT INTO `user_roles` VALUES (2249, 2, 115, 16);
-INSERT INTO `user_roles` VALUES (2250, 2, 116, 16);
-INSERT INTO `user_roles` VALUES (2251, 2, 117, 16);
-INSERT INTO `user_roles` VALUES (2252, 2, 118, 18);
-INSERT INTO `user_roles` VALUES (2253, 2, 119, 19);
-INSERT INTO `user_roles` VALUES (2254, 2, 120, 14);
-INSERT INTO `user_roles` VALUES (2255, 2, 121, 14);
-INSERT INTO `user_roles` VALUES (2256, 2, 122, 3);
-INSERT INTO `user_roles` VALUES (2257, 2, 123, 3);
-INSERT INTO `user_roles` VALUES (2258, 2, 124, 19);
-INSERT INTO `user_roles` VALUES (2259, 2, 125, 14);
-INSERT INTO `user_roles` VALUES (2260, 2, 126, 19);
-INSERT INTO `user_roles` VALUES (2261, 2, 127, 21);
-INSERT INTO `user_roles` VALUES (2262, 2, 128, 21);
-INSERT INTO `user_roles` VALUES (2263, 2, 129, 21);
-INSERT INTO `user_roles` VALUES (2264, 2, 130, 21);
-INSERT INTO `user_roles` VALUES (2265, 2, 131, 11);
-INSERT INTO `user_roles` VALUES (2266, 2, 132, 11);
-INSERT INTO `user_roles` VALUES (2267, 2, 133, 11);
-INSERT INTO `user_roles` VALUES (2268, 2, 134, 20);
-INSERT INTO `user_roles` VALUES (2269, 2, 135, 20);
-INSERT INTO `user_roles` VALUES (2270, 2, 136, 20);
-INSERT INTO `user_roles` VALUES (2271, 2, 139, 17);
-INSERT INTO `user_roles` VALUES (2272, 2, 140, 17);
-INSERT INTO `user_roles` VALUES (2273, 2, 141, 16);
-INSERT INTO `user_roles` VALUES (2274, 2, 142, 20);
-INSERT INTO `user_roles` VALUES (2275, 37, 89, 17);
-INSERT INTO `user_roles` VALUES (2276, 37, 119, 19);
-INSERT INTO `user_roles` VALUES (2277, 37, 134, 20);
-INSERT INTO `user_roles` VALUES (2278, 37, 135, 20);
-INSERT INTO `user_roles` VALUES (2279, 37, 136, 20);
-INSERT INTO `user_roles` VALUES (2280, 37, 142, 20);
+INSERT INTO `user_roles` VALUES (2281, 37, 50, 11);
+INSERT INTO `user_roles` VALUES (2282, 37, 89, 17);
+INSERT INTO `user_roles` VALUES (2283, 37, 119, 19);
+INSERT INTO `user_roles` VALUES (2284, 37, 131, 11);
+INSERT INTO `user_roles` VALUES (2285, 37, 132, 11);
+INSERT INTO `user_roles` VALUES (2286, 37, 133, 11);
+INSERT INTO `user_roles` VALUES (2287, 37, 134, 20);
+INSERT INTO `user_roles` VALUES (2288, 37, 135, 20);
+INSERT INTO `user_roles` VALUES (2289, 37, 136, 20);
+INSERT INTO `user_roles` VALUES (2290, 37, 142, 20);
+INSERT INTO `user_roles` VALUES (2291, 37, 143, 11);
+INSERT INTO `user_roles` VALUES (2292, 37, 144, 11);
+INSERT INTO `user_roles` VALUES (2329, 2, 8, 1);
+INSERT INTO `user_roles` VALUES (2330, 2, 45, 1);
+INSERT INTO `user_roles` VALUES (2331, 2, 50, 11);
+INSERT INTO `user_roles` VALUES (2332, 2, 83, 1);
+INSERT INTO `user_roles` VALUES (2333, 2, 89, 17);
+INSERT INTO `user_roles` VALUES (2334, 2, 105, 3);
+INSERT INTO `user_roles` VALUES (2335, 2, 106, 3);
+INSERT INTO `user_roles` VALUES (2336, 2, 107, 3);
+INSERT INTO `user_roles` VALUES (2337, 2, 108, 16);
+INSERT INTO `user_roles` VALUES (2338, 2, 109, 16);
+INSERT INTO `user_roles` VALUES (2339, 2, 110, 18);
+INSERT INTO `user_roles` VALUES (2340, 2, 111, 18);
+INSERT INTO `user_roles` VALUES (2341, 2, 114, 16);
+INSERT INTO `user_roles` VALUES (2342, 2, 115, 16);
+INSERT INTO `user_roles` VALUES (2343, 2, 116, 16);
+INSERT INTO `user_roles` VALUES (2344, 2, 117, 16);
+INSERT INTO `user_roles` VALUES (2345, 2, 118, 18);
+INSERT INTO `user_roles` VALUES (2346, 2, 119, 19);
+INSERT INTO `user_roles` VALUES (2347, 2, 122, 3);
+INSERT INTO `user_roles` VALUES (2348, 2, 123, 3);
+INSERT INTO `user_roles` VALUES (2349, 2, 124, 19);
+INSERT INTO `user_roles` VALUES (2350, 2, 126, 19);
+INSERT INTO `user_roles` VALUES (2351, 2, 127, 21);
+INSERT INTO `user_roles` VALUES (2352, 2, 128, 21);
+INSERT INTO `user_roles` VALUES (2353, 2, 129, 21);
+INSERT INTO `user_roles` VALUES (2354, 2, 130, 21);
+INSERT INTO `user_roles` VALUES (2355, 2, 131, 11);
+INSERT INTO `user_roles` VALUES (2356, 2, 132, 11);
+INSERT INTO `user_roles` VALUES (2357, 2, 133, 11);
+INSERT INTO `user_roles` VALUES (2358, 2, 134, 20);
+INSERT INTO `user_roles` VALUES (2359, 2, 135, 20);
+INSERT INTO `user_roles` VALUES (2360, 2, 136, 20);
+INSERT INTO `user_roles` VALUES (2361, 2, 141, 16);
+INSERT INTO `user_roles` VALUES (2362, 2, 142, 20);
+INSERT INTO `user_roles` VALUES (2363, 2, 143, 11);
+INSERT INTO `user_roles` VALUES (2364, 2, 144, 11);
+INSERT INTO `user_roles` VALUES (2365, 2, 145, 11);
 
 -- ----------------------------
 -- Table structure for vehicles

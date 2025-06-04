@@ -123,7 +123,7 @@ select, .text_input {
 
                 <small><?=(@$arr_cr[$rs->rate_id])?></small> <!-- <?=number_format($rs->price,2); ?> -->
                 
-                <input type="number" class="item_row<?=$rs->id?>" id="rec_price<?=$rs->id?>" name="rec_bad_qty<?=$rs->id?>" onkeyup="update_list(<?=$rs->id?>)"  value="<?=round($rs->price,2)?>" step="any" min="0" style="border: 0; text-align: right;   width: 100px;" disabled>
+                <input type="number" class="item_row<?=$rs->id?>" id="rec_price<?=$rs->id?>" name="rec_bad_qty<?=$rs->id?>" onkeyup="update_list(<?=$rs->id?>)"  value="<?=round($rs->price,2)?>" step="any" min="0" style="border: 0; text-align: right;   width: 60px;" disabled>
 
                   <input type="hidden" id="rec_price<?=$rs->id?>" value="<?=$rs->price?>"> 
 
@@ -137,13 +137,13 @@ select, .text_input {
                 <?php if(@$disabled){?>
                   <i><font color="green">Fully Received</font></i>
                 <?php }else{?>
-                  <input type="number" class="item_row<?=$rs->id?>" id="rec_qty<?=$rs->id?>" name="rec_qty<?=$rs->id?>" onkeyup="update_list(<?=$rs->id?>)"  value="<?=@$e_rr_received[$rs->id]->qty ? @$e_rr_received[$rs->id]->qty : ($rs->qty-$prev_rec)?>" style="border: 0; text-align: center;  width: 100px;" disabled> 
+                  <input type="number" class="item_row<?=$rs->id?>" id="rec_qty<?=$rs->id?>" name="rec_qty<?=$rs->id?>" onkeyup="update_list(<?=$rs->id?>)"  value="<?=@$e_rr_received[$rs->id]->qty ? @$e_rr_received[$rs->id]->qty : ($rs->qty-$prev_rec)?>" style="border: 0; text-align: center;  width: 60px;" disabled> 
                 <?php }?>
               </td>
               <td>
                 <?php if(@$disabled){?> 
                 <?php }else{?> 
-                  <input type="number" class="item_row<?=$rs->id?>" id="rec_bad_qty<?=$rs->id?>" name="rec_bad_qty<?=$rs->id?>" onkeyup="update_bad_qty(<?=$rs->id?>,this.value)"  value="<?=@$e_rr_received[$rs->id]->bad_qty ? @$e_rr_received[$rs->id]->bad_qty : 0?>" style="border: 0; text-align: center;   width: 100px;" disabled>
+                  <input type="number" class="item_row<?=$rs->id?>" id="rec_bad_qty<?=$rs->id?>" name="rec_bad_qty<?=$rs->id?>" onkeyup="update_bad_qty(<?=$rs->id?>,this.value)"  value="<?=@$e_rr_received[$rs->id]->bad_qty ? @$e_rr_received[$rs->id]->bad_qty : 0?>" style="border: 0; text-align: center;   width: 60px;" disabled>
                 <?php }?>
               </td>
               <td align="right" nowrap>

@@ -57,12 +57,12 @@
             
 
           <div class="row"> 
-            <div class="col-md-3 col-sm-12 ">
+            <div class="col-md-3 col-sm-12 mb-3">
               <label >P.O. Number</label>
               <input type="text" readonly name="po_number" id="po_number" value="PO<?=sprintf("%06d",($po->po_number+1))?>" class="form-control ridonly">
             </div>
 
-            <div class="col-md-3 col-sm-12 ">
+            <div class="col-md-3 col-sm-12 mb-3">
               <label >Vehicle / Customer <font color="red"></font></label>
               <select name="vehicle_id" id="vehicle_id" class="form-control select2_" >
                 <option value="0">N/A</option> 
@@ -85,7 +85,7 @@
               </select>
             </div>
              
-            <div class="col-md-3 col-sm-12 ">
+            <div class="col-md-3 col-sm-12 mb-3">
               <label >Supplier <font color="red">*</font> </label>
               <select name="supplier_id" id="supplier_id" class="form-control select2_"  >
                 <option value="0">select</option> 
@@ -98,7 +98,7 @@
               </select>
             </div>
 
-            <div id="select_currency" class="col-md-1 col-sm-12 ">
+            <div id="select_currency" class="col-md-1 col-sm-12 mb-3">
               <label >Currency <font color="red">*</font></label>
               <select id="curr_val" required class="form-control" onchange="update_curr(this)"> 
                 <option value="">Select</option>
@@ -111,35 +111,35 @@
               </select>
             </div>
 
-            <div id="fix_currency" class="col-md-1 col-sm-12 "  style="display: none;">
+            <div id="fix_currency" class="col-md-1 col-sm-12 mb-3"  style="display: none;">
               <label >Currency</label>
               <input type="text" readonly id="rate_type" class="form-control ridonly"> 
               <input type="hidden" name="rate_id" id="rate_id" > 
               </select>
             </div>
 
-            <div id="fix_currency" class="col-md-2 col-sm-12 "  >
+            <div id="fix_currency" class="col-md-2 col-sm-12 mb-3"  >
               <label >Exchange Rate</label>
               <input type="text" readonly id="exchange_rate" name="exchange_rate" class="form-control ridonly">  
               </select>
             </div>
 
-            <div class="col-md-3 col-sm-12 ">
+            <div class="col-md-3 col-sm-12 mb-3">
               <label >Reference Number </label>
-              <input type="text" name="ref_no" class="form-control">
+              <input type="text" name="reference_no" class="form-control">
             </div>
 
-            <div class="col-md-3 col-sm-12 ">
+            <div class="col-md-3 col-sm-12 mb-3">
               <label >Supplier Att. To  </label>
               <input type="email" name="att_to" id="att_to" class="form-control">
             </div>
 
-            <div class="col-md-3 col-sm-12 ">
+            <div class="col-md-3 col-sm-12 mb-3">
               <label >Supplier Email </label>
               <input type="email" name="supplier_email" id="supplier_email" class="form-control">
             </div>
  
-            <div class="col-md-3 col-sm-12 ">
+            <div class="col-md-3 col-sm-12 mb-3">
               <label >Description </label>
               <textarea name="description" class="form-control"></textarea>
             </div>
@@ -187,7 +187,7 @@
               </td>
               <td>
                 <input type="hidden" id="ttl_item_amt">
-                <input type="number" name="less_amount" id="less_amount" onkeyup="comp_ttl()" class="form-control" value="0" style="border: 0; text-align: right;"></td>
+                <input type="number" name="less_amount" id="less_amount" onkeyup="comp_ttl()" onclick="comp_ttl()" class="form-control" value="0" style="border: 0; text-align: right;"></td>
               <td><i>(Less)</i></td>
             </tr> 
             <tr  >
@@ -198,17 +198,7 @@
            </tbody>
 
         </table> 
-        <table class="table" id="add_item_section" style="display: none;">
-          <tr>
-            <td colspan="6" id="add_row">
- 
-              <a id="add_item_link" class="btn btn-info load_modal_details" href="<?php echo base_url('purchasing/add_items');?>" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-plus"></i> Add Item(s) From Quotation</a>
-
-              <a href="<?=base_url('purchasing/add_new_item')?>" class="load_modal_details" id="openNewItemModal" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"  style="display: none;" >new item</a>
-            
-            </td>
-          </tr>
-        </table>
+         
 
         <input type="hidden" name="row_counter" id="row_counter">
 
@@ -311,37 +301,36 @@ function update_link(sid){
    });
   
 }
-
-
+ 
 
 function comp(id){
-
-  var total = 0;
-
+ 
   var qty = $('#i_qty'+id).val();
   var unit_cost = $('#i_unit_cost'+id).val();
   var ttl = qty * unit_cost;
   $('#ttl'+id).html(ttl.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
   $('#i_ttl'+id).val(ttl);
- 
-    $(".all_ttl").each(function () {
-      // Parse the value of the element as a floating-point number
-      var value = parseFloat($(this).val());
-
-      // Check if the value is a valid number (not NaN)
-      if (!isNaN(value)) {
-        // Add the value to the total
-        total += value;
-      }
-    });
-
-    $('#ttl_item_amt').val(total);
-    $('#totals').html(total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
-
+  
     comp_ttl();
 }
 
 function comp_ttl(){  
+
+  var total = 0;
+
+  $(".all_ttl").each(function () {
+    // Parse the value of the element as a floating-point number
+    var value = parseFloat($(this).val());
+
+    // Check if the value is a valid number (not NaN)
+    if (!isNaN(value)) {
+      // Add the value to the total
+      total += value;
+    }
+  });
+
+  $('#ttl_item_amt').val(total);
+  $('#totals').html(total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
 
   console.log('compute all!');
   var ttl_item_amt = Number($('#ttl_item_amt').val());

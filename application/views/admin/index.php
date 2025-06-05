@@ -123,7 +123,7 @@
             <div class="topnav">
                 <div class="container-fluid">
                     <nav class="navbar navbar-light navbar-expand-lg topnav-menu">
-
+                         
                         <div class="collapse navbar-collapse" id="topnav-menu-content">
                             <ul class="navbar-nav">
 
@@ -251,7 +251,7 @@
         <div class="rightbar-overlay"></div>
 
         <!-- SYSTEM MODAL --> 
-        <div class="modal fade bs-example-modal-lg" id="global_modal" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal fade bs-example-modal-lg" id="global_modal" role="dialog" aria-labelledby="myLargeModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
           <div id="gmodal" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-body" id="load_modal_fields_large">
@@ -310,7 +310,7 @@
 
          
           // Apply to all input and textarea fields
-          $(document).on('input', 'input[type="text"], textarea', function() {
+          $(document).on('input', 'input[type="text"], input[type="email"], textarea', function() {
             this.value = this.value.toUpperCase();
           });
 
@@ -390,7 +390,7 @@
 
                      if ($(".select2-ajax-modal").length) {
 
-                       var preselectedIds = [2, 5];
+                       
                        var $select = $(".select2-ajax-modal");
 
                        // Initialize Select2
@@ -465,7 +465,7 @@
                        $.ajax({
                          type: 'POST',
                          url: "<?=base_url('purchasing/check_item_if_in_inv/simple')?>",
-                         data: { id: preselectedIds.join(',') }, // send all ids as CSV
+                         data: { id: preselectedIds.join(','), is_new: 1 }, // send all ids as CSV
                          dataType: 'json'
                        }).then(function(data) {
                          data.forEach(function(item) {
@@ -683,7 +683,7 @@
 
                   $('#selected_ids').val($('#selected_ids').val() + '(' + e_obj.id + ')-');
 
-                  var id = 88888888888 + e_obj.id;
+                  var id = e_obj.id;
                   var part_no = e_obj.item_code;
                   var desc = e_obj.item_name;
                   var qty = 1;
@@ -696,13 +696,15 @@
                     '<tr id="irow' + id + '" class="all_po_itm">' +
                     '<td><input type="hidden" name="items[' + id + ']" value="' + id + '"><a href="<?=base_url('inventory/view_inventory')?>/' + e_obj.id + '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl">' + part_no + '</a><input type="hidden" name="item_code' + id + '" value="' + part_no + '"><input type="hidden" name="lcr' + id + '" value="0"><input type="hidden" name="inv_id' + id + '" value="0"></td>' +
                     '<td>' + desc + '<input type="hidden" name="item_name' + id + '" value="' + desc + '"><input type="hidden" name="quotation_id' + id + '" value="0"></td>' +
-                    '<td><input type="number" id="i_qty' + id + '" name="i_qty' + id + '" onkeyup="comp(' + id + ')" value="' + qty + '" style="border: 0;"></td>' +
-                    '<td align="right" nowrap><font class="rater">' + rate_text + '</font> <input type="number" name="i_unit_cost' + id + '" id="i_unit_cost' + id + '" onkeyup="comp(' + id + ')" value="' + unit_cost + '" style="border: 0; text-align: right;"></td>' +
+                    '<td><input type="number" class="require_val" id="i_qty' + id + '" name="i_qty' + id + '" onkeyup="comp(' + id + ')" value="' + qty + '" style="border: 0; text-align: right;" onclick="comp(' + id + ')"></td>' +
+                    '<td align="right" nowrap><font class="rater">' + rate_text + '</font> <input class="require_val" type="number" name="i_unit_cost' + id + '" id="i_unit_cost' + id + '" onkeyup="comp(' + id + ')" onclick="comp(' + id + ')" value="' + unit_cost + '" style="border: 0; text-align: right;"></td>' +
                     '<td align="right"><input type="hidden" class="all_ttl" id="i_ttl' + id + '" value="' + ttl + '"><span id="ttl' + id + '">' + ttl_nf + '</span></td>' +
                     '<td><a href="javascript:idel(' + id + ')"><i class="fa fa-trash" style="color: red;"></i></a></td>' +
                     '</tr>';
 
                   $('#last_row').before(newRowHtml);
+
+                  comp_ttl();
 
                 }
               }

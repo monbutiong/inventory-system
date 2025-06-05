@@ -11,7 +11,7 @@
  Target Server Version : 100427
  File Encoding         : 65001
 
- Date: 05/06/2025 14:50:40
+ Date: 05/06/2025 23:48:06
 */
 
 SET NAMES utf8mb4;
@@ -46,7 +46,7 @@ CREATE TABLE `account`  (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 1, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, '16ba1cbe58a67d95be95d13895701769e340f3de4e6fb8ffc037f1cc70b19179', '2025-06-05 09:19:49');
+INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 1, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, '82e0b524c6644385e6854410faa23f9361cde80295e13c3b1082633528c6b6e6', '2025-06-05 15:50:58');
 INSERT INTO `account` VALUES (37, '', NULL, '2024-05-15', 'silambu', '$2a$08$j.FhunOL0ywwPrANlITow.mveuu/bCghDmEQGlCdBxKtElgkiprMC', 1, NULL, 'Accounts', NULL, 0, 'Silambu', 0, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
@@ -90,7 +90,7 @@ CREATE TABLE `audit_trail`  (
   `log` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 105 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of audit_trail
@@ -194,6 +194,11 @@ INSERT INTO `audit_trail` VALUES (96, 2, 'login page', 'login to account.', '202
 INSERT INTO `audit_trail` VALUES (97, 2, 'account page', 'logout to account.', '2025-06-04 14:26:59', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (98, 2, 'login page', 'login to account.', '2025-06-05 08:15:46', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (99, 2, 'login page', 'login to account.', '2025-06-05 09:19:49', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (100, 2, 'account page', 'logout to account.', '2025-06-05 14:59:46', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (101, 2, 'login page', 'login to account.', '2025-06-05 15:18:05', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (102, 2, 'account page', 'logout to account.', '2025-06-05 15:48:11', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (103, 2, 'login page', 'login to account.', '2025-06-05 15:50:57', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (104, 2, 'account page', 'logout to account.', '2025-06-05 15:51:19', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for clients
@@ -232,26 +237,26 @@ CREATE TABLE `clients`  (
 -- ----------------------------
 -- Records of clients
 -- ----------------------------
-INSERT INTO `clients` VALUES (1, '', NULL, 1, '2025-06-01 18:08:42', 2, '', NULL, 'Mohammed Al-Farsi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CN100001', NULL, '000328429', 0, NULL);
-INSERT INTO `clients` VALUES (2, '', NULL, 0, '', NULL, '2025-06-05 16:23:01', 2, 'Ahmed Auto Shop', 'REGGIE MILLER', 'EMMA STONE', '05415105', '44565265', 'DOHA QATAR STREET 23', NULL, NULL, NULL, 'suppert@autosho.com.qa', NULL, '834 0345', '5419631', 'CN100002', '', '', 1, '734004584');
-INSERT INTO `clients` VALUES (3, '', NULL, 0, '', NULL, '', NULL, 'Omar Al-Hamadi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00001', NULL, '40542944', 0, NULL);
-INSERT INTO `clients` VALUES (4, '', NULL, 0, '', NULL, '2025-06-05 15:38:59', 2, 'Ali Car Specialist AXC', 'LENA FRENN', 'JONNY PANE', '394 2342', '342 3444', 'DOHA QATAR, INDUSTRIAL AREA', NULL, NULL, NULL, 'marketing@autogalla.com', NULL, '344-0034', '847 3242', 'CNO00002', 'WWW.MACHANIC1A.COM', '', 1, '34577570003');
-INSERT INTO `clients` VALUES (5, '', NULL, 0, '', NULL, '', NULL, 'Yousef Al-Najjar', NULL, NULL, '', '33454535', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00003', NULL, '54353334', 0, NULL);
-INSERT INTO `clients` VALUES (6, '', NULL, 0, '', NULL, '', NULL, 'Hassan Al-Rashid', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00004', NULL, '345345345', 0, NULL);
-INSERT INTO `clients` VALUES (7, '', NULL, 0, '', NULL, '', NULL, 'Khalid Al-Jabari', NULL, NULL, '', ' ', '4928 AL KHALEEJ STREET, MUSHAIREB ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00005', NULL, '34234234', 0, NULL);
-INSERT INTO `clients` VALUES (8, '', NULL, 0, '', NULL, '', NULL, 'Faisal Al-Ahmad', NULL, NULL, '45534555', ' ', '  QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00006', NULL, '23423423', 0, NULL);
-INSERT INTO `clients` VALUES (9, '', NULL, 0, '', NULL, '', NULL, 'Saeed Al-Karim', NULL, NULL, '', ' ', '  DOHA QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00007', NULL, '364622325', 0, NULL);
-INSERT INTO `clients` VALUES (10, '', NULL, 0, '', NULL, '', NULL, 'Ibrahim Al-Fahad', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00008', NULL, '2342342', 0, NULL);
-INSERT INTO `clients` VALUES (11, '', NULL, 0, '', NULL, '', NULL, 'Tariq Al-Harbi', NULL, NULL, '', ' 4534534535', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00009', NULL, '2342342', 0, NULL);
-INSERT INTO `clients` VALUES (12, '', NULL, 0, '', NULL, '', NULL, 'Salim Al-Dhaheri', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00010', NULL, '263463346', 0, NULL);
-INSERT INTO `clients` VALUES (13, '', NULL, 0, '', NULL, '', NULL, 'Majid Al-Mutairi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00011', NULL, '433453453', 0, NULL);
-INSERT INTO `clients` VALUES (14, '', NULL, 0, '', NULL, '', NULL, 'Hamad Al-Shamrani', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00012', NULL, '345345345', 0, NULL);
-INSERT INTO `clients` VALUES (15, '', NULL, 0, '', NULL, '', NULL, 'Abdullah Al-Sabah', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00013', NULL, '234234', 0, NULL);
-INSERT INTO `clients` VALUES (16, '', NULL, 0, '', NULL, '', NULL, 'Waleed Al-Hashimi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00014', NULL, '34234234', 0, NULL);
-INSERT INTO `clients` VALUES (17, '', NULL, 0, '', NULL, '', NULL, 'Nasser Al-Tamimi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00015', NULL, '34234234', 0, NULL);
-INSERT INTO `clients` VALUES (18, '', NULL, 0, '', NULL, '2025-06-05 15:39:17', 2, 'Zayed Machanic Auto Shop', '', '', '', '', '', NULL, NULL, NULL, '', NULL, '', '', 'CNO00016', '', '', 1, '800000756');
-INSERT INTO `clients` VALUES (19, '', NULL, 0, '', NULL, '2025-06-05 15:40:46', 2, 'Rashid Hop W.L.L.', 'MAGIC JOANSON', 'DANN WHITE', '734 3294', '342 3242', 'DOHA QATAR', NULL, NULL, NULL, 'test@sdgmail.com', NULL, '', '734 3243', 'CNO00017', '', '', 1, '78970000-6700');
-INSERT INTO `clients` VALUES (20, '', NULL, 0, '', NULL, '', NULL, 'Adel Auto Sports', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00018', NULL, NULL, 1, '9677900007');
+INSERT INTO `clients` VALUES (1, '', NULL, 1, '2025-06-01 18:08:42', 2, '', NULL, 'MOHAMMED AL-FARSI', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CN100001', NULL, '000328429', 0, NULL);
+INSERT INTO `clients` VALUES (2, '', NULL, 0, '', NULL, '2025-06-05 16:23:01', 2, 'AHMED AUTO SHOP', 'REGGIE MILLER', 'EMMA STONE', '05415105', '44565265', 'DOHA QATAR STREET 23', NULL, NULL, NULL, 'suppert@autosho.com.qa', NULL, '834 0345', '5419631', 'CN100002', '', '', 1, '734004584');
+INSERT INTO `clients` VALUES (3, '', NULL, 0, '', NULL, '', NULL, 'OMAR AL-HAMADI', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00001', NULL, '40542944', 0, NULL);
+INSERT INTO `clients` VALUES (4, '', NULL, 0, '', NULL, '2025-06-05 15:38:59', 2, 'ALI CAR SPECIALIST AXC', 'LENA FRENN', 'JONNY PANE', '394 2342', '342 3444', 'DOHA QATAR, INDUSTRIAL AREA', NULL, NULL, NULL, 'marketing@autogalla.com', NULL, '344-0034', '847 3242', 'CNO00002', 'WWW.MACHANIC1A.COM', '', 1, '34577570003');
+INSERT INTO `clients` VALUES (5, '', NULL, 0, '', NULL, '', NULL, 'YOUSEF AL-NAJJAR', NULL, NULL, '', '33454535', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00003', NULL, '54353334', 0, NULL);
+INSERT INTO `clients` VALUES (6, '', NULL, 0, '', NULL, '', NULL, 'HASSAN AL-RASHID', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00004', NULL, '345345345', 0, NULL);
+INSERT INTO `clients` VALUES (7, '', NULL, 0, '', NULL, '', NULL, 'KHALID AL-JABARI', NULL, NULL, '', ' ', '4928 AL KHALEEJ STREET, MUSHAIREB ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00005', NULL, '34234234', 0, NULL);
+INSERT INTO `clients` VALUES (8, '', NULL, 0, '', NULL, '', NULL, 'FAISAL AL-AHMAD', NULL, NULL, '45534555', ' ', '  QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00006', NULL, '23423423', 0, NULL);
+INSERT INTO `clients` VALUES (9, '', NULL, 0, '', NULL, '', NULL, 'SAEED AL-KARIM', NULL, NULL, '', ' ', '  DOHA QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00007', NULL, '364622325', 0, NULL);
+INSERT INTO `clients` VALUES (10, '', NULL, 0, '', NULL, '', NULL, 'IBRAHIM AL-FAHAD', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00008', NULL, '2342342', 0, NULL);
+INSERT INTO `clients` VALUES (11, '', NULL, 0, '', NULL, '', NULL, 'TARIQ AL-HARBI', NULL, NULL, '', ' 4534534535', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00009', NULL, '2342342', 0, NULL);
+INSERT INTO `clients` VALUES (12, '', NULL, 0, '', NULL, '', NULL, 'SALIM AL-DHAHERI', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00010', NULL, '263463346', 0, NULL);
+INSERT INTO `clients` VALUES (13, '', NULL, 0, '', NULL, '', NULL, 'MAJID AL-MUTAIRI', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00011', NULL, '433453453', 0, NULL);
+INSERT INTO `clients` VALUES (14, '', NULL, 0, '', NULL, '', NULL, 'HAMAD AL-SHAMRANI', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00012', NULL, '345345345', 0, NULL);
+INSERT INTO `clients` VALUES (15, '', NULL, 0, '', NULL, '', NULL, 'ABDULLAH AL-SABAH', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00013', NULL, '234234', 0, NULL);
+INSERT INTO `clients` VALUES (16, '', NULL, 0, '', NULL, '', NULL, 'WALEED AL-HASHIMI', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00014', NULL, '34234234', 0, NULL);
+INSERT INTO `clients` VALUES (17, '', NULL, 0, '', NULL, '', NULL, 'NASSER AL-TAMIMI', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00015', NULL, '34234234', 0, NULL);
+INSERT INTO `clients` VALUES (18, '', NULL, 0, '', NULL, '2025-06-05 15:39:17', 2, 'ZAYED MACHANIC AUTO SHOP', '', '', '', '', '', NULL, NULL, NULL, '', NULL, '', '', 'CNO00016', '', '', 1, '800000756');
+INSERT INTO `clients` VALUES (19, '', NULL, 0, '', NULL, '2025-06-05 15:40:46', 2, 'RASHID HOP W.L.L.', 'MAGIC JOANSON', 'DANN WHITE', '734 3294', '342 3242', 'DOHA QATAR', NULL, NULL, NULL, 'test@sdgmail.com', NULL, '', '734 3243', 'CNO00017', '', '', 1, '78970000-6700');
+INSERT INTO `clients` VALUES (20, '', NULL, 0, '', NULL, '', NULL, 'ADEL AUTO SPORTS', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00018', NULL, NULL, 1, '9677900007');
 INSERT INTO `clients` VALUES (88, '2025-06-05 15:14:19', 2, 1, '2025-06-05 15:40:59', 2, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '23423424', 0, NULL);
 INSERT INTO `clients` VALUES (89, '2025-06-05 15:41:49', 2, 1, '2025-06-05 15:42:49', 2, '', NULL, '', '', '', '', '', '', NULL, NULL, NULL, '', NULL, '', '', 'CNO00019', '', '28262021452', 0, '');
 
@@ -1335,14 +1340,14 @@ CREATE TABLE `inventory`  (
 -- ----------------------------
 -- Records of inventory
 -- ----------------------------
-INSERT INTO `inventory` VALUES (1, '2025-06-04', 1, 0, '', NULL, '2025-06-04 21:02:19', 2, 'PART001', 'OIL FILTER', 10, 'system', '5.00', '8.00', '4.50', 5, NULL, NULL, '675', '[\"4\",\"6\"]', '[\"2\",\"7\"]', 1, 1, 1, 'A1', 'B1', 'C1', 5, 50, '', '', '', '74.50', '8.50', 3);
+INSERT INTO `inventory` VALUES (1, '2025-06-04', 1, 0, '', NULL, '2025-06-05 20:15:49', 2, 'PART001', 'OIL FILTER', 10, 'system', '5.00', '8.00', '4.50', 5, NULL, NULL, '675', '[\"4\",\"6\"]', '[\"2\"]', 1, 1, 1, 'A1', 'B1', 'C1', 5, 50, '', '', '', '74.50', '8.50', 3);
 INSERT INTO `inventory` VALUES (2, '2025-06-04', 2, 0, '', NULL, '2025-06-04 22:18:55', 2, 'PART002', 'BRAKE PAD SET', 15, 'system', '12.00', '18.00', '10.00', 10, NULL, NULL, '66', '[\"3\",\"6\"]', '[\"2\",\"5\"]', 2, 2, 1, 'A2', 'B2', 'C2', 5, 100, 'G5gVMtpquRQwHy3WExSB.jpg', '', '', '417.00', '19.00', 1);
-INSERT INTO `inventory` VALUES (3, '2025-06-04', 1, 0, '', NULL, '2025-06-04 22:00:35', 2, 'PART003', 'AIR FILTER', 20, 'system', '3.00', '6.00', '2.50', 8, NULL, NULL, '75', '[\"4\",\"6\"]', '[\"2\",\"5\"]', 1, 3, 2, 'A3', 'B3', 'C3', 5, 80, '', '', '', '55.50', '6.50', 1);
+INSERT INTO `inventory` VALUES (3, '2025-06-04', 1, 0, '', NULL, '2025-06-05 19:54:59', 2, '12345678901234567890', 'AIR FILTER', 20, 'system', '3.00', '6.00', '2.50', 8, NULL, NULL, '75', '[\"4\",\"6\"]', '[\"2\",\"5\"]', 1, 3, 2, 'A3', 'B3', 'C3', 5, 80, '', '', '', '55.50', '6.50', 1);
 INSERT INTO `inventory` VALUES (4, '2025-06-04', 3, 0, '', NULL, '2025-06-04 22:21:19', 2, 'PART004', 'FUEL PUMP', 5, 'system', '50.00', '75.00', '45.00', 3, NULL, NULL, '457', '[\"4\",\"6\"]', '[\"2\",\"5\"]', 2, 1, 3, 'A4', 'B4', 'C4', 2, 20, '8d1NI4JTMB6aLqzUHvVF.jpg', 'GHOckFyPv06ZL7ox1Tb2.jpg', NULL, '570.00', '78.00', 2);
 INSERT INTO `inventory` VALUES (5, '2025-06-04', 2, 0, '', NULL, '2025-06-04 21:38:12', 2, 'PART005', 'HEADLIGHT ASSEMBLY', 7, 'system', '30.00', '45.00', '28.00', 4, NULL, NULL, '775', '[\"1\",\"4\",\"6\",\"7\"]', '[\"2\",\"5\"]', 3, 2, 2, 'A5', 'B5', 'C5', 3, 30, '', '', '', '643.00', '47.00', 3);
 INSERT INTO `inventory` VALUES (6, '2025-06-04', 1, 0, '', NULL, '2025-06-05 16:58:19', 2, 'PART006', 'ALTERNATOR', 3, 'system', '75.00', '120.00', '70.00', 2, NULL, NULL, '500', '[\"1\",\"4\"]', '[\"2\",\"5\"]', 1, 2, 1, 'A6', 'B6', 'C6', 1, 10, NULL, NULL, NULL, '115.00', '125.00', 3);
 INSERT INTO `inventory` VALUES (7, '2025-06-04', 2, 0, '', NULL, '2025-06-05 16:57:35', 2, 'PART007', 'SPARK PLUG', 50, 'system', '2.00', '4.00', '1.80', 30, NULL, NULL, '760', NULL, '[\"2\",\"5\"]', 2, 3, 2, 'A7', 'B7', 'C7', 20, 200, NULL, NULL, NULL, '356.50', '4.50', 4);
-INSERT INTO `inventory` VALUES (8, '2025-06-04', 3, 0, '', NULL, '2025-06-04 21:56:34', 2, 'PART008', 'TIMING BELT', 8, 'system', '20.00', '35.00', '18.00', 5, NULL, NULL, '56', '[\"2\",\"3\"]', '[\"2\",\"5\"]', 3, 1, 3, 'A8', 'B8', 'C8', 3, 25, '', '', '', '33.00', '36.00', 5);
+INSERT INTO `inventory` VALUES (8, '2025-06-04', 3, 0, '', NULL, '2025-06-05 20:16:10', 2, 'PART008', 'TIMING BELT', 8, 'system', '20.00', '35.00', '18.00', 5, NULL, NULL, '56', '[\"2\",\"3\"]', '[\"2\",\"5\",\"7\"]', 3, 1, 3, 'A8', 'B8', 'C8', 3, 25, '', '', '', '33.00', '36.00', 5);
 INSERT INTO `inventory` VALUES (9, '2025-06-04', 1, 0, '', NULL, '2025-06-05 16:38:50', 2, 'PART009', 'BATTERY 12V', 6, 'system', '40.00', '60.00', '38.00', 4, NULL, NULL, '54', NULL, '[\"2\",\"5\"]', 1, 1, 1, 'A9', 'B9', 'C9', 2, 15, '3FEXY2vnOb6gHBNjpUxT.png', NULL, NULL, '58.00', '62.00', 4);
 INSERT INTO `inventory` VALUES (10, '2025-06-04', 2, 0, '', NULL, '2025-06-05 17:10:58', 2, 'PART010', 'RADIATOR HOSE', 25, 'system', '6.00', '10.00', '5.50', 12, NULL, NULL, '67', NULL, '[\"2\",\"5\"]', 2, 2, 3, 'A10', 'B10', 'C10', 10, 60, NULL, NULL, NULL, '569.50', '10.50', 6);
 INSERT INTO `inventory` VALUES (11, '2025-06-04', 1, 0, '', NULL, '2025-06-04 22:00:00', 2, 'PART011', 'WHEEL BEARING', 12, 'system', '15.00', '25.00', '13.00', 6, NULL, NULL, '65', '[\"4\",\"5\",\"6\"]', '[\"2\",\"5\"]', 1, 3, 2, 'A11', 'B11', 'C11', 4, 40, '', NULL, '', '24.00', '26.00', 4);
@@ -1352,9 +1357,9 @@ INSERT INTO `inventory` VALUES (14, '2025-06-04', 1, 0, '', NULL, '', NULL, 'PAR
 INSERT INTO `inventory` VALUES (15, '2025-06-04', 2, 0, '', NULL, '', NULL, 'PART015', 'CV JOINT', 7, 'system', '35.00', '55.00', '33.00', 4, NULL, NULL, '777', NULL, NULL, 1, 1, 1, 'A15', 'B15', 'C15', 3, 22, NULL, NULL, NULL, '53.00', '57.00', 2);
 INSERT INTO `inventory` VALUES (16, '2025-06-04', 3, 0, '', NULL, '', NULL, 'PART016', 'THERMOSTAT', 14, 'system', '4.00', '7.00', '3.50', 7, NULL, NULL, '675', NULL, NULL, 2, 2, 3, 'A16', 'B16', 'C16', 6, 50, NULL, NULL, NULL, '6.50', '7.50', 1);
 INSERT INTO `inventory` VALUES (17, '2025-06-04', 1, 0, '', NULL, '', NULL, 'PART017', 'RADIATOR', 5, 'system', '65.00', '100.00', '60.00', 3, NULL, NULL, '45', NULL, NULL, 3, 1, 2, 'A17', 'B17', 'C17', 2, 15, NULL, NULL, NULL, '95.00', '105.00', 2);
-INSERT INTO `inventory` VALUES (18, '2025-06-04', 2, 0, '', NULL, '', NULL, 'PART018', 'OIL PAN', 4, 'system', '25.00', '40.00', '23.00', 2, NULL, NULL, '34', NULL, NULL, 1, 3, 3, 'A18', 'B18', 'C18', 2, 10, NULL, NULL, NULL, '38.00', '42.00', 3);
+INSERT INTO `inventory` VALUES (18, '2025-06-04', 2, 0, '', NULL, '2025-06-05 20:01:18', 2, 'PART018', 'OIL PAN', 4, 'system', '25.00', '40.00', '23.00', 2, NULL, NULL, '34', NULL, '[\"1\"]', 1, 3, 3, 'A18', 'B18', 'C18', 2, 10, NULL, NULL, NULL, '38.00', '42.00', 3);
 INSERT INTO `inventory` VALUES (19, '2025-06-04', 3, 0, '', NULL, '', NULL, 'PART019', 'DRIVE SHAFT', 3, 'system', '70.00', '110.00', '65.00', 2, NULL, NULL, '450', NULL, NULL, 2, 2, 1, 'A19', 'B19', 'C19', 1, 12, NULL, NULL, NULL, '108.00', '112.00', 4);
-INSERT INTO `inventory` VALUES (20, '2025-06-04', 1, 0, '', NULL, '', NULL, 'PART020', 'FAN BELT', 20, 'system', '3.00', '6.00', '2.50', 10, NULL, NULL, '454', NULL, NULL, 3, 3, 2, 'A20', 'B20', 'C20', 10, 60, NULL, NULL, NULL, '5.80', '6.20', 5);
+INSERT INTO `inventory` VALUES (20, '2025-06-04', 1, 0, '', NULL, '2025-06-05 19:57:09', 2, 'PART020', 'FAN BELT', 20, 'system', '3.00', '6.00', '2.50', 10, NULL, NULL, '454', '[\"6\",\"7\"]', NULL, 3, 3, 2, 'A20', 'B20', 'C20', 10, 60, NULL, NULL, NULL, '5.80', '6.20', 5);
 
 -- ----------------------------
 -- Table structure for inventory_adjustments
@@ -1734,7 +1739,7 @@ INSERT INTO `menu_sub` VALUES (68, 'Upload', NULL, 7, NULL, 'inventory/upload', 
 INSERT INTO `menu_sub` VALUES (69, 'Projects', NULL, 3, NULL, 'admin/projects', 1, 13, 0, NULL);
 INSERT INTO `menu_sub` VALUES (76, 'Masterlist (Breakdown)', NULL, 2, NULL, 'inventory/inventory_masterlist_breakdown', 0, 11, 0, NULL);
 INSERT INTO `menu_sub` VALUES (82, 'Inventory Report', NULL, 2, NULL, 'reports/inventory_report', 0, 5, 0, NULL);
-INSERT INTO `menu_sub` VALUES (83, 'Employee', NULL, 4, NULL, 'employee/master_list', 1, 1, 0, NULL);
+INSERT INTO `menu_sub` VALUES (83, 'Employee', NULL, 4, NULL, 'employee/master_list', 0, 1, 0, NULL);
 INSERT INTO `menu_sub` VALUES (84, 'Monitoring Of Materials', NULL, 1, NULL, 'reports/monitoring_of_materials', 1, 5, 0, NULL);
 INSERT INTO `menu_sub` VALUES (86, 'Accounts Payable', NULL, 1, NULL, 'accounts/accounts_payable', 1, 13, 0, NULL);
 INSERT INTO `menu_sub` VALUES (88, 'P.O. From Supplier Monitoring', NULL, 2, NULL, 'reports/po_supplier_monitoring', 1, 5, 0, NULL);
@@ -1745,7 +1750,7 @@ INSERT INTO `menu_sub` VALUES (95, 'Overhead Cost', NULL, 10, NULL, 'accounts/ov
 INSERT INTO `menu_sub` VALUES (96, 'Overhead Cost', NULL, 3, NULL, 'reports/overhead_cost', 1, 5, 0, NULL);
 INSERT INTO `menu_sub` VALUES (98, 'Inventory Cost', NULL, 4, NULL, 'inventory/inventory_cost', 0, 11, 0, NULL);
 INSERT INTO `menu_sub` VALUES (100, 'Manpower', NULL, 11, NULL, 'reports/manpower', 1, 5, 0, NULL);
-INSERT INTO `menu_sub` VALUES (105, 'Purchase Order', NULL, 3, NULL, 'purchasing/po_list', 1, 3, 0, NULL);
+INSERT INTO `menu_sub` VALUES (105, 'Unconfirmed P.O.', NULL, 3, NULL, 'purchasing/po_list', 1, 3, 0, NULL);
 INSERT INTO `menu_sub` VALUES (106, 'Create P.O.', NULL, 2, NULL, 'purchasing/create_po', 1, 3, 1, 'Purchase Order Transactions');
 INSERT INTO `menu_sub` VALUES (107, 'Confirmed P.O.', NULL, 5, NULL, 'purchasing/confirmed_po', 1, 3, 0, NULL);
 INSERT INTO `menu_sub` VALUES (108, 'Create GRV', NULL, 4, NULL, 'receiving/create_receiving', 1, 16, 1, 'Receiving Transactions');
@@ -1758,7 +1763,7 @@ INSERT INTO `menu_sub` VALUES (116, 'Local Charges Types', NULL, 13, NULL, 'main
 INSERT INTO `menu_sub` VALUES (117, 'Confirmed GRV', NULL, 6, NULL, 'receiving/confirmed_receiving_records', 1, 16, 0, NULL);
 INSERT INTO `menu_sub` VALUES (118, 'Confirmed Sales Order', NULL, 3, NULL, 'outgoing/confirm_issuance_records', 1, 18, 0, NULL);
 INSERT INTO `menu_sub` VALUES (119, 'Vehicle Masterlist', NULL, 1, NULL, 'vehicles/masterlist', 1, 19, 1, NULL);
-INSERT INTO `menu_sub` VALUES (122, 'Terms and Condition Temaplates', NULL, 7, NULL, 'purchasing/terms_and_conditions', 1, 3, 1, 'System Tables');
+INSERT INTO `menu_sub` VALUES (122, 'Terms and Condition Temaplates', NULL, 7, NULL, 'purchasing/terms_and_conditions', 0, 3, 1, 'System Tables');
 INSERT INTO `menu_sub` VALUES (123, 'Suppliers', NULL, 6, NULL, 'purchasing/supplier_po', 1, 3, 1, 'Supplier Masterfile');
 INSERT INTO `menu_sub` VALUES (124, 'Model', NULL, 3, NULL, 'maintenance/table/models', 1, 19, 0, NULL);
 INSERT INTO `menu_sub` VALUES (126, 'Manufacturer', NULL, 2, NULL, 'maintenance/table/manufacturers', 1, 19, 0, NULL);
@@ -1812,14 +1817,13 @@ CREATE TABLE `purchase_order`  (
   `exchange_rate` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `vehicle_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of purchase_order
 -- ----------------------------
-INSERT INTO `purchase_order` VALUES (1, '2025-05-29 20:05', 2, 0, '', NULL, '', NULL, 'PO000001', 0, NULL, 1, 'apple@gmail.com', '909874534', 'ttest', '<b><font color=\"#2697de\">Terms &amp; Conditions:&nbsp;</font></b><div><font color=\"#2697de\">1- </font>Invoices to be issued in the name of Ventum Tech Security Systems and Services.&nbsp;</div><div><font color=\"#2697de\">2-</font> Payment Terms: As per agreement&nbsp;</div><div><font color=\"#2697de\">3-</font> Delivery: Immediate&nbsp;</div><div><font color=\"#2697de\">4-</font> If no PO confirmation nor comments/remarks are received within 2 working days from official PO transmittal date, this PO including all its content is considered in effect.&nbsp;&nbsp;</div>', '', 0.000000, 'Mohammad Saleh', 1, '2025-05-29 20:05', 2, 1, NULL, '1.000000', NULL);
-INSERT INTO `purchase_order` VALUES (2, '2025-05-29 20:10', 2, 0, '', NULL, '', NULL, 'PO000002', 0, NULL, 2, 'laccoustics@mail.com', '9675445345', 'twsad', '<font color=\"#2697de\">T<b>erms &amp; Conditions:&nbsp;</b></font><div>1- Invoices to be issued in the name of Ventum Tech Security Systems and Services.&nbsp;</div><div>2- Payment Terms: As per agreement&nbsp;</div><div>3- Delivery: Immediate&nbsp;</div><div>4- If no PO confirmation nor comments/remarks are received within 2 working days from official PO transmittal date, this PO including all its content is considered in effect.&nbsp;</div><div>5- Ventum Tech is not held responsible in any way for not accepting the goods or services described above if it proves to be not conforming to the agreement and specifications or late delivery.</div>', '', 0.000000, 'Mohhamad Fali', 1, '2025-05-29 20:10', 2, 2, NULL, '4.521300', NULL);
-INSERT INTO `purchase_order` VALUES (3, '2025-06-03 22:44', 2, 0, '', NULL, '', NULL, 'PO000003', NULL, NULL, 1, 'dfdfg@sdfsd', 'PO435345', 'sdfsdf sdf sdf sdf', NULL, 'discounter', 340.000000, 'dfgdf dfg', 0, NULL, NULL, 1, NULL, '1.000000', 6);
+INSERT INTO `purchase_order` VALUES (1, '2025-06-05 22:04', 2, 0, '', NULL, '', NULL, 'PO000001', NULL, NULL, 1, 'fgdfgdf dgf', 'FGDFGDFG', 'DFG DFGDF GD', NULL, '', 550.000000, 'dfgdfg dfg d', 0, NULL, NULL, 1, NULL, '1.000000', 3);
+INSERT INTO `purchase_order` VALUES (2, '2025-06-05 22:18', 2, 0, '', NULL, '2025-06-05 23:22', 2, 'PO000002', NULL, NULL, 2, 'ASDASD@FG', 'FSDSDF 34534534', 'DSFS FS DFSDFS D', NULL, '', 3660.000000, 'dsaa asdasd', 0, NULL, NULL, 1, NULL, '1.000000', 3);
 
 -- ----------------------------
 -- Table structure for purchase_order_items
@@ -1838,27 +1842,38 @@ CREATE TABLE `purchase_order_items`  (
   `item_code` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `item_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `qty` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `price` float(20, 6) NULL DEFAULT NULL,
+  `price` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `inventory_quotation_id` int NULL DEFAULT NULL,
   `quotation_id` int NULL DEFAULT NULL,
   `inventory_id` int NULL DEFAULT NULL,
   `rate_id` int NULL DEFAULT 0,
   `vehicle_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of purchase_order_items
 -- ----------------------------
-INSERT INTO `purchase_order_items` VALUES (1, '2025-05-29 20:05', 2, 0, '', NULL, '', NULL, 1, '2345345', 'test part 1', '0', 344.000000, 2147483647, 0, 1, 1, NULL);
-INSERT INTO `purchase_order_items` VALUES (2, '2025-05-29 20:05', 2, 0, '', NULL, '', NULL, 1, '65663345', 'test part 2', '19', 533.000000, 2147483647, 0, 2, 1, NULL);
-INSERT INTO `purchase_order_items` VALUES (3, '2025-05-29 20:05', 2, 0, '', NULL, '', NULL, 1, '00978', 'test23', '13', 44.000000, 2147483647, 0, 3, 1, NULL);
-INSERT INTO `purchase_order_items` VALUES (4, '2025-05-29 20:10', 2, 0, '', NULL, '', NULL, 2, '8789056435', 'sdfsdf gare', '54', 3454.000000, 2147483647, 0, 4, 2, NULL);
-INSERT INTO `purchase_order_items` VALUES (5, '2025-05-29 20:10', 2, 0, '', NULL, '', NULL, 2, '5675890006', 'tres ret 809', '14', 233.000000, 2147483647, 0, 5, 2, NULL);
-INSERT INTO `purchase_order_items` VALUES (6, '2025-05-29 20:10', 2, 0, '', NULL, '', NULL, 2, '7800787', 'test desc', '354', 343.000000, 2147483647, 0, 6, 2, NULL);
-INSERT INTO `purchase_order_items` VALUES (7, '2025-06-03 22:44', 2, 0, '', NULL, '', NULL, 3, '2345345', 'test part 1', '13', 342.000000, 2147483647, NULL, 0, 1, NULL);
-INSERT INTO `purchase_order_items` VALUES (8, '2025-06-03 22:44', 2, 0, '', NULL, '', NULL, 3, '8789056435', 'sdfsdf gare', '14', 234.000000, 2147483647, NULL, 0, 1, NULL);
-INSERT INTO `purchase_order_items` VALUES (9, '2025-06-03 22:44', 2, 0, '', NULL, '', NULL, 3, 'PR345435', 'sdfsdfsdf', '13', 466.000000, 2147483647, NULL, 0, 1, NULL);
+INSERT INTO `purchase_order_items` VALUES (1, '2025-06-05 22:04', 2, 0, '', 0, '2025-06-05 22:50', 2, 1, 'PART001', 'OIL FILTER', '99', '66', 0, NULL, 1, 1, 3);
+INSERT INTO `purchase_order_items` VALUES (2, '2025-06-05 22:04', 2, 0, '', NULL, '', NULL, 1, 'PART002', 'BRAKE PAD SET', '2', '66', 0, NULL, 2, 1, 3);
+INSERT INTO `purchase_order_items` VALUES (3, '2025-06-05 22:04', 2, 0, '', NULL, '', NULL, 1, '12345678901234567890', 'AIR FILTER', '4', '75', 0, NULL, 3, 1, 3);
+INSERT INTO `purchase_order_items` VALUES (4, '2025-06-05 22:04', 2, 0, '', NULL, '', NULL, 1, 'PART004', 'FUEL PUMP', '4', '457', 0, NULL, 4, 1, 3);
+INSERT INTO `purchase_order_items` VALUES (5, '2025-06-05 22:18', 2, 1, '2025-06-05 23:22', 2, '', NULL, 2, 'PART002', 'BRAKE PAD SET', '51', '66', 0, NULL, 2, 1, 3);
+INSERT INTO `purchase_order_items` VALUES (6, '2025-06-05 22:18', 2, 1, '2025-06-05 23:22', 2, '', NULL, 2, '12345678901234567890', 'AIR FILTER', '41', '75', 0, NULL, 3, 1, 3);
+INSERT INTO `purchase_order_items` VALUES (7, '2025-06-05 22:18', 2, 1, '2025-06-05 23:22', 2, '', NULL, 2, 'PART004', 'FUEL PUMP', '31', '457', 0, NULL, 4, 1, 3);
+INSERT INTO `purchase_order_items` VALUES (8, '2025-06-05 22:44', 2, 1, '2025-06-05 23:22', 2, '', NULL, 2, 'PART009', 'BATTERY 12V', '1', '54', NULL, NULL, 9, 1, 3);
+INSERT INTO `purchase_order_items` VALUES (9, '2025-06-05 22:47', 2, 1, '2025-06-05 23:22', 2, '', NULL, 2, 'PART006', 'ALTERNATOR', '1', '500', NULL, NULL, 6, 1, 3);
+INSERT INTO `purchase_order_items` VALUES (10, '2025-06-05 22:48', 2, 1, '2025-06-05 23:22', 2, '', NULL, 2, 'BRAKE PAD SET', 'BRAKE PAD SET', '999', '66', NULL, NULL, 2, 1, 3);
+INSERT INTO `purchase_order_items` VALUES (11, '2025-06-05 22:48', 2, 1, '2025-06-05 23:22', 2, '', NULL, 2, 'AIR FILTER', 'AIR FILTER', '888', '75', NULL, NULL, 3, 1, 3);
+INSERT INTO `purchase_order_items` VALUES (12, '2025-06-05 22:48', 2, 1, '2025-06-05 23:22', 2, '', NULL, 2, 'ALTERNATOR', 'ALTERNATOR', '777', '500', NULL, NULL, 6, 1, 3);
+INSERT INTO `purchase_order_items` VALUES (13, '2025-06-05 22:48', 2, 1, '2025-06-05 23:22', 2, '', NULL, 2, 'PART005', 'HEADLIGHT ASSEMBLY', '1', '775', NULL, NULL, 5, 1, 3);
+INSERT INTO `purchase_order_items` VALUES (14, '2025-06-05 22:48', 2, 1, '2025-06-05 23:22', 2, '', NULL, 2, 'PART005', 'HEADLIGHT ASSEMBLY', '1', '775', NULL, NULL, 5, 1, 3);
+INSERT INTO `purchase_order_items` VALUES (15, '2025-06-05 22:49', 2, 1, '2025-06-05 23:22', 2, '', NULL, 2, 'PART002', 'BRAKE PAD SET', '1', '66', NULL, NULL, 2, 1, 3);
+INSERT INTO `purchase_order_items` VALUES (16, '2025-06-05 22:50', 2, 0, '', 0, '2025-06-05 23:22', 2, 2, 'PART004', 'FUEL PUMP', '99', '457', NULL, NULL, 4, 1, 3);
+INSERT INTO `purchase_order_items` VALUES (17, '2025-06-05 22:51', 2, 0, '', 0, '2025-06-05 23:22', 2, 2, 'PART002', 'BRAKE PAD SET', '1', '66', NULL, NULL, 2, 1, 3);
+INSERT INTO `purchase_order_items` VALUES (18, '2025-06-05 22:59', 2, 0, '', 0, '2025-06-05 23:22', 2, 2, 'PART005', 'HEADLIGHT ASSEMBLY', '1', '775', NULL, NULL, 5, 1, 3);
+INSERT INTO `purchase_order_items` VALUES (19, '2025-06-05 22:59', 2, 0, '', 0, '2025-06-05 23:22', 2, 2, 'PART007', 'SPARK PLUG', '1', '760', NULL, NULL, 7, 1, 3);
+INSERT INTO `purchase_order_items` VALUES (20, '2025-06-05 22:59', 2, 0, '', 0, '2025-06-05 23:22', 2, 2, 'PART008', 'TIMING BELT', '1', '56', NULL, NULL, 8, 1, 3);
 
 -- ----------------------------
 -- Table structure for receiving
@@ -2659,6 +2674,6 @@ INSERT INTO `vehicles` VALUES (3, '2025-06-01 21:05:02', 2, 0, '', NULL, '2025-0
 INSERT INTO `vehicles` VALUES (4, '2025-06-01 21:09:19', 2, 1, '2025-06-01 21:54:33', 2, '', NULL, 5, 4, 1, '88211', 'YOSD04358234922', NULL, NULL, NULL, NULL);
 INSERT INTO `vehicles` VALUES (5, '2025-06-01 21:27:33', 2, 1, '2025-06-01 21:55:30', 2, '', NULL, 5, 3, 3, '9921', 'PIS23023928081', NULL, NULL, NULL, NULL);
 INSERT INTO `vehicles` VALUES (6, '2025-06-01 21:29:33', 2, 1, '2025-06-05 15:01:49', 2, '', NULL, 4, 3, 3, '7214', 'JS0980578234', '9JO3DcbnU2AfIqeGwrpv.jpg', NULL, NULL, NULL);
-INSERT INTO `vehicles` VALUES (7, '2025-06-01 21:56:58', 2, 0, '', NULL, '2025-06-05 19:29:09', 2, 0, 6, 2, '458844', 'C092793409007170927X2', 'Kocmlh2kXMYSRpqQ56E3.jpg', NULL, NULL, NULL);
+INSERT INTO `vehicles` VALUES (7, '2025-06-01 21:56:58', 2, 0, '', NULL, '2025-06-05 20:40:01', 2, 9, 6, 2, '458844', 'C092793409007170927X2', 'Kocmlh2kXMYSRpqQ56E3.jpg', NULL, NULL, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -1,3 +1,15 @@
+<style>
+  .carousel-indicators [data-bs-target] {
+      background-color: #6c757d; /* Inactive */
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      opacity: 1; /* Optional: make fully opaque */
+  }
+  .carousel-indicators .active {
+      background-color: #626ed4; /* Active slide */
+  }
+</style>
 <div class="row">
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
@@ -15,7 +27,7 @@
            
           
                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                      <ol class="carousel-indicators">
+                      <ol class="carousel-indicators list-unstyled">
                         <?php if(@$item->picture_1){?>
                           <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
                         <?php }?>

@@ -246,14 +246,14 @@ select, .text_input {
                           $arr_am[$mod_id] = 1;
                         }
                       }
-
+ 
                       if(@$models){
                         foreach($models as $rs){
                       ?>
                       <option  
                       <?php 
                       if(@$arr_am[$rs->id] == 1){
-                        echo 'selected';
+                        echo 'selected'; 
                       }
                       ?> 
                       data-item_code="<?=@$arr_manu[$rs->manufacturer_id]?>" 
@@ -267,6 +267,18 @@ select, .text_input {
                 <div class="row mb-3">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Cross-Compatible Parts
                   </label>
+                  <?php 
+                  $preload_avm = '';
+                  if($item->cross_compatible_part_ids){
+                    foreach(json_decode($item->cross_compatible_part_ids) as $ccp_id){
+                       if(@$preload_avm){
+                         $preload_avm.=(','.$ccp_id);
+                       }else{
+                         $preload_avm=$ccp_id;
+                       }
+                    }
+                  }
+                  ?>
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <select id="cross_compatible_part_ids[]" name="cross_compatible_part_ids[]" class="form-control col-md-7 col-xs-12 select2-ajax-modal" multiple>
                        
@@ -313,4 +325,7 @@ select, .text_input {
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  preselectedIds = [<?=$preload_avm?>];
+</script>
  

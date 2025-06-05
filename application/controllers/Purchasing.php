@@ -172,9 +172,12 @@ class Purchasing extends CI_Controller {
 		$module['module'] = "purchasing/po_list";
 		$module['map_link']   = "sales->quotations";  
 		 
-		$module['customers'] = $this->core->load_core_data('clients');
+		$module['customers'] = $this->core->load_core_data('clients','','id,name');
 
-		$module['vehicles'] = $this->core->load_core_data('vehicles');
+		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+		$module['manufacturers'] = $result['maintenance_data'];
+
+		$module['vehicles'] = $this->core->load_core_data('vehicles','','id,customer_id,manufacturer_id,plate_no');
 		
 		$module['users'] = $this->core->load_core_data('account','','id,name');
 
@@ -251,6 +254,8 @@ class Purchasing extends CI_Controller {
 	    // Check if specific IDs are passed (single or multiple)
 	    $ids = $this->input->post('id', TRUE);  // can be a single id or array or CSV string
 
+	    $is_new = $this->input->post('is_new', TRUE);
+
 	    if ($ids) {
 	        // Normalize $ids to an array
 	        if (!is_array($ids)) {
@@ -284,6 +289,8 @@ class Purchasing extends CI_Controller {
 	        return;  // Stop execution here because we already returned the results
 	    }
 
+	    if($is_new==1){die();}
+
 	    // Continue with original logic if no ids requested
 
 	    $excluded_id = '';
@@ -309,16 +316,6 @@ class Purchasing extends CI_Controller {
 	    $this->db->or_like('item_name', $search);
 	    $this->db->group_end();
 
-	    $order_column_index = $this->input->post('order')[0]['column'];
-	    $order_dir = $this->input->post('order')[0]['dir'];
-	    $columns = $this->input->post('columns');
-
-	    // Get column name by index
-	    if (isset($columns[$order_column_index]['data'])) {
-	        $order_column = $columns[$order_column_index]['data'];
-	        $this->db->order_by($order_column, $order_dir);
-	    }
-	    
 	    $this->db->limit(7, 0);
 
 	    $items = $this->db->select('id, item_code, item_name, manufacturer_price, qty,picture_1')->get('inventory')->result();
@@ -376,9 +373,9 @@ class Purchasing extends CI_Controller {
 						'item_name' => $this->input->post('item_name'.$item_id,TRUE),
 						'qty' => $this->input->post('i_qty'.$item_id,TRUE),
 						'price' => $this->input->post('i_unit_cost'.$item_id,TRUE),
-						'inventory_quotation_id' => $item_id,
-						'vehicle_id' => $this->input->post('vehicle_id'.$item_id,TRUE), 
-						'inventory_id' => $inv_id,
+						'inventory_quotation_id' => 0,
+						'vehicle_id' => $this->input->post('vehicle_id',TRUE), 
+						'inventory_id' => $item_id,
 						'rate_id' => $this->input->post('rate_id',TRUE)
 					]); 
 				}
@@ -392,7 +389,7 @@ class Purchasing extends CI_Controller {
 
 		}
 	    
-		redirect("purchasing/create_po","refresh");
+		redirect("purchasing/edit_po/".$po_id,"refresh");
 
 	}
 
@@ -509,13 +506,10 @@ class Purchasing extends CI_Controller {
 		$module = $this->system_menu; 
 
 		$module['module'] = "purchasing/edit_po";
-		$module['map_link']   = "sales->quotations";  
-		
-		$module['quotations'] = $this->core->load_core_data('quotations','','id,quotation_number,version,project_id','confirmed=1');
-
-		$module['clients'] = $this->core->load_core_data('clients');
-
-		$module['projects'] = $this->core->load_core_data('projects');
+		$module['map_link']   = "sales->quotations";   
+  
+		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+		$module['manufacturers'] = $result['maintenance_data'];
 		
 		$module['users'] = $this->core->load_core_data('account','','id,name');
 
@@ -525,9 +519,12 @@ class Purchasing extends CI_Controller {
 
 		$module['po_items'] = $this->core->load_core_data('purchase_order_items','','','po_id='.$id);
 
-		$module['user'] = $this->core->load_core_data('account',$module['po']->user_id,'id,name');
+		$module['vehicles'] = $this->core->load_core_data('vehicles','','id,customer_id,manufacturer_id,plate_no');
 
-		$module['lcr'] = $this->core->load_core_data('quotations_landed_cost_rate','','','quotation_id='.@$module['po']->quotation_id);
+		$module['customers'] = $this->core->load_core_data('clients','','id,name');
+ 
+		$module['user'] = $this->core->load_core_data('account',$module['po']->user_id,'id,name');
+ 
 		
 		$result = $this->admin_model->load_filemaintenance('fm_currency_rate');
 		$module['rates'] = $result['maintenance_data'];
@@ -537,23 +534,19 @@ class Purchasing extends CI_Controller {
 	}
 
 	public function update_po($id){
-
-		$q = $this->db->get_where('quotations',['id'=>$this->input->post('quotation_id',TRUE)])->row();
-
+  
 		$po = $this->db->where('id',$id)->update('purchase_order',[
 			'date_modified' => date('Y-m-d H:i'),
 			'modified_by' => $this->session->user_id,
 			'po_number' => $this->input->post('po_number',TRUE),
-			'quotation_id' => $this->input->post('quotation_id',TRUE),
-			'project_id' => $q->project_id,
+			'vehicle_id' => $this->input->post('vehicle_id',TRUE), 
 			'supplier_id' => $this->input->post('supplier_id',TRUE),
 			'att_to' => $this->input->post('att_to',TRUE),
 			'supplier_email' => $this->input->post('supplier_email',TRUE),
 			'reference_no' => $this->input->post('reference_no',TRUE),
 			'description' => $this->input->post('description',TRUE),
 			'less_desc' => $this->input->post('less_desc',TRUE),
-			'less_amount' => $this->input->post('less_amount',TRUE),
-			'terms_conditions' => $this->input->post('terms_and_conditions'),
+			'less_amount' => $this->input->post('less_amount',TRUE), 
 			'rate_id' => $this->input->post('rate_id',TRUE),
 			'exchange_rate' => $this->input->post('exchange_rate',TRUE)
 		]); 
@@ -571,19 +564,13 @@ class Purchasing extends CI_Controller {
 			if(@$this->input->post('items',TRUE)){
 				foreach ($this->input->post('items',TRUE) as $key => $item_id) {
 
-					$identity = $item_id;
-
-					if (strpos($item_id, '-') !== false) {
-						list($identity,$poi) = explode('-',$item_id);
-					}
-
-					if($identity == 'e'){ //== already added use only for edit mode
+					$poi = @$this->input->post('poi'.$item_id,TRUE);
+					 
+					if($poi){ //== already added use only for edit mode
  
 						$po = $this->db->where('id',$poi)->update('purchase_order_items',[
 							'date_modified' => date('Y-m-d H:i'),
-							'modified_by' => $this->session->user_id, 
-							// 'item_code' => $this->input->post('item_code'.$item_id,TRUE),
-							// 'item_name' => $this->input->post('item_name'.$item_id,TRUE),
+							'modified_by' => $this->session->user_id,  
 							'qty' => $this->input->post('i_qty'.$key,TRUE),
 							'price' => $this->input->post('i_unit_cost'.$key,TRUE),
 							'deleted' => 0,
@@ -601,10 +588,9 @@ class Purchasing extends CI_Controller {
 							'item_code' => $this->input->post('item_code'.$item_id,TRUE),
 							'item_name' => $this->input->post('item_name'.$item_id,TRUE),
 							'qty' => $this->input->post('i_qty'.$item_id,TRUE),
-							'price' => $this->input->post('i_unit_cost'.$item_id,TRUE),
-							'inventory_quotation_id' => $item_id,
-							'quotation_id' => $this->input->post('quotation_id'.$item_id,TRUE), 
-							'inventory_id' => $this->input->post('inv_id'.$item_id,TRUE),
+							'price' => $this->input->post('i_unit_cost'.$item_id,TRUE), 
+							'vehicle_id' => $this->input->post('vehicle_id',TRUE), 
+							'inventory_id' => $item_id,
 							'rate_id' => $this->input->post('rate_id',TRUE)
 						]); 
 					}

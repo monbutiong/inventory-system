@@ -121,7 +121,7 @@ class Inventory extends CI_Controller {
 	        $bin_location = trim($rs->bin_1 . ($rs->bin_2 ? ' | ' . $rs->bin_2 : '') . ($rs->bin_3 ? ' | ' . $rs->bin_3 : ''));
 
 	        $data[] = [
-	            'picture' => '<a href="' . base_url('inventory/view_item_images/'.$rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><img src="' . $item_image . '" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" /></a>',
+	            'picture' => ($rs->picture_1 ? '<a href="' . base_url('inventory/view_item_images/'.$rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><img src="' . $item_image . '" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" /></a>' : '<img src="' . $item_image . '" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" />'),
 	            'item_code' => $rs->item_code,
 	            'item_name' => $rs->item_name,
 	            'brand' => $rs->brand,

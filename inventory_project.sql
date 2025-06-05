@@ -11,7 +11,7 @@
  Target Server Version : 100427
  File Encoding         : 65001
 
- Date: 04/06/2025 17:48:50
+ Date: 05/06/2025 14:50:40
 */
 
 SET NAMES utf8mb4;
@@ -46,7 +46,7 @@ CREATE TABLE `account`  (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 1, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, '6e6d4e1fde1844c586293e9e19b9639997ea4a82aa946aff889ae351737e5b99', '2025-06-04 14:26:03');
+INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 1, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, '16ba1cbe58a67d95be95d13895701769e340f3de4e6fb8ffc037f1cc70b19179', '2025-06-05 09:19:49');
 INSERT INTO `account` VALUES (37, '', NULL, '2024-05-15', 'silambu', '$2a$08$j.FhunOL0ywwPrANlITow.mveuu/bCghDmEQGlCdBxKtElgkiprMC', 1, NULL, 'Accounts', NULL, 0, 'Silambu', 0, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
@@ -90,7 +90,7 @@ CREATE TABLE `audit_trail`  (
   `log` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 98 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of audit_trail
@@ -192,6 +192,8 @@ INSERT INTO `audit_trail` VALUES (94, 2, 'login page', 'login to account.', '202
 INSERT INTO `audit_trail` VALUES (95, 2, 'login page', 'login to account.', '2025-06-04 12:06:46', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (96, 2, 'login page', 'login to account.', '2025-06-04 14:26:03', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (97, 2, 'account page', 'logout to account.', '2025-06-04 14:26:59', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (98, 2, 'login page', 'login to account.', '2025-06-05 08:15:46', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (99, 2, 'login page', 'login to account.', '2025-06-05 09:19:49', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for clients
@@ -222,99 +224,36 @@ CREATE TABLE `clients`  (
   `code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `website` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `qid` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `customer_type` int NULL DEFAULT 0,
+  `business_registration_no` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 88 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 90 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of clients
 -- ----------------------------
-INSERT INTO `clients` VALUES (1, '', NULL, 1, '2025-06-01 18:08:42', 2, '', NULL, 'Mohammed Al-Farsi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CN100001', NULL, NULL);
-INSERT INTO `clients` VALUES (2, '', NULL, 0, '', NULL, '2025-06-01 21:38:33', 2, 'Ahmed Al-Mansoori', '', '', '', ' ', '  ', NULL, NULL, NULL, '', NULL, '', '5419631', 'CN100002', '', '000328429');
-INSERT INTO `clients` VALUES (3, '', NULL, 0, '', NULL, '', NULL, 'Omar Al-Hamadi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00001', NULL, NULL);
-INSERT INTO `clients` VALUES (4, '', NULL, 0, '', NULL, '', NULL, 'Ali Al-Khatib', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00002', NULL, NULL);
-INSERT INTO `clients` VALUES (5, '', NULL, 0, '', NULL, '', NULL, 'Yousef Al-Najjar', NULL, NULL, '', '33399601 ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00003', NULL, NULL);
-INSERT INTO `clients` VALUES (6, '', NULL, 0, '', NULL, '', NULL, 'Hassan Al-Rashid', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00004', NULL, NULL);
-INSERT INTO `clients` VALUES (7, '', NULL, 0, '', NULL, '', NULL, 'Khalid Al-Jabari', NULL, NULL, '', ' ', '4928 AL KHALEEJ STREET, MUSHAIREB ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00005', NULL, NULL);
-INSERT INTO `clients` VALUES (8, '', NULL, 0, '', NULL, '', NULL, 'Faisal Al-Ahmad', NULL, NULL, '44278078', ' ', '  QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00006', NULL, NULL);
-INSERT INTO `clients` VALUES (9, '', NULL, 0, '', NULL, '', NULL, 'Saeed Al-Karim', NULL, NULL, '', ' ', '  DOHA QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00007', NULL, NULL);
-INSERT INTO `clients` VALUES (10, '', NULL, 0, '', NULL, '', NULL, 'Ibrahim Al-Fahad', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00008', NULL, NULL);
-INSERT INTO `clients` VALUES (11, '', NULL, 0, '', NULL, '', NULL, 'Tariq Al-Harbi', NULL, NULL, '', ' 33885343', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00009', NULL, NULL);
-INSERT INTO `clients` VALUES (12, '', NULL, 0, '', NULL, '', NULL, 'Salim Al-Dhaheri', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00010', NULL, NULL);
-INSERT INTO `clients` VALUES (13, '', NULL, 0, '', NULL, '', NULL, 'Majid Al-Mutairi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00011', NULL, NULL);
-INSERT INTO `clients` VALUES (14, '', NULL, 0, '', NULL, '', NULL, 'Hamad Al-Shamrani', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00012', NULL, NULL);
-INSERT INTO `clients` VALUES (15, '', NULL, 0, '', NULL, '', NULL, 'Abdullah Al-Sabah', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00013', NULL, NULL);
-INSERT INTO `clients` VALUES (16, '', NULL, 0, '', NULL, '', NULL, 'Waleed Al-Hashimi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00014', NULL, NULL);
-INSERT INTO `clients` VALUES (17, '', NULL, 0, '', NULL, '', NULL, 'Nasser Al-Tamimi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00015', NULL, NULL);
-INSERT INTO `clients` VALUES (18, '', NULL, 0, '', NULL, '', NULL, 'Zayed Al-Naimi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00016', NULL, NULL);
-INSERT INTO `clients` VALUES (19, '', NULL, 0, '', NULL, '', NULL, 'Rashid Al-Qassimi', NULL, NULL, '', '70000321 ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00017', NULL, NULL);
-INSERT INTO `clients` VALUES (20, '', NULL, 0, '', NULL, '', NULL, 'Adel Al-Badawi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00018', NULL, NULL);
-INSERT INTO `clients` VALUES (21, '', NULL, 0, '', NULL, '', NULL, 'Jamal Al-Ali', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00019', NULL, NULL);
-INSERT INTO `clients` VALUES (22, '', NULL, 0, '', NULL, '', NULL, 'Bassam Al-Saleh', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00020', NULL, NULL);
-INSERT INTO `clients` VALUES (23, '', NULL, 0, '', NULL, '', NULL, 'Farid Al-Lami', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00021', NULL, NULL);
-INSERT INTO `clients` VALUES (24, '', NULL, 0, '', NULL, '', NULL, 'Ziyad Al-Hatmi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00022', NULL, NULL);
-INSERT INTO `clients` VALUES (25, '', NULL, 0, '', NULL, '', NULL, 'Mansour Al-Baz', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00023', NULL, NULL);
-INSERT INTO `clients` VALUES (26, '', NULL, 0, '', NULL, '', NULL, 'Fahad Al-Qadi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00024', NULL, NULL);
-INSERT INTO `clients` VALUES (27, '', NULL, 0, '', NULL, '', NULL, 'Yahya Al-Kuwaiti', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00025', NULL, NULL);
-INSERT INTO `clients` VALUES (28, '', NULL, 0, '', NULL, '', NULL, 'Rami Al-Sharif', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00026', NULL, NULL);
-INSERT INTO `clients` VALUES (29, '', NULL, 0, '', NULL, '', NULL, 'Bilal Al-Amiri', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00027', NULL, NULL);
-INSERT INTO `clients` VALUES (30, '', NULL, 0, '', NULL, '', NULL, 'Tamer Al-Hussain', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00028', NULL, NULL);
-INSERT INTO `clients` VALUES (31, '', NULL, 0, '', NULL, '', NULL, 'Sultan Al-Hassan', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00029', NULL, NULL);
-INSERT INTO `clients` VALUES (32, '', NULL, 0, '', NULL, '', NULL, 'Marwan Al-Makki', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00030', NULL, NULL);
-INSERT INTO `clients` VALUES (33, '', NULL, 0, '', NULL, '', NULL, 'Kareem Al-Mousa', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00031', NULL, NULL);
-INSERT INTO `clients` VALUES (34, '', NULL, 0, '', NULL, '', NULL, 'Issam Al-Kilani', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00032', NULL, NULL);
-INSERT INTO `clients` VALUES (35, '', NULL, 0, '', NULL, '', NULL, 'Mustafa Al-Nouri', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00033', NULL, NULL);
-INSERT INTO `clients` VALUES (36, '', NULL, 0, '', NULL, '', NULL, 'Bashir Al-Jamal', NULL, NULL, '', '44460005 ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00034', NULL, NULL);
-INSERT INTO `clients` VALUES (37, '', NULL, 0, '', NULL, '', NULL, 'Nabil Al-Samarrai', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00035', NULL, NULL);
-INSERT INTO `clients` VALUES (38, '', NULL, 0, '', NULL, '', NULL, 'Raed Al-Taher', NULL, NULL, '', '44405150 ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00036', NULL, NULL);
-INSERT INTO `clients` VALUES (39, '', NULL, 0, '', NULL, '', NULL, 'Zaher Al-Mansour', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00037', NULL, NULL);
-INSERT INTO `clients` VALUES (40, '', NULL, 0, '', NULL, '', NULL, 'Ayman Al-Obaidi', NULL, NULL, '', '40290062 ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00038', NULL, NULL);
-INSERT INTO `clients` VALUES (41, '', NULL, 0, '', NULL, '', NULL, 'Sami Al-Rawi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00039', NULL, NULL);
-INSERT INTO `clients` VALUES (42, '', NULL, 0, '', NULL, '', NULL, 'Walid Al-Attar', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00040', NULL, NULL);
-INSERT INTO `clients` VALUES (43, '', NULL, 0, '', NULL, '', NULL, 'Imad Al-Amin', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00041', NULL, NULL);
-INSERT INTO `clients` VALUES (44, '', NULL, 0, '', NULL, '', NULL, 'Amjad Al-Farouq', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00042', NULL, NULL);
-INSERT INTO `clients` VALUES (45, '', NULL, 0, '', NULL, '', NULL, 'Hani Al-Kurdi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00043', NULL, NULL);
-INSERT INTO `clients` VALUES (46, '', NULL, 0, '', NULL, '', NULL, 'Mahmoud Al-Hilal', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00044', NULL, NULL);
-INSERT INTO `clients` VALUES (47, '', NULL, 0, '', NULL, '', NULL, 'Younes Al-Mirza', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00045', NULL, NULL);
-INSERT INTO `clients` VALUES (48, '', NULL, 0, '', NULL, '', NULL, 'Osama Al-Atrash', NULL, NULL, '', ' 77712233', '  DOHA QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00046', NULL, NULL);
-INSERT INTO `clients` VALUES (49, '', NULL, 0, '', NULL, '', NULL, 'Fadi Al-Kabbani', NULL, NULL, '77712233', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00047', NULL, NULL);
-INSERT INTO `clients` VALUES (50, '', NULL, 0, '', NULL, '', NULL, 'Hazem Al-Qadi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00048', NULL, NULL);
-INSERT INTO `clients` VALUES (51, '', NULL, 0, '', NULL, '', NULL, 'Wael Al-Din', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00049', NULL, NULL);
-INSERT INTO `clients` VALUES (52, '', NULL, 0, '', NULL, '', NULL, 'Samir Al-Nabhan', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00050', NULL, NULL);
-INSERT INTO `clients` VALUES (53, '', NULL, 0, '', NULL, '', NULL, 'Malek Al-Karaki', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00051', NULL, NULL);
-INSERT INTO `clients` VALUES (54, '', NULL, 0, '', NULL, '', NULL, 'Abbas Al-Farhan', NULL, NULL, '', ' ', '1391  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00052', NULL, NULL);
-INSERT INTO `clients` VALUES (55, '', NULL, 0, '', NULL, '', NULL, 'Luay Al-Hadid', NULL, NULL, '', ' 55946292', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00053', NULL, NULL);
-INSERT INTO `clients` VALUES (56, '', NULL, 0, '', NULL, '', NULL, 'Nashat Al-Ajmi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00054', NULL, NULL);
-INSERT INTO `clients` VALUES (57, '', NULL, 0, '', NULL, '', NULL, 'Hisham Al-Sudani', NULL, NULL, '', ' 55512233', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00055', NULL, NULL);
-INSERT INTO `clients` VALUES (58, '', NULL, 0, '', NULL, '', NULL, 'Alaa Al-Nasser', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00056', NULL, NULL);
-INSERT INTO `clients` VALUES (59, '', NULL, 0, '', NULL, '', NULL, 'Yazeed Al-Tikriti', NULL, NULL, '', '44232392 50910777', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00057', NULL, NULL);
-INSERT INTO `clients` VALUES (60, '', NULL, 0, '', NULL, '', NULL, 'Othman Al-Qattan', NULL, NULL, '44095217', ' ', '28886  DOHA', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00058', NULL, NULL);
-INSERT INTO `clients` VALUES (61, '', NULL, 0, '', NULL, '', NULL, 'Jaber Al-Nour', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00059', NULL, NULL);
-INSERT INTO `clients` VALUES (62, '', NULL, 0, '', NULL, '', NULL, 'Nizar Al-Talib', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00060', NULL, NULL);
-INSERT INTO `clients` VALUES (63, '', NULL, 0, '', NULL, '', NULL, 'Abdelrahman Al-Shafi', NULL, NULL, '40204444', ' ', '14875  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00061', NULL, NULL);
-INSERT INTO `clients` VALUES (64, '', NULL, 0, '', NULL, '', NULL, 'Munir Al-Din', NULL, NULL, '', ' ', '908  MUSCAT, OMAN', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00062', NULL, NULL);
-INSERT INTO `clients` VALUES (65, '', NULL, 0, '', NULL, '', NULL, 'Ihab Al-Muqbil', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00063', NULL, NULL);
-INSERT INTO `clients` VALUES (66, '', NULL, 0, '', NULL, '', NULL, 'Ghassan Al-Sheikh', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00064', NULL, NULL);
-INSERT INTO `clients` VALUES (67, '', NULL, 0, '', NULL, '', NULL, 'Sabah Al-Kazemi', NULL, NULL, '', ' 66707226', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00065', NULL, NULL);
-INSERT INTO `clients` VALUES (68, '', NULL, 0, '', NULL, '', NULL, 'Rami Al-Fahri', NULL, NULL, '44519927', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00066', NULL, NULL);
-INSERT INTO `clients` VALUES (69, '', NULL, 0, '', NULL, '', NULL, 'Badr Al-Ameen', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00067', NULL, NULL);
-INSERT INTO `clients` VALUES (70, '', NULL, 0, '', NULL, '', NULL, 'Khalil Al-Quraishi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00068', NULL, NULL);
-INSERT INTO `clients` VALUES (71, '', NULL, 0, '', NULL, '', NULL, 'Saad Al-Lami', NULL, NULL, 'For Inquiry', '44849444 ', '4020  DOHA', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00069', NULL, NULL);
-INSERT INTO `clients` VALUES (72, '', NULL, 0, '', NULL, '', NULL, 'Jawad Al-Mahdi', NULL, NULL, '44775848', ' ', '4810 AL JAZEERA AL ARABIA STREET QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00070', NULL, NULL);
-INSERT INTO `clients` VALUES (73, '', NULL, 0, '', NULL, '', NULL, 'Tamim Al-Jabbari', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00071', NULL, NULL);
-INSERT INTO `clients` VALUES (74, '', NULL, 0, '', NULL, '', NULL, 'Shadi Al-Maghribi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00072', NULL, NULL);
-INSERT INTO `clients` VALUES (75, '', NULL, 0, '', NULL, '', NULL, 'Naeem Al-Tahan', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00073', NULL, NULL);
-INSERT INTO `clients` VALUES (76, '', NULL, 0, '', NULL, '', NULL, 'Jalal Al-Karim', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00074', NULL, NULL);
-INSERT INTO `clients` VALUES (77, '', NULL, 0, '', NULL, '', NULL, 'Ragheb Al-Faruqi', NULL, NULL, '', ' ', '24866  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00075', NULL, NULL);
-INSERT INTO `clients` VALUES (78, '', NULL, 0, '', NULL, '', NULL, 'Nadim Al-Saad', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00076', NULL, NULL);
-INSERT INTO `clients` VALUES (79, '', NULL, 0, '', NULL, '', NULL, 'Zuhair Al-Awadi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00077', NULL, NULL);
-INSERT INTO `clients` VALUES (80, '', NULL, 0, '', NULL, '', NULL, 'Tayseer Al-Barqawi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00078', NULL, NULL);
-INSERT INTO `clients` VALUES (81, '', NULL, 0, '', NULL, '', NULL, 'Adnan Al-Zaheri', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00079', NULL, NULL);
-INSERT INTO `clients` VALUES (82, '', NULL, 0, '', NULL, '', NULL, 'Fouad Al-Omari', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00080', NULL, NULL);
-INSERT INTO `clients` VALUES (83, '', NULL, 0, '', NULL, '', NULL, 'Bassel Al-Banna', NULL, NULL, '', ' ', '23619  DOHA QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00081', NULL, NULL);
-INSERT INTO `clients` VALUES (84, '', NULL, 0, '', NULL, '', NULL, 'Rafat Al-Qari', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00082', NULL, NULL);
-INSERT INTO `clients` VALUES (85, '', NULL, 0, '', NULL, '', NULL, 'Zain Al-Dulaimi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00083', NULL, NULL);
-INSERT INTO `clients` VALUES (86, '', NULL, 0, '', NULL, '', NULL, 'Talal Al-Kanaan', NULL, NULL, '', ' 60054272', '  CHINA', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00084', NULL, NULL);
-INSERT INTO `clients` VALUES (87, '', NULL, 0, '', NULL, '', NULL, 'Kamel Al-Shalhoub', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00085', NULL, NULL);
+INSERT INTO `clients` VALUES (1, '', NULL, 1, '2025-06-01 18:08:42', 2, '', NULL, 'Mohammed Al-Farsi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CN100001', NULL, '000328429', 0, NULL);
+INSERT INTO `clients` VALUES (2, '', NULL, 0, '', NULL, '2025-06-05 16:23:01', 2, 'Ahmed Auto Shop', 'REGGIE MILLER', 'EMMA STONE', '05415105', '44565265', 'DOHA QATAR STREET 23', NULL, NULL, NULL, 'suppert@autosho.com.qa', NULL, '834 0345', '5419631', 'CN100002', '', '', 1, '734004584');
+INSERT INTO `clients` VALUES (3, '', NULL, 0, '', NULL, '', NULL, 'Omar Al-Hamadi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00001', NULL, '40542944', 0, NULL);
+INSERT INTO `clients` VALUES (4, '', NULL, 0, '', NULL, '2025-06-05 15:38:59', 2, 'Ali Car Specialist AXC', 'LENA FRENN', 'JONNY PANE', '394 2342', '342 3444', 'DOHA QATAR, INDUSTRIAL AREA', NULL, NULL, NULL, 'marketing@autogalla.com', NULL, '344-0034', '847 3242', 'CNO00002', 'WWW.MACHANIC1A.COM', '', 1, '34577570003');
+INSERT INTO `clients` VALUES (5, '', NULL, 0, '', NULL, '', NULL, 'Yousef Al-Najjar', NULL, NULL, '', '33454535', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00003', NULL, '54353334', 0, NULL);
+INSERT INTO `clients` VALUES (6, '', NULL, 0, '', NULL, '', NULL, 'Hassan Al-Rashid', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00004', NULL, '345345345', 0, NULL);
+INSERT INTO `clients` VALUES (7, '', NULL, 0, '', NULL, '', NULL, 'Khalid Al-Jabari', NULL, NULL, '', ' ', '4928 AL KHALEEJ STREET, MUSHAIREB ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00005', NULL, '34234234', 0, NULL);
+INSERT INTO `clients` VALUES (8, '', NULL, 0, '', NULL, '', NULL, 'Faisal Al-Ahmad', NULL, NULL, '45534555', ' ', '  QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00006', NULL, '23423423', 0, NULL);
+INSERT INTO `clients` VALUES (9, '', NULL, 0, '', NULL, '', NULL, 'Saeed Al-Karim', NULL, NULL, '', ' ', '  DOHA QATAR', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00007', NULL, '364622325', 0, NULL);
+INSERT INTO `clients` VALUES (10, '', NULL, 0, '', NULL, '', NULL, 'Ibrahim Al-Fahad', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00008', NULL, '2342342', 0, NULL);
+INSERT INTO `clients` VALUES (11, '', NULL, 0, '', NULL, '', NULL, 'Tariq Al-Harbi', NULL, NULL, '', ' 4534534535', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00009', NULL, '2342342', 0, NULL);
+INSERT INTO `clients` VALUES (12, '', NULL, 0, '', NULL, '', NULL, 'Salim Al-Dhaheri', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00010', NULL, '263463346', 0, NULL);
+INSERT INTO `clients` VALUES (13, '', NULL, 0, '', NULL, '', NULL, 'Majid Al-Mutairi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00011', NULL, '433453453', 0, NULL);
+INSERT INTO `clients` VALUES (14, '', NULL, 0, '', NULL, '', NULL, 'Hamad Al-Shamrani', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00012', NULL, '345345345', 0, NULL);
+INSERT INTO `clients` VALUES (15, '', NULL, 0, '', NULL, '', NULL, 'Abdullah Al-Sabah', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00013', NULL, '234234', 0, NULL);
+INSERT INTO `clients` VALUES (16, '', NULL, 0, '', NULL, '', NULL, 'Waleed Al-Hashimi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00014', NULL, '34234234', 0, NULL);
+INSERT INTO `clients` VALUES (17, '', NULL, 0, '', NULL, '', NULL, 'Nasser Al-Tamimi', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00015', NULL, '34234234', 0, NULL);
+INSERT INTO `clients` VALUES (18, '', NULL, 0, '', NULL, '2025-06-05 15:39:17', 2, 'Zayed Machanic Auto Shop', '', '', '', '', '', NULL, NULL, NULL, '', NULL, '', '', 'CNO00016', '', '', 1, '800000756');
+INSERT INTO `clients` VALUES (19, '', NULL, 0, '', NULL, '2025-06-05 15:40:46', 2, 'Rashid Hop W.L.L.', 'MAGIC JOANSON', 'DANN WHITE', '734 3294', '342 3242', 'DOHA QATAR', NULL, NULL, NULL, 'test@sdgmail.com', NULL, '', '734 3243', 'CNO00017', '', '', 1, '78970000-6700');
+INSERT INTO `clients` VALUES (20, '', NULL, 0, '', NULL, '', NULL, 'Adel Auto Sports', NULL, NULL, '', ' ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '', 'CNO00018', NULL, NULL, 1, '9677900007');
+INSERT INTO `clients` VALUES (88, '2025-06-05 15:14:19', 2, 1, '2025-06-05 15:40:59', 2, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '23423424', 0, NULL);
+INSERT INTO `clients` VALUES (89, '2025-06-05 15:41:49', 2, 1, '2025-06-05 15:42:49', 2, '', NULL, '', '', '', '', '', '', NULL, NULL, NULL, '', NULL, '', '', 'CNO00019', '', '28262021452', 0, '');
 
 -- ----------------------------
 -- Table structure for clients_documents
@@ -813,11 +752,11 @@ CREATE TABLE `fm_adjustments_types`  (
 -- ----------------------------
 -- Records of fm_adjustments_types
 -- ----------------------------
-INSERT INTO `fm_adjustments_types` VALUES (1, 'Returns and Damaged Goods', 'Returns and Damaged Goods', '2023-12-27', 2);
-INSERT INTO `fm_adjustments_types` VALUES (2, 'Physical Count Discrepancies', 'Physical Count Discrepancies', '2023-12-27', 2);
-INSERT INTO `fm_adjustments_types` VALUES (3, 'Obsolete or Expired Items', 'Obsolete or Expired Items', '2023-12-27', 2);
-INSERT INTO `fm_adjustments_types` VALUES (4, 'Write-offs', 'Write-offs', '2023-12-27', 2);
-INSERT INTO `fm_adjustments_types` VALUES (5, 'Seasonal Adjustments', 'Seasonal Adjustments', '2023-12-27', 2);
+INSERT INTO `fm_adjustments_types` VALUES (1, 'RETURNS AND DAMAGED GOODS', 'RETURNS AND DAMAGED GOODS', '2023-12-27', 2);
+INSERT INTO `fm_adjustments_types` VALUES (2, 'PHYSICAL COUNT DISCREPANCIES', 'PHYSICAL COUNT DISCREPANCIES', '2023-12-27', 2);
+INSERT INTO `fm_adjustments_types` VALUES (3, 'OBSOLETE OR EXPIRED ITEMS', 'OBSOLETE OR EXPIRED ITEMS', '2023-12-27', 2);
+INSERT INTO `fm_adjustments_types` VALUES (4, 'WRITE-OFFS', 'WRITE-OFFS', '2023-12-27', 2);
+INSERT INTO `fm_adjustments_types` VALUES (5, 'SEASONAL ADJUSTMENTS', 'SEASONAL ADJUSTMENTS', '2023-12-27', 2);
 
 -- ----------------------------
 -- Table structure for fm_cash_control_account
@@ -1112,7 +1051,7 @@ CREATE TABLE `fm_grv_transport`  (
 -- Records of fm_grv_transport
 -- ----------------------------
 INSERT INTO `fm_grv_transport` VALUES (1, 'DHL', 'DHL', '2024-05-15', 2);
-INSERT INTO `fm_grv_transport` VALUES (2, 'Talabat Express', 'Talabat Express', '2024-05-15', 2);
+INSERT INTO `fm_grv_transport` VALUES (2, 'TALABAT EXPRESS', 'TALABAT EXPRESS', '2024-05-15', 2);
 
 -- ----------------------------
 -- Table structure for fm_item_brand
@@ -1130,34 +1069,34 @@ CREATE TABLE `fm_item_brand`  (
 -- ----------------------------
 -- Records of fm_item_brand
 -- ----------------------------
-INSERT INTO `fm_item_brand` VALUES (1, 'Denso', 'Denso', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (1, 'DENSO', 'DENSO', '2025-06-04', 2);
 INSERT INTO `fm_item_brand` VALUES (2, 'NGK', 'NGK', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (3, 'Bosch', 'Bosch', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (4, 'Mahle', 'Mahle', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (3, 'BOSCH', 'BOSCH', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (4, 'MAHLE', 'MAHLE', '2025-06-04', 2);
 INSERT INTO `fm_item_brand` VALUES (5, 'NPR', 'NPR', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (6, 'Federal-Mogul', 'Federal-Mogul', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (6, 'FEDERAL-MOGUL', 'FEDERAL-MOGUL', '2025-06-04', 2);
 INSERT INTO `fm_item_brand` VALUES (7, 'KYB', 'KYB', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (8, 'Monroe', 'Monroe', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (8, 'MONROE', 'MONROE', '2025-06-04', 2);
 INSERT INTO `fm_item_brand` VALUES (9, 'TRW', 'TRW', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (10, 'Lemförder', 'Lemförder', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (11, 'Moog', 'Moog', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (12, 'Brembo', 'Brembo', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (13, 'Akebono', 'Akebono', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (10, 'LEMFÖRDER', 'LEMFÖRDER', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (11, 'MOOG', 'MOOG', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (12, 'BREMBO', 'BREMBO', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (13, 'AKEBONO', 'AKEBONO', '2025-06-04', 2);
 INSERT INTO `fm_item_brand` VALUES (14, 'ATE', 'ATE', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (15, 'Nissin', 'Nissin', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (16, 'Sakura', 'Sakura', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (15, 'NISSIN', 'NISSIN', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (16, 'SAKURA', 'SAKURA', '2025-06-04', 2);
 INSERT INTO `fm_item_brand` VALUES (17, 'MANN', 'MANN', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (18, 'ACDelco', 'ACDelco', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (19, 'Nissens', 'Nissens', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (20, 'Valeo', 'Valeo', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (21, 'Behr', 'Behr', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (22, 'Delphi', 'Delphi', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (23, 'Walbro', 'Walbro', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (24, 'Toyota Genuine Parts', 'Toyota Genuine Parts', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (25, 'Honda Genuine Parts', 'Honda Genuine Parts', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (26, 'Mopar', 'Mopar', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (27, 'Motorcraft', 'Motorcraft', '2025-06-04', 2);
-INSERT INTO `fm_item_brand` VALUES (28, 'Hyundai Mobis', 'Hyundai Mobis', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (18, 'ACDELCO', 'ACDELCO', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (19, 'NISSENS', 'NISSENS', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (20, 'VALEO', 'VALEO', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (21, 'BEHR', 'BEHR', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (22, 'DELPHI', 'DELPHI', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (23, 'WALBRO', 'WALBRO', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (24, 'TOYOTA GENUINE PARTS', 'TOYOTA GENUINE PARTS', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (25, 'HONDA GENUINE PARTS', 'HONDA GENUINE PARTS', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (26, 'MOPAR', 'MOPAR', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (27, 'MOTORCRAFT', 'MOTORCRAFT', '2025-06-04', 2);
+INSERT INTO `fm_item_brand` VALUES (28, 'HYUNDAI MOBIS', 'HYUNDAI MOBIS', '2025-06-04', 2);
 
 -- ----------------------------
 -- Table structure for fm_item_category
@@ -1175,21 +1114,21 @@ CREATE TABLE `fm_item_category`  (
 -- ----------------------------
 -- Records of fm_item_category
 -- ----------------------------
-INSERT INTO `fm_item_category` VALUES (1, 'Engine Components', 'Engine Components', '2025-06-04', 2);
-INSERT INTO `fm_item_category` VALUES (2, 'Electrical', 'Electrical', '2025-06-04', 2);
-INSERT INTO `fm_item_category` VALUES (3, 'Suspension & Steering', 'Suspension and steering components', '2025-06-04', 2);
-INSERT INTO `fm_item_category` VALUES (4, 'Brake System', 'Brake-related components', '2025-06-04', 2);
-INSERT INTO `fm_item_category` VALUES (5, 'Transmission', 'Gearbox, clutch, etc.', '2025-06-04', 2);
-INSERT INTO `fm_item_category` VALUES (6, 'Exhaust System', 'Exhaust pipes, mufflers, etc.', '2025-06-04', 2);
-INSERT INTO `fm_item_category` VALUES (7, 'Cooling System', 'Radiator, thermostat, etc.', '2025-06-04', 2);
-INSERT INTO `fm_item_category` VALUES (8, 'Filters', 'Air, fuel, oil filters', '2025-06-04', 2);
-INSERT INTO `fm_item_category` VALUES (9, 'Body & Trim', 'Doors, lights, bumpers', '2025-06-04', 2);
-INSERT INTO `fm_item_category` VALUES (10, 'Tires & Wheels', 'Tires, rims, wheel accessories', '2025-06-04', 2);
-INSERT INTO `fm_item_category` VALUES (11, 'Fuel System', 'Fuel pump, injectors, lines', '2025-06-04', 2);
-INSERT INTO `fm_item_category` VALUES (12, 'Lubricants & Fluids', 'Oils, brake fluid, coolants', '2025-06-04', 2);
-INSERT INTO `fm_item_category` VALUES (13, 'Accessories', 'Floor mats, covers, electronics', '2025-06-04', 2);
-INSERT INTO `fm_item_category` VALUES (14, 'HVAC System', 'Air conditioning, blower motors', '2025-06-04', 2);
-INSERT INTO `fm_item_category` VALUES (15, 'Tools & Equipment', 'Tools used in servicing vehicles', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (1, 'ENGINE COMPONENTS', 'ENGINE COMPONENTS', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (2, 'ELECTRICAL', 'ELECTRICAL', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (3, 'SUSPENSION & STEERING', 'SUSPENSION AND STEERING COMPONENTS', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (4, 'BRAKE SYSTEM', 'BRAKE-RELATED COMPONENTS', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (5, 'TRANSMISSION', 'GEARBOX, CLUTCH, ETC.', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (6, 'EXHAUST SYSTEM', 'EXHAUST PIPES, MUFFLERS, ETC.', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (7, 'COOLING SYSTEM', 'RADIATOR, THERMOSTAT, ETC.', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (8, 'FILTERS', 'AIR, FUEL, OIL FILTERS', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (9, 'BODY & TRIM', 'DOORS, LIGHTS, BUMPERS', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (10, 'TIRES & WHEELS', 'TIRES, RIMS, WHEEL ACCESSORIES', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (11, 'FUEL SYSTEM', 'FUEL PUMP, INJECTORS, LINES', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (12, 'LUBRICANTS & FLUIDS', 'OILS, BRAKE FLUID, COOLANTS', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (13, 'ACCESSORIES', 'FLOOR MATS, COVERS, ELECTRONICS', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (14, 'HVAC SYSTEM', 'AIR CONDITIONING, BLOWER MOTORS', '2025-06-04', 2);
+INSERT INTO `fm_item_category` VALUES (15, 'TOOLS & EQUIPMENT', 'TOOLS USED IN SERVICING VEHICLES', '2025-06-04', 2);
 
 -- ----------------------------
 -- Table structure for fm_item_type
@@ -1207,26 +1146,26 @@ CREATE TABLE `fm_item_type`  (
 -- ----------------------------
 -- Records of fm_item_type
 -- ----------------------------
-INSERT INTO `fm_item_type` VALUES (1, 'Oil Filter', 'Removes contaminants from engine oil', '2025-06-04', 2);
-INSERT INTO `fm_item_type` VALUES (2, 'Air Filter', 'Filters air going into engine', '2025-06-04', 2);
-INSERT INTO `fm_item_type` VALUES (3, 'Brake Pad', 'Friction part for braking', '2025-06-04', 2);
-INSERT INTO `fm_item_type` VALUES (4, 'Spark Plug', 'Ignites air-fuel mixture', '2025-06-04', 2);
-INSERT INTO `fm_item_type` VALUES (5, 'Timing Belt', 'Synchronizes engine rotation', '2025-06-04', 2);
-INSERT INTO `fm_item_type` VALUES (6, 'Radiator', 'Cools engine coolant', '2025-06-04', 2);
-INSERT INTO `fm_item_type` VALUES (7, 'Headlight', 'Front lighting', '2025-06-04', 2);
-INSERT INTO `fm_item_type` VALUES (8, 'Alternator', 'Generates electrical power', '2025-06-04', 2);
-INSERT INTO `fm_item_type` VALUES (9, 'Battery', 'Stores electrical energy', '2025-06-04', 2);
-INSERT INTO `fm_item_type` VALUES (10, 'Shock Absorber', 'Part of suspension', '2025-06-04', 2);
-INSERT INTO `fm_item_type` VALUES (11, 'Clutch Disc', 'Connects engine to transmission', '2025-06-04', 2);
-INSERT INTO `fm_item_type` VALUES (12, 'Muffler', 'Reduces engine noise', '2025-06-04', 2);
-INSERT INTO `fm_item_type` VALUES (13, 'Windshield Wiper Blade', 'Clears windshield', '2025-06-04', 2);
-INSERT INTO `fm_item_type` VALUES (14, 'Fuel Pump', 'Pumps fuel to engine', '2025-06-04', 2);
-INSERT INTO `fm_item_type` VALUES (15, 'Engine Oil', 'Lubricates engine', '2025-06-04', 2);
-INSERT INTO `fm_item_type` VALUES (16, 'Brake Fluid', 'Transmits braking force', '2025-06-04', 2);
-INSERT INTO `fm_item_type` VALUES (17, 'AC Compressor', 'Compresses refrigerant', '2025-06-04', 2);
-INSERT INTO `fm_item_type` VALUES (18, 'Wheel Bearing', 'Supports wheel rotation', '2025-06-04', 2);
-INSERT INTO `fm_item_type` VALUES (19, 'Tie Rod End', 'Steering mechanism part', '2025-06-04', 2);
-INSERT INTO `fm_item_type` VALUES (20, 'Fuse Box', 'Houses electrical fuses', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (1, 'OIL FILTER', 'REMOVES CONTAMINANTS FROM ENGINE OIL', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (2, 'AIR FILTER', 'FILTERS AIR GOING INTO ENGINE', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (3, 'BRAKE PAD', 'FRICTION PART FOR BRAKING', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (4, 'SPARK PLUG', 'IGNITES AIR-FUEL MIXTURE', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (5, 'TIMING BELT', 'SYNCHRONIZES ENGINE ROTATION', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (6, 'RADIATOR', 'COOLS ENGINE COOLANT', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (7, 'HEADLIGHT', 'FRONT LIGHTING', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (8, 'ALTERNATOR', 'GENERATES ELECTRICAL POWER', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (9, 'BATTERY', 'STORES ELECTRICAL ENERGY', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (10, 'SHOCK ABSORBER', 'PART OF SUSPENSION', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (11, 'CLUTCH DISC', 'CONNECTS ENGINE TO TRANSMISSION', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (12, 'MUFFLER', 'REDUCES ENGINE NOISE', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (13, 'WINDSHIELD WIPER BLADE', 'CLEARS WINDSHIELD', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (14, 'FUEL PUMP', 'PUMPS FUEL TO ENGINE', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (15, 'ENGINE OIL', 'LUBRICATES ENGINE', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (16, 'BRAKE FLUID', 'TRANSMITS BRAKING FORCE', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (17, 'AC COMPRESSOR', 'COMPRESSES REFRIGERANT', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (18, 'WHEEL BEARING', 'SUPPORTS WHEEL ROTATION', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (19, 'TIE ROD END', 'STEERING MECHANISM PART', '2025-06-04', 2);
+INSERT INTO `fm_item_type` VALUES (20, 'FUSE BOX', 'HOUSES ELECTRICAL FUSES', '2025-06-04', 2);
 
 -- ----------------------------
 -- Table structure for fm_local_charges
@@ -1300,9 +1239,9 @@ CREATE TABLE `fm_manufacturers`  (
 -- ----------------------------
 -- Records of fm_manufacturers
 -- ----------------------------
-INSERT INTO `fm_manufacturers` VALUES (1, 'Toyota', 'Toyota', '2025-06-01', 2);
-INSERT INTO `fm_manufacturers` VALUES (2, 'Honda', 'Honda', '2025-06-01', 2);
-INSERT INTO `fm_manufacturers` VALUES (3, 'Porsche', 'Porsche', '2025-06-01', 2);
+INSERT INTO `fm_manufacturers` VALUES (1, 'TOYOTA', 'TOYOTA', '2025-06-01', 2);
+INSERT INTO `fm_manufacturers` VALUES (2, 'HONDA', 'HONDA', '2025-06-01', 2);
+INSERT INTO `fm_manufacturers` VALUES (3, 'PORSCHE', 'PORSCHE', '2025-06-01', 2);
 
 -- ----------------------------
 -- Table structure for fm_models
@@ -1322,13 +1261,13 @@ CREATE TABLE `fm_models`  (
 -- ----------------------------
 -- Records of fm_models
 -- ----------------------------
-INSERT INTO `fm_models` VALUES (1, '911 Turbo', '911 Turbo', '2025-06-01', 2, 2024, 3);
-INSERT INTO `fm_models` VALUES (2, '911 Turbo RS', '911 Turbo RS', '2025-06-01', 2, 2024, 3);
-INSERT INTO `fm_models` VALUES (3, 'Cayanne', 'Cayanne', '2025-06-01', 2, 2024, 3);
-INSERT INTO `fm_models` VALUES (4, 'Yaris', 'Yaris Sedan', '2025-06-01', 2, 2022, 1);
-INSERT INTO `fm_models` VALUES (5, 'Innova G', 'Base Model of Innova', '2025-06-01', 2, 2023, 1);
-INSERT INTO `fm_models` VALUES (6, 'Civic RS', 'Civic RS', '2025-06-01', 2, 2023, 2);
-INSERT INTO `fm_models` VALUES (7, 'City G', 'City G', '2025-06-01', 2, 2022, 2);
+INSERT INTO `fm_models` VALUES (1, '911 TURBO', '911 TURBO', '2025-06-01', 2, 2024, 3);
+INSERT INTO `fm_models` VALUES (2, '911 TURBO RS', '911 TURBO RS', '2025-06-01', 2, 2024, 3);
+INSERT INTO `fm_models` VALUES (3, 'CAYANNE', 'CAYANNE', '2025-06-01', 2, 2024, 3);
+INSERT INTO `fm_models` VALUES (4, 'YARIS', 'YARIS SEDAN', '2025-06-01', 2, 2022, 1);
+INSERT INTO `fm_models` VALUES (5, 'INNOVA G', 'BASE MODEL OF INNOVA', '2025-06-01', 2, 2023, 1);
+INSERT INTO `fm_models` VALUES (6, 'CIVIC RS', 'CIVIC RS', '2025-06-01', 2, 2023, 2);
+INSERT INTO `fm_models` VALUES (7, 'CITY G', 'CITY G', '2025-06-01', 2, 2022, 2);
 
 -- ----------------------------
 -- Table structure for fm_project_status
@@ -1396,26 +1335,26 @@ CREATE TABLE `inventory`  (
 -- ----------------------------
 -- Records of inventory
 -- ----------------------------
-INSERT INTO `inventory` VALUES (1, '2025-06-04', 1, 0, '', NULL, '2025-06-04 21:02:19', 2, 'PART001', 'Oil Filter', 10, 'system', '5.00', '8.00', '4.50', 5, NULL, NULL, '675', '[\"4\",\"6\"]', '[\"2\",\"7\"]', 1, 1, 1, 'A1', 'B1', 'C1', 5, 50, '', '', '', '74.50', '8.50', 3);
-INSERT INTO `inventory` VALUES (2, '2025-06-04', 2, 0, '', NULL, '2025-06-04 22:18:55', 2, 'PART002', 'Brake Pad Set', 15, 'system', '12.00', '18.00', '10.00', 10, NULL, NULL, '66', '[\"3\",\"6\"]', '[\"2\",\"5\"]', 2, 2, 1, 'A2', 'B2', 'C2', 5, 100, 'G5gVMtpquRQwHy3WExSB.jpg', '', '', '417.00', '19.00', 1);
-INSERT INTO `inventory` VALUES (3, '2025-06-04', 1, 0, '', NULL, '2025-06-04 22:00:35', 2, 'PART003', 'Air Filter', 20, 'system', '3.00', '6.00', '2.50', 8, NULL, NULL, '75', '[\"4\",\"6\"]', '[\"2\",\"5\"]', 1, 3, 2, 'A3', 'B3', 'C3', 5, 80, '', '', '', '55.50', '6.50', 1);
-INSERT INTO `inventory` VALUES (4, '2025-06-04', 3, 0, '', NULL, '2025-06-04 22:21:19', 2, 'PART004', 'Fuel Pump', 5, 'system', '50.00', '75.00', '45.00', 3, NULL, NULL, '457', '[\"4\",\"6\"]', '[\"2\",\"5\"]', 2, 1, 3, 'A4', 'B4', 'C4', 2, 20, '8d1NI4JTMB6aLqzUHvVF.jpg', 'GHOckFyPv06ZL7ox1Tb2.jpg', NULL, '570.00', '78.00', 2);
-INSERT INTO `inventory` VALUES (5, '2025-06-04', 2, 0, '', NULL, '2025-06-04 21:38:12', 2, 'PART005', 'Headlight Assembly', 7, 'system', '30.00', '45.00', '28.00', 4, NULL, NULL, '775', '[\"1\",\"4\",\"6\",\"7\"]', '[\"2\",\"5\"]', 3, 2, 2, 'A5', 'B5', 'C5', 3, 30, '', '', '', '643.00', '47.00', 3);
-INSERT INTO `inventory` VALUES (6, '2025-06-04', 1, 0, '', NULL, '2025-06-04 22:36:01', 2, 'PART006', 'Alternator', 3, 'system', '75.00', '120.00', '70.00', 2, NULL, NULL, '500', '[\"1\",\"4\"]', '[\"2\",\"5\"]', 1, 2, 1, 'A6', 'B6', 'C6', 1, 10, NULL, NULL, NULL, '115.00', '125.00', 3);
-INSERT INTO `inventory` VALUES (7, '2025-06-04', 2, 0, '', NULL, '', NULL, 'PART007', 'Spark Plug', 50, 'system', '2.00', '4.00', '1.80', 30, NULL, NULL, '760', NULL, NULL, 2, 3, 2, 'A7', 'B7', 'C7', 20, 200, NULL, NULL, NULL, '356.50', '4.50', 4);
-INSERT INTO `inventory` VALUES (8, '2025-06-04', 3, 0, '', NULL, '2025-06-04 21:56:34', 2, 'PART008', 'Timing Belt', 8, 'system', '20.00', '35.00', '18.00', 5, NULL, NULL, '56', '[\"2\",\"3\"]', '[\"2\",\"5\"]', 3, 1, 3, 'A8', 'B8', 'C8', 3, 25, '', '', '', '33.00', '36.00', 5);
-INSERT INTO `inventory` VALUES (9, '2025-06-04', 1, 0, '', NULL, '', NULL, 'PART009', 'Battery 12V', 6, 'system', '40.00', '60.00', '38.00', 4, NULL, NULL, '54', NULL, NULL, 1, 1, 1, 'A9', 'B9', 'C9', 2, 15, NULL, NULL, NULL, '58.00', '62.00', 4);
-INSERT INTO `inventory` VALUES (10, '2025-06-04', 2, 0, '', NULL, '', NULL, 'PART010', 'Radiator Hose', 25, 'system', '6.00', '10.00', '5.50', 12, NULL, NULL, '67', NULL, NULL, 2, 2, 3, 'A10', 'B10', 'C10', 10, 60, NULL, NULL, NULL, '569.50', '10.50', 6);
-INSERT INTO `inventory` VALUES (11, '2025-06-04', 1, 0, '', NULL, '2025-06-04 22:00:00', 2, 'PART011', 'Wheel Bearing', 12, 'system', '15.00', '25.00', '13.00', 6, NULL, NULL, '65', '[\"4\",\"5\",\"6\"]', '[\"2\",\"5\"]', 1, 3, 2, 'A11', 'B11', 'C11', 4, 40, '', NULL, '', '24.00', '26.00', 4);
-INSERT INTO `inventory` VALUES (12, '2025-06-04', 2, 0, '', NULL, '', NULL, 'PART012', 'Muffler', 4, 'system', '55.00', '80.00', '50.00', 3, NULL, NULL, '76', NULL, NULL, 3, 1, 1, 'A12', 'B12', 'C12', 2, 12, NULL, NULL, NULL, '78.00', '82.00', 2);
-INSERT INTO `inventory` VALUES (13, '2025-06-04', 3, 0, '', NULL, '', NULL, 'PART013', 'Clutch Plate', 9, 'system', '22.00', '35.00', '20.00', 5, NULL, NULL, '45', NULL, NULL, 2, 2, 3, 'A13', 'B13', 'C13', 3, 30, NULL, NULL, NULL, '33.00', '36.00', 3);
-INSERT INTO `inventory` VALUES (14, '2025-06-04', 1, 0, '', NULL, '', NULL, 'PART014', 'Shock Absorber', 6, 'system', '60.00', '90.00', '55.00', 4, NULL, NULL, '56', NULL, NULL, 3, 3, 2, 'A14', 'B14', 'C14', 2, 18, NULL, NULL, NULL, '88.00', '92.00', 2);
-INSERT INTO `inventory` VALUES (15, '2025-06-04', 2, 0, '', NULL, '', NULL, 'PART015', 'CV Joint', 7, 'system', '35.00', '55.00', '33.00', 4, NULL, NULL, '777', NULL, NULL, 1, 1, 1, 'A15', 'B15', 'C15', 3, 22, NULL, NULL, NULL, '53.00', '57.00', 2);
-INSERT INTO `inventory` VALUES (16, '2025-06-04', 3, 0, '', NULL, '', NULL, 'PART016', 'Thermostat', 14, 'system', '4.00', '7.00', '3.50', 7, NULL, NULL, '675', NULL, NULL, 2, 2, 3, 'A16', 'B16', 'C16', 6, 50, NULL, NULL, NULL, '6.50', '7.50', 1);
-INSERT INTO `inventory` VALUES (17, '2025-06-04', 1, 0, '', NULL, '', NULL, 'PART017', 'Radiator', 5, 'system', '65.00', '100.00', '60.00', 3, NULL, NULL, '45', NULL, NULL, 3, 1, 2, 'A17', 'B17', 'C17', 2, 15, NULL, NULL, NULL, '95.00', '105.00', 2);
-INSERT INTO `inventory` VALUES (18, '2025-06-04', 2, 0, '', NULL, '', NULL, 'PART018', 'Oil Pan', 4, 'system', '25.00', '40.00', '23.00', 2, NULL, NULL, '34', NULL, NULL, 1, 3, 3, 'A18', 'B18', 'C18', 2, 10, NULL, NULL, NULL, '38.00', '42.00', 3);
-INSERT INTO `inventory` VALUES (19, '2025-06-04', 3, 0, '', NULL, '', NULL, 'PART019', 'Drive Shaft', 3, 'system', '70.00', '110.00', '65.00', 2, NULL, NULL, '450', NULL, NULL, 2, 2, 1, 'A19', 'B19', 'C19', 1, 12, NULL, NULL, NULL, '108.00', '112.00', 4);
-INSERT INTO `inventory` VALUES (20, '2025-06-04', 1, 0, '', NULL, '', NULL, 'PART020', 'Fan Belt', 20, 'system', '3.00', '6.00', '2.50', 10, NULL, NULL, '454', NULL, NULL, 3, 3, 2, 'A20', 'B20', 'C20', 10, 60, NULL, NULL, NULL, '5.80', '6.20', 5);
+INSERT INTO `inventory` VALUES (1, '2025-06-04', 1, 0, '', NULL, '2025-06-04 21:02:19', 2, 'PART001', 'OIL FILTER', 10, 'system', '5.00', '8.00', '4.50', 5, NULL, NULL, '675', '[\"4\",\"6\"]', '[\"2\",\"7\"]', 1, 1, 1, 'A1', 'B1', 'C1', 5, 50, '', '', '', '74.50', '8.50', 3);
+INSERT INTO `inventory` VALUES (2, '2025-06-04', 2, 0, '', NULL, '2025-06-04 22:18:55', 2, 'PART002', 'BRAKE PAD SET', 15, 'system', '12.00', '18.00', '10.00', 10, NULL, NULL, '66', '[\"3\",\"6\"]', '[\"2\",\"5\"]', 2, 2, 1, 'A2', 'B2', 'C2', 5, 100, 'G5gVMtpquRQwHy3WExSB.jpg', '', '', '417.00', '19.00', 1);
+INSERT INTO `inventory` VALUES (3, '2025-06-04', 1, 0, '', NULL, '2025-06-04 22:00:35', 2, 'PART003', 'AIR FILTER', 20, 'system', '3.00', '6.00', '2.50', 8, NULL, NULL, '75', '[\"4\",\"6\"]', '[\"2\",\"5\"]', 1, 3, 2, 'A3', 'B3', 'C3', 5, 80, '', '', '', '55.50', '6.50', 1);
+INSERT INTO `inventory` VALUES (4, '2025-06-04', 3, 0, '', NULL, '2025-06-04 22:21:19', 2, 'PART004', 'FUEL PUMP', 5, 'system', '50.00', '75.00', '45.00', 3, NULL, NULL, '457', '[\"4\",\"6\"]', '[\"2\",\"5\"]', 2, 1, 3, 'A4', 'B4', 'C4', 2, 20, '8d1NI4JTMB6aLqzUHvVF.jpg', 'GHOckFyPv06ZL7ox1Tb2.jpg', NULL, '570.00', '78.00', 2);
+INSERT INTO `inventory` VALUES (5, '2025-06-04', 2, 0, '', NULL, '2025-06-04 21:38:12', 2, 'PART005', 'HEADLIGHT ASSEMBLY', 7, 'system', '30.00', '45.00', '28.00', 4, NULL, NULL, '775', '[\"1\",\"4\",\"6\",\"7\"]', '[\"2\",\"5\"]', 3, 2, 2, 'A5', 'B5', 'C5', 3, 30, '', '', '', '643.00', '47.00', 3);
+INSERT INTO `inventory` VALUES (6, '2025-06-04', 1, 0, '', NULL, '2025-06-05 16:58:19', 2, 'PART006', 'ALTERNATOR', 3, 'system', '75.00', '120.00', '70.00', 2, NULL, NULL, '500', '[\"1\",\"4\"]', '[\"2\",\"5\"]', 1, 2, 1, 'A6', 'B6', 'C6', 1, 10, NULL, NULL, NULL, '115.00', '125.00', 3);
+INSERT INTO `inventory` VALUES (7, '2025-06-04', 2, 0, '', NULL, '2025-06-05 16:57:35', 2, 'PART007', 'SPARK PLUG', 50, 'system', '2.00', '4.00', '1.80', 30, NULL, NULL, '760', NULL, '[\"2\",\"5\"]', 2, 3, 2, 'A7', 'B7', 'C7', 20, 200, NULL, NULL, NULL, '356.50', '4.50', 4);
+INSERT INTO `inventory` VALUES (8, '2025-06-04', 3, 0, '', NULL, '2025-06-04 21:56:34', 2, 'PART008', 'TIMING BELT', 8, 'system', '20.00', '35.00', '18.00', 5, NULL, NULL, '56', '[\"2\",\"3\"]', '[\"2\",\"5\"]', 3, 1, 3, 'A8', 'B8', 'C8', 3, 25, '', '', '', '33.00', '36.00', 5);
+INSERT INTO `inventory` VALUES (9, '2025-06-04', 1, 0, '', NULL, '2025-06-05 16:38:50', 2, 'PART009', 'BATTERY 12V', 6, 'system', '40.00', '60.00', '38.00', 4, NULL, NULL, '54', NULL, '[\"2\",\"5\"]', 1, 1, 1, 'A9', 'B9', 'C9', 2, 15, '3FEXY2vnOb6gHBNjpUxT.png', NULL, NULL, '58.00', '62.00', 4);
+INSERT INTO `inventory` VALUES (10, '2025-06-04', 2, 0, '', NULL, '2025-06-05 17:10:58', 2, 'PART010', 'RADIATOR HOSE', 25, 'system', '6.00', '10.00', '5.50', 12, NULL, NULL, '67', NULL, '[\"2\",\"5\"]', 2, 2, 3, 'A10', 'B10', 'C10', 10, 60, NULL, NULL, NULL, '569.50', '10.50', 6);
+INSERT INTO `inventory` VALUES (11, '2025-06-04', 1, 0, '', NULL, '2025-06-04 22:00:00', 2, 'PART011', 'WHEEL BEARING', 12, 'system', '15.00', '25.00', '13.00', 6, NULL, NULL, '65', '[\"4\",\"5\",\"6\"]', '[\"2\",\"5\"]', 1, 3, 2, 'A11', 'B11', 'C11', 4, 40, '', NULL, '', '24.00', '26.00', 4);
+INSERT INTO `inventory` VALUES (12, '2025-06-04', 2, 0, '', NULL, '', NULL, 'PART012', 'MUFFLER', 4, 'system', '55.00', '80.00', '50.00', 3, NULL, NULL, '76', NULL, NULL, 3, 1, 1, 'A12', 'B12', 'C12', 2, 12, NULL, NULL, NULL, '78.00', '82.00', 2);
+INSERT INTO `inventory` VALUES (13, '2025-06-04', 3, 0, '', NULL, '', NULL, 'PART013', 'CLUTCH PLATE', 9, 'system', '22.00', '35.00', '20.00', 5, NULL, NULL, '45', NULL, NULL, 2, 2, 3, 'A13', 'B13', 'C13', 3, 30, NULL, NULL, NULL, '33.00', '36.00', 3);
+INSERT INTO `inventory` VALUES (14, '2025-06-04', 1, 0, '', NULL, '', NULL, 'PART014', 'SHOCK ABSORBER', 6, 'system', '60.00', '90.00', '55.00', 4, NULL, NULL, '56', NULL, NULL, 3, 3, 2, 'A14', 'B14', 'C14', 2, 18, NULL, NULL, NULL, '88.00', '92.00', 2);
+INSERT INTO `inventory` VALUES (15, '2025-06-04', 2, 0, '', NULL, '', NULL, 'PART015', 'CV JOINT', 7, 'system', '35.00', '55.00', '33.00', 4, NULL, NULL, '777', NULL, NULL, 1, 1, 1, 'A15', 'B15', 'C15', 3, 22, NULL, NULL, NULL, '53.00', '57.00', 2);
+INSERT INTO `inventory` VALUES (16, '2025-06-04', 3, 0, '', NULL, '', NULL, 'PART016', 'THERMOSTAT', 14, 'system', '4.00', '7.00', '3.50', 7, NULL, NULL, '675', NULL, NULL, 2, 2, 3, 'A16', 'B16', 'C16', 6, 50, NULL, NULL, NULL, '6.50', '7.50', 1);
+INSERT INTO `inventory` VALUES (17, '2025-06-04', 1, 0, '', NULL, '', NULL, 'PART017', 'RADIATOR', 5, 'system', '65.00', '100.00', '60.00', 3, NULL, NULL, '45', NULL, NULL, 3, 1, 2, 'A17', 'B17', 'C17', 2, 15, NULL, NULL, NULL, '95.00', '105.00', 2);
+INSERT INTO `inventory` VALUES (18, '2025-06-04', 2, 0, '', NULL, '', NULL, 'PART018', 'OIL PAN', 4, 'system', '25.00', '40.00', '23.00', 2, NULL, NULL, '34', NULL, NULL, 1, 3, 3, 'A18', 'B18', 'C18', 2, 10, NULL, NULL, NULL, '38.00', '42.00', 3);
+INSERT INTO `inventory` VALUES (19, '2025-06-04', 3, 0, '', NULL, '', NULL, 'PART019', 'DRIVE SHAFT', 3, 'system', '70.00', '110.00', '65.00', 2, NULL, NULL, '450', NULL, NULL, 2, 2, 1, 'A19', 'B19', 'C19', 1, 12, NULL, NULL, NULL, '108.00', '112.00', 4);
+INSERT INTO `inventory` VALUES (20, '2025-06-04', 1, 0, '', NULL, '', NULL, 'PART020', 'FAN BELT', 20, 'system', '3.00', '6.00', '2.50', 10, NULL, NULL, '454', NULL, NULL, 3, 3, 2, 'A20', 'B20', 'C20', 10, 60, NULL, NULL, NULL, '5.80', '6.20', 5);
 
 -- ----------------------------
 -- Table structure for inventory_adjustments
@@ -2719,7 +2658,7 @@ CREATE TABLE `vehicles`  (
 INSERT INTO `vehicles` VALUES (3, '2025-06-01 21:05:02', 2, 0, '', NULL, '2025-06-01 22:12:54', 2, 2, 6, 2, '554190', 'AD00430589223XAAA', 'LnyOpB8w7YmTEdPUQNf9.jpg', 'ohxGp2N013kHCeTIVafy.jpg', 'aZAn6PvI7VBdMm9NDl4S.jpg', NULL);
 INSERT INTO `vehicles` VALUES (4, '2025-06-01 21:09:19', 2, 1, '2025-06-01 21:54:33', 2, '', NULL, 5, 4, 1, '88211', 'YOSD04358234922', NULL, NULL, NULL, NULL);
 INSERT INTO `vehicles` VALUES (5, '2025-06-01 21:27:33', 2, 1, '2025-06-01 21:55:30', 2, '', NULL, 5, 3, 3, '9921', 'PIS23023928081', NULL, NULL, NULL, NULL);
-INSERT INTO `vehicles` VALUES (6, '2025-06-01 21:29:33', 2, 0, '', NULL, '', NULL, 4, 3, 3, '7214', 'JS0980578234', '9JO3DcbnU2AfIqeGwrpv.jpg', NULL, NULL, NULL);
-INSERT INTO `vehicles` VALUES (7, '2025-06-01 21:56:58', 2, 0, '', NULL, '', NULL, 84, 6, 2, '458844', 'C092793409007170927X2', 'Kocmlh2kXMYSRpqQ56E3.jpg', 'IYyAm0pW6d3PTu4gzVrv.jpg', NULL, NULL);
+INSERT INTO `vehicles` VALUES (6, '2025-06-01 21:29:33', 2, 1, '2025-06-05 15:01:49', 2, '', NULL, 4, 3, 3, '7214', 'JS0980578234', '9JO3DcbnU2AfIqeGwrpv.jpg', NULL, NULL, NULL);
+INSERT INTO `vehicles` VALUES (7, '2025-06-01 21:56:58', 2, 0, '', NULL, '2025-06-05 19:29:09', 2, 0, 6, 2, '458844', 'C092793409007170927X2', 'Kocmlh2kXMYSRpqQ56E3.jpg', NULL, NULL, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

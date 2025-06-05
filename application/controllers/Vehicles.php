@@ -311,6 +311,34 @@ class Vehicles extends CI_Controller {
 
 	}
 
+	public function delete_vehicle_image($no, $id)
+	{
+		$item = $this->db->get_where('vehicles', ['id' => $id])->row();
+
+		$model = $this->core->global_query(2,'vehicles', $id, ['picture_'.$no => null]); 
+
+		if($model['result']){ 
+
+			if(unlink('./assets/uploads/vehicles/'.@$item->{'picture_'.$no})){ 
+				 
+
+				echo 1;  
+				  
+			}else{
+
+				echo 0;
+
+			}
+
+		}else{
+
+			echo 0;
+
+		}
+
+		die();
+	}
+
 	public function add_project_quotation($client_id = ''){ 
 
 		$module['client_id'] = $client_id;

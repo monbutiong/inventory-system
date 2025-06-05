@@ -43,12 +43,34 @@ select, .text_input {
           </div>  
 
           <div class="row mb-3">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">QID
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Customer Type
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <select name="customer_type" class="form-control col-md-7 col-xs-12">
+                <?php if($clients->customer_type == 0){?>
+                  <option value="0">Individual</option> 
+                <?php }else{?>
+                  <option value="1">Business</option> 
+                <?php }?>
+              </select>
+            </div>
+          </div> 
+
+          <div class="row mb-3"<?php if($clients->customer_type == 1){echo 'style="display: none;"';}?>>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name"  >QID
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
               <input readonly type="text" name="qid" value="<?php echo @$clients->qid?>" class="form-control col-md-7 col-xs-12">
             </div>
           </div>
+
+          <div class="row mb-3"<?php if($clients->customer_type == 0){echo 'style="display: none;"';}?>>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Business registration #
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input readonly type="text" name="business_registration_no" value="<?php echo @$clients->business_registration_no?>" class="form-control col-md-7 col-xs-12">
+            </div>
+          </div> 
 
           <div class="row mb-3">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Customer Name

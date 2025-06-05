@@ -191,6 +191,22 @@ class Crm extends CI_Controller {
 		redirect("crm/clients","refresh");
 	}
 
+	public function delete_client_image($id)
+	{
+ 
+		if(unlink('./assets/images/clients/logo-'.$id.'.png')){ 
+			 
+			$this->session->set_flashdata("success",$this->system_menu['clang'][$l="Picture successfuly removed."] ?? $l); 
+			  
+		}else{
+
+			$this->session->set_flashdata("error","error saving.");
+
+		}
+
+		redirect("crm/clients","refresh");
+	}
+
 	public function add_documents($cid){
  	
  		$module['cid'] = $cid;

@@ -308,6 +308,17 @@ class Purchasing extends CI_Controller {
 	    $this->db->like('item_code', $search);
 	    $this->db->or_like('item_name', $search);
 	    $this->db->group_end();
+
+	    $order_column_index = $this->input->post('order')[0]['column'];
+	    $order_dir = $this->input->post('order')[0]['dir'];
+	    $columns = $this->input->post('columns');
+
+	    // Get column name by index
+	    if (isset($columns[$order_column_index]['data'])) {
+	        $order_column = $columns[$order_column_index]['data'];
+	        $this->db->order_by($order_column, $order_dir);
+	    }
+	    
 	    $this->db->limit(7, 0);
 
 	    $items = $this->db->select('id, item_code, item_name, manufacturer_price, qty,picture_1')->get('inventory')->result();

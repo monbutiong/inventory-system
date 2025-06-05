@@ -49,6 +49,10 @@
 
       </div>
       <div class="x_content">
+        <div class="card">
+            <div class="card-body">
+
+
         <p class="text-muted font-13 m-b-30">
             
 
@@ -213,6 +217,9 @@
         <input type="hidden" id="selected_symbol"> 
         
       </div>
+
+    </div>
+  </div>
 
        
   </div> 

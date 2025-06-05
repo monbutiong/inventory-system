@@ -28,6 +28,11 @@ select, .text_input {
   border-radius: 6px;
   white-space: normal;
 } 
+
+.readonlyx{
+  border: 1px dashed #999;
+  background-color: #f9f9f9;
+}
 </style>
 
 <div class="row">
@@ -64,7 +69,7 @@ select, .text_input {
                 <div class="row mb-3">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="qty">Initial Quantity</label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="number" id="qty" name="qty" value="<?=htmlspecialchars($item->qty)?>" class="form-control col-md-7 col-xs-12">
+                    <input type="number" disabled value="<?=htmlspecialchars($item->qty)?>" class="form-control col-md-7 col-xs-12 readonlyx">
                   </div>
                 </div>
 
@@ -92,7 +97,7 @@ select, .text_input {
                 <div class="row mb-3">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="unit_cost_price">Unit Cost Price</label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="number" step="any" min="0" id="unit_cost_price" name="unit_cost_price" required class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->unit_cost_price)?>">
+                    <input type="number" step="any" min="0" disabled class="form-control col-md-7 col-xs-12 readonlyx" value="<?=htmlspecialchars($item->unit_cost_price)?>">
                   </div>
                 </div>
 
@@ -154,24 +159,27 @@ select, .text_input {
                         <!-- Image Previews -->
                         <div class="row mb-2">
                             <?php if (!empty($item->picture_1)) : ?>
-                                <div class="col-4 mb-2">
+                                <div class="col-4 mb-2" id="pic1">
                                     <a target="_blank" href="<?= base_url('assets/uploads/inventory/' . $item->picture_1) ?>">
                                         <img src="<?= base_url('assets/uploads/inventory/' . $item->picture_1) ?>" class="img-fluid rounded border" alt="Item Picture 1">
                                     </a>
+                                    <a href="Javascript:prompt_delete('Delete','Delete Image?','<?=base_url('inventory/delete_item_image/1/'.$item->id)?>','pic1')"><small>Delete Image</small></a>
                                 </div>
                             <?php endif; ?>
                             <?php if (!empty($item->picture_2)) : ?>
-                                <div class="col-4 mb-2">
+                                <div class="col-4 mb-2" id="pic2">
                                     <a target="_blank" href="<?= base_url('assets/uploads/inventory/' . $item->picture_2) ?>">
                                         <img src="<?= base_url('assets/uploads/inventory/' . $item->picture_2) ?>" class="img-fluid rounded border" alt="Item Picture 2">
                                     </a>
+                                    <a href="Javascript:prompt_delete('Delete','Delete Image?','<?=base_url('inventory/delete_item_image/2/'.$item->id)?>','pic2')"><small>Delete Image</small></a>
                                 </div>
                             <?php endif; ?>
                             <?php if (!empty($item->picture_3)) : ?>
-                                <div class="col-4 mb-2">
+                                <div class="col-4 mb-2" id="pic3">
                                     <a target="_blank" href="<?= base_url('assets/uploads/vehicles/' . $item->picture_3) ?>">
                                         <img src="<?= base_url('assets/uploads/inventory/' . $item->picture_3) ?>" class="img-fluid rounded border" alt="Item Picture 3">
                                     </a>
+                                    <a href="Javascript:prompt_delete('Delete','Delete Image?','<?=base_url('inventory/delete_item_image/3/'.$item->id)?>','pic3')"><small>Delete Image</small></a>
                                 </div>
                             <?php endif; ?>
                         </div>

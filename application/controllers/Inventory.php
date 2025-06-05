@@ -121,7 +121,7 @@ class Inventory extends CI_Controller {
 	        $bin_location = trim($rs->bin_1 . ($rs->bin_2 ? ' | ' . $rs->bin_2 : '') . ($rs->bin_3 ? ' | ' . $rs->bin_3 : ''));
 
 	        $data[] = [
-	            'picture' => '<a target="_blank" href="' . $item_image . '"><img src="' . $item_image . '" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" /></a>',
+	            'picture' => '<a href="' . base_url('inventory/view_item_images/'.$rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><img src="' . $item_image . '" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" /></a>',
 	            'item_code' => $rs->item_code,
 	            'item_name' => $rs->item_name,
 	            'brand' => $rs->brand,
@@ -133,8 +133,9 @@ class Inventory extends CI_Controller {
 	            'options' => '
 	                <a href="' . base_url('inventory/view_inventory/' . $rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><i class="fa fa-eye"></i> view</a> |
 	                <a href="' . base_url('inventory/edit_inventory/' . $rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><i class="fa fa-edit"></i> edit</a> |
-	                <a href="Javascript:delete_bib(' . $rs->id . ')"><i class="fa fa-trash"></i> Delete</a> |
+	                <a href="javascript:prompt(\'Delete\',\'Delete '.$rs->item_code.' item?\',\'' . base_url('inventory/delete_inventory/' . $rs->id) . '\')"><i class="fa fa-trash"></i> Delete</a> |
 	                <a href="' . base_url('inventory/inventory_movement/' . $rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><i class="fa fa-edit"></i> movement</a>'
+
 	        ];
 	    }
 
@@ -167,6 +168,41 @@ class Inventory extends CI_Controller {
 	        "recordsFiltered" => $filtered_records,
 	        "data" => $data
 	    ]);
+	}
+
+	public function view_item_images($id)
+	{
+		$module['item'] = $this->db->get_where('inventory', ['id' => $id])->row();
+
+		$this->load->view('admin/inventory/view_item_images',$module);
+	}
+
+	public function delete_item_image($no, $id)
+	{
+		$item = $this->db->get_where('inventory', ['id' => $id])->row();
+
+		$model = $this->core->global_query(2,'inventory', $id, ['picture_'.$no => null]); 
+
+		if($model['result']){ 
+
+			if(unlink('./assets/uploads/inventory/'.@$item->{'picture_'.$no})){ 
+				 
+
+				echo 1;  
+				  
+			}else{
+
+				echo 0;
+
+			}
+
+		}else{
+
+			echo 0;
+
+		}
+
+		die();
 	}
 
 

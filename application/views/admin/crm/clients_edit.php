@@ -32,6 +32,9 @@ select, .text_input {
                 }else{
                 echo base_url('assets/images/img.png'); }?>">
               </div>
+              <?php if(file_exists('./assets/images/clients/logo-'.$clients->id.'.png')){?>
+              <a href="Javascript:prompt('Delete','Delete Image?','<?=base_url('crm/delete_client_image/'.$clients->id)?>')"><small>Delete Image</small></a>
+              <?php }?>
           </div> 
 
           <div class="row mb-3">
@@ -51,18 +54,42 @@ select, .text_input {
           </div>  
 
           <div class="row mb-3">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">QID
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Customer Type
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <select name="customer_type" class="form-control col-md-7 col-xs-12">
+                <?php if($clients->customer_type == 0){?>
+                  <option value="0">Individual</option>
+                  <option value="1">Business</option>
+                <?php }else{?>
+                  <option value="1">Business</option>
+                  <option value="0">Individual</option>
+                <?php }?>
+              </select>
+            </div>
+          </div>  
+
+          <div class="row mb-3"<?php if($clients->customer_type == 1){echo 'style="display: none;"';}?>>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name"  >QID
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
               <input type="text" name="qid" value="<?php echo @$clients->qid?>" class="form-control col-md-7 col-xs-12">
             </div>
+          </div>
+
+          <div class="row mb-3"<?php if($clients->customer_type == 0){echo 'style="display: none;"';}?>>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Business registration #
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="text" name="business_registration_no" value="<?php echo @$clients->business_registration_no?>" class="form-control col-md-7 col-xs-12">
+            </div>
           </div> 
 
           <div class="row mb-3">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Customer Name
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Customer Name *
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <input type="text" name="name" value="<?php echo @$clients->name?>" class="form-control col-md-7 col-xs-12">
+              <input type="text" required name="name" value="<?php echo @$clients->name?>" class="form-control col-md-7 col-xs-12">
             </div>
           </div>  
 
@@ -152,4 +179,30 @@ select, .text_input {
     </div>
   </div>
 </div> 
- 
+  
+<script>
+$(document).ready(function () {
+  const $customerType = $('select[name="customer_type"]');
+  const $qidRow = $('input[name="qid"]').closest('.row');
+  const $businessRegRow = $('input[name="business_registration_no"]').closest('.row');
+
+  function updateVisibility() {
+    if ($customerType.val() === '1') {
+      // Business selected
+      $qidRow.hide();
+      $businessRegRow.show();
+    } else {
+      // Individual selected
+      $qidRow.show();
+      $businessRegRow.hide();
+    }
+  }
+
+  // Set default selection to Individual (0) on load
+  
+  updateVisibility();
+
+  // On change
+  $customerType.change(updateVisibility);
+});
+</script>

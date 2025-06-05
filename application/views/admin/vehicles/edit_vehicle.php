@@ -37,24 +37,27 @@ select, .text_input {
                   <!-- Image Previews -->
                   <div class="row mb-2">
                       <?php if (!empty($vehicle->picture_1)) : ?>
-                          <div class="col-4 mb-2">
+                          <div class="col-4 mb-2" id="pic1">
                               <a target="_blank" href="<?= base_url('assets/uploads/vehicles/' . $vehicle->picture_1) ?>">
                                   <img src="<?= base_url('assets/uploads/vehicles/' . $vehicle->picture_1) ?>" class="img-fluid rounded border" alt="Car Picture 1">
                               </a>
+                              <a href="Javascript:prompt_delete('Delete','Delete Image?','<?=base_url('vehicles/delete_vehicle_image/1/'.$vehicle->id)?>','pic1')"><small>Delete Image</small></a>
                           </div>
                       <?php endif; ?>
                       <?php if (!empty($vehicle->picture_2)) : ?>
-                          <div class="col-4 mb-2">
+                          <div class="col-4 mb-2" id="pic2">
                               <a target="_blank" href="<?= base_url('assets/uploads/vehicles/' . $vehicle->picture_2) ?>">
                                   <img src="<?= base_url('assets/uploads/vehicles/' . $vehicle->picture_2) ?>" class="img-fluid rounded border" alt="Car Picture 2">
                               </a>
+                              <a href="Javascript:prompt_delete('Delete','Delete Image?','<?=base_url('vehicles/delete_vehicle_image/2/'.$vehicle->id)?>','pic2')"><small>Delete Image</small></a>
                           </div>
                       <?php endif; ?>
                       <?php if (!empty($vehicle->picture_3)) : ?>
-                          <div class="col-4 mb-2">
+                          <div class="col-4 mb-2" id="pic3">
                               <a target="_blank" href="<?= base_url('assets/uploads/vehicles/' . $vehicle->picture_3) ?>">
                                   <img src="<?= base_url('assets/uploads/vehicles/' . $vehicle->picture_3) ?>" class="img-fluid rounded border" alt="Car Picture 3">
                               </a>
+                              <a href="Javascript:prompt_delete('Delete','Delete Image?','<?=base_url('vehicles/delete_vehicle_image/3/'.$vehicle->id)?>','pic3')"><small>Delete Image</small></a>
                           </div>
                       <?php endif; ?>
                   </div>

@@ -32,7 +32,7 @@
               <th>Brand</th>
               <th>Category</th>
               <th>Type</th>
-              <th>Qty</th>
+              <th>QOH</th>
               <th>Bin Location</th>
               <th>Primary Car Models</th>
               <th>Options</th>
@@ -48,7 +48,9 @@
 
 <script type="text/javascript">
   
-  
+  function delete_inv() {
+    // body...
+  }
 
 </script>
  

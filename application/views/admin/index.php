@@ -148,6 +148,7 @@
                                             if($sub_menu){
                                             foreach ($sub_menu as $rs_sub) {
                                               if($rs_sub->main_menu_id==$rs->id && isset($arr_index_user_roles_sub_menu[$rs_sub->id]) && $arr_index_user_roles_sub_menu[$rs_sub->id]){
+ 
                                             ?>
                                             <a href="<?php echo base_url().$rs_sub->url_link;?>" class="dropdown-item"><?php echo $rs_sub->title;?></a>  
                                             <?php }}}?>
@@ -306,6 +307,16 @@
         <script src="<?=base_url('assets/template/assets')?>/js/app.js?2"></script>
 
         <script type="text/javascript">
+
+         
+          // Apply to all input and textarea fields
+          $(document).on('input', 'input[type="text"], textarea', function() {
+            this.value = this.value.toUpperCase();
+          });
+
+          // Optional: Apply CSS for visual cue
+          $('input[type="text"], textarea').css('text-transform', 'uppercase');
+          
 
           if($('.select2_').length){
             $('.select2_').select2(); 
@@ -544,6 +555,46 @@
             });
           }
 
+          function prompt_delete(title,desc,url_link,element_id) {
+            Swal.fire({
+                title: title,
+                text: desc,
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',          // Red confirm button
+                cancelButtonColor: '#d33',        // Blue cancel button
+                confirmButtonText: 'Continue',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    
+                    $.get(url_link, function(response) {
+
+                      if(response == 1){
+                           $('#'+element_id).remove();
+                           Swal.fire({
+                           title: "Success!",
+                           text: "Successfuly deleted.",
+                           icon: "success",
+                           confirmButtonColor: "#556ee6", // OK button color
+                           showCancelButton: false // No Cancel button
+                           });
+                       }else{ 
+                          $('#'+element_id).remove();
+                          Swal.fire({
+                          title: "Error!",
+                          text: "Image not found.",
+                          icon: "error",
+                          confirmButtonColor: "#556ee6", // OK button color
+                          showCancelButton: false // No Cancel button
+                          }); 
+                       }
+                    });
+
+                }
+            });
+          }
+
           if ($(".select2-ajax").length) {
 
             $(".select2-ajax").select2({
@@ -579,7 +630,7 @@
                   };
                 },
                 cache: true
-              }, 
+              },  
               // Format dropdown items as table-like with image
               templateResult: function(item) {
                 if (!item.id) {
@@ -675,6 +726,7 @@
                 $('#datatable_inventory').DataTable({
                   processing: true,
                   serverSide: true,
+                  order: [[1, 'desc']],
                   ajax: {
                     url: "<?= base_url('inventory/get_inventory_ajax') ?>",
                     type: "POST"

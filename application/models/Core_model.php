@@ -75,6 +75,8 @@ class Core_model extends CI_model
 		            $data[$key] = json_encode($value);
 		        } elseif(isset($_FILES[$key]) && $_FILES[$key]['error'] !== UPLOAD_ERR_NO_FILE) {
 		            $data[$key] = $value;
+		        }else{
+		        	$data[$key] = trim($value);
 		        }
 
 		    } elseif ($key == 'bsp_rates') {

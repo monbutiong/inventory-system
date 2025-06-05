@@ -57,7 +57,12 @@
               <td>
                 <?=$rs->name?>
                 <br/>Customer Code: <?=$rs->code?>
-                <?php if($rs->qid){?><br/>QID: <?=$rs->qid?><?php }?>
+                <br/>
+                <?php if($rs->customer_type == 1){?>
+                  Business Registration #: <?=$rs->business_registration_no?> 
+                <?php }else{?>
+                  QID: <?=$rs->qid?> 
+                <?php }?>
               </td>
               <td><?=$rs->address?><br/>
                 
@@ -81,7 +86,9 @@
                 <a href="<?php echo base_url('crm/view_clients/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-eye"></i> view</a>
                  | 
                 <a href="Javascript:prompt('Delete','Delete Customer?','<?=base_url('crm/delete_clients/'.$rs->id)?>')" class="load_modal_details"><i class="fa fa-trash"></i> Delete</a>
-                 
+                 | 
+                <a href="<?php echo base_url('crm/view_clients/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-archive"></i> Purchase History</a>
+               
                  
               </td>
             </tr>

@@ -298,16 +298,19 @@ class Vehicles extends CI_Controller {
 		$model = $this->core->global_query(3, 'vehicles', $id);
 
 		if($model){ 
-			 
-			$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
+			
+			echo 1;
+			//$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
 			  
 		}else{
 
-			$this->session->set_flashdata("error","error saving.");
+			echo 0;
+			//$this->session->set_flashdata("error","error saving.");
 
 		}
 
-		redirect("vehicles/masterlist/", "refresh");
+		die();
+		//redirect("vehicles/masterlist/", "refresh");
 
 	}
 

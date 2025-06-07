@@ -1,10 +1,11 @@
 <style type="text/css">
-  input, textarea{
-    background-color: #fff !important;
-    border-style: dashed !important;
-  }
+  #frm_rr input,
+  #frm_rr textarea {
+      background-color: #fff !important;
+      border-style: dashed !important;
+    }
 </style>
-<form method="post" name="frm_receiving" action="<?=base_url('receiving/save_receiving')?>" enctype="multipart/form-data">
+<form method="post" id="frm_rr" action="#" enctype="multipart/form-data">
 <?php 
   if(@$po){
     foreach($po as $rs){
@@ -16,18 +17,43 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Receiving <small><?php if($confirm == 1){?>Confirm GRV<?php }else{?>View GRV<?php }?></small></h2> 
-          
-          <div class="input-group-btn pull-right" style="padding-right: 120px;">
-            <?php if($confirm == 1){?>
-            <a class="btn btn-sm btn-success" href="Javascript:confirm_rr()">Confirm</a>
-            <?php }?>
-                  <button class="btn btn-sm btn-danger" type="button" data-bs-dismiss="modal">Close</button>
-              </div>
-           
-        <div class="clearfix"></div>
+  
+
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-md-8"> 
+                    <h6 class="page-title">GRV#: GV<?=sprintf("%06d",$rr->id)?> <?php if($rr->confirmed == 1){?><span class="badge rounded-pill bg-success">Confimed</span><?php }?></h6>
+                    <ol class="breadcrumb m-0"> 
+                        <li class="breadcrumb-item active" aria-current="page">Filed By: <?=$user->name.' - '.date('M d, Y H:i',strtotime($rr->date_created))?></li>
+                    </ol>
+                    <?php if($rr->confirmed == 1){?>
+                    <ol class="breadcrumb m-0"> 
+                        <li class="breadcrumb-item active" aria-current="page">Confirmed By: <?=$user->name.' - '.date('M d, Y H:i',strtotime($rr->confirmed_date))?></li>
+                    </ol>
+                    <?php }?>
+                </div>
+                <div class="col-md-4">
+                    <div class="float-end d-none d-md-block"> 
+                        <a class="btn btn-md btn-success" target="_blank" href="<?php echo base_url('receiving/print_rr/'.$rs->id);?>" title="print GRV"> <i class="fa fa-print"></i>  </a>
+                        <?php if($rr->confirmed == 0){?>
+                        <a class="btn btn-md btn-success" href="Javascript:confirm_receiving()"> <i class="fa fa-check"></i> Confirm GRV </a>
+                        <a class="btn btn-md btn-primary" href="Javascript:edit_receiving()"> <i class="fa fa-edit"></i> Edit Changes</a>
+                        <a class="btn btn-md btn-warning" href="<?=base_url("receiving/receiving_records")?>"> <i class="fa fa-close"></i> Go Back </a>
+                        <?php }else{?>
+                        <a class="btn btn-md btn-warning" href="<?=base_url("receiving/confirmed_receiving_records")?>"> <i class="fa fa-close"></i> Go Back </a>
+                        <?php }?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
       </div>
       <div class="x_content">
+
+        <div class="card">
+            <div class="card-body">
+
         <p class="text-muted font-13 m-b-30">
             
 
@@ -292,6 +318,8 @@
   
       </div>
 
+    </div>
+  </div>
       
     </div>
   </div> 
@@ -299,6 +327,42 @@
 </div>
 </form>
 <script type="text/javascript">
+
+  function confirm_receiving() {
+    Swal.fire({
+      title: 'Confirm GRV?',
+      text: "Are you sure you want to confirm this GRV?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#aaa',
+      confirmButtonText: 'Continue',
+      cancelButtonText: 'No, cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+         
+        location.href = "<?=base_url('receiving/confirm_receiving/'.$rr->id)?>";
+      }  
+    });
+  }
+
+  function edit_receiving() {
+    Swal.fire({
+      title: 'Edit GRV?',
+      text: "Are you sure you want to edit this GRV?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#aaa',
+      confirmButtonText: 'Continue',
+      cancelButtonText: 'No, cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+         
+        location.href = "<?=base_url('receiving/edit_rr/'.$rr->id)?>";
+      }  
+    });
+  }
 
   function load_items(po_id){
     $('#load_items').load('<?=base_url("receiving/load_items")?>/'+po_id);
@@ -371,19 +435,6 @@
 
   }
 
-  function confirm_rr(){
-    reset(); 
-
-    alertify.confirm("Confirm selected receiving records?", function (e) {
-          if (e) {  
-              alertify.log("saving...");
-              location.href = "<?php echo base_url();?>receiving/confirm_receiving/<?=$rr->id?>";
-          } else {
-              alertify.log("cancelled");
-          }
-      }, "Confirm");
-  }
-
-  $('#gmodal').addClass('modal-lg-mod');
+ 
 
 </script>

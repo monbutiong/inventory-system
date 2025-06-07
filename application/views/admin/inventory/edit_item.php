@@ -38,7 +38,7 @@ select, .text_input {
 <div class="row">
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
-      <form method="post" id="frm_validation" action="<?=base_url('inventory/update_item/'.$item->id)?>" data-bs-toggle="validator" class="form-horizontal form-label-left" enctype="multipart/form-data">
+      <form method="post" id="frm_validation"  enctype="multipart/form-data">
       <div class="x_title">
 
         <div class="modal-header">
@@ -102,6 +102,71 @@ select, .text_input {
                 </div>
 
                 <div class="row mb-3">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bin_1">Bin Location 1</label>
+                  <div class="col-md-9 col-sm-9 col-xs-12">
+                    <input type="text" id="bin_1" name="bin_1" placeholder="" class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->bin_1)?>">
+                  </div> 
+                </div>
+
+                <div class="row mb-3">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bin_2">Bin Location 2</label>
+                  <div class="col-md-9 col-sm-9 col-xs-12">
+                    <input type="text" id="bin_2" name="bin_2" placeholder="" class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->bin_2)?>">
+                  </div> 
+                </div>
+
+                <div class="row mb-3">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bin_3">Bin Location 3</label>
+                  <div class="col-md-9 col-sm-9 col-xs-12">
+                    <input type="text" id="bin_3" name="bin_3" placeholder="" class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->bin_3)?>">
+                  </div> 
+                </div>
+
+                <?php if($item->picture_1 || $item->picture_2 || $item->picture_3){?>
+                <div class="row mb-3">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                       Pictures
+                    </label>
+                    <div class="col-md-9 col-sm-9 col-xs-12">
+
+                        <!-- Image Previews -->
+                        <div class="row mb-2">
+                            <?php if (!empty($item->picture_1)) : ?>
+                                <div class="col-4 mb-2" id="pic1">
+                                    <a target="_blank" href="<?= base_url('assets/uploads/inventory/' . $item->picture_1) ?>">
+                                        <img src="<?= base_url('assets/uploads/inventory/' . $item->picture_1) ?>" class="img-fluid rounded border" alt="Item Picture 1">
+                                    </a>
+                                    <a href="Javascript:prompt_delete('Delete','Delete Image?','<?=base_url('inventory/delete_item_image/1/'.$item->id)?>','pic1')"><small>Delete Image</small></a>
+                                </div>
+                            <?php endif; ?>
+                            <?php if (!empty($item->picture_2)) : ?>
+                                <div class="col-4 mb-2" id="pic2">
+                                    <a target="_blank" href="<?= base_url('assets/uploads/inventory/' . $item->picture_2) ?>">
+                                        <img src="<?= base_url('assets/uploads/inventory/' . $item->picture_2) ?>" class="img-fluid rounded border" alt="Item Picture 2">
+                                    </a>
+                                    <a href="Javascript:prompt_delete('Delete','Delete Image?','<?=base_url('inventory/delete_item_image/2/'.$item->id)?>','pic2')"><small>Delete Image</small></a>
+                                </div>
+                            <?php endif; ?>
+                            <?php if (!empty($item->picture_3)) : ?>
+                                <div class="col-4 mb-2" id="pic3">
+                                    <a target="_blank" href="<?= base_url('assets/uploads/vehicles/' . $item->picture_3) ?>">
+                                        <img src="<?= base_url('assets/uploads/inventory/' . $item->picture_3) ?>" class="img-fluid rounded border" alt="Item Picture 3">
+                                    </a>
+                                    <a href="Javascript:prompt_delete('Delete','Delete Image?','<?=base_url('inventory/delete_item_image/3/'.$item->id)?>','pic3')"><small>Delete Image</small></a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+
+                         
+                    </div>
+                </div>
+                <?php }?>
+
+          </div>
+
+          <div class="col col-6">
+
+            <div class="row mb-3">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="item_category_id">Item Category</label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <select id="item_category_id" name="item_category_id" class="form-control col-md-7 col-xs-12 select2">
@@ -149,70 +214,7 @@ select, .text_input {
                   </div>
                 </div>  
 
-                <?php if($item->picture_1 || $item->picture_2 || $item->picture_3){?>
-                <div class="row mb-3">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                       Pictures
-                    </label>
-                    <div class="col-md-9 col-sm-9 col-xs-12">
-
-                        <!-- Image Previews -->
-                        <div class="row mb-2">
-                            <?php if (!empty($item->picture_1)) : ?>
-                                <div class="col-4 mb-2" id="pic1">
-                                    <a target="_blank" href="<?= base_url('assets/uploads/inventory/' . $item->picture_1) ?>">
-                                        <img src="<?= base_url('assets/uploads/inventory/' . $item->picture_1) ?>" class="img-fluid rounded border" alt="Item Picture 1">
-                                    </a>
-                                    <a href="Javascript:prompt_delete('Delete','Delete Image?','<?=base_url('inventory/delete_item_image/1/'.$item->id)?>','pic1')"><small>Delete Image</small></a>
-                                </div>
-                            <?php endif; ?>
-                            <?php if (!empty($item->picture_2)) : ?>
-                                <div class="col-4 mb-2" id="pic2">
-                                    <a target="_blank" href="<?= base_url('assets/uploads/inventory/' . $item->picture_2) ?>">
-                                        <img src="<?= base_url('assets/uploads/inventory/' . $item->picture_2) ?>" class="img-fluid rounded border" alt="Item Picture 2">
-                                    </a>
-                                    <a href="Javascript:prompt_delete('Delete','Delete Image?','<?=base_url('inventory/delete_item_image/2/'.$item->id)?>','pic2')"><small>Delete Image</small></a>
-                                </div>
-                            <?php endif; ?>
-                            <?php if (!empty($item->picture_3)) : ?>
-                                <div class="col-4 mb-2" id="pic3">
-                                    <a target="_blank" href="<?= base_url('assets/uploads/vehicles/' . $item->picture_3) ?>">
-                                        <img src="<?= base_url('assets/uploads/inventory/' . $item->picture_3) ?>" class="img-fluid rounded border" alt="Item Picture 3">
-                                    </a>
-                                    <a href="Javascript:prompt_delete('Delete','Delete Image?','<?=base_url('inventory/delete_item_image/3/'.$item->id)?>','pic3')"><small>Delete Image</small></a>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-
-                         
-                    </div>
-                </div>
-                <?php }?>
-
-          </div>
-
-          <div class="col col-6">
-
-                <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bin_1">Bin Location 1</label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="text" id="bin_1" name="bin_1" placeholder="BIN 1" class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->bin_1)?>">
-                  </div> 
-                </div>
-
-                <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bin_2">Bin Location 2</label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="text" id="bin_2" name="bin_2" placeholder="BIN 2" class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->bin_2)?>">
-                  </div> 
-                </div>
-
-                <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bin_3">Bin Location 3</label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="text" id="bin_3" name="bin_3" placeholder="BIN 3" class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->bin_3)?>">
-                  </div> 
-                </div>
+                
 
                 <div class="row mb-3">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Primary Car Models
@@ -326,6 +328,72 @@ select, .text_input {
   </div>
 </div>
 <script type="text/javascript">
+
+  $('#frm_validation').on('submit', function(e) {
+      e.preventDefault(); // Prevent default form submission
+
+      let form = $(this)[0];
+      let formData = new FormData(form); // Create FormData object
+
+      $.ajax({
+        url: "<?=base_url('inventory/update_item/'.$item->id)?>", // Adjust if needed
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false, 
+        success: function(response) {
+          
+          if(response == 1){ 
+            Swal.fire({
+            title: "Success!",
+            text: "Successfuly updated.",
+            icon: "success",
+            confirmButtonColor: "#556ee6", // OK button color
+            showCancelButton: false // No Cancel button
+            });
+
+            refresh_inv_table();
+
+          }else if(response == 3){
+            Swal.fire({
+            title: "Error!",
+            text: "Part number and item description required!",
+            icon: "error",
+            confirmButtonColor: "#556ee6", // OK button color
+            showCancelButton: false // No Cancel button
+            });
+          }else if(response == 2){
+            Swal.fire({
+            title: "Error!",
+            text: "Item code already exist in the inventory masterlist!",
+            icon: "error",
+            confirmButtonColor: "#556ee6", // OK button color
+            showCancelButton: false // No Cancel button
+            });
+          }else{
+            Swal.fire({
+            title: "Error!",
+            text: "An error occurred!",
+            icon: "error",
+            confirmButtonColor: "#556ee6", // OK button color
+            showCancelButton: false // No Cancel button
+            });
+          }
+        },
+        error: function(xhr, status, error) { 
+  
+          Swal.fire({
+          title: "Error!",
+          text: xhr.responseText ? "An error occurred: " + xhr.responseText : 'Error on saving data!',
+          icon: "error",
+          confirmButtonColor: "#556ee6", // OK button color
+          showCancelButton: false // No Cancel button
+          }); 
+
+        }
+      });
+    });
+
   preselectedIds = [<?=$preload_avm?>];
 </script>
  

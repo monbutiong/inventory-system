@@ -59,9 +59,9 @@ class Outgoing extends CI_Controller {
 		$module['module'] = "outgoing/create_issuance";
 		$module['map_link']   = "outgoing->create_issuance";   
  
-		$module['projects'] = $this->core->load_core_data('projects');
+		$module['vehicles'] = $this->core->load_core_data('vehicles');
 
-		$module['jo'] = $this->core->load_core_data('projects_job_order','','','status=1');
+		$module['clients'] = $this->core->load_core_data('clients','','id,name');  
 		
 		$this->load->view('admin/index',$module);
 

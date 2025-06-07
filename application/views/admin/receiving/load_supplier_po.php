@@ -1,4 +1,4 @@
-<select name="po_ids" id="pos_id" multiple class="form-control select2_" onchange="load_items()"> 
+<select name="po_ids" id="pos_id" multiple class="form-control select2_po" onchange="load_items()"> 
 	<?php   
 	if($po){
 	  foreach ($po as $rs) {

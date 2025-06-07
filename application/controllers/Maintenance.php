@@ -175,14 +175,18 @@ class Maintenance extends CI_Controller {
 				$log_description = "delete data in $table_name_mod , id : ".$id;
 				$audit_trail = $result = $this->admin_model->audit_trail_logging($log_module,$log_description);
 
-		 		$this->session->set_flashdata("success","data deleted"); 
+		 		//$this->session->set_flashdata("success","data deleted"); 
 		 		$table_name = str_replace("fm_","",$table_name);
-		 		redirect("maintenance/table/$table_name","refresh"); 
+		 		
+		 		echo 1;
+		 		//redirect("maintenance/table/$table_name","refresh"); 
 			}else{
-				$this->session->set_flashdata("error","error deleting information"); 
+				echo 0;
+				//$this->session->set_flashdata("error","error deleting information"); 
 			}
+			die();
 
-	}
+	}	
 
 	public function check_access($url, $sub_menu = [], $index_user_roles = []){
 

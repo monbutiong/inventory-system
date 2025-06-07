@@ -8,24 +8,37 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Receiving <small>Edit GRV</small></h2> 
- 
-          <div class="input-group-btn pull-right" style="padding-right: 110px;">
-            <a class="btn btn-sm btn-primary" href="Javascript:save_receiving()"> <i class="fa fa-save"></i> Save Changes</a>
-          </div>
-          
-          <div class="input-group-btn pull-right" style="padding-right: 90px;">
-            <a class="btn btn-sm btn-warning" href="Javascript:cancel_edit()"> <i class="fa fa-close"></i> Cancel </a>
-          </div>
+         
 
-        <div class="clearfix"></div>
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-md-8"> 
+                    <h6 class="page-title">GRV#: GV<?=sprintf("%06d",$rr->id)?> </h6>
+                    <ol class="breadcrumb m-0"> 
+                        <li class="breadcrumb-item active" aria-current="page">Filed By: <?=$user->name.' - '.date('M d, Y H:i',strtotime($rr->date_created))?></li>
+                    </ol>
+                </div>
+                <div class="col-md-4">
+                    <div class="float-end d-none d-md-block"> 
+                        <a class="btn btn-md btn-success" href="Javascript:confirm_receiving()"> <i class="fa fa-check"></i> Confirm GRV </a>
+                        <a class="btn btn-md btn-primary" href="Javascript:save_receiving()"> <i class="fa fa-save"></i> Save Changes</a>
+                        <a class="btn btn-md btn-warning" href="<?=base_url("receiving/receiving_records")?>"> <i class="fa fa-close"></i> Go Back </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
       </div>
       <div class="x_content">
+
+        <div class="card">
+            <div class="card-body">
+
         <p class="text-muted font-13 m-b-30">
              
           <div class="row">
             
-            <div class="col-md-2 col-sm-12 ">
+            <div class="col-md-2 col-sm-12 mb-3">
               <label >Supplier</label>
               <select name="supplier_id" id="supplier_id" class="form-control " onchange="load_supplier_po(this.value)">
                 <option value="">select</option> 
@@ -39,7 +52,7 @@
               
             </div>
 
-            <div class="col-md-10 col-sm-12 ">
+            <div class="col-md-10 col-sm-12 mb-3">
               <label >P.O. Details</label>
               <div id="pos">
                 <select name="po_ids" id="pos_id" multiple class="form-control select2_" onchange="load_items()"> 
@@ -62,37 +75,37 @@
               
             </div>
 
-            <div class="col-md-2 col-sm-12 ">
+            <div class="col-md-2 col-sm-12 mb-3">
               <label >DR Number <font color="red">*</font></label>
               <input type="text" required name="dr_number" id="dr_number" value="<?=$rr->dr_number?>" class="form-control">
             </div>
 
-            <div class="col-md-2 col-sm-12 ">
+            <div class="col-md-2 col-sm-12 mb-3">
               <label >Delivery <font color="red">*</font></label>
               <input type="date" required name="delivery_date" id="delivery_date" value="<?=$rr->delivery_date?>" class="form-control">
             </div>
 
-            <div class="col-md-2 col-sm-12 ">
+            <div class="col-md-2 col-sm-12 mb-3">
               <label >Invoice Number <font color="red">*</font></label>
               <input type="text" required name="invoice_number" id="invoice_number" value="<?=$rr->invoice_number?>" class="form-control">
             </div>
 
-            <div class="col-md-2 col-sm-12 ">
+            <div class="col-md-2 col-sm-12 mb-3">
               <label >Invoice Date <font color="red">*</font></label>
               <input type="date" required name="invoice_date" id="invoice_date" value="<?=$rr->invoice_date?>" class="form-control">
             </div>
 
-            <div class="col-md-4 col-sm-12 ">
+            <div class="col-md-4 col-sm-12 mb-3">
               <label >Attachments</label>
               <input type="file" name="attach[]" multiple="" class="form-control">
             </div>
              
-            <div class="col-md-4 col-sm-12 ">
+            <div class="col-md-4 col-sm-12 mb-3">
               <label >Remarks </label>
               <textarea name="remarks" id="remarks" class="form-control"><?=$rr->remarks?></textarea>
             </div>
 
-            <div class="col-md-2 col-sm-12 ">
+            <div class="col-md-2 col-sm-12 mb-3">
               <label >Transport</label>
               <select required id="grv_transport_id" name="grv_transport_id" class="form-control">
                 <option value="0">select</option>
@@ -105,17 +118,17 @@
               </select>
             </div>
 
-            <div class="col-md-2 col-sm-12 ">
+            <div class="col-md-2 col-sm-12 mb-3">
               <label >Exchange Rate</label>
               <input type="text" readonly id="exchange_rate" name="exchange_rate" class="form-control" value="<?=$rr->exchange_rate?>">
             </div>
 
-            <div class="col-md-2 col-sm-12 ">
+            <div class="col-md-2 col-sm-12 mb-3">
               <label >Currency</label>
               <input type="text" readonly id="currency" name="currency" class="form-control"  value="<?=$rr->currency?>">  
             </div>
 
-            <div class="col-md-2 col-sm-12 ">
+            <div class="col-md-2 col-sm-12 mb-3">
               <label >L/C Factor</label>
               <input type="text" readonly id="lc_factor" name="lc_factor" class="form-control"  value="<?=$rr->lc_factor?>">  
             </div>
@@ -196,9 +209,7 @@
                 <?=@$arr_poi[$rs->po_item_id]->item_code?>
                 <input type="hidden" name="item_code<?=$counter?>" value="<?=@$arr_poi[$rs->po_item_id]->item_code?>">
                 <input type="hidden" name="inv_id<?=$counter?>" value="<?=@$rs->inventory_id?>">
-                <input type="hidden" name="project_id<?=$counter?>" value="<?=@$rs->project_id?>">
-                <input type="hidden" name="quotation_id<?=$counter?>" value="<?=@$rs->quotation_id?>">
-                <input type="hidden" name="inventory_quotation_id<?=$counter?>" value="<?=@$rs->inventory_quotation_id?>">
+                <input type="hidden" name="vehicle_id<?=$counter?>" value="<?=@$rs->vehicle_id?>">  
                 <input type="hidden" name="po_id<?=$counter?>" value="<?=@$rs->po_id?>"></td>
               <td><?=@$arr_poi[$rs->po_item_id]->item_name?><input type="hidden" name="item_name<?=$counter?>" value="' + desc + '"></td>
               <td><?=@$arr_poi[$rs->po_item_id]->qty?></td>
@@ -223,14 +234,14 @@
                 <span id="remrks_txt<?=$counter?>"><?=$rs->remarks?></span>
                 <input type="hidden" id="remrks<?=$counter?>" name="remrks<?=$counter?>" value="<?=$rs->remarks?>">
               </td>
-              <td width="5"><a href="javascript:idel(<?=$counter?>)"><i class="fa fa-remove"></i></a></td>
+              <td width="5"><a href="javascript:idel(<?=$counter?>)"><i style="color:red;" class="fa fa-trash"></i></a></td>
             </tr>
             <?php }}?>
 
             <tr id="recieve_section">
               
               <td colspan="12">
-                <a id="add_items_btn" class="btn btn-sm btn-primary load_modal_details" href="<?php echo base_url('receiving/load_supplier_po_items/'.$rr->supplier_id);?>/<?=$rr->id?>" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" > Add Receive Items </a>
+                <a id="add_items_btn" class="btn btn-sm btn-primary load_modal_details" href="<?php echo base_url('receiving/load_supplier_po_items/'.$rr->supplier_id);?>/<?=$rr->id?>" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"  data-modal-size="xl"  > Add Receive Items </a>
               </td>
 
             </tr>
@@ -242,7 +253,7 @@
 
         <div class="row">
            
-          <div class="col-md-4 col-sm-12 ">
+          <div class="col-md-4 col-sm-12 mb-3">
             <label >Foreign Charges</label>
             <table id="fc_section" class="table table-striped table-bordered table-hover">  
                 <tr style="font-size: 12px;"> 
@@ -277,7 +288,7 @@
               </table>
           </div>
 
-          <div class="col-md-4 col-sm-12 ">
+          <div class="col-md-4 col-sm-12 mb-3">
             <label >Local Charges</label>
             <table id="lc_section" class="table table-striped table-bordered table-hover">  
                 <tr style="font-size: 12px;"> 
@@ -312,7 +323,7 @@
               </table>
           </div>
 
-          <div class="col-md-4 col-sm-12 ">
+          <div class="col-md-4 col-sm-12 mb-3">
             <label >Totals</label>
             <table id="lc_section" class="table table-bordered table-hover">  
                 <tr style="font-size: 12px;"> 
@@ -349,6 +360,9 @@
           </div>
 
         </div>
+
+      </div>
+    </div>
 
         <script type="text/javascript">
        
@@ -451,7 +465,7 @@
   function load_supplier_po(supplier_id){
     $('#pos').load('<?=base_url("receiving/load_supplier_po")?>/'+supplier_id, function(){
 
-      $('.select2_').select2(); 
+      $('.select2_po').select2(); 
 
     });
   }
@@ -476,32 +490,125 @@
 
   }
 
-  function save_receiving(){ 
-
-    if($('#pos_id').val() == ''){
-      alertify.error("PO Number is required");
-    }else if($('#dr_number').val() == ''){
-      alertify.error("DR Number is required");
-    }else if($('#invoice_number').val() == ''){
-      alertify.error("Invoice Number is required");
-    }else if($('.all_added_item_list').length == 0){
-      alertify.error("Received atleast one item from the selected P.O.");
-    }else{
-
-      reset(); 
-
-      alertify.confirm("Save receiving details?", function (e) {
-            if (e) {  
-                alertify.log("saving...");
-                document.frm_receiving.submit();
-            } else {
-                alertify.log("cancelled");
-            }
-        }, "Confirm");
+  function confirm_receiving() {
+    if ($('#pos_id').val() == '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'PO Number is required',
+        });
+    } else if ($('#dr_number').val() == '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'DR Number is required',
+        });
+    } else if ($('#invoice_number').val() == '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invoice Number is required',
+        });
+    } else if ($('.all_added_item_list').length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Please receive at least one item from the selected P.O.',
+        });
+    } else {
     
-    }
 
+        Swal.fire({
+            title: 'Confirm GRV Transaction?',
+            text: "Are you sure you want to confirm this GRV?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, save it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Saving...',
+                    text: 'Please wait',
+                    icon: 'info',
+                    timer: 1000,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                       location.href = "<?=base_url('receiving/confirm_receiving/'.$rr->id)?>";
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: 'Cancelled',
+                    text: 'Changes were not saved.',
+                    icon: 'warning',
+                    timer: 1200,
+                    showConfirmButton: false
+                });
+            }
+        });
+    }
   }
+
+  function save_receiving() {
+      if ($('#pos_id').val() == '') {
+          Swal.fire({
+              icon: 'error',
+              title: 'PO Number is required',
+          });
+      } else if ($('#dr_number').val() == '') {
+          Swal.fire({
+              icon: 'error',
+              title: 'DR Number is required',
+          });
+      } else if ($('#invoice_number').val() == '') {
+          Swal.fire({
+              icon: 'error',
+              title: 'Invoice Number is required',
+          });
+      } else if ($('.all_added_item_list').length == 0) {
+          Swal.fire({
+              icon: 'error',
+              title: 'Please receive at least one item from the selected P.O.',
+          });
+      } else {
+ 
+
+          Swal.fire({
+              title: 'Save Receiving Details?',
+              text: "Are you sure you want to save this data?",
+              icon: 'question',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, save it!',
+              cancelButtonText: 'Cancel'
+          }).then((result) => {
+              if (result.isConfirmed) {
+                  Swal.fire({
+                      title: 'Saving...',
+                      text: 'Please wait',
+                      icon: 'info',
+                      timer: 1000,
+                      showConfirmButton: false,
+                      allowOutsideClick: false,
+                      didOpen: () => {
+                          // You can also disable the form or show a loader here if needed
+                          document.frm_receiving.submit();
+                      }
+                  });
+              } else {
+                  Swal.fire({
+                      title: 'Cancelled',
+                      text: 'Changes were not saved.',
+                      icon: 'warning',
+                      timer: 1200,
+                      showConfirmButton: false
+                  });
+              }
+          });
+      }
+  }
+
 
   
   function update_total(){

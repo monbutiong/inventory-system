@@ -57,12 +57,12 @@
             
 
           <div class="row"> 
-            <div class="col-md-3 col-sm-12 mb-3">
+            <div class="col-md-2 col-sm-12 mb-3">
               <label >P.O. Number</label>
               <input type="text" readonly name="po_number" id="po_number" value="PO<?=sprintf("%06d",($po->po_number+1))?>" class="form-control ridonly">
             </div>
 
-            <div class="col-md-3 col-sm-12 mb-3">
+            <div class="col-md-4 col-sm-12 mb-3">
               <label >Vehicle / Customer <font color="red"></font></label>
               <select name="vehicle_id" id="vehicle_id" class="form-control select2_" >
                 <option value="0">N/A</option> 
@@ -169,7 +169,7 @@
                   <tr>
                     <td class="add_item">
                        
-                       <div class="select2-ajax" style="width: 100%;"> 
+                       <div class="select2-ajax-po" style="width: 100%;"> 
                        </div>
 
                     </td> 

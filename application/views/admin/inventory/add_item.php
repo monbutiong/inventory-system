@@ -28,11 +28,13 @@ select, .text_input {
   border-radius: 6px;
   white-space: normal;
 } 
+
+
 </style>
  <div class="row">
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
-      <form method="post" id="frm_validation" action="<?=base_url('inventory/save_item')?>" data-bs-toggle="validator" class="form-horizontal form-label-left" enctype="multipart/form-data">
+      <form method="post" id="frm_validation"  enctype="multipart/form-data">
       <div class="x_title">
 
 
@@ -50,18 +52,18 @@ select, .text_input {
                 
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Part Number <font id="exist" style="display: none;" color="red">(exist)</font>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Part Number *<font id="exist" style="display: none;" color="red">(exist!)</font>
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="text" id="item_code" name="item_code" required onkeyup="chk_item_code(this.value)" class="form-control col-md-7 col-xs-12">
+                    <input required type="text" id="item_code" name="item_code" required onkeyup="chk_item_code(this.value)" class="form-control col-md-7 col-xs-12">
                   </div>
                 </div> 
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Description
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Description *
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="text" id="item_name" name="item_name" required class="form-control col-md-7 col-xs-12">
+                    <input required type="text" id="item_name" name="item_name" required class="form-control col-md-7 col-xs-12">
                   </div>
                 </div>
 
@@ -118,62 +120,10 @@ select, .text_input {
                 </div>
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Item Category
-                  </label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <select id="item_category_id" name="unit_cost_price" class="form-control col-md-7 col-xs-12 select2">
-                      <option value=""></option>
-                      <?php 
-                      if(@$item_category){
-                        foreach($item_category as $rs){
-                      ?>
-                      <option value="<?=$rs->id?>"><?=$rs->title?></option>
-                    <?php }}?>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Item Type
-                  </label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <select id="item_type_id" name="unit_cost_price" class="form-control col-md-7 col-xs-12 select2">
-                      <option value=""></option>
-                      <?php 
-                      if(@$item_types){
-                        foreach($item_types as $rs){
-                      ?>
-                      <option value="<?=$rs->id?>"><?=$rs->title?></option>
-                    <?php }}?>
-                    </select>
-                  </div>
-                </div>  
-
-                <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Item Brand
-                  </label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <select id="item_brand_id" name="item_brand_id" class="form-control col-md-7 col-xs-12 select2">
-                      <option value=""></option>
-                      <?php 
-                      if(@$item_brand){
-                        foreach($item_brand as $rs){
-                      ?>
-                      <option value="<?=$rs->id?>"><?=$rs->title?></option>
-                    <?php }}?>
-                    </select>
-                  </div>
-                </div>  
-
-
-          </div>
-          <div class="col col-6">
-
-                <div class="row mb-3">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Bin Location 1
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="text" id="bin_1" name="bin_1" placeholder="BIN 1" class="form-control col-md-7 col-xs-12">
+                    <input type="text" id="bin_1" name="bin_1" placeholder="" class="form-control col-md-7 col-xs-12">
                   </div> 
                 </div>
 
@@ -181,7 +131,7 @@ select, .text_input {
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Bin Location 2
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="text" id="bin_2" name="bin_2" placeholder="BIN 2" class="form-control col-md-7 col-xs-12">
+                    <input type="text" id="bin_2" name="bin_2" placeholder="" class="form-control col-md-7 col-xs-12">
                   </div> 
                 </div>
 
@@ -189,58 +139,113 @@ select, .text_input {
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Bin Location 3
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="text" id="bin_3" name="bin_3" placeholder="BIN 3" class="form-control col-md-7 col-xs-12">
+                    <input type="text" id="bin_3" name="bin_3" placeholder="" class="form-control col-md-7 col-xs-12">
                   </div> 
                 </div>
 
-                <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Primary Car Models
-                  </label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <select id="primary_vehicle_model_id" name="primary_vehicle_model_id" class="form-control col-md-7 col-xs-12 select2">
-                      <option value="">none</option>
-                      <?php 
-                      if(@$manufacturers){
-                        foreach($manufacturers as $rs){
-                          $arr_manu[$rs->id] = $rs->title;
-                      }}
-                      if(@$models){
-                        foreach($models as $rs){
-                      ?>
-                      <option value="<?=$rs->id?>"><?=@$arr_manu[$rs->manufacturer_id].' '.$rs->title.' '.$rs->model_year?></option>
-                    <?php }}?>
-                    </select>
-                  </div>
-                </div> 
 
-                <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Applicable Car Model
-                  </label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <select id="applicable_vehicle_model_ids[]" name="applicable_vehicle_model_ids[]" multiple class="form-control col-md-7 col-xs-12 select2item">
-                      <option value="">none</option>
-                      <?php  
-                      if(@$models){
-                        foreach($models as $rs){
-                      ?>
-                      <option 
-                      data-item_code="<?=@$arr_manu[$rs->manufacturer_id]?>" 
-                      data-item_name="<?=@$rs->title . ' ' . $rs->model_year?>" 
-                      value="<?=$rs->id?>"><?=@$arr_manu[$rs->manufacturer_id].' '.$rs->title.' '.$rs->model_year?></option>
-                    <?php }}?>
-                    </select>
-                  </div>
-                </div> 
 
-                <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Cross-Compatible Parts
-                  </label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <select id="cross_compatible_part_ids[]" name="cross_compatible_part_ids[]" class="form-control col-md-7 col-xs-12 select2-ajax-modal" multiple>
-                       
-                    </select>
-                  </div>
-                </div> 
+          </div>
+          <div class="col col-6">
+
+            <div class="row mb-3">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Item Category
+              </label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <select id="item_category_id" name="item_category_id" class="form-control col-md-7 col-xs-12 select2">
+                  <option value=""></option>
+                  <?php 
+                  if(@$item_category){
+                    foreach($item_category as $rs){
+                  ?>
+                  <option value="<?=$rs->id?>"><?=$rs->title?></option>
+                <?php }}?>
+                </select>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Item Type
+              </label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <select id="item_type_id" name="item_type_id" class="form-control col-md-7 col-xs-12 select2">
+                  <option value=""></option>
+                  <?php 
+                  if(@$item_types){
+                    foreach($item_types as $rs){
+                  ?>
+                  <option value="<?=$rs->id?>"><?=$rs->title?></option>
+                <?php }}?>
+                </select>
+              </div>
+            </div>  
+
+            <div class="row mb-3">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Item Brand
+              </label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <select id="item_brand_id" name="item_brand_id" class="form-control col-md-7 col-xs-12 select2">
+                  <option value=""></option>
+                  <?php 
+                  if(@$item_brand){
+                    foreach($item_brand as $rs){
+                  ?>
+                  <option value="<?=$rs->id?>"><?=$rs->title?></option>
+                <?php }}?>
+                </select>
+              </div>
+            </div>  
+
+
+                
+            <div class="row mb-3">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Primary Car Models
+              </label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <select id="primary_vehicle_model_id" name="primary_vehicle_model_id" class="form-control col-md-7 col-xs-12 select2">
+                  <option value="">none</option>
+                  <?php 
+                  if(@$manufacturers){
+                    foreach($manufacturers as $rs){
+                      $arr_manu[$rs->id] = $rs->title;
+                  }}
+                  if(@$models){
+                    foreach($models as $rs){
+                  ?>
+                  <option value="<?=$rs->id?>"><?=@$arr_manu[$rs->manufacturer_id].' '.$rs->title.' '.$rs->model_year?></option>
+                <?php }}?>
+                </select>
+              </div>
+            </div> 
+
+            <div class="row mb-3">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Applicable Car Model
+              </label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <select id="applicable_vehicle_model_ids[]" name="applicable_vehicle_model_ids[]" multiple class="form-control col-md-7 col-xs-12 select2item">
+                
+                  <?php  
+                  if(@$models){
+                    foreach($models as $rs){
+                  ?>
+                  <option 
+                  data-item_code="<?=@$arr_manu[$rs->manufacturer_id]?>" 
+                  data-item_name="<?=@$rs->title . ' ' . $rs->model_year?>" 
+                  value="<?=$rs->id?>"><?=@$arr_manu[$rs->manufacturer_id].' '.$rs->title.' '.$rs->model_year?></option>
+                <?php }}?>
+                </select>
+              </div>
+            </div> 
+
+            <div class="row mb-3">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Cross-Compatible Parts
+              </label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <select id="cross_compatible_part_ids[]" name="cross_compatible_part_ids[]" class="form-control col-md-7 col-xs-12 select2-ajax-modal" multiple>
+                   
+                </select>
+              </div>
+            </div> 
 
                   
                 <div class="row mb-3">
@@ -285,6 +290,80 @@ select, .text_input {
 </div> 
  
  <script type="text/javascript">
+
+  $('#frm_validation').on('submit', function(e) {
+      e.preventDefault(); // Prevent default form submission
+
+      let form = $(this)[0];
+      let formData = new FormData(form); // Create FormData object
+
+      $.ajax({
+        url: "<?=base_url('inventory/save_item')?>", // Adjust if needed
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false, 
+        success: function(response) {
+          
+          if(response == 1){ 
+            Swal.fire({
+            title: "Success!",
+            text: "Successfuly saved.",
+            icon: "success",
+            confirmButtonColor: "#556ee6", // OK button color
+            showCancelButton: false // No Cancel button
+            });
+
+            // Reset the form
+            $('#frm_validation')[0].reset();
+
+            // Clear select2 selections
+            $('.select2, .select2item, .select2-ajax-modal').val(null).trigger('change');
+
+            // Hide error indicators
+            $('#exist').hide();
+
+            refresh_inv_table();
+
+          }else if(response == 3){
+            Swal.fire({
+            title: "Error!",
+            text: "Part number and item description required!",
+            icon: "error",
+            confirmButtonColor: "#556ee6", // OK button color
+            showCancelButton: false // No Cancel button
+            });
+          }else if(response == 2){
+            Swal.fire({
+            title: "Error!",
+            text: "Item code already exist in the inventory masterlist!",
+            icon: "error",
+            confirmButtonColor: "#556ee6", // OK button color
+            showCancelButton: false // No Cancel button
+            });
+          }else{
+            Swal.fire({
+            title: "Error!",
+            text: "An error occurred!",
+            icon: "error",
+            confirmButtonColor: "#556ee6", // OK button color
+            showCancelButton: false // No Cancel button
+            });
+          }
+        },
+        error: function(xhr, status, error) { 
+ 
+          Swal.fire({
+          title: "Error!",
+          text: xhr.responseText ? "An error occurred: " + xhr.responseText : 'Error on saving data!',
+          icon: "error",
+          confirmButtonColor: "#556ee6", // OK button color
+          showCancelButton: false // No Cancel button
+          }); 
+
+        }
+      });
+    });
    
   function chk_item_code(val){
 

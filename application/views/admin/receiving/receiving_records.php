@@ -2,11 +2,20 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Receiving <small>GRV Records (Unconfirmed)</small></h2> 
- 
- 
-           
-        <div class="clearfix"></div>
+        
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-md-8"> 
+                    <h6 class="page-title">Unconfirmed GRV Records</h6>
+                </div>
+                <div class="col-md-4">
+                    <div class="float-end d-none d-md-block">
+                         
+                    </div>
+                </div>
+            </div>
+        </div>
+
       </div>
       <div class="x_content">
         <p class="text-muted font-13 m-b-30">
@@ -45,7 +54,7 @@
               foreach($receiving as $rs){
                 $show_po_id = 0;
             ?>
-            <tr>
+            <tr id="tr<?=$rs->id?>">
               <td data-order="-<?=$rs->id?>"><?=date('M d, Y',strtotime($rs->date_created))?></td> 
               <td>GV<?=sprintf("%06d",$rs->id)?></td> 
               <td><?php
@@ -67,11 +76,13 @@
               <td><?=@$arr_user[$rs->user_id]?></td>
               <td nowrap>
 
-                <a href="<?php echo base_url('receiving/view_rr/'.$rs->id.'/1');?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" ><i class="fa fa-check"></i> Confirm</a>
+                <a href="Javascript:confirm_receiving(<?=$rs->id?>,'GV<?=sprintf("%06d",$rs->id)?>')"  ><i class="fa fa-check"></i> Confirm</a>
                   |  
-                <a href="<?php echo base_url('receiving/view_rr/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" ><i class="fa fa-file-text-o"></i> View</a>
+                <a href="<?php echo base_url('receiving/view_rr/'.$rs->id);?>" ><i class="fa fa-eye"></i> View</a>
                   |  
-                <a href="Javascript:edit_rr(<?=$rs->id?>)" ><i class="fa fa-edit"></i> Edit</a>
+                <a href="<?php echo base_url('receiving/edit_rr/'.$rs->id);?>" ><i class="fa fa-edit"></i> Edit</a>
+                 <br/>  
+                <a href="Javascript:prompt_delete('Delete','Delete GRV# <?=$rs->dr_number?>?','<?=base_url('receiving/delete_rr/'.$rs->id)?>','tr<?=$rs->id?>')" ><i class="fa fa-trash"></i> Delete</a>
                   |  
                 <a target="_blank" href="<?php echo base_url('receiving/print_rr/'.$rs->id);?>" ><i class="fa fa-print"></i> Print</a>
                 
@@ -89,31 +100,24 @@
 </div>
 
 <script type="text/javascript">
-function delete_po(id){
-  reset(); 
-
-  alertify.confirm("Confirm Deletion of Purchase Order Information? This Action Will Permanently Remove the Selected P.O. Records.", function (e) {
-        if (e) {  
-            alertify.log("deleting...");
-            location.href = "<?php echo base_url();?>purchasing/delete_po/"+id;
-        } else {
-            alertify.log("cancelled");
-        }
-    }, "Confirm");
-}
-
-function edit_rr(id){
-  reset(); 
-
-  alertify.confirm("Edit Receiving Records?", function (e) {
-        if (e) {  
-            alertify.log("copying...");
-            location.href = "<?php echo base_url('receiving/edit_rr');?>/"+id;
-        } else {
-            alertify.log("cancelled");
-        }
-    }, "Confirm");
-}
+ 
+  function confirm_receiving(id,grv) {
+    Swal.fire({
+      title: 'Confirm GRV?',
+      text: "Are you sure you want to confirm GRV# "+grv+"?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#aaa',
+      confirmButtonText: 'Continue',
+      cancelButtonText: 'No, cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+         
+        location.href = "<?=base_url('receiving/confirm_receiving/'.$rr->id)?>";
+      }  
+    });
+  }
 
 
 </script>

@@ -36,13 +36,13 @@
                                 <div class="text-center mt-4">
                                     <a href="index.html" class="logo logo-dark">
                                         <span class="logo-lg">
-                                            <img src="<?=base_url('assets/template/assets')?>/images/logo-dark.png" alt="" height="17">
+                                            <img src="<?=base_url('assets/images/c_logo.png?4')?>" alt="" height="117">
                                         </span>
                                     </a>
                     
                                     <a href="index.html" class="logo logo-light">
                                         <span class="logo-lg">
-                                            <img src="<?=base_url('assets/template/assets')?>/images/logo-light.png" alt="" height="18">
+                                            <img src="<?=base_url('assets/images/c_logo.png?1')?>/images/logo-light.png" alt="" height="18">
                                         </span>
                                     </a>
                                 </div>

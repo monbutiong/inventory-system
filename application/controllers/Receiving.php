@@ -235,8 +235,6 @@ class Receiving extends CI_Controller {
 				'user_id' => $this->session->user_id,
 				'supplier_id' => $this->input->post('supplier_id',TRUE), 
 				'po_ids' => json_encode($po_ids,TRUE),
-				'project_ids' => json_encode($project_ids,TRUE),
-				'quotation_ids' => json_encode($quotation_ids,TRUE),
 				'dr_number' => $this->input->post('dr_number',TRUE), 
 				'invoice_number' => $this->input->post('invoice_number',TRUE), 
 				'delivery_date' => $this->input->post('delivery_date',TRUE),
@@ -287,9 +285,7 @@ class Receiving extends CI_Controller {
 						'receiving_id' => $r_id,
 						'po_id' => $this->input->post('po_id'.$iid,TRUE),
 						'po_item_id' => $iid, 
-						'project_id' => $this->input->post('project_id'.$iid,TRUE), 
-						'quotation_id' => $this->input->post('quotation_id'.$iid,TRUE), 
-						'inventory_quotation_id' => $this->input->post('inventory_quotation_id'.$iid,TRUE), 
+						'vehicle_id' => $this->input->post('vehicle_id'.$iid,TRUE),   
 						'qty' => $this->input->post('qty'.$iid,TRUE),
 						'bad_qty' => $this->input->post('bad_qty'.$iid,TRUE),
 						'price' => $this->input->post('price'.$iid,TRUE),  
@@ -375,7 +371,7 @@ class Receiving extends CI_Controller {
 	    	 
 	    }
 
-	    redirect("receiving/create_receiving","refresh");
+	    redirect("receiving/edit_rr/".$r_id,"refresh");
 
 	}
 
@@ -398,6 +394,28 @@ class Receiving extends CI_Controller {
 		$module['suppliers'] = $this->core->load_core_data('suppliers_po');
 		
 		$this->load->view('admin/index',$module);
+
+	}
+
+	public function delete_rr($id){
+	 
+
+		$model = $this->core->global_query(3, 'receiving', $id);
+
+		if($model){ 
+			
+			echo 1;
+			//$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
+			  
+		}else{
+
+			echo 0;
+			//$this->session->set_flashdata("error","error saving.");
+
+		}
+
+		die();
+		//redirect("vehicles/masterlist/", "refresh");
 
 	}
 
@@ -440,18 +458,20 @@ class Receiving extends CI_Controller {
 			$proj_ids_q = '('.$proj_ids_q.')';
 		}
 
-		$module['supplier'] = $this->core->load_core_data('suppliers',$module['rr']->supplier_id); 
+		$module['supplier'] = $this->core->load_core_data('suppliers_po',$module['rr']->supplier_id); 
 
 		$module['po'] = $this->core->load_core_data('purchase_order','','',$po_ids_q); 
 
 		$module['user'] = $this->core->load_core_data('account',$module['rr']->user_id); 
 
+		if($module['rr']->confirmed==1){
+			$module['user_confirmed'] = $this->core->load_core_data('account',$module['rr']->confirmed_by); 
+		}
+
 		$module['confirm_user'] = $this->core->load_core_data('account',@$module['rr']->confirmed_by); 
 
 		$module['poi'] = $this->core->load_core_data('purchase_order_items','','',$pos_ids_q); 
-
-		$module['project'] = $this->core->load_core_data('projects','','',$proj_ids_q); 
-
+ 
 		$module['rri'] = $this->core->load_core_data('receiving_items','','','receiving_id='.$module['rr']->id);
 
 		$result = $this->admin_model->load_filemaintenance('fm_foreign_charges');
@@ -470,7 +490,7 @@ class Receiving extends CI_Controller {
 		$result = $this->admin_model->load_filemaintenance('fm_grv_transport');
 		$module['grv_transport'] = $result['maintenance_data'];
 		 
-		$this->load->view('admin/receiving/view_rr',$module);	 
+		$this->load->view('admin/index',$module);	 
 
 	}
 
@@ -481,7 +501,7 @@ class Receiving extends CI_Controller {
 		$module['module'] = "receiving/edit_rr";
 		$module['map_link']   = "receiving->edit_rr";   
 
-		$module['suppliers'] = $this->core->load_core_data('suppliers');
+		$module['suppliers'] = $this->core->load_core_data('suppliers_po');
 
 		$result = $this->admin_model->load_filemaintenance('fm_currency_rate');
 		$module['rates'] = $result['maintenance_data'];
@@ -570,9 +590,7 @@ class Receiving extends CI_Controller {
 				'date_modified' => date('Y-m-d H:i'),
 				'modified_by' => $this->session->user_id,
 				'supplier_id' => $this->input->post('supplier_id',TRUE), 
-				'po_ids' => json_encode($po_ids,TRUE),
-				'project_ids' => json_encode($project_ids,TRUE),
-				'quotation_ids' => json_encode($quotation_ids,TRUE),
+				'po_ids' => json_encode($po_ids,TRUE), 
 				'dr_number' => $this->input->post('dr_number',TRUE), 
 				'invoice_number' => $this->input->post('invoice_number',TRUE), 
 				'delivery_date' => $this->input->post('delivery_date',TRUE),
@@ -636,12 +654,11 @@ class Receiving extends CI_Controller {
 	    			 
 	    			$update = $this->db->where([
 	    				'receiving_id'=>$r_id,
-	    				'inventory_quotation_id' => $this->input->post('inventory_quotation_id'.$iid,TRUE)
+	    				'po_item_id' => $val
 	    			])->update('receiving_items',[
 						'date_modified' => date('Y-m-d H:i'),
 						'modified_by' => $this->session->user_id,   
-						'project_id' => $this->input->post('project_id'.$iid,TRUE), 
-						'quotation_id' => $this->input->post('quotation_id'.$iid,TRUE), 
+						'vehicle_id' => $this->input->post('vehicle_id'.$iid,TRUE),  
 						'qty' => $this->input->post('qty'.$iid,TRUE),
 						'bad_qty' => $this->input->post('bad_qty'.$iid,TRUE),
 						'price' => $this->input->post('price'.$iid,TRUE),  
@@ -663,9 +680,7 @@ class Receiving extends CI_Controller {
 							'receiving_id' => $r_id,
 							'po_id' => $this->input->post('po_id'.$iid,TRUE),
 							'po_item_id' => $iid, 
-							'project_id' => $this->input->post('project_id'.$iid,TRUE), 
-							'quotation_id' => $this->input->post('quotation_id'.$iid,TRUE), 
-							'inventory_quotation_id' => $this->input->post('inventory_quotation_id'.$iid,TRUE), 
+							'vehicle_id' => $this->input->post('vehicle_id'.$iid,TRUE),  
 							'qty' => $this->input->post('qty'.$iid,TRUE),
 							'bad_qty' => $this->input->post('bad_qty'.$iid,TRUE),
 							'price' => $this->input->post('price'.$iid,TRUE),  
@@ -774,9 +789,7 @@ class Receiving extends CI_Controller {
 		$module['user'] = $this->core->load_core_data('account',$module['rr']->user_id); 
 
 		$module['poi'] = $this->core->load_core_data('purchase_order_items','','',$pos_ids_q); 
-
-		$module['projects'] = $this->core->load_core_data('projects','','',$proj_ids_q); 
-
+ 
 		$module['supplier'] = $this->core->load_core_data('suppliers_po',$module['rr']->supplier_id); 
 
 		$module['rri'] = $this->core->load_core_data('receiving_items','','','receiving_id='.$module['rr']->id);
@@ -806,7 +819,7 @@ class Receiving extends CI_Controller {
 		]); 
 
 		$rr = $this->core->load_core_data('receiving',$id);
-		$rri = $this->db->select('inventory_id, po_item_id, inventory_quotation_id, qty, unit_cost_price,project_id,quotation_id,price')->get_where('receiving_items',['receiving_id'=>$id,'deleted'=>0])->result();
+		$rri = $this->db->select('inventory_id, po_item_id, qty, unit_cost_price, vehicle_id, price')->get_where('receiving_items',['receiving_id'=>$id,'deleted'=>0])->result();
 
 		foreach ($rri as $rs) { 
 
@@ -845,9 +858,7 @@ class Receiving extends CI_Controller {
 				'user_id' => $this->session->user_id,
 				'inventory_id' => @$rs->inventory_id,
 				'ref_id' => $id, 
-				'project_id' => $rs->project_id, 
-				'quotation_id' => $rs->quotation_id, 
-				'inventory_quotation_id' => $rs->inventory_quotation_id, 
+				'vehicle_id' => $rs->vehicle_id,   
 				'qty' => $rs->qty,
 				'qty_before' => $inv->qty,
 				'qty_after' => ($inv->qty + $rs->qty), 
@@ -868,7 +879,7 @@ class Receiving extends CI_Controller {
 			 
 		}
 
-		redirect("receiving/receiving_records","refresh");
+		redirect("receiving/view_rr/".$id,"refresh");
 
 	}
 

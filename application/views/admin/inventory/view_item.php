@@ -37,7 +37,7 @@ select, .text_input {
       <div class="x_title">
 
         <div class="modal-header">
-            <h5 class="modal-title" id="mySmallModalLabel">Edit Item: <?=htmlspecialchars($item->item_code)?></h5>
+            <h5 class="modal-title" id="mySmallModalLabel">Item #: <?=htmlspecialchars($item->item_code)?></h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
@@ -62,7 +62,7 @@ select, .text_input {
                 </div>
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="qty">Initial Quantity</label>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="qty">Quantity on Hand</label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <input type="number" id="qty" name="qty" value="<?=htmlspecialchars($item->qty)?>" class="form-control col-md-7 col-xs-12">
                   </div>
@@ -96,53 +96,29 @@ select, .text_input {
                   </div>
                 </div>
 
+                
+
+
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="item_category_id">Item Category</label>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bin_1">Bin Location 1</label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <select id="item_category_id" name="item_category_id" class="form-control col-md-7 col-xs-12 select2">
-                      <option value=""></option>
-                      <?php 
-                      if(@$item_category){
-                        foreach($item_category as $rs){
-                          $selected = ($rs->id == $item->item_category_id) ? 'selected' : '';
-                      ?>
-                      <option value="<?=$rs->id?>" <?=$selected?>><?=$rs->title?></option>
-                    <?php }}?>
-                    </select>
-                  </div>
+                    <input type="text" id="bin_1" name="bin_1" class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->bin_1)?>">
+                  </div> 
                 </div>
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="item_type_id">Item Type</label>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bin_2">Bin Location 2</label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <select id="item_type_id" name="item_type_id" class="form-control col-md-7 col-xs-12 select2">
-                      <option value=""></option>
-                      <?php 
-                      if(@$item_types){
-                        foreach($item_types as $rs){
-                          $selected = ($rs->id == $item->item_type_id) ? 'selected' : '';
-                      ?>
-                      <option value="<?=$rs->id?>" <?=$selected?>><?=$rs->title?></option>
-                    <?php }}?>
-                    </select>
-                  </div>
-                </div>  
+                    <input type="text" id="bin_2" name="bin_2" class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->bin_2)?>">
+                  </div> 
+                </div>
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="item_brand_id">Item Brand</label>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bin_3">Bin Location 3</label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <select id="item_brand_id" name="item_brand_id" class="form-control col-md-7 col-xs-12 select2">
-                      <option value=""></option>
-                      <?php 
-                      if(@$item_brand){
-                        foreach($item_brand as $rs){
-                          $selected = ($rs->id == $item->item_brand_id) ? 'selected' : '';
-                      ?>
-                      <option value="<?=$rs->id?>" <?=$selected?>><?=$rs->title?></option>
-                    <?php }}?>
-                    </select>
-                  </div>
-                </div>  
+                    <input type="text" id="bin_3" name="bin_3" class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->bin_3)?>">
+                  </div> 
+                </div>
 
                 <?php if($item->picture_1 || $item->picture_2 || $item->picture_3){?>
                 <div class="row mb-3">
@@ -186,25 +162,51 @@ select, .text_input {
           <div class="col col-6">
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bin_1">Bin Location 1</label>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="item_category_id">Item Category</label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="text" id="bin_1" name="bin_1" placeholder="BIN 1" class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->bin_1)?>">
-                  </div> 
+                    <select id="item_category_id" name="item_category_id" class="form-control col-md-7 col-xs-12 select2">
+                
+                      <?php 
+                      if(@$item_category){
+                        foreach($item_category as $rs){
+                          $selected = ($rs->id == $item->item_category_id) ? 'selected' : '';
+                      ?>
+                      <option value="<?=$rs->id?>" <?=$selected?>><?=$rs->title?></option>
+                    <?php }}?>
+                    </select>
+                  </div>
                 </div>
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bin_2">Bin Location 2</label>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="item_type_id">Item Type</label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="text" id="bin_2" name="bin_2" placeholder="BIN 2" class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->bin_2)?>">
-                  </div> 
-                </div>
+                    <select id="item_type_id" name="item_type_id" class="form-control col-md-7 col-xs-12 select2">
+                   
+                      <?php 
+                      if(@$item_types){
+                        foreach($item_types as $rs){
+                          $selected = ($rs->id == $item->item_type_id) ? 'selected' : '';
+                      ?>
+                      <option value="<?=$rs->id?>" <?=$selected?>><?=$rs->title?></option>
+                    <?php }}?>
+                    </select>
+                  </div>
+                </div>  
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bin_3">Bin Location 3</label>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="item_brand_id">Item Brand</label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="text" id="bin_3" name="bin_3" placeholder="BIN 3" class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->bin_3)?>">
-                  </div> 
-                </div>
+                    <select id="item_brand_id" name="item_brand_id" class="form-control col-md-7 col-xs-12 select2"> 
+                      <?php 
+                      if(@$item_brand){
+                        foreach($item_brand as $rs){
+                          $selected = ($rs->id == $item->item_brand_id) ? 'selected' : '';
+                      ?>
+                      <option value="<?=$rs->id?>" <?=$selected?>><?=$rs->title?></option>
+                    <?php }}?>
+                    </select>
+                  </div>
+                </div>  
 
                 <div class="row mb-3">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Primary Car Models

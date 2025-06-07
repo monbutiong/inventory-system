@@ -183,9 +183,9 @@
 
                  <strong style="color: #65aadb;"> <?=$rr->remarks?> </strong>.
 
-                  <div class="footer">
-                          <img class="img_logo" src="<?php echo base_url();?>assets/images/footer.png"/> 
-                  </div>
+                  <!-- <div class="footer">
+                          <img class="img_logo" src="<?php echo base_url();?>assets/images/footer.png?1"/> 
+                  </div> -->
       </div> 
     </div>
     </center>

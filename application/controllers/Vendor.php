@@ -467,32 +467,32 @@ class Vendor extends CI_Controller {
 			public function print_po($id){
 
 				$module = $this->system_menu;   
-				
 				 
-				$module['clients'] = $this->core->load_core_data('clients');
-
-				$module['projects'] = $this->core->load_core_data('projects');
+				$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+				$module['manufacturers'] = $result['maintenance_data'];
 				
 				$module['users'] = $this->core->load_core_data('account','','id,name');
-			
+
+				$module['suppliers'] = $this->core->load_core_data('suppliers_po','','id,name');
+
 				$module['po'] = $this->core->load_core_data('purchase_order',$id);
-
-				$module['supplier'] = $this->core->load_core_data('suppliers',$module['po']->supplier_id,'id,name,address');
-
-				$module['quotation'] = $this->core->load_core_data('quotations',$module['po']->quotation_id,'id,quotation_number,version,project_id','confirmed=1');
-
-				$module['project'] = $this->core->load_core_data('projects',@$module['quotation']->project_id);
 
 				$module['po_items'] = $this->core->load_core_data('purchase_order_items','','','po_id='.$id);
 
-				$module['lcr'] = $this->core->load_core_data('quotations_landed_cost_rate','','','quotation_id='.@$module['po']->quotation_id);
+				$module['vehicles'] = $this->core->load_core_data('vehicles','','id,customer_id,manufacturer_id,plate_no');
 
+				$module['customers'] = $this->core->load_core_data('clients','','id,name');
+				
+				$module['user'] = $this->core->load_core_data('account',$module['po']->user_id,'id,name');
+				 
 				$result = $this->admin_model->load_filemaintenance('fm_currency_rate');
 				$module['rates'] = $result['maintenance_data'];
+				
 				// Create an instance of the Converter class
 				$converter = new Converter("qar", "dirham");
 
 				$module['converter'] = $converter;
+				 
 				
 				$this->load->view('admin/purchasing/print_po',$module);
 				//$this->export_to_pdf('admin/purchasing/print_po',$module);

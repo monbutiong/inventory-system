@@ -69,7 +69,7 @@
           if($table_data){
           	foreach ($table_data as $rs) { 
           ?>
-            <tr>
+            <tr id="tr<?=$rs->id?>">
              <!--  <td><?php echo sprintf("%05d",$rs->id);?></td> -->
               <td><?php echo $rs->title;?></td>
               <?php if($table_name_sql=='fm_manpower'){?>
@@ -93,7 +93,7 @@
               <th>
                 <a href="<?php echo base_url();?>maintenance/edit_table_data_content/<?php echo $table_name_sql;?>/<?php echo $rs->id;?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-edit"></i> edit</a>
                 | 
-                <a href="Javascript:remove_data(<?php echo $rs->id;?>);"><i class="fa fa-trash"></i> remove</a>
+                <a href="Javascript:prompt_delete('Delete','Delete <?php echo $rs->title;?> data?','<?=base_url('maintenance/delete_data/'.$table_name_sql.'/'.$rs->id)?>','tr<?=$rs->id?>')"><i class="fa fa-trash"></i> remove</a>
                
               </th>
             </tr> 

@@ -13,15 +13,15 @@
         <div class="page-title-box">
             <div class="row align-items-center">
                 <div class="col-md-8"> 
-                    <h6 class="page-title">Edit Purchase Order</h6>
+                    <h6 class="page-title">Purchase Order #: <?=@$po->po_number?></h6>
                     <ol class="breadcrumb m-0"> 
                         <li class="breadcrumb-item active" aria-current="page"><?=$user->name.' - '.date('M d, Y H:i',strtotime($po->date_created))?></li>
                     </ol>
                 </div>
                 <div class="col-md-4">
                     <div class="float-end d-none d-md-block">
-                        <a class="btn btn-md btn-success" href="Javascript:confirm_po()"  >Confirm P.O.</a>
-                        <a class="btn btn-md btn-primary" href="Javascript:update_po()"  >Update P.O.</a>
+                        <a class="btn btn-md btn-success" href="Javascript:confirm_po()"  ><i class="fa fa-edit"></i> Confirm P.O.</a>
+                        <a class="btn btn-md btn-primary" href="Javascript:update_po()"  ><i class="fa fa-save"></i> Update P.O.</a>
                         <a class="btn btn-md btn-warning" href="<?=base_url('purchasing/po_list')?>"  >Go Back</a>
                     </div>
                 </div>
@@ -40,12 +40,12 @@
 
           <div class="row">
             
-            <div class="col-md-3 col-sm-12 mb-3">
+            <div class="col-md-2 col-sm-12 mb-3">
               <label >P.O. Number</label>
               <input type="text" readonly name="po_number" id="po_number" value="<?=$po->po_number?>" class="form-control ridonly">
             </div>
 
-            <div class="col-md-3 col-sm-12 mb-3">
+            <div class="col-md-4 col-sm-12 mb-3">
               <label >Vehicle / Customer <font color="red"></font></label>
               <select name="vehicle_id" id="vehicle_id" class="form-control select2_" >
                 <option value="0">N/A</option> 
@@ -193,7 +193,7 @@
                   <tr>
                     <td class="add_item">
                        
-                       <div class="select2-ajax" style="width: 100%;"> 
+                       <div class="select2-ajax-po" style="width: 100%;"> 
                        </div>
 
                     </td> 
@@ -289,14 +289,8 @@ function confirm_po() {
             showConfirmButton: false,
             timer: 1000
           });
-          document.frm_po.submit();
-        } else {
-          Swal.fire({
-            icon: 'info',
-            title: 'Cancelled',
-            text: 'The purchase order was not saved.'
-          });
-        }
+          location.href = "<?=base_url('purchasing/save_confirm_po/'.$po->id)?>";
+        }  
       });
 
     }
@@ -504,13 +498,13 @@ function update_po(){
         cancelButtonText: 'No, cancel'
       }).then((result) => {
         if (result.isConfirmed) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Saving...',
-            text: 'Your purchase order is being saved.',
-            showConfirmButton: false,
-            timer: 1000
-          });
+          // Swal.fire({
+          //   icon: 'success',
+          //   title: 'Saving...',
+          //   text: 'Your purchase order is being saved.',
+          //   showConfirmButton: false,
+          //   timer: 1000
+          // });
           document.frm_po.submit();
         } else {
           Swal.fire({
@@ -524,4 +518,6 @@ function update_po(){
     }
   
 } 
+
+ 
 </script>

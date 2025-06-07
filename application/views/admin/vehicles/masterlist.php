@@ -15,8 +15,7 @@
                     </div>
                 </div>
             </div>
-           
-        <div class="clearfix"></div>
+            
       </div>
       <div class="x_content">
         <p class="text-muted font-13 m-b-30">
@@ -61,7 +60,7 @@
             if(@$vehicles){
               foreach($vehicles as $rs){
             ?>
-            <tr>
+            <tr id="tr<?=$rs->id?>">
               <td><?=$rs->plate_no?></td> 
               <td><?=$rs->vin?></td>
 
@@ -78,7 +77,7 @@
                  | 
                 <a href="<?php echo base_url('vehicles/view_vehicle/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-eye"></i> view</a>
                  | 
-                <a href="Javascript:prompt('Delete','Delete Vehicle?','<?=base_url('vehicles/delete_vehicle/'.$rs->id)?>')" ><i class="fa fa-trash"></i> Delete</a>
+                <a href="Javascript:prompt_delete('Delete','Delete Vehicle?','<?=base_url('vehicles/delete_vehicle/'.$rs->id)?>','tr<?=$rs->id?>')" ><i class="fa fa-trash"></i> Delete</a>
                  
                  
               </td>

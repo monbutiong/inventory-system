@@ -179,16 +179,19 @@ class Crm extends CI_Controller {
 		$model = $this->core->global_query(3,'clients', $id); 
 
 		if($model['result']){ 
-			 
-			$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
+			
+			echo 1;
+			//$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
 			  
 		}else{
 
-			$this->session->set_flashdata("error","error saving.");
+			echo 0;
+			//$this->session->set_flashdata("error","error saving.");
 
 		}
 
-		redirect("crm/clients","refresh");
+		die();
+		//redirect("crm/clients","refresh");
 	}
 
 	public function delete_client_image($id)

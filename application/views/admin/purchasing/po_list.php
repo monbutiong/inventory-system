@@ -67,7 +67,7 @@
             if(@$purchase_order){
               foreach($purchase_order as $rs){
             ?>
-            <tr>
+            <tr id="tr<?=$rs->id?>">
               <td data-order="-<?=$rs->id?>"><?=date('M d, Y',strtotime($rs->date_created))?></td>
               <td><?=@$arr_m[@$arr_v[$rs->vehicle_id]->manufacturer_id].' - '.@$arr_v[$rs->vehicle_id]->plate_no?></td>
               <td><?=@$arr_c[@$arr_v[$rs->vehicle_id]->customer_id]?></td> 
@@ -78,15 +78,15 @@
               <td><?=@$arr_user[$rs->user_id]?></td>
               <td nowrap>
                   
-                <a href="<?php echo base_url('purchasing/view_po/'.$rs->id.'/1');?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" ><i class="fa fa-check"></i> Confirm</a>
+                <a href="Javascript:confirm_po(<?=$rs->id?>)"  ><i class="fa fa-check"></i> Confirm</a>
                  | 
                 <a href="<?php echo base_url('purchasing/edit_po/'.$rs->id);?>" ><i class="fa fa-edit"></i> Edit</a>
                  |
-                <a href="<?php echo base_url('purchasing/view_po/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" ><i class="fa fa-eye"></i> View</a>
+                <a href="<?php echo base_url('purchasing/view_po/'.$rs->id);?>"  ><i class="fa fa-eye"></i> View</a>
                  |  
                 <a target="_blank" href="<?php echo base_url('vendor/print_po/'.$rs->id);?>" ><i class="fa fa-print"></i> Print</a>
                  |  
-                <a href="Javascript:delete_po(<?=$rs->id?>)" class="load_modal_details"><i class="fa fa-remove"></i> Delete</a>
+                <a href="javascript:prompt_delete('Delete', 'Delete P.O. Number <?=@$rs->po_number?>?','<?=base_url('purchasing/delete_po/' . $rs->id)?>', 'tr<?=$rs->id?>')" ><i class="fa fa-trash"></i> Delete</a>
                   
               </td>
             </tr>
@@ -101,30 +101,34 @@
 </div>
 
 <script type="text/javascript">
-function delete_po(id){
-  reset(); 
+ 
 
-  alertify.confirm("Confirm Deletion of Purchase Order Information? This Action Will Permanently Remove the Selected P.O. Records.", function (e) {
-        if (e) {  
-            alertify.log("deleting...");
-            location.href = "<?php echo base_url();?>purchasing/delete_po/"+id;
-        } else {
-            alertify.log("cancelled");
-        }
-    }, "Confirm");
-}
+function confirm_po(id) {
 
-function confirm_po(id){
-  reset(); 
+     
+      Swal.fire({
+        title: 'Confirm Purchase Order?',
+        text: "Are you sure you want to confirm this purchase order?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#aaa',
+        confirmButtonText: 'Yes, save it',
+        cancelButtonText: 'No, cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Swal.fire({
+          //   icon: 'success',
+          //   title: 'Saving...',
+          //   text: 'Your purchase order is being saved.',
+          //   showConfirmButton: false,
+          //   timer: 1000
+          // });
+          location.href = "<?=base_url('purchasing/save_confirm_po')?>/"+id;
+        }  
+      });
 
-  alertify.confirm("Confirm Purchae Order?", function (e) {
-        if (e) {  
-            alertify.log("copying...");
-            location.href = "<?php echo base_url();?>purchasing/save_confirm_po/"+id;
-        } else {
-            alertify.log("cancelled");
-        }
-    }, "Confirm");
+
 }
 
 function confirmq(id){

@@ -90,11 +90,11 @@ define('PHPASS_HASH_PORTABLE', FALSE);
 
 /* custom variable */
 define('developer','MonButiong');
-define('system_name', 'Project Management System');
-define('company_name', 'Ventum Tech');
-define('company_email', 'bib@tss-ph.com');
-define('cc_email', 'RCrizt123@gmail.com');
-define('bcc_email', 'RCrizt123@gmail.com');
+define('system_name', 'Inventory Management System');
+define('company_name', 'German Auto Line');
+define('company_email', 'support@german-ato-line.com');
+define('cc_email', 'germanautoline@gmail.com');
+define('bcc_email', 'germanautoline@gmail.com');
 
 define('sdate',  date("m-d-Y"));
 define('datedb',  date("Y-m-d"));
@@ -107,4 +107,4 @@ define('dateformatMY',"F Y");
 define('dateformatdb',"Y-m-d");
 define('default_curreny',"ر.ق");
 //define('api_url','http://192.168.6.81/ventum-time');
-define('api_url','https://ventum-time.alboraqautomobiles.com');
+define('api_url','https://german-atuo-line.com');

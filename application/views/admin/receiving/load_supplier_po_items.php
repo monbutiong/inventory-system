@@ -11,22 +11,18 @@ select, .text_input {
 .vcc{
   border-bottom-color: #999;
 }
+
 </style>
 
  <div class="row">
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
-      <div class="x_title">
-        <h2>Purchase Order<small>Item List</small></h2>
-        <ul class="nav navbar-right panel_toolbox">
-           
-           
-          <li><a data-bs-dismiss="modal"><i class="fa fa-close"></i> close</a>
-          </li>
-        </ul>
-        <div class="clearfix"></div>
+      <div class="modal-header">
+          <h5 class="modal-title" id="mySmallModalLabel">Items From Purchase Order</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Close"></button>
       </div>
-      <div class="x_content">
+      <div class="modal-body">
         
         <table id="datatable_modal" class="table table-striped table-bordered table-hover"> 
           <thead>
@@ -82,7 +78,7 @@ select, .text_input {
               foreach ($po as $rs) {
                 $arr_po[$rs->id] = $rs->po_number; 
                 $arr_po_proj[$rs->id] = $rs->project_id; 
-                $arr_po_quote[$rs->id] = $rs->quotation_id; 
+                $arr_po_quote[$rs->id] = $rs->vehicle_id; 
               }
             }
 
@@ -105,7 +101,7 @@ select, .text_input {
                 <?php if(@$disabled){?>
                   <input disabled type="checkbox" checked style="transform : scale(1.5);">
                 <?php }else{?>  
-                  <input id="add_item_<?=$rs->id?>" name="add_item_<?=$rs->id?>" <?php if(@$e_rr_received[$rs->id]){echo 'checked';}?> class="itm_chk" type="checkbox" onchange="add_to_receive(this.checked,<?=$rs->id?>,'<?=$rs->item_code?>','<?=@$arr_po[@$rs->po_id]?>','<?=$rs->item_name?>','<?=$rs->qty?>','<?=$rs->price; ?>','<?=number_format($rs->price * $rs->qty,2)?>',<?=@$rs->inventory_id?>,<?=$prev_rec?>,'<?=@$arr_cr[$rs->rate_id]?>',<?=@$arr_cr_rate[$rs->rate_id]?>,<?=@$arr_po_proj[$rs->po_id] ?? 0?>,<?=@$rs->quotation_id ?? 0?>,<?=@$rs->inventory_quotation_id?>,<?=@$rs->po_id?>,0)" value="<?=$rs->id?>" style="transform : scale(1.5);">
+                  <input id="add_item_<?=$rs->id?>" name="add_item_<?=$rs->id?>" <?php if(@$e_rr_received[$rs->id]){echo 'checked';}?> class="itm_chk" type="checkbox" onchange="add_to_receive(this.checked,<?=$rs->id?>,'<?=$rs->item_code?>','<?=@$arr_po[@$rs->po_id]?>','<?=$rs->item_name?>','<?=$rs->qty?>','<?=$rs->price; ?>','<?=number_format($rs->price * $rs->qty,2)?>',<?=@$rs->inventory_id?>,<?=$prev_rec?>,'<?=@$arr_cr[$rs->rate_id]?>',<?=@$arr_cr_rate[$rs->rate_id]?>,<?=@$arr_po_proj[$rs->po_id] ?? 0?>,<?=@$rs->vehicle_id ?? 0?>,<?=@$rs->po_id?>,0)" value="<?=$rs->id?>" style="transform : scale(1.5);">
                 <?php }?>
 
               </td>
@@ -113,7 +109,7 @@ select, .text_input {
               <td><?=$rs->item_code?>
                 
                 <input type="hidden" id="inv_id<?=$rs->id?>" value="<?=$rs->inventory_id?>"> 
-                <input type="hidden" id="inventory_quotation_id<?=$rs->id?>" value="<?=$rs->inventory_quotation_id?>">  
+                <input type="hidden" id="inventory_vehicle_id<?=$rs->id?>" value="<?=$rs->inventory_vehicle_id?>">  
 
               </td>
               
@@ -125,7 +121,7 @@ select, .text_input {
                 
                 <input type="number" class="item_row<?=$rs->id?>" id="rec_price<?=$rs->id?>" name="rec_bad_qty<?=$rs->id?>" onkeyup="update_list(<?=$rs->id?>)"  value="<?=round($rs->price,2)?>" step="any" min="0" style="border: 0; text-align: right;   width: 60px;" disabled>
 
-                  <input type="hidden" id="rec_price<?=$rs->id?>" value="<?=$rs->price?>"> 
+                  <input type="hidden" id="rec_price_orig<?=$rs->id?>" value="<?=$rs->price?>"> 
 
               </td>
               <td nowrap align="right">
@@ -155,24 +151,20 @@ select, .text_input {
             <?php 
             if(!@$disabled){
 
-            $click_all_add.=' add_to_receive(true,'.$rs->id.',"'.$rs->item_code.'","'.@$arr_po[$rs->po_id].'","'.$rs->item_name.'",'.$rs->qty.',"'.$rs->price.'","'.number_format($rs->price * $rs->qty,2).'",'.$rs->inventory_id.','.$prev_rec.',"'.(@$arr_cr[$rs->rate_id]).'","'.(@$arr_cr_rate[$rs->rate_id]).'",'.(@$arr_po_proj[$rs->po_id] ?? 0).','.$rs->quotation_id.','.$rs->inventory_quotation_id.','.$rs->po_id.',1);
+            $click_all_add.=' add_to_receive(true,'.$rs->id.',"'.$rs->item_code.'","'.@$arr_po[$rs->po_id].'","'.$rs->item_name.'",'.$rs->qty.',"'.$rs->price.'","'.number_format($rs->price * $rs->qty,2).'",'.$rs->inventory_id.','.$prev_rec.',"'.(@$arr_cr[$rs->rate_id]).'","'.(@$arr_cr_rate[$rs->rate_id]).'",'.(@$arr_po_proj[$rs->po_id] ?? 0).','.$rs->vehicle_id.','.$rs->po_id.',1);
             ';
  
 
-            $click_all_remove.=' add_to_receive(false,'.$rs->id.',"'.$rs->item_code.'","'.@$arr_po[$rs->po_id].'","'.$rs->item_name.'",'.$rs->qty.',"'.$rs->price.'","'.number_format($rs->price * $rs->qty,2).'",'.$rs->inventory_id.','.$prev_rec.',"'.(@$arr_cr[$rs->rate_id]).'","'.(@$arr_cr_rate[$rs->rate_id]).'",'.(@$arr_po_proj[$rs->po_id] ?? 0).','.$rs->quotation_id.','.$rs->inventory_quotation_id.','.$rs->po_id.',0);
+            $click_all_remove.=' add_to_receive(false,'.$rs->id.',"'.$rs->item_code.'","'.@$arr_po[$rs->po_id].'","'.$rs->item_name.'",'.$rs->qty.',"'.$rs->price.'","'.number_format($rs->price * $rs->qty,2).'",'.$rs->inventory_id.','.$prev_rec.',"'.(@$arr_cr[$rs->rate_id]).'","'.(@$arr_cr_rate[$rs->rate_id]).'",'.(@$arr_po_proj[$rs->po_id] ?? 0).','.$rs->vehicle_id.','.$rs->po_id.',0);
             ';
             }
             }}?>
            </tbody>
           </table> 
         
-          <div class="ln_solid"></div>
-          <div class="form-group">
-            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-              
-                <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Close</button>  
-               
-            </div>
+          </div>
+          <div class="modal-footer">
+              <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Close</button>  
           </div>
           
         
@@ -239,7 +231,7 @@ select, .text_input {
 
   
 
-  function add_to_receive(check_add_to_line, id, part_no, po_no, desc, po_qty, unit_price, total_price, inv_id, prev_rec, cr, cr_rate, project_id, quotation_id, inventory_quotation_id,po_id,select_all){
+  function add_to_receive(check_add_to_line, id, part_no, po_no, desc, po_qty, unit_price, total_price, inv_id, prev_rec, cr, cr_rate, project_id, vehicle_id,po_id,select_all){
     
     if(check_add_to_line && $('#irow' + id).length == 0){
 
@@ -261,7 +253,7 @@ select, .text_input {
 
       $('#rttl'+id).html(ttl_nf);
 
-      var newRowHtml = '<tr id="irow' + id + '" class="all_po_itm"><td>'+po_no+'</td><td><input type="hidden" name="items[' + id + ']" class="all_added_item_list" value="' + id + '">'+part_no+'<input type="hidden" name="item_code' + id + '" value="' + part_no + '"><input type="hidden" name="inv_id' + id + '" value="' + inv_id + '"><input type="hidden" name="project_id' + id + '" value="' + project_id + '"><input type="hidden" name="quotation_id' + id + '" value="' + quotation_id + '"><input type="hidden" name="inventory_quotation_id' + id + '" value="' + inventory_quotation_id + '"><input type="hidden" name="po_id' + id + '" value="' + po_id + '"></td><td>'+desc+'<input type="hidden" name="item_name' + id + '" value="' + desc + '"></td><td>'+po_qty+'</td><td align="right"><font id="o_unit_price' + id + '">'+unit_price_nf+'</font><input type="hidden" id="price'+id+'" name="price'+id+'" value="'+unit_cost+'"></td><td align="right"><font id="o_ttl_price' + id + '">'+total_price+'</font></td><td>'+prev_rec+'</td><td align="right" nowrap>  <input type="number" name="qty' + id + '" id="qty' + id + '" onkeyup="comp(' + id + ')" value="'+qty+'" style="border: 0; text-align: right; width: 100px;"></td><td align="right" nowrap>  <input type="number" name="bad_qty' + id + '" id="bad_qty' + id + '" value="'+bad_qty+'" style="border: 0; text-align: right; width: 100px;"></td><td align="right"><input type="hidden" class="all_ttl" id="i_ttl' + id + '" value="'+ttl+'"><span id="ttl' + id + '">'+ttl_nf+'</span></td><td><span id="remrks_txt'+id+'">'+rmrks+'</span><input type="hidden" id="remrks'+id+'" name="remrks'+id+'"></td><td width="5"><a href="javascript:idel(' + id + ')"><i class="fa fa-remove"></i></a></td></tr>';
+      var newRowHtml = '<tr id="irow' + id + '" class="all_po_itm"><td>'+po_no+'</td><td><input type="hidden" name="items[' + id + ']" class="all_added_item_list" value="' + id + '">'+part_no+'<input type="hidden" name="item_code' + id + '" value="' + part_no + '"><input type="hidden" name="inv_id' + id + '" value="' + inv_id + '"><input type="hidden" name="project_id' + id + '" value="' + project_id + '"><input type="hidden" name="vehicle_id' + id + '" value="' + vehicle_id + '"><input type="hidden" name="po_id' + id + '" value="' + po_id + '"></td><td>'+desc+'<input type="hidden" name="item_name' + id + '" value="' + desc + '"></td><td>'+po_qty+'</td><td align="right"><font id="o_unit_price' + id + '">'+unit_price_nf+'</font><input type="hidden" id="price'+id+'" name="price'+id+'" value="'+unit_cost+'"></td><td align="right"><font id="o_ttl_price' + id + '">'+total_price+'</font></td><td>'+prev_rec+'</td><td align="right" nowrap>  <input type="number" name="qty' + id + '" id="qty' + id + '" onkeyup="comp(' + id + ')" value="'+qty+'" style="border: 0; text-align: right; width: 100px;"></td><td align="right" nowrap>  <input type="number" name="bad_qty' + id + '" id="bad_qty' + id + '" value="'+bad_qty+'" style="border: 0; text-align: right; width: 100px;"></td><td align="right"><input type="hidden" class="all_ttl" id="i_ttl' + id + '" value="'+ttl+'"><span id="ttl' + id + '">'+ttl_nf+'</span></td><td><span id="remrks_txt'+id+'">'+rmrks+'</span><input type="hidden" id="remrks'+id+'" name="remrks'+id+'"></td><td width="5"><a href="javascript:idel(' + id + ')"><i style="color:red;" class="fa fa-trash"></i></a></td></tr>';
        
       $('#recieve_section').before(newRowHtml);
 

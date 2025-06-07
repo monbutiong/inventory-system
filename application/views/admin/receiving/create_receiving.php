@@ -9,6 +9,10 @@
   .select2-search-choice-close:hover::before {
       color: darkred;
   }
+  .readonlyx{
+    border: 1px dashed #999;
+    background-color: #f9f9f9;
+  }
 </style>
 <form method="post" name="frm_receiving" action="<?=base_url('receiving/save_receiving')?>" enctype="multipart/form-data">
 <div class="row">
@@ -56,7 +60,7 @@
                   </div>
 
                   <div class="col-md-10 col-sm-12 mb-3">
-                    <label >P.O. Details</label>
+                    <label >P.O. Details *</label>
                     <div id="pos">
                       <input type="text" disabled class="form-control">
                     </div>
@@ -108,17 +112,17 @@
 
                   <div class="col-md-2 col-sm-12 mb-3">
                     <label >Exchange Rate</label>
-                    <input type="text" readonly id="exchange_rate" name="exchange_rate" class="form-control" value="0.00">
+                    <input type="text" readonly id="exchange_rate" name="exchange_rate" class="form-control readonlyx" value="0.00">
                   </div>
 
                   <div class="col-md-2 col-sm-12 mb-3">
                     <label >Currency</label>
-                    <input type="text" readonly id="currency" name="currency" class="form-control" >  
+                    <input type="text" readonly id="currency" name="currency" class="form-control readonlyx" >  
                   </div>
 
                   <div class="col-md-2 col-sm-12 mb-3">
                     <label >L/C Factor</label>
-                    <input type="text" readonly id="lc_factor" name="lc_factor" value="0" class="form-control" >  
+                    <input type="text" readonly id="lc_factor" name="lc_factor" value="0" class="form-control readonlyx" >  
                   </div>
                     
                 </div> 
@@ -384,7 +388,7 @@
   function load_supplier_po(supplier_id){
     $('#pos').load('<?=base_url("receiving/load_supplier_po")?>/'+supplier_id, function(){
 
-      $('.select2_').select2(); 
+      $('.select2_po').select2(); 
 
     });
   }
@@ -409,33 +413,53 @@
 
   }
 
-  function save_receiving(){ 
+  function save_receiving() {
+      if ($('#pos_id').val() == '') {
+          Swal.fire({
+              icon: 'error',
+              title: 'PO Number is required',
+          });
+      } else if ($('#dr_number').val() == '') {
+          Swal.fire({
+              icon: 'error',
+              title: 'DR Number is required',
+          });
+      } else if ($('#invoice_number').val() == '') {
+          Swal.fire({
+              icon: 'error',
+              title: 'Invoice Number is required',
+          });
+      } else if ($('.all_added_item_list').length == 0) {
+          Swal.fire({
+              icon: 'error',
+              title: 'Received at least one item from the selected P.O.',
+          });
+      } else { 
 
-    if($('#pos_id').val() == ''){
-      alertify.error("PO Number is required");
-    }else if($('#dr_number').val() == ''){
-      alertify.error("DR Number is required");
-    }else if($('#invoice_number').val() == ''){
-      alertify.error("Invoice Number is required");
-    }else if($('.all_added_item_list').length == 0){
-      alertify.error("Received atleast one item from the selected P.O.");
-    }else{
-
-      reset(); 
-
-      alertify.confirm("Save receiving details?", function (e) {
-            if (e) {  
-                alertify.log("saving...");
-                document.frm_receiving.submit();
-            } else {
-                alertify.log("cancelled");
-            }
-        }, "Confirm");
-    
-    }
-
+          Swal.fire({
+              title: 'Are you sure?',
+              text: "Save receiving details?",
+              icon: 'question',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, save it!'
+          }).then((result) => {
+              if (result.isConfirmed) {
+                  Swal.fire({
+                      title: 'Saving...',
+                      icon: 'info',
+                      timer: 1000,
+                      showConfirmButton: false,
+                      didOpen: () => {
+                          document.frm_receiving.submit();
+                      }
+                  });
+              }
+          });
+      }
   }
-
+ 
   
   function update_total(){
 

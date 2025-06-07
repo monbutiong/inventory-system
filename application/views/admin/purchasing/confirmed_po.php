@@ -2,11 +2,20 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Purchasing <small>Confirmed Purchase Order</small></h2> 
- 
- 
-           
-        <div class="clearfix"></div>
+      
+         <div class="page-title-box">
+             <div class="row align-items-center">
+                 <div class="col-md-8"> 
+                     <h6 class="page-title">Confirmed Purchase Order</h6>
+                 </div>
+                 <div class="col-md-4">
+                     <div class="float-end d-none d-md-block">
+                         
+                     </div>
+                 </div>
+             </div>
+         </div>  
+
       </div>
       <div class="x_content">
         <p class="text-muted font-13 m-b-30">
@@ -20,15 +29,15 @@
           <thead>
             <tr style="font-size: 12px;">
               <th>Date</th>
-              <td>Project</td>
-              <td>Quotation</td>
+              <td>Vehicle</td> 
+              <td>Customer</td> 
               <th>P.O. Number</th>
               <th>Supplier</th>
               <th>Att. To</th>  
-              <th>Reference No.</th>  
-              <td>Created By</td>  
-              <th>Date Confirmed</th>
-              <td>Confirmed By</td>      
+              <td>Reference No.</td>  
+              <td>Created By</td>
+              <td>Confirmed Date</td>    
+              <td>Confirmed By</td>
               <th>Options</th>
             </tr>
             </thead> 
@@ -38,15 +47,20 @@
               foreach($users as $rs){
               $arr_user[$rs->id] = $rs->name;
             }}
-
-            if(@$quotations){
-              foreach($quotations as $rs){
-                $arr_q[$rs->id] = $rs->quotation_number;
+ 
+            if(@$customers){
+              foreach($customers as $rs){
+                $arr_c[$rs->id] = $rs->name;
             }}
 
-            if(@$projects){
-              foreach($projects as $rs){
-                $arr_p[$rs->id] = $rs->name;
+            if(@$manufacturers){
+              foreach($manufacturers as $rs){
+                $arr_m[$rs->id] = $rs->title;
+            }}
+
+            if(@$vehicles){
+              foreach($vehicles as $rs){
+                $arr_v[$rs->id] = $rs;
             }}
 
             if(@$suppliers){
@@ -59,21 +73,21 @@
             ?>
             <tr>
               <td data-order="-<?=$rs->id?>"><?=date('M d, Y',strtotime($rs->date_created))?></td>
-              <td><?=@$arr_p[$rs->project_id] ?? '<i>N/A</i>'?></td>
-              <td><?=@$arr_q[$rs->quotation_id] ?? '<i>N/A</i>'?></td>
+              <td><?=@$arr_m[@$arr_v[$rs->vehicle_id]->manufacturer_id].' - '.@$arr_v[$rs->vehicle_id]->plate_no?></td>
+              <td><?=@$arr_c[@$arr_v[$rs->vehicle_id]->customer_id]?></td> 
               <td><?=@$rs->po_number?></td>
-              <td><?=@$arr_s[$rs->supplier_id] ?? '<i>Error Supplier Not Found!</i>'?></td> 
+              <td><?=@$arr_s[$rs->supplier_id]?></td> 
               <td><?=$rs->att_to?></td>  
-              <td><?=$rs->reference_no ?? '<i>N/A</i>'?></td> 
-              <td><?=@$arr_user[$rs->user_id] ?? '<i>Error User Not Found!</i>'?></td>
-              <td><?=date('M d, Y',strtotime($rs->date_confirmed))?></td>
-              <td><?=@$arr_user[$rs->confirmed_by] ?? '<i>Error User Not Found!</i>'?></td>
+              <td><?=$rs->reference_no?></td> 
+              <td><?=@$arr_user[$rs->user_id]?></td>
+              <td><?=date('M d, Y H:i',strtotime($rs->date_confirmed))?></td>
+              <td><?=@$arr_user[$rs->confirmed_by]?></td>
               <td nowrap>
-               
-                <a target="_blank" href="<?php echo base_url('vendor/print_po/'.$rs->id);?>" ><i class="fa fa-print"></i> Print</a>
-                <!--  |  
-                <a href="Javascript:delete_po(<?=$rs->id?>)" class="load_modal_details"><i class="fa fa-remove"></i> Delete</a>
-                   -->
+                   
+                <a href="<?php echo base_url('purchasing/view_po/'.$rs->id);?>"  ><i class="fa fa-eye"></i> View</a>
+                 |  
+                <a target="_blank" href="<?php echo base_url('vendor/print_po/'.$rs->id);?>" ><i class="fa fa-print"></i> Print</a> 
+                  
               </td>
             </tr>
             <?php }}?>

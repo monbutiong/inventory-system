@@ -389,7 +389,7 @@ class Purchasing extends CI_Controller {
 
 		}
 	    
-		redirect("purchasing/edit_po/".$po_id,"refresh");
+		redirect("purchasing/view_po/".$po_id,"refresh");
 
 	}
 
@@ -664,58 +664,58 @@ class Purchasing extends CI_Controller {
 
 		$module = $this->system_menu; 
 
-		$module['module'] = "purchasing/edit_po";
-		$module['map_link'] = "sales->quotations";  
-		$module['confirm'] = $confirm;
+		$module['module'] = "purchasing/view_po";
+		$module['map_link']   = "sales->quotations";   
 		
-		$module['quotations'] = $this->core->load_core_data('quotations','','id,quotation_number,version,project_id','confirmed=1');
-
-		$module['clients'] = $this->core->load_core_data('clients');
-
-		$module['projects'] = $this->core->load_core_data('projects');
-
-		$module['po'] = $this->core->load_core_data('purchase_order',$id);
+		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+		$module['manufacturers'] = $result['maintenance_data'];
 		
-		$module['user'] = $this->core->load_core_data('account',$module['po']->user_id,'id,name');
+		$module['users'] = $this->core->load_core_data('account','','id,name');
 
 		$module['suppliers'] = $this->core->load_core_data('suppliers_po','','id,name');
 
-		
+		$module['po'] = $this->core->load_core_data('purchase_order',$id);
 
 		$module['po_items'] = $this->core->load_core_data('purchase_order_items','','','po_id='.$id);
 
-		$module['lcr'] = $this->core->load_core_data('quotations_landed_cost_rate','','','quotation_id='.@$module['po']->quotation_id);
+		$module['vehicles'] = $this->core->load_core_data('vehicles','','id,customer_id,manufacturer_id,plate_no');
+
+		$module['customers'] = $this->core->load_core_data('clients','','id,name');
 		
+		$module['user'] = $this->core->load_core_data('account',$module['po']->user_id,'id,name');
+
+		if($module['po']->confirmed==1){
+			$module['user_confirmed'] = $this->core->load_core_data('account',$module['po']->confirmed_by); 
+		}
+		 
 		$result = $this->admin_model->load_filemaintenance('fm_currency_rate');
 		$module['rates'] = $result['maintenance_data'];
 
-		$this->load->view('admin/purchasing/view_po',$module);
+		$this->load->view('admin/index',$module);
 
 	}
 
 	public function print_po($id){
 
 		$module = $this->system_menu;   
-		
 		 
-		$module['clients'] = $this->core->load_core_data('clients');
-
-		$module['projects'] = $this->core->load_core_data('projects');
+		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+		$module['manufacturers'] = $result['maintenance_data'];
 		
 		$module['users'] = $this->core->load_core_data('account','','id,name');
- 
+
+		$module['suppliers'] = $this->core->load_core_data('suppliers_po','','id,name');
+
 		$module['po'] = $this->core->load_core_data('purchase_order',$id);
-
-		$module['supplier'] = $this->core->load_core_data('suppliers',$module['po']->supplier_id,'id,name,address');
-
-		$module['quotation'] = $this->core->load_core_data('quotations',$module['po']->quotation_id,'id,quotation_number,version,project_id','confirmed=1');
-
-		$module['project'] = $this->core->load_core_data('projects',$module['quotation']->project_id);
 
 		$module['po_items'] = $this->core->load_core_data('purchase_order_items','','','po_id='.$id);
 
-		$module['lcr'] = $this->core->load_core_data('quotations_landed_cost_rate','','','quotation_id='.@$module['po']->quotation_id);
+		$module['vehicles'] = $this->core->load_core_data('vehicles','','id,customer_id,manufacturer_id,plate_no');
 
+		$module['customers'] = $this->core->load_core_data('clients','','id,name');
+		
+		$module['user'] = $this->core->load_core_data('account',$module['po']->user_id,'id,name');
+		 
 		$result = $this->admin_model->load_filemaintenance('fm_currency_rate');
 		$module['rates'] = $result['maintenance_data'];
 		
@@ -763,11 +763,12 @@ class Purchasing extends CI_Controller {
 		$module['module'] = "purchasing/confirmed_po";
 		$module['map_link']   = "sales->quotations";  
 		
-		$module['quotations'] = $this->core->load_core_data('quotations','','id,quotation_number','confirmed=1');
+		$module['customers'] = $this->core->load_core_data('clients','','id,name');
 
-		$module['clients'] = $this->core->load_core_data('clients');
+		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+		$module['manufacturers'] = $result['maintenance_data'];
 
-		$module['projects'] = $this->core->load_core_data('projects');
+		$module['vehicles'] = $this->core->load_core_data('vehicles','','id,customer_id,manufacturer_id,plate_no');
 		
 		$module['users'] = $this->core->load_core_data('account','','id,name');
 
@@ -797,47 +798,6 @@ class Purchasing extends CI_Controller {
 		
 
 		if($cpo){ 
-
-			//== INSERT TO INVENTORY MASTERLIST 
-
-			$inv_master = $this->core->load_core_data('inventory', '','id,item_code,qty'); 
-			foreach ($inv_master as $rs) { 
-				$arr_inv[strtolower($rs->item_code)] = $rs->id.'x'.$rs->qty;
-			}
-
-			$orig_po_itms = $this->core->load_core_data('purchase_order_items', '','id,item_code,item_name,inventory_quotation_id','po_id='.$id); 
-			foreach ($orig_po_itms as $rs) { 
-				if($rs->item_code && @$arr_inv[strtolower($rs->item_code)]){
-
-					list($inv_id,$qty) = explode('x',$arr_inv[strtolower($rs->item_code)]);
-					
-				}else{
-
-					if($rs->item_code){
-
-						$this->db->insert('inventory',[
-							'user_id'				=>$this->session->user_id,
-							'date_created'			=>date('Y-m-d H:i'), 
-							'item_code'				=>$rs->item_code,
-							'item_name'				=>$rs->item_name,
-							'qty'					=>0,
-							'added_from'			=>'po'
-						]);
-
-						$inv_id = $this->db->insert_id();
-						$arr_inv[strtolower($rs->item_code)] = $inv_id.'x0';
-					}
-			
-				}
-
-				$this->db->where('id',$rs->inventory_quotation_id)->update('inventory_quotation',[
-					'inventory_id' => $inv_id
-				]);
-
-				$this->db->where('id',$rs->id)->update('purchase_order_items',[
-					'inventory_id' => $inv_id
-				]);
-			}
  
 			$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
 			  
@@ -847,7 +807,7 @@ class Purchasing extends CI_Controller {
 
 		}
 
-		redirect("purchasing/po_list","refresh");
+		redirect("purchasing/view_po/".$id,"refresh");
 
 	}
 
@@ -880,16 +840,16 @@ class Purchasing extends CI_Controller {
 		$model = $this->core->global_query(3,'suppliers_po',$id); 
 
 		if($model['result']){ 
-			 
-			$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
+			echo 1;
+			//$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
 			  
 		}else{
-
-			$this->session->set_flashdata("error","error saving.");
+			echo 0;
+			//$this->session->set_flashdata("error","error saving.");
 
 		}
-
-		redirect("purchasing/supplier_po","refresh");
+		die();
+		//redirect("purchasing/supplier_po","refresh");
 	}
 
 	public function edit_supplier_po($id){

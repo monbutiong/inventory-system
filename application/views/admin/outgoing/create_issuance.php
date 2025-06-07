@@ -9,65 +9,72 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Issuance <small>Create Sales Order</small></h2> 
- 
-          <div class="input-group-btn pull-right" style="padding-right: 110px;">
-                  <a class="btn btn-sm btn-primary" href="Javascript:save_issuance()"  >Save Issuance</a>
-              </div>
-           
-        <div class="clearfix"></div>
+      
+
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-md-8"> 
+                    <h6 class="page-title">Create Sales Order</h6>
+                </div>
+                <div class="col-md-4">
+                    <div class="float-end d-none d-md-block">
+                        <a class="btn btn-md btn-primary" href="Javascript:save_issuance()"  >Save Issuance</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
       </div>
       <div class="x_content">
+
+        <div class="card">
+            <div class="card-body">
+
         <p class="text-muted font-13 m-b-30">
             
 
           <div class="row">
             
-            <div class="col-md-2 col-sm-12 ">
-              <label >Job Order </label>
+            <div class="col-md-4 col-sm-12 mb-3">
+              <label >Client *</label>
               <select name="job_order_id" id="job_order_id" class="form-control select2_" onchange="load_jo(this.value)">
-                <option value="">select</option> 
+                <option value=""></option>
                 <?php  
-                if($jo){
-                  foreach ($jo as $rs) {
+                if(@$clients){
+                  foreach ($clients as $rs) {
                 ?>
-                <option  value="<?=$rs->id?>"><?=$rs->job_order_number?></option>
+                <option  value="<?=$rs->id?>"><?=$rs->name?></option>
               <?php }}?>
               </select>
               
             </div>
 
-            <div class="col-md-2 col-sm-12 ">
-              <label >Quotation</label>
+            <div class="col-md-2 col-sm-12 mb-3">
+              <label >Vehicles</label>
               <input type="text" id="quotation" readonly class="form-control ridonly"> 
-            </div>
+            </div> 
 
-            <div class="col-md-2 col-sm-12 ">
-              <label >Project</label>
-              <input type="text" id="project" readonly class="form-control ridonly"> 
-            </div>
-
-            <div class="col-md-2 col-sm-12 ">
+            <div class="col-md-2 col-sm-12 mb-3">
               <label >Client</label>
               <input type="text" id="client" readonly class="form-control ridonly"> 
             </div>
 
-            <div class="col-md-2 col-sm-12 ">
+            <div class="col-md-2 col-sm-12 mb-3">
               <label >Issued Date *</label>
               <input type="date" readonly="" required name="issued_date" id="issued_date" value="<?=date('Y-m-d')?>" class="form-control ridonly">
             </div>
 
-            <div class="col-md-2 col-sm-12 ">
+            <div class="col-md-2 col-sm-12 mb-3">
               <label >Reference Number</label>
               <input type="text" name="ref_no" id="ref_no" class="form-control">
             </div>
 
-            <div class="col-md-2 col-sm-12 ">
+            <div class="col-md-2 col-sm-12 mb-3">
               <label >Sales Order Number</label>
               <input type="text" readonly class="form-control ridonly" value="SO<?=sprintf("%06d",count($this->db->select('id')->get_where('issuance',['deleted'=>0])->result())+1);?>">
             </div>
  
-            <div class="col-md-10 col-sm-12 ">
+            <div class="col-md-10 col-sm-12 mb-3">
               <label >Remarks </label>
               <textarea name="remarks" id="remarks" class="form-control"></textarea>
             </div>
@@ -97,7 +104,7 @@
             <tbody>
               <tr id="item_selector">
                 <td colspan="9" class="add_item">
-                  <div class="select2-ajax" style="width: 100%;"> 
+                  <div class="select2-ajax-so" style="width: 100%;"> 
                 </td>
               </tr>
             </tbody>
@@ -120,6 +127,9 @@
       </div>
  
     </div>
+  </div> 
+
+  </div>
   </div> 
    
 </div>

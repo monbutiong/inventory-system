@@ -1,183 +1,223 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Print P.O.</title>
-    <link rel="icon" type="image/png" href="<?php echo base_url();?>assets/images/i.ico" />
-    <link href="<?php echo base_url();?>assets/themes/build/css/custom_print.css" rel="stylesheet">
+    <link rel="shortcut icon" href="<?=base_url('assets/template/assets')?>/images/gai.ico">
+    <link href="<?= base_url(); ?>assets/themes/build/css/custom_print.css" rel="stylesheet">
+
     <style>
-        /* Define the container with A4 dimensions in pixels */
-        .a4-container {
-            width: 800px; /* Approximately 210mm converted to pixels */
-             
+        body {
             background-color: #fff;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .a4-container {
+            width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 10px;
+        }
+
+        .header-table {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .header-table td {
+            vertical-align: top;
+        }
+
+        .title {
+            color: #65aadb;
+            margin-bottom: 5px;
+        }
+
+        .details {
+            margin-bottom: 10px;
+        }
+
+        .qbody table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #000;
+            font-size: 12px;
+        }
+
+        .qbody th,
+        .qbody td {
+            border: 1px solid #000;
+            padding: 4px 6px;
+        }
+
+        .qbody th {
+            background-color: #f0f8ff;
+            color: #065a9e;
+            text-align: center;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .totals {
+            margin-top: 10px;
+        }
+
+        .amount-in-words {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #65aadb;
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            font-style: italic;
+            font-size: 11px;
         }
 
         .footer {
             position: fixed;
-            bottom: 0;
-            left: 0; 
-            color: #fff;
-            padding: 10px;
+            bottom: 10px;
+            width: 100%;
             text-align: center;
         }
+
+        .badge {
+          display: inline-block;
+          padding: 0.35em 0.65em;
+          font-size: 0.75rem;
+          font-weight: 600;
+          line-height: 1;
+          color: #fff;
+          text-align: center;
+          white-space: nowrap;
+          vertical-align: baseline;
+          border-radius: 0.375rem;
+        }
+
+        .badge-danger {
+          background-color: #dc3545;
+        }
+
     </style>
 </head>
-<body style="background-color: #fff;">
-  <center>
-    <div class="a4-container">
+<body onload="window.print()">
 
-      <table width="90%" border="0">
+<div class="a4-container">
+
+    <table class="header-table">
         <tr>
-          <td colspan="2">
-            <img class="img_logo" src="<?php echo base_url();?>assets/images/c_logo.png?2"/> 
-          </td> 
-        </tr> 
-        <tr>
-          <td valign="top"> 
- 
-            <h2 style="color: #65aadb;">Purchase Order: <?=$po->po_number ?> <?php if($po->confirmed==0){echo '<font color="red">(Unconfirmed)</font>';}?></h2>
-            <strong><?=@$supplier->name?></strong><br/>
-            <strong style="color: #65aadb;">Att:</strong> <?=$po->att_to?><br/>
-            <?=@$supplier->address?>
-
-
-          </td>
-          <td valign="top" width="10" nowrap>
-            <br/>
-            <?php if(@$project->name){?>
-            <strong style="color: #65aadb;">Project:</strong> <?=@$project->name?><br/> 
-            <?php }?>
-            <strong style="color: #65aadb;">Date:</strong> <?=date('M d, Y',strtotime($po->date_created))?>. <br/>
-            <strong style="color: #65aadb;">Your Ref:</strong> <?=$po->reference_no?>  <br/>
-          </td> 
+            <td>
+                <img src="<?= base_url(); ?>assets/images/c_logo.png?2" alt="Company Logo" />
+            </td>
+            <td class="text-right">
+                <h2 class="title">
+                    PO#: <?= $po->po_number ?>
+                    <?php if ($po->confirmed == 0): ?>
+                        <span class="badge badge-danger">Unconfimed</span>
+                    <?php endif; ?>
+                </h2>
+                <?php if (@$project->name): ?>
+                    <strong>Project:</strong> <?= @$project->name ?><br/>
+                <?php endif; ?>
+                <strong>Date:</strong> <?= date('M d, Y', strtotime($po->date_created)) ?><br/>
+                <strong>Your Ref:</strong> <?= $po->reference_no ?><br/>
+            </td>
         </tr>
-        <tr>
-          <td colspan="2">
-            <p style="color: #65aadb;"><b><?=nl2br($po->description)?><b></p>
-          </td>
-        </tr>
-      </table>
-     
-          <?php 
-          if($lcr){
-            foreach ($lcr as $rs) {
-              $arr_lcr[$rs->id] = $rs;
-            }
-          } 
-          ?>  
-           <style type="text/css">
-             .qbody table {
-                   border-collapse: collapse; /* Remove spacing between table cells */
-                   width: 100%; /* Set the table width to 100% */
-                   border: 1px solid black;
-                   page-break-after: avoid;
-               }
+    </table>
 
-               .qbody th, .qbody  td {
-                   padding: 0; /* Remove padding inside table cells */
-                   border: 0; /* Remove borders around table cells */
-               }
-
-               /* Optional: Add some styling for demonstration */
-               .qbody th, .qbody  td {
-                   border: 1px solid black;
-                   padding: 8px; /* Add some padding for demonstration purposes */
-               }
-               .td_curreny {
-                  text-align: right; /* Align content to the right */ 
-               }
-           </style>
-                   
-                  
-                 <div class="qbody">    
-                  
-                  <table id="datatable" class="table table-bordered table-striped table-hover" style="width: 90%; border: 1px solid black;">
-                    <thead>
-                      <tr style="color: #65aadb;"> 
-                        <th nowrap>Item</th> 
-                        <td>Description</td>
-                        <th>Qty</th>
-                        <th>Unit Price</th> 
-                        <th>Total Price</th> 
-                      </tr>
-                    </thead>
-                    <tbody> 
-                      <?php
-                      
-               		  if(@$lcr){
-               		    foreach ($lcr as $rs) {
-               		      $arr_lcr[$rs->id] = $rs->currency_symbol;
-               		    }
-               		  }
-
-                    if(@$rates){
-                      foreach ($rates as $rs) {
-                        $arr_rate[$rs->id] = $rs->currency_symbol;
-                      }
-                    }
-
-               		  $ttl = 0;
- 
-                      if(@$po_items){
-                        foreach ($po_items as $rs) { 
-                      ?>
-                      <tr  > 
-                        <td><?=$rs->item_code?></td>
-                        <td><?=$rs->item_name?></td> 
-                        <td align="center"><?=$rs->qty?></td> 
-                        <td align="right" nowrap><?=$cs = @$arr_lcr[$rs->landed_cost_rate_id] ?? @$arr_rate[$rs->rate_id]?> <?=number_format($rs->price,2)?></td> 
-                        <td align="right" nowrap><?=@$arr_lcr[$rs->landed_cost_rate_id] ?? @$arr_rate[$rs->rate_id]?> <?=number_format($rs->price * $rs->qty,2); $ttl+=($rs->price * $rs->qty);?></td>  
-                      </tr>
-                      <?php }}?>
-                      <tr>
-                      	<td colspan="5">&nbsp;</td>
-                      </tr>
-                      <tr>
-                      	<td colspan="3" align="right"><b style="color: #65aadb;">Total</b></td>
-                      	<td colspan="2" align="center"><b style="color: #65aadb;"><?=@$cs?> <?=number_format(@$ttl,2); $gttl=$ttl;?></b></td>
-                      </tr>
-                      <?php if($po->less_desc){?>
-                      <tr>
-                      	<td colspan="3" align="right"><b style="color: #65aadb;"><?=$po->less_desc?></b></td>
-                      	<td colspan="2" align="center"><b style="color: #65aadb;">-<?=@$cs?> <?=number_format(@$po->less_amount,2); $gttl-=$po->less_amount;?></td>
-                      </tr>
-                  	  <?php }?>
-                      <tr>
-                      	<td colspan="3" align="right"><b style="color: #65aadb;">Grand Total</b></td>
-                      	<td colspan="2" align="center"><b style="color: #65aadb;"><?=@$cs?> <?=number_format(@$gttl,2)?></td>
-                      </tr> 
-                    </tbody>
-                  </table>
-                   
-                  <div style="width: 90%; border: 0px solid white; text-align: left;"> 
-                  			<strong style="color: #65aadb;">
-                  				<?php  
-                  				list($total_amount,$decimal) = explode('.', number_format($gttl,2));
-                  				$total_amount = str_replace(',', '', $total_amount);
-                  				?>
-                  			  <?=str_replace('qar only', '', $converter->convert(round($total_amount,2)))?>
-                  			  <?php if($decimal!='00'){ echo $decimal.'/100'; }?> qar only
-                  			</strong>
-
-                  			<br/>
-                  			<br/>
-                  			<?=@$po->terms_conditions?>
-                  		</div>
-
-                      <br/>
-                      <i><b>**This is a system generated document which does not require any signature.</b></i>
-
-                  <div class="footer">
-                          <!-- <img class="img_logo" src="<?php echo base_url();?>assets/images/footer.png"/>  -->
-                  </div>
-      </div> 
+    <div class="details">
+        <strong><?= @$supplier->name ?></strong><br/>
+        <strong>Att:</strong> <?= $po->att_to ?><br/>
+        <?= @$supplier->address ?><br/><br/>
+        <strong style="color: #65aadb;">Description:</strong><br/>
+        <p><?= nl2br($po->description) ?></p>
     </div>
-    </center>
 
+    <div class="qbody">
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Description</th>
+                    <th>Qty</th>
+                    <th class="text-right">Unit Price</th>
+                    <th class="text-right">Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $ttl = 0;
+                if (@$po_items):
+                    foreach ($po_items as $rs):
+                        $symbol = @$arr_lcr[$rs->landed_cost_rate_id] ?? @$arr_rate[$rs->rate_id];
+                        $line_total = $rs->price * $rs->qty;
+                        $ttl += $line_total;
+                ?>
+                <tr>
+                    <td><?= $rs->item_code ?></td>
+                    <td><?= $rs->item_name ?></td>
+                    <td class="text-center"><?= $rs->qty ?></td>
+                    <td class="text-right"><?= $symbol ?> <?= number_format($rs->price, 2) ?></td>
+                    <td class="text-right"><?= $symbol ?> <?= number_format($line_total, 2) ?></td>
+                </tr>
+                <?php endforeach; endif; ?>
+
+                <tr><td colspan="5">&nbsp;</td></tr>
+
+                <tr>
+                    <td colspan="3"></td>
+                    <td class="text-right"><b>Total</b></td>
+                    <td class="text-right"><b><?= $symbol ?> <?= number_format($ttl, 2) ?></b></td>
+                </tr>
+
+                <?php if ($po->less_desc || $po->less_amount>0): ?>
+                <tr>
+                    <td colspan="3"></td>
+                    <td class="text-right"><b><?= $po->less_desc ?></b></td>
+                    <td class="text-right"><b>-<?= $symbol ?> <?= number_format($po->less_amount, 2) ?></b></td>
+                </tr>
+                <?php $ttl -= $po->less_amount; endif; ?>
+
+                <tr>
+                    <td colspan="3"></td>
+                    <td class="text-right"><b>Grand Total</b></td>
+                    <td class="text-right"><b><?= $symbol ?> <?= number_format($ttl, 2) ?></b></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<center>
+
+    <div class="amount-in-words">
+        <?php
+            list($total_amount, $decimal) = explode('.', number_format($ttl, 2));
+            $total_amount = str_replace(',', '', $total_amount);
+            echo str_replace('qar only', '', $converter->convert(round($total_amount, 2)));
+            if ($decimal !== '00') {
+                echo " {$decimal}/100";
+            }
+        ?> qar only
+    </div>
     
+    <br/>
+    <div class="totals">
+        <?= nl2br(@$po->terms_conditions) ?>
+    </div>
+
+    <div class="footer-note">
+        ** This is a system-generated document which does not require any signature.
+    </div>
+</center>
+</div>
+
 </body>
 </html>
-<!-- end of accordion -->
-<script type="text/javascript">
-  self.print()
-</script>

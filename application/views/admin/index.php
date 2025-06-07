@@ -4,12 +4,12 @@
     <head>
 
         <meta charset="utf-8">
-        <title>Horizontal | Veltrix - Admin & Dashboard Template</title>
+        <title>German Auto Line</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description">
         <meta content="Themesbrand" name="author">
         <!-- App favicon -->
-        <link rel="shortcut icon" href="<?=base_url('assets/template/assets')?>/images/favicon.ico">
+        <link rel="shortcut icon" href="<?=base_url('assets/template/assets')?>/images/gai.ico">
 
 
         <!-- DataTables -->
@@ -29,7 +29,12 @@
         <link href="<?=base_url('assets/template/assets')?>/css/icons.min.css" rel="stylesheet" type="text/css">
         <!-- App Css-->
         <link href="<?=base_url('assets/template/assets')?>/css/app.min.css" id="app-style" rel="stylesheet" type="text/css">
-
+        <style type="text/css">
+            .modal-content {
+              max-height: 95vh;
+              overflow-y: auto;
+            }
+        </style>
     </head>
 
 
@@ -44,19 +49,19 @@
                         <div class="navbar-brand-box">
                             <a href="index.html" class="logo logo-dark">
                                 <span class="logo-sm">
-                                    <img src="<?=base_url('assets/template/assets')?>/images/logo-sm.png" alt="" height="22">
+                                    <img src="<?=base_url('assets/template/assets')?>/images/logo-sm.png?3" alt="" height="32">
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="<?=base_url('assets/template/assets')?>/images/logo-dark.png" alt="" height="17">
+                                    <img src="<?=base_url('assets/template/assets')?>/images/logo-dark.png?3" alt="" height="37">
                                 </span>
                             </a>
 
                             <a href="index.html" class="logo logo-light">
                                 <span class="logo-sm">
-                                    <img src="<?=base_url('assets/template/assets')?>/images/logo-sm.png" alt="" height="22">
+                                    <img src="<?=base_url('assets/template/assets')?>/images/logo-sm.png?3" alt="" height="32">
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="<?=base_url('assets/template/assets')?>/images/logo-light.png" alt="" height="18">
+                                    <img src="<?=base_url('assets/template/assets')?>/images/logo-light.png?3" alt="" height="38">
                                 </span>
                             </a>
                         </div>
@@ -96,25 +101,17 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <!-- item-->
-                                <a class="dropdown-item" href="#"><i
-                                        class="mdi mdi-account-circle font-size-17 align-middle me-1"></i> Profile</a>
-                                <a class="dropdown-item" href="#"><i class="mdi mdi-wallet font-size-17 align-middle me-1"></i> My
-                                    Wallet</a>
-                                <a class="dropdown-item d-block" href="#"><span class="badge bg-success float-end">11</span><i
-                                        class="mdi mdi-cog font-size-17 align-middle me-1"></i> Settings</a>
-                                <a class="dropdown-item" href="#"><i
-                                        class="mdi mdi-lock-open-outline font-size-17 align-middle me-1"></i> Lock screen</a>
+                               
+                                <a class="dropdown-item d-block" href="#"> <i
+                                        class="mdi mdi-cog font-size-17 align-middle me-1"></i> Change Password</a>
+                                 
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item text-danger" href="Javascript:logout()"><i
                                         class="bx bx-power-off font-size-17 align-middle me-1 text-danger"></i> Logout</a>
                             </div>
                         </div>
 
-                        <div class="dropdown d-inline-block">
-                            <button type="button" class="btn header-item noti-icon right-bar-toggle waves-effect">
-                                <i class="mdi mdi-cog-outline"></i>
-                            </button>
-                        </div>
+                        
 
                     </div>
                 </div>
@@ -186,7 +183,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-12">
-                                © <script>document.write(new Date().getFullYear())</script> Veltrix<span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand.</span>
+                                © <script>document.write(new Date().getFullYear())</script> <?=company_name?> <span class="d-none d-sm-inline-block"> - <i class="mdi mdi-heart text-danger"></i> <?=system_name?></span>
                             </div>
                         </div>
                     </div>
@@ -199,53 +196,7 @@
         </div>
         <!-- END layout-wrapper -->
 
-        <!-- Right Sidebar -->
-        <div class="right-bar">
-            <div data-simplebar class="h-100">
-                <div class="rightbar-title px-3 py-4">
-                    <a href="javascript:void(0);" class="right-bar-toggle float-end">
-                        <i class="mdi mdi-close noti-icon"></i>
-                    </a>
-                    <h5 class="m-0">Settings</h5>
-                </div>
-
-                <!-- Settings -->
-                <hr class="mt-0" />
-                <h6 class="text-center">Choose Layouts</h6>
-
-                <div class="p-4">
-                    <div class="mb-2">
-                        <img src="<?=base_url('assets/template/assets')?>/images/layouts/layout-1.jpg" class="img-fluid img-thumbnail" alt="">
-                    </div>
-                    <div class="form-check form-switch mb-3">
-                        <input type="checkbox" class="form-check-input theme-choice" id="light-mode-switch" checked />
-                        <label class="form-check-label" for="light-mode-switch">Light Mode</label>
-                    </div>
-    
-                    <div class="mb-2">
-                        <img src="<?=base_url('assets/template/assets')?>/images/layouts/layout-2.jpg" class="img-fluid img-thumbnail" alt="">
-                    </div>
-                    <div class="form-check form-switch mb-3">
-                        <input type="checkbox" class="form-check-input theme-choice" id="dark-mode-switch" data-bsStyle="<?=base_url('assets/template/assets')?>/css/bootstrap-dark.min.css" 
-                            data-appStyle="<?=base_url('assets/template/assets')?>/css/app-dark.min.css" />
-                        <label class="form-check-label" for="dark-mode-switch">Dark Mode</label>
-                    </div>
-    
-                    <div class="mb-2">
-                        <img src="<?=base_url('assets/template/assets')?>/images/layouts/layout-3.jpg" class="img-fluid img-thumbnail" alt="">
-                    </div>
-                    <div class="form-check form-switch mb-5">
-                        <input type="checkbox" class="form-check-input theme-choice" id="rtl-mode-switch" data-appStyle="<?=base_url('assets/template/assets')?>/css/app-rtl.min.css" />
-                        <label class="form-check-label" for="rtl-mode-switch">RTL Mode</label>
-                    </div>
-                    <div class="d-grid">
-                        <a href="https://1.envato.market/grNDB" class="btn btn-primary mt-3" target="_blank"><i class="mdi mdi-cart me-1"></i> Purchase Now</a>
-                    </div>
-                </div>
-
-            </div> <!-- end slimscroll-menu-->
-        </div>
-        <!-- /Right-bar -->
+        
 
         <!-- Right bar overlay-->
         <div class="rightbar-overlay"></div>
@@ -350,8 +301,8 @@
                          });
                      }
 
-                     if ($('.select2').length && $(".select2-ajax").length==0) {
-                         $('.select2').select2({
+                     if ($('#global_modal .select2').length && $("#global_modal .select2-ajax").length == 0) {
+                         $('#global_modal .select2').select2({
                              width: '100%',
                              dropdownParent: $('#global_modal')
                          });
@@ -491,6 +442,7 @@
                      }
 
 
+
                  });
              }, 300);
          });
@@ -499,7 +451,7 @@
           <?php if(isset($_SESSION["error"])){?>
             Swal.fire({
             title: "Error!",
-            text: "<?=@$_SESSION["error"]?>",
+            html: "<?=@$_SESSION["error"]?>",
             icon: "error",
             confirmButtonColor: "#556ee6", // OK button color
             showCancelButton: false // No Cancel button
@@ -508,7 +460,7 @@
           <?php if(isset($_SESSION["success"])){?>
             Swal.fire({
             title: "Success!",
-            text: "<?=@$_SESSION["success"]?>",
+            html: "<?=@$_SESSION["success"]?>",
             icon: "success",
             confirmButtonColor: "#556ee6", // OK button color
             showCancelButton: false // No Cancel button
@@ -595,9 +547,12 @@
             });
           }
 
-          if ($(".select2-ajax").length) {
 
-            $(".select2-ajax").select2({
+
+          //========================================================= AJX for Purchase Orders
+          if ($(".select2-ajax-po").length) {
+
+            $(".select2-ajax-po").select2({
               placeholder: "Select Item",
               ajax: {
                 url: "<?=base_url('purchasing/check_item_if_in_inv')?>",
@@ -668,7 +623,7 @@
             var all = 0;
 
             // Updated event listener for Select2 v4
-            $(".select2-ajax").on("select2:select", function(e) {
+            $(".select2-ajax-po").on("select2:select", function(e) {
               var e_obj = e.params.data;
 
               c += 1;
@@ -716,40 +671,192 @@
               $('#row_counter').val(c);
             });
 
-            $(".select2-ajax").val('').trigger('change');
+            $(".select2-ajax-po").val('').trigger('change');
 
           }
 
+          //========================================================= END
 
-          if($('#datatable_inventory').length){
 
 
-              $(document).ready(function () {
-                $('#datatable_inventory').DataTable({
-                  processing: true,
-                  serverSide: true,
-                  order: [[1, 'desc']],
-                  ajax: {
-                    url: "<?= base_url('inventory/get_inventory_ajax') ?>",
-                    type: "POST"
-                  },
-                  columns: [
-                    { data: 'picture', orderable: false },
-                    { data: 'item_code' },
-                    { data: 'item_name' },
-                    { data: 'brand' },
-                    { data: 'category' },
-                    { data: 'type' },
-                    { data: 'qty' },
-                    { data: 'bin_location' },
-                    { data: 'primary_model' },
-                    { data: 'options', orderable: false }
-                  ]
-                });
+          //========================================================= AJX for Sales Order
+          if ($(".select2-ajax-so").length) {
+
+            $(".select2-ajax-so").select2({
+              placeholder: "Select Item",
+              ajax: {
+                url: "<?=base_url('purchasing/check_item_if_in_inv')?>",
+                type: "post",
+                dataType: 'json',
+                delay: 250,
+                dropdownAutoWidth: true,
+                data: function (params) {
+                  return {
+                    searchTerm: params.term, // support params.term or params (your original)
+                    excluded_ids: $('#selected_ids').val()
+                  };
+                },
+                // NOTE: Select2 v4 expects 'processResults' instead of 'results' to parse AJAX response
+                processResults: function (data, page) {
+                  return {
+                    results: $.map(data, function (obj) {
+                      return {
+                        id: obj.id,
+                        text: obj.text,
+                        item_code: obj.item_code,
+                        item_name: obj.item_name,
+                        qty: obj.qty,
+                        manufacturer_price: obj.manufacturer_price,
+                        image_url: obj.image_url 
+                            ? '<?=base_url("assets/uploads/inventory/")?>' + obj.image_url 
+                            : '<?=base_url("assets/images/no-image.png")?>'
+                      };
+                    })
+                  };
+                },
+                cache: true
+              },  
+              // Format dropdown items as table-like with image
+              templateResult: function(item) {
+                if (!item.id) {
+                  return item.text;  // placeholder or loading text
+                }
+                var markup =
+                  '<div style="display:flex; align-items:center;">' +
+                    '<div style="flex:0 0 40px; margin-right:8px;">' +
+                      '<img src="' + item.image_url + '" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" />' +
+                    '</div>' +
+                    '<div style="flex:1;">' +
+                      '<div><strong>Code:</strong> ' + item.item_code + '</div>' +
+                      '<div><strong>Name:</strong> ' + item.item_name + '</div>' +
+                    '</div>' +
+                    '<div style="flex:0 0 80px; text-align:right; font-weight:bold;">' +
+                      'QOH: ' + item.qty +
+                    '</div>' +
+                  '</div>';
+                return markup;
+              },
+
+              // Format selection box text
+              templateSelection: function(item) {
+                if (!item.id) {
+                  return item.text;
+                }
+                return item.item_code + ' - ' + item.item_name;
+              },
+
+              escapeMarkup: function(markup) { return markup; } // allow html in templateResult
+            });
+
+
+            var c = 0;
+            var all = 0;
+
+            // Updated event listener for Select2 v4
+            $(".select2-ajax-so").on("select2:select", function(e) {
+              var e_obj = e.params.data;
+
+              c += 1;
+
+              if (e_obj.id == 0) { // ==== this is for new ITEM
+                $('#openNewItemModal').click();
+              } else { // === this is for existing item
+
+                console.log('selected', e_obj);
+
+                if ($('#added' + e_obj.id).length == 0) {
+
+                  $('#selected_ids').val($('#selected_ids').val() + '(' + e_obj.id + ')-');
+
+                  var id = e_obj.id;
+                  var part_no = e_obj.item_code;
+                  var desc = e_obj.item_name;
+                  var qty = 1;
+                  var unit_cost = e_obj.manufacturer_price;
+                  var rate_text = $('#rate_type').val();
+                  var ttl = qty * unit_cost;
+                  var ttl_nf = ttl.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+
+                  var newRowHtml =
+                    '<tr id="irow' + id + '" class="all_po_itm">' +
+                    '<td><input type="hidden" name="items[' + id + ']" value="' + id + '"><a href="<?=base_url('inventory/view_inventory')?>/' + e_obj.id + '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl">' + part_no + '</a><input type="hidden" name="item_code' + id + '" value="' + part_no + '"><input type="hidden" name="lcr' + id + '" value="0"><input type="hidden" name="inv_id' + id + '" value="0"></td>' +
+                    '<td>' + desc + '<input type="hidden" name="item_name' + id + '" value="' + desc + '"><input type="hidden" name="quotation_id' + id + '" value="0"></td>' +
+                    '<td><input type="number" class="require_val" id="i_qty' + id + '" name="i_qty' + id + '" onkeyup="comp(' + id + ')" value="' + qty + '" style="border: 0; text-align: right;" onclick="comp(' + id + ')"></td>' +
+                    '<td align="right" nowrap><font class="rater">' + rate_text + '</font> <input class="require_val" type="number" name="i_unit_cost' + id + '" id="i_unit_cost' + id + '" onkeyup="comp(' + id + ')" onclick="comp(' + id + ')" value="' + unit_cost + '" style="border: 0; text-align: right;"></td>' +
+                    '<td align="right"><input type="hidden" class="all_ttl" id="i_ttl' + id + '" value="' + ttl + '"><span id="ttl' + id + '">' + ttl_nf + '</span></td>' +
+                    '<td><a href="javascript:idel(' + id + ')"><i class="fa fa-trash" style="color: red;"></i></a></td>' +
+                    '</tr>';
+
+                  $('#last_row').before(newRowHtml);
+
+                  comp_ttl();
+
+                }
+              }
+
+              $('.add_item .select2-container .select2-choice').html('(+) add more item');
+              $('.selecta' + c).select2();
+              all += 1;
+
+              $('#row_counter').val(c);
+            });
+
+            $(".select2-ajax-po").val('').trigger('change');
+
+          }
+
+          //=========================================================== END
+
+
+
+
+
+
+
+
+
+
+
+
+          let inventoryTable;
+          
+          if ($('#datatable_inventory').length) {
+ 
+            $(document).ready(function () {
+              inventoryTable = $('#datatable_inventory').DataTable({
+                processing: true,
+                serverSide: true,
+                order: [[1, 'desc']],
+                ajax: {
+                  url: "<?= base_url('inventory/get_inventory_ajax') ?>",
+                  type: "POST"
+                },
+                columns: [
+                  { data: 'picture', orderable: false },
+                  { data: 'item_code' },
+                  { data: 'item_name' },
+                  { data: 'brand' },
+                  { data: 'category' },
+                  { data: 'type' },
+                  { data: 'qty' },
+                  { data: 'bin_location' },
+                  { data: 'primary_model' },
+                  { data: 'options', orderable: false }
+                ],
+                createdRow: function (row, data, dataIndex) {
+                  // Use `data.id` from your PHP data array
+                  $(row).attr('id', 'tr' + data.id);
+                  $('td:last', row).css('white-space', 'nowrap');
+                }
               });
-
+            });
           }
 
+          function refresh_inv_table() {
+              if (inventoryTable) {
+                 inventoryTable.ajax.reload(null, false); // false = retain current page
+              }
+          }
 
 
         </script>

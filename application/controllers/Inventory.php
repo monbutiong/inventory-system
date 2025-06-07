@@ -1,6 +1,15 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+header("Access-Control-Allow-Origin: *"); // Replace * with specific origin in production
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+// Handle preflight OPTIONS request
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit(0);
+}
+
 class Inventory extends CI_Controller {
 
 
@@ -88,6 +97,7 @@ class Inventory extends CI_Controller {
 	    $this->db->join('fm_models m', 'm.id = i.primary_vehicle_model_id', 'left');
 	    $this->db->join('fm_manufacturers manu', 'manu.id = m.manufacturer_id', 'left');
 
+	    $this->db->where('deleted',0);
 	    // Search filter
 	    if (!empty($_POST['search']['value'])) {
 	        $this->db->group_start();
@@ -121,6 +131,7 @@ class Inventory extends CI_Controller {
 	        $bin_location = trim($rs->bin_1 . ($rs->bin_2 ? ' | ' . $rs->bin_2 : '') . ($rs->bin_3 ? ' | ' . $rs->bin_3 : ''));
 
 	        $data[] = [
+	        	'id'=>$rs->id,
 	            'picture' => ($rs->picture_1 ? '<a href="' . base_url('inventory/view_item_images/'.$rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><img src="' . $item_image . '" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" /></a>' : '<img src="' . $item_image . '" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" />'),
 	            'item_code' => $rs->item_code,
 	            'item_name' => $rs->item_name,
@@ -131,10 +142,19 @@ class Inventory extends CI_Controller {
 	            'bin_location' => $bin_location,
 	            'primary_model' => $rs->primary_model,
 	            'options' => '
-	                <a href="' . base_url('inventory/view_inventory/' . $rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><i class="fa fa-eye"></i> view</a> |
-	                <a href="' . base_url('inventory/edit_inventory/' . $rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><i class="fa fa-edit"></i> edit</a> |
-	                <a href="javascript:prompt(\'Delete\',\'Delete '.$rs->item_code.' item?\',\'' . base_url('inventory/delete_inventory/' . $rs->id) . '\')"><i class="fa fa-trash"></i> Delete</a> |
-	                <a href="' . base_url('inventory/inventory_movement/' . $rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><i class="fa fa-edit"></i> movement</a>'
+	                <a href="' . base_url('inventory/view_inventory/' . $rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl">
+	                    <i class="fa fa-eye"></i> view
+	                </a> |
+	                <a href="' . base_url('inventory/edit_inventory/' . $rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl">
+	                    <i class="fa fa-edit"></i> edit
+	                </a> <br/>
+	                <a href="javascript:prompt_delete(\'Delete\', \'Delete ' . addslashes($rs->item_code) . ' item?\', \'' . base_url('inventory/delete_inventory/' . $rs->id) . '\', \'tr' . $rs->id . '\')">
+	                    <i class="fa fa-trash"></i> Delete
+	                </a> |
+	                <a href="' . base_url('inventory/inventory_movement/' . $rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl">
+	                    <i class="fa fa-edit"></i> movement
+	                </a>'
+
 
 	        ];
 	    }
@@ -152,6 +172,7 @@ class Inventory extends CI_Controller {
 	    $this->db->join('fm_item_type t', 't.id = i.item_type_id', 'left');
 	    $this->db->join('fm_models m', 'm.id = i.primary_vehicle_model_id', 'left');
 	    $this->db->join('fm_manufacturers manu', 'manu.id = m.manufacturer_id', 'left');
+	    $this->db->where('deleted',0);
 	    if (!empty($_POST['search']['value'])) {
 	        $this->db->group_start();
 	        foreach ($column_search as $i => $item) {
@@ -227,7 +248,17 @@ class Inventory extends CI_Controller {
 
 	}
 
-	public function save_item(){
+	public function save_item(){  
+
+		if(!@$this->input->post('item_code',TRUE) || !@$this->input->post('item_name',TRUE)){ 
+			echo 3; die(); 
+		}
+
+		$exist = $this->db->select('id')->get_where('inventory', ['item_code' => $this->input->post('item_code',TRUE)])->row();
+
+		if(@$exist->id){ 
+			echo 2; die(2);
+		}
 
 		$model = $this->core->global_query(1,'inventory'); 
 
@@ -275,11 +306,15 @@ class Inventory extends CI_Controller {
 			                $field_name => $random
 			            ]);
 
-			            $this->session->set_flashdata("error", "Saved to DB field `$field_name` with value `$random`");
-			        } else {
-			            log_message('error', "Failed to move uploaded file: $field_name");
+			            
+			            // $this->session->set_flashdata("error", "Saved to DB field `$field_name` with value `$random`");
+			        } else { 
+			            //log_message('error', "Failed to move uploaded file: $field_name");
 			        }
+
+			       
 			    }
+
 			}
 
 
@@ -289,20 +324,23 @@ class Inventory extends CI_Controller {
 				'qty_before'=>0,
 				'qty'=>$this->input->post('qty',TRUE),
 				'qty_after'=>$this->input->post('qty',TRUE),
-				'manufacturer_price'=>$this->input->post('manufacturer_price',TRUE),
+				'unit_cost_price'=>$this->input->post('unit_cost_price',TRUE),
 				'user_id'=>$this->session->user_id,
 				'date_created'=>date("Y-m-d H:i")
 			]);
-			 
-			$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
+			
+			echo 1;
+			//$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
 			  
 		}else{
 
-			$this->session->set_flashdata("error","error saving.");
+			echo 0;
+			//$this->session->set_flashdata("error","error saving.");
 
 		}
 
-		redirect("inventory/masterlist","refresh");
+		die();
+		//redirect("inventory/masterlist","refresh");
 
 	}
 
@@ -328,6 +366,21 @@ class Inventory extends CI_Controller {
 	}
 
 	public function update_item(int $id){
+
+		if(!@$this->input->post('item_code',TRUE) || !@$this->input->post('item_name',TRUE)){ 
+			echo 3; die(); 
+		}
+
+		$exist = $this->db->select('id')
+		    ->from('inventory')
+		    ->where('item_code', $this->input->post('item_code', TRUE))
+		    ->where('id !=', $id)
+		    ->get()
+		    ->row();
+
+		if(@$exist->id){ 
+			echo 2; die(2);
+		}
 
 		$model = $this->core->global_query(2,'inventory',$id); 
 
@@ -375,23 +428,24 @@ class Inventory extends CI_Controller {
 			                $field_name => $random
 			            ]);
 
-			            $this->session->set_flashdata("error", "Saved to DB field `$field_name` with value `$random`");
+			            //$this->session->set_flashdata("error", "Saved to DB field `$field_name` with value `$random`");
 			        } else {
-			            log_message('error', "Failed to move uploaded file: $field_name");
+			            //log_message('error', "Failed to move uploaded file: $field_name");
 			        }
 			    }
 			}
-
-			$this->session->set_flashdata("success", $this->system_menu['clang'][$l = "successfuly saved."] ?? $l);
+			echo 1;
+			//$this->session->set_flashdata("success", $this->system_menu['clang'][$l = "successfuly saved."] ?? $l);
 
 			  
 		}else{
 
+			echo 0;
 			$this->session->set_flashdata("error","error saving.");
 
 		}
-
-		redirect("inventory/masterlist","refresh");
+		die();
+		//redirect("inventory/masterlist","refresh");
 
 	}
 
@@ -416,21 +470,24 @@ class Inventory extends CI_Controller {
 
 	}
 
-	public function delete_item(int $id){
+	public function delete_inventory(int $id){
 
 		$model = $this->core->global_query(3,'inventory',$id); 
 
 		if($model['result']){ 
- 
-			$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
+ 			
+ 			echo 1;
+			//$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
 			  
 		}else{
 
-			$this->session->set_flashdata("error","error saving.");
+			echo 0;
+			//$this->session->set_flashdata("error","error saving.");
 
 		}
 
-		redirect("inventory/masterlist","refresh");
+		die();
+		//redirect("inventory/masterlist","refresh");
 
 	}
 

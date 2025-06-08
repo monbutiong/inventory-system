@@ -82,3 +82,5 @@ ERROR - 2025-06-07 08:02:26 --> Severity: error --> Exception: Table 'inventory_
 ERROR - 2025-06-07 08:03:04 --> Severity: error --> Exception: Table 'inventory_project.projects_job_order' doesn't exist C:\xampp\htdocs\inventory-system\system\database\drivers\mysqli\mysqli_driver.php 305
 ERROR - 2025-06-07 08:06:07 --> Severity: error --> Exception: Table 'inventory_project.projects_job_order' doesn't exist C:\xampp\htdocs\inventory-system\system\database\drivers\mysqli\mysqli_driver.php 305
 ERROR - 2025-06-07 08:08:54 --> Severity: error --> Exception: Table 'inventory_project.projects' doesn't exist C:\xampp\htdocs\inventory-system\system\database\drivers\mysqli\mysqli_driver.php 305
+ERROR - 2025-06-07 17:31:50 --> 404 Page Not Found: Assets/no-image.png
+ERROR - 2025-06-07 17:31:50 --> Severity: error --> Exception: Unknown database 'ventum' C:\xampp\htdocs\inventory-system\application\views\errors\html\error_404.php 10

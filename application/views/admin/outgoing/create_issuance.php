@@ -15,10 +15,11 @@
             <div class="row align-items-center">
                 <div class="col-md-8"> 
                     <h6 class="page-title">Create Sales Order</h6>
+                    Date: <?=date('M d, Y')?> 
                 </div>
                 <div class="col-md-4">
                     <div class="float-end d-none d-md-block">
-                        <a class="btn btn-md btn-primary" href="Javascript:save_issuance()"  >Save Issuance</a>
+                        <a class="btn btn-md btn-primary" href="Javascript:save_issuance()"  >Save Sales Order</a>
                     </div>
                 </div>
             </div>
@@ -36,51 +37,54 @@
           <div class="row">
             
             <div class="col-md-4 col-sm-12 mb-3">
-              <label >Client *</label>
-              <select name="job_order_id" id="job_order_id" class="form-control select2_" onchange="load_jo(this.value)">
+              <label >Customer * </label>
+              <a href="" style="float: right;"><small>(create new customer)</small></a>
+              <select name="customer_id" id="customer_id" class="form-control select2_so_customer" onchange="update_so_price(this.value)">
                 <option value=""></option>
                 <?php  
+                $arr_type[0] = 'individual';
+                $arr_type[1] = 'business';
+
                 if(@$clients){
                   foreach ($clients as $rs) {
+
+                    if(file_exists('./assets/images/clients/logo-'.$rs->id.'.png')){
+                      $img = base_url('assets/images/clients/logo-'.$rs->id.'.png?'.time());
+                    }else{
+                      $img = base_url('assets/images/img.png');
+                    }
                 ?>
-                <option  value="<?=$rs->id?>"><?=$rs->name?></option>
+                <option data-customer-type-id="<?=$rs->customer_type?>" data-customer-type="<?=$arr_type[$rs->customer_type]?>" data-phone="<?=$rs->phone?>" data-qid="<?=$rs->qid?>" data-bis="<?=$rs->business_registration_no?>" data-img="<?=$img?>" value="<?=$rs->id?>"><?=$rs->name?></option>
               <?php }}?>
               </select>
               
             </div>
 
             <div class="col-md-2 col-sm-12 mb-3">
-              <label >Vehicles</label>
-              <input type="text" id="quotation" readonly class="form-control ridonly"> 
-            </div> 
-
-            <div class="col-md-2 col-sm-12 mb-3">
-              <label >Client</label>
-              <input type="text" id="client" readonly class="form-control ridonly"> 
+              <label >Customer Type</label>
+              <input type="text" id="customer_type" name="customer_type" readonly class="form-control ridonly"> 
             </div>
 
             <div class="col-md-2 col-sm-12 mb-3">
-              <label >Issued Date *</label>
-              <input type="date" readonly="" required name="issued_date" id="issued_date" value="<?=date('Y-m-d')?>" class="form-control ridonly">
+              <label >Contact #</label>
+              <input type="text" name="issued_date" id="issued_date" value="" class="form-control ridonly">
             </div>
 
             <div class="col-md-2 col-sm-12 mb-3">
               <label >Reference Number</label>
               <input type="text" name="ref_no" id="ref_no" class="form-control">
             </div>
-
-            <div class="col-md-2 col-sm-12 mb-3">
-              <label >Sales Order Number</label>
-              <input type="text" readonly class="form-control ridonly" value="SO<?=sprintf("%06d",count($this->db->select('id')->get_where('issuance',['deleted'=>0])->result())+1);?>">
-            </div>
  
-            <div class="col-md-10 col-sm-12 mb-3">
-              <label >Remarks </label>
-              <textarea name="remarks" id="remarks" class="form-control"></textarea>
+            <div class="col-md-2 col-sm-12 mb-3">
+              <label >Reference Number</label>
+              <input type="text" name="ref_no" id="ref_no" class="form-control">
             </div>
 
-
-   
+            <div class="col-md-4 col-sm-12 mb-3">
+              <label >Vehicles</label>
+              <input type="text" id="quotation" readonly class="form-control ridonly"> 
+            </div>  
+  
  
           </div>
 
@@ -93,20 +97,25 @@
             <tr style="font-size: 12px;">
                
               <th>Part No.</th>
-              <th>Description</th>  
+              <th>Description</th>   
+              <th>Quantity on Hand</th> 
               <th>Unit Cost Price</th> 
-              <th>Stock Qty</th> 
-              <th>Issue Qty</th> 
+              <th>Selling Price</th>
+              <th>Quantity</th> 
+              <th>Unit Price</th>
+              <th>Total Price</th> 
               <th>Remarks</th> 
               <th></th>  
             </tr>
             </thead> 
             <tbody>
               <tr id="item_selector">
-                <td colspan="9" class="add_item">
+                <td colspan="7" class="add_item">
                   <div class="select2-ajax-so" style="width: 100%;"> 
                 </td>
-              </tr>
+                <td align="right"><b style="font-size: 15px;">Total</b></td>
+                <td colspan="2"></td>
+              </tr> 
             </tbody>
           </table>
           
@@ -114,17 +123,19 @@
 
           <input type="hidden" id="selected_ids">
           
-          <!-- <table class="table" id="add_item_section" >
-            <tr>
-              <td colspan="7" id="add_row">
-                <a id="add_item_link" class="btn btn-info load_modal_details" href="<?php echo base_url('outgoing/issue_batch');?>" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-plus"></i> Add By Batch</a> 
-              </td>
-            </tr>
-          </table>   -->    
-
-          <a href="#" class="btn btn-primary load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" id="package_btn" style="display: none;">Select Package Items From Quotation</a>
          
+          
+
+          <div class="row">
+        <div class="col-md-10 col-sm-12 mb-3">
+          <label >Notes </label>
+          <textarea name="remarks" id="remarks" class="form-control"></textarea>
+        </div>
       </div>
+
+      </div>
+
+      
  
     </div>
   </div> 
@@ -136,30 +147,18 @@
 </form>
 <script type="text/javascript">
 
-  function load_jo(id){
-    $.ajax({
-        url: '<?=base_url("outgoing/load_jo")?>/'+id, // Replace with your API endpoint
-        type: 'GET', 
-        success: function(response) { 
-            console.log('GGG',JSON.parse(response)); 
+  function update_so_price(){
+     var customerType = $('#customer_id option:selected').data('customer-type');
+     
+     $('.default_price').hide();
 
-            var data = JSON.parse(response);
-
-            $('#project').val(data.project.name);
-            $('#client').val(data.client.name);
-
-            if(data.quotation.version > 0){
-              $('#quotation').val(data.quotation.quotation_number + ' rev' + data.quotation.version );
-            }else{
-              $('#quotation').val(data.quotation.quotation_number);
-            } 
-
-            $('#package_btn').show();
-
-            $("#package_btn").attr("href", "<?=base_url('outgoing/load_quotation_package')?>/"+data.quotation.id);
-
-        } 
-    });
+     if(customerType == 1){
+        $('.b2c_price').show();
+        $('.b2b_price').hide();
+     }else{
+        $('.b2c_price').hide();
+        $('.b2b_price').show();
+     }
   }
 
   var c = 0;

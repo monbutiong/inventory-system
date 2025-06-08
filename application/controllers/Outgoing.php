@@ -61,7 +61,7 @@ class Outgoing extends CI_Controller {
  
 		$module['vehicles'] = $this->core->load_core_data('vehicles');
 
-		$module['clients'] = $this->core->load_core_data('clients','','id,name');  
+		$module['clients'] = $this->core->load_core_data('clients','','id,name,customer_type,phone,qid,business_registration_no');  
 		
 		$this->load->view('admin/index',$module);
 
@@ -70,59 +70,95 @@ class Outgoing extends CI_Controller {
 	public function load_items(){
 		
 		$json = [];
+
+		// Check if specific IDs are passed (single or multiple)
+		$ids = $this->input->post('id', TRUE);  // can be a single id or array or CSV string
+
+		$is_new = $this->input->post('is_new', TRUE);
+
+		if ($ids) {
+		    // Normalize $ids to an array
+		    if (!is_array($ids)) {
+		        // If comma-separated string, convert to array
+		        if (strpos($ids, ',') !== false) {
+		            $ids = explode(',', $ids);
+		        } else {
+		            $ids = [$ids];
+		        }
+		    }
+
+		    // Query by these IDs only
+		    $this->db->where_in('id', $ids);
+		    $items = $this->db->select('id, item_code, item_name, manufacturer_price, qty, picture_1')
+		                      ->get('inventory')
+		                      ->result();
+
+		    foreach ($items as $r) {
+		        $json[] = [
+		            'id' => $r->id,
+		            'text' => $r->item_code . ' | ' . $r->item_name,
+		            'item_code' => $r->item_code,
+		            'item_name' => $r->item_name,
+		            'manufacturer_price' => $r->manufacturer_price,
+		            'image_url' => $r->picture_1, 
+		            'unit_cost_price' => $r->unit_cost_price,
+		            'unit_price_b2c' => $r->unit_price_b2c,
+		            'unit_price_b2b' => $r->unit_price_b2b,
+		            'qty' => $r->qty
+		        ];
+		    }
+
+		    print_r(json_encode($json));
+		    return;  // Stop execution here because we already returned the results
+		}
+
+		if($is_new==1){die();}
+
+		// Continue with original logic if no ids requested
+
 		$excluded_id = '';
 
-		if(@$this->input->post('excluded_ids',TRUE)){
-			foreach(explode('-',$this->input->post('excluded_ids',TRUE)) as $id){
-				$id = str_replace('(', '', $id);
-				$id = str_replace(')', '', $id);
-				if($id){
-					$excluded_id.=' AND id!='.$id;
-				}
-			}
+		if ($this->input->post('excluded_ids', TRUE)) {
+		    foreach (explode('-', $this->input->post('excluded_ids', TRUE)) as $id) {
+		        if ($id) {
+		            $excluded_id .= ' AND id != ' . $id;
+		        }
+		    }
 		}
 
-		if($excluded_id){
-			$excluded_id = '('.$excluded_id.')';
-			$excluded_id = str_replace('( AND','(',$excluded_id);
+		if ($excluded_id) {
+		    $excluded_id = '(' . $excluded_id . ')';
+		    $excluded_id = str_replace('( AND', '(', $excluded_id);
+		    $this->db->where($excluded_id);
 		}
 
-		$search = @$this->input->post('searchTerm');
-		$key = @$this->input->post('key');
-  
+		$search = $this->input->post('searchTerm');
+
 		$this->db->group_start();
-		$this->db->like('item_code', $search); 
+		$this->db->like('item_code', $search);
 		$this->db->or_like('item_name', $search);
 		$this->db->group_end();
 
-		$this->db->where(array('deleted'=>0,'unit_cost_price>'=>0)); 
+		$this->db->limit(7, 0);
 
-		if(@$excluded_id){
-			$this->db->where($excluded_id);
-		} 
+		$items = $this->db->select('id, item_code, item_name, manufacturer_price, qty,picture_1, unit_cost_price, unit_price_b2c, unit_price_b2b')->get('inventory')->result();
 
-        $this->db->from('inventory');   
+		foreach ($items as $r) {
+		    $json[] = [
+		        'id' => $r->id,
+		        'text' => $r->item_code . ' | ' . $r->item_name,
+		        'item_code' => $r->item_code,
+		        'item_name' => $r->item_name,
+		        'unit_cost_price' => $r->unit_cost_price,
+		        'unit_price_b2c' => $r->unit_price_b2c,
+		        'unit_price_b2b' => $r->unit_price_b2b,
+		        'selling_price' => 0,
+		        'image_url' => $r->picture_1,
+		        'qty' => $r->qty
+		    ];
+		}
 
-        $this->db->limit(15,0);
-
-        $query = $this->db->get()->result();   
-  
-		foreach($query as $r){
- 
-			$json[] = [
-				 'id'=>$r->id, 
-				 'text'=>''.$r->item_code.' | '.$r->item_name.'  | Unit Cost: '.number_format($r->unit_cost_price,2).'  | Quantity: '.$r->qty,
-				 'find'=>$search, 
-				 'item_code'=>$r->item_code ? $r->item_code : 'n/a',  
-				 'item_name'=>$r->item_name ? $r->item_name : 'n/a',  
-				 'qty'=>$r->qty ,
-				 'unit_price'=>number_format($r->unit_cost_price,2),
-				 'unit_cost_price'=>$r->unit_cost_price 
-				  
-			];
-		} 	
-
-		echo json_encode($json);
+		print_r(json_encode($json));
 
 	}
 

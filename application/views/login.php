@@ -22,7 +22,7 @@
 
     <body class="account-pages">
         <!-- Begin page -->
-        <div class="accountbg" style="background: url('<?=base_url('assets/template/assets')?>/images/bg.jpg?2');background-size: cover;background-position: center;"></div>
+        <div class="accountbg" style="background: url('<?=base_url('assets')?>/images/login.jpg?2');background-size: cover;background-position: center;"></div>
 
         <div class="wrapper-page account-page-full">
 

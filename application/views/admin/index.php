@@ -681,23 +681,24 @@
 
           //========================================================= AJX for Sales Order
           if ($(".select2-ajax-so").length) {
-
+            var c = 0;
+            var all = 0; 
+             
             $(".select2-ajax-so").select2({
               placeholder: "Select Item",
               ajax: {
-                url: "<?=base_url('purchasing/check_item_if_in_inv')?>",
+                url: "<?= base_url('outgoing/load_items') ?>",
                 type: "post",
                 dataType: 'json',
                 delay: 250,
                 dropdownAutoWidth: true,
                 data: function (params) {
                   return {
-                    searchTerm: params.term, // support params.term or params (your original)
+                    searchTerm: params.term,
                     excluded_ids: $('#selected_ids').val()
                   };
                 },
-                // NOTE: Select2 v4 expects 'processResults' instead of 'results' to parse AJAX response
-                processResults: function (data, page) {
+                processResults: function (data) {
                   return {
                     results: $.map(data, function (obj) {
                       return {
@@ -706,21 +707,31 @@
                         item_code: obj.item_code,
                         item_name: obj.item_name,
                         qty: obj.qty,
-                        manufacturer_price: obj.manufacturer_price,
+                        unit_price_b2c: obj.unit_price_b2c,
+                        unit_price_b2b: obj.unit_price_b2b,
+                        unit_cost_price: obj.unit_cost_price,
+                        selling_price: obj.selling_price,
                         image_url: obj.image_url 
                             ? '<?=base_url("assets/uploads/inventory/")?>' + obj.image_url 
                             : '<?=base_url("assets/images/no-image.png")?>'
                       };
+
+                      if (customerType == 0) {
+                        unit_cost = item.unit_price_b2c;
+                      } else if (customerType == 1) {
+                        unit_cost = item.unit_price_b2b;
+                      }
+
                     })
                   };
                 },
                 cache: true
-              },  
-              // Format dropdown items as table-like with image
-              templateResult: function(item) {
-                if (!item.id) {
-                  return item.text;  // placeholder or loading text
-                }
+              },
+
+              // ✅ This formats the dropdown result
+              templateResult: function (item) {
+                if (!item.id) return item.text;
+
                 var markup =
                   '<div style="display:flex; align-items:center;">' +
                     '<div style="flex:0 0 40px; margin-right:8px;">' +
@@ -729,79 +740,180 @@
                     '<div style="flex:1;">' +
                       '<div><strong>Code:</strong> ' + item.item_code + '</div>' +
                       '<div><strong>Name:</strong> ' + item.item_name + '</div>' +
+                      '<div><strong>Unit Cost Price:</strong> ' + item.selling_price + '</div>' +
                     '</div>' +
                     '<div style="flex:0 0 80px; text-align:right; font-weight:bold;">' +
                       'QOH: ' + item.qty +
                     '</div>' +
                   '</div>';
+                return markup
+
+                // var markup =
+                //     '<table style="width:100%; border-collapse:collapse; margin-bottom:4px;">' +
+                //       '<tr>' +
+                //         '<td rowspan="2" style="width:50px; padding:4px;">' +
+                //           '<img src="' + item.image_url + '" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" />' +
+                //         '</td>' +
+                //         '<td style="padding:2px;"><strong>Code:</strong> ' + item.item_code + '</td>' +
+                //         '<td style="padding:2px; text-align:right;"><strong>QOH:</strong> ' + item.qty + '</td>' +
+                //       '</tr>' +
+                //       '<tr>' +
+                //         '<td style="padding:2px;" colspan="2"><strong>Name:</strong> ' + item.item_name + '</td>' +
+                //       '</tr>' +
+                //     '</table>';
+
+                //   return markup;
+              },
+
+              // ✅ This controls how selected item appears
+              templateSelection: function (item) {
+                if (!item.id) return item.text;
+                return `${item.item_code} - ${item.item_name}`;
+              },
+
+              // ✅ Important to allow HTML rendering
+              escapeMarkup: function (markup) {
                 return markup;
-              },
-
-              // Format selection box text
-              templateSelection: function(item) {
-                if (!item.id) {
-                  return item.text;
-                }
-                return item.item_code + ' - ' + item.item_name;
-              },
-
-              escapeMarkup: function(markup) { return markup; } // allow html in templateResult
+              }
             });
 
-
-            var c = 0;
-            var all = 0;
-
-            // Updated event listener for Select2 v4
-            $(".select2-ajax-so").on("select2:select", function(e) {
+            // Select handler
+            $(".select2-ajax-so").on("select2:select", function (e) {
               var e_obj = e.params.data;
-
               c += 1;
 
-              if (e_obj.id == 0) { // ==== this is for new ITEM
-                $('#openNewItemModal').click();
-              } else { // === this is for existing item
-
-                console.log('selected', e_obj);
-
-                if ($('#added' + e_obj.id).length == 0) {
-
-                  $('#selected_ids').val($('#selected_ids').val() + '(' + e_obj.id + ')-');
-
-                  var id = e_obj.id;
-                  var part_no = e_obj.item_code;
-                  var desc = e_obj.item_name;
-                  var qty = 1;
-                  var unit_cost = e_obj.manufacturer_price;
-                  var rate_text = $('#rate_type').val();
-                  var ttl = qty * unit_cost;
-                  var ttl_nf = ttl.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-
-                  var newRowHtml =
-                    '<tr id="irow' + id + '" class="all_po_itm">' +
-                    '<td><input type="hidden" name="items[' + id + ']" value="' + id + '"><a href="<?=base_url('inventory/view_inventory')?>/' + e_obj.id + '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl">' + part_no + '</a><input type="hidden" name="item_code' + id + '" value="' + part_no + '"><input type="hidden" name="lcr' + id + '" value="0"><input type="hidden" name="inv_id' + id + '" value="0"></td>' +
-                    '<td>' + desc + '<input type="hidden" name="item_name' + id + '" value="' + desc + '"><input type="hidden" name="quotation_id' + id + '" value="0"></td>' +
-                    '<td><input type="number" class="require_val" id="i_qty' + id + '" name="i_qty' + id + '" onkeyup="comp(' + id + ')" value="' + qty + '" style="border: 0; text-align: right;" onclick="comp(' + id + ')"></td>' +
-                    '<td align="right" nowrap><font class="rater">' + rate_text + '</font> <input class="require_val" type="number" name="i_unit_cost' + id + '" id="i_unit_cost' + id + '" onkeyup="comp(' + id + ')" onclick="comp(' + id + ')" value="' + unit_cost + '" style="border: 0; text-align: right;"></td>' +
-                    '<td align="right"><input type="hidden" class="all_ttl" id="i_ttl' + id + '" value="' + ttl + '"><span id="ttl' + id + '">' + ttl_nf + '</span></td>' +
-                    '<td><a href="javascript:idel(' + id + ')"><i class="fa fa-trash" style="color: red;"></i></a></td>' +
-                    '</tr>';
-
-                  $('#last_row').before(newRowHtml);
-
-                  comp_ttl();
-
-                }
+              if (e_obj.qty <= 0) {
+                alert("Error: The item quantity is zero, and cannot be issued.");
+                $('.add_item .select2-container .select2-selection__rendered').html('(+) add more item');
+                return;
               }
 
-              $('.add_item .select2-container .select2-choice').html('(+) add more item');
-              $('.selecta' + c).select2();
+              // <th>Part No.</th>
+              // <th>Description</th>   
+              // <th>Quantity on Hand</th> 
+              // <th>Unit Cost Price</th> 
+              // <th>Selling Price</th>
+              // <th>Quantity</th> 
+              // <th>Unit Price</th>
+              // <th>Total Price</th> 
+              // <th>Remarks</th> 
+
+              if ($('#added' + e_obj.id).length == 0) {
+                $('#selected_ids').val($('#selected_ids').val() + '(' + e_obj.id + ')-');
+                var price = 0;
+
+                var customerType = $('#customer_id option:selected').data('customer-type');
+
+                if(customerType == 1){
+                    price = e_obj.unit_price_b2b;
+                }else{
+                    price = e_obj.unit_price_b2c;
+                }
+
+                var newRow = `
+                  <tr id="tr${e_obj.id}">
+                    <td>
+                      <a href="<?=base_url('inventory/view_inventory')?>/${e_obj.id}" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl">${e_obj.item_code}</a>
+                      <input type="hidden" name="items[${e_obj.id}]" id="added${e_obj.id}" value="${e_obj.id}"/>
+                      <input type="hidden" name="inventory_id${e_obj.id}" value="${e_obj.id}"/>
+                    </td>
+                    <td>${e_obj.item_name}</td>
+                    <td align="right" id="t_qty${e_obj.id}">${e_obj.qty}</td>
+                    <td align="right">${e_obj.unit_cost_price}</td>
+                    <td align="right">
+                        <span class="default_price">${price}</span>
+                        <span class="b2c_price" style="display: none;">${e_obj.unit_price_b2c}</span>
+                        <span class="b2b_price" style="display: none;">${e_obj.unit_price_b2b}</span>
+                    </td>
+                 
+                    <td align="center">
+                      <input type="number" id="qty${e_obj.id}" name="qty${e_obj.id}" required style="border:0px; text-align:center; width:75px;" value="1" min="1" max="${e_obj.qty}">
+                    </td>
+                    <td align="right">
+                      <input type="number" name="selling_price${e_obj.id}" value="${price}" style="border:0px; width:100%;">
+                      <input type="hidden" name="unit_cost_price${e_obj.id}" id="unit_cost_price${e_obj.id}" value="${e_obj.selling_price}"/>
+                    </td>
+                    <td>${price}</td> 
+                    <td><input type="text" name="remarks${e_obj.id}" style="border:0px; width:100%;" ></td>
+                    <td align="center"><a href="javascript:remove_item(${e_obj.id})"><i title="remove" class="fa fa-trash" style="color:red"></i></a></td>
+                  </tr>`;
+
+                $('#item_selector').before(newRow);
+              }
+
+              $('.add_item .select2-container .select2-selection__rendered').html('(+) add more item');
               all += 1;
-
               $('#row_counter').val(c);
+              $(".select2-ajax-so").val('').trigger('change');
             });
+          }
 
-            $(".select2-ajax-po").val('').trigger('change');
+          if($('.select2_so_customer').length){
+
+            $('.select2_so_customer').select2({
+              templateResult: function (data) {
+                if (!data.id) return data.text;
+
+                const option = $(data.element);
+                const customerType = option.data('customer-type');
+                const phone = option.data('phone');
+                const qid = option.data('qid');
+                const bis = option.data('bis');
+                const img = option.data('img') || '<?= base_url("assets/images/no-image.png") ?>';
+
+                const idLabel = customerType === 'business'
+                  ? `<strong>Business Reg. #:</strong> ${bis || '-'}`
+                  : `<strong>QID:</strong> ${qid || '-'}`;
+
+                const markup = `
+                  <div style="display: flex; align-items: flex-start; gap: 10px; padding: 6px;">
+                    <img src="${img}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;" />
+                    <div style="flex: 1;">
+                      <div><strong>${data.text}</strong> (${customerType})</div>
+                      <div style="font-size: 12px; color: #555;">
+                        <div>${idLabel}</div>
+                        <div><strong>Phone:</strong> ${phone || '-'}</div>
+                      </div>
+                    </div>
+                  </div>
+                `;
+                return $(markup);
+              },
+
+              templateSelection: function (data) {
+                return data.text;
+              },
+
+              // ✅ Add this matcher
+              matcher: function(params, data) {
+                if ($.trim(params.term) === '') {
+                  return data;
+                }
+
+                const option = $(data.element);
+
+                const searchTerm = params.term.toLowerCase();
+                const text = data.text.toLowerCase();
+                const phone = (option.data('phone') || '').toString().toLowerCase();
+                const qid = (option.data('qid') || '').toString().toLowerCase();
+                const bis = (option.data('bis') || '').toString().toLowerCase();
+                const customerType = (option.data('customer-type') || '').toLowerCase();
+
+                // Check if any of the fields match
+                if (
+                  text.includes(searchTerm) ||
+                  phone.includes(searchTerm) ||
+                  qid.includes(searchTerm) ||
+                  bis.includes(searchTerm) ||
+                  customerType.includes(searchTerm)
+                ) {
+                  return data;
+                }
+
+                // Otherwise, exclude it
+                return null;
+              }
+            });
 
           }
 
@@ -812,10 +924,7 @@
 
 
 
-
-
-
-
+ 
 
 
           let inventoryTable;

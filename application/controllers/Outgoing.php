@@ -62,11 +62,137 @@ class Outgoing extends CI_Controller {
 		$module['vehicles'] = $this->core->load_core_data('vehicles');
 
 		$module['clients'] = $this->core->load_core_data('clients','','id,name,customer_type,phone,qid,business_registration_no');  
+
+		$result = $this->admin_model->load_filemaintenance('fm_payment_type');
+		$module['payment_type'] = $result['maintenance_data'];
+
+		$module['vehicles'] = $this->core->load_core_data('vehicles');
+		
+		$result = $this->admin_model->load_filemaintenance('fm_models');
+		$module['models'] = $result['maintenance_data'];
+		
+		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+		$module['manufacturers'] = $result['maintenance_data'];
+
+		$module['customers'] = $this->core->load_core_data('clients');
 		
 		$this->load->view('admin/index',$module);
 
 	}
 
+	public function load_vehicles()
+	{
+	    $search = $this->input->post('searchTerm');
+
+	    $this->db->select('
+	        vehicles.id,
+	        vehicles.plate_no,
+	        fm_models.model_year,
+	        vehicles.picture_1 as image,
+	        vehicles.vin as vin,
+	        clients.id AS customer_id,
+	        clients.name AS customer_name,
+	        clients.customer_type AS customer_type,
+	        clients.phone AS phone,
+	        clients.qid AS qid,
+	        clients.business_registration_no AS business_registration_no,
+	        fm_manufacturers.title AS manufacturer_title,
+	        fm_models.title AS model_title
+	    ');
+	    $this->db->from('vehicles');
+	    $this->db->join('clients', 'clients.id = vehicles.customer_id', 'left');
+	    $this->db->join('fm_manufacturers', 'fm_manufacturers.id = vehicles.manufacturer_id', 'left');
+	    $this->db->join('fm_models', 'fm_models.id = vehicles.vehicle_model_id', 'left');
+	    $this->db->where('vehicles.deleted', 0);
+
+	    if (!empty($search)) {
+	        $this->db->group_start();
+	        $this->db->like('vehicles.plate_no', $search);
+	        $this->db->or_like('vehicles.vin', $search);
+	        $this->db->or_like('clients.name', $search);
+	        $this->db->or_like('clients.phone', $search);
+	        $this->db->or_like('clients.qid', $search);
+	        $this->db->or_like('clients.business_registration_no', $search);
+	        $this->db->or_like('fm_manufacturers.title', $search);
+	        $this->db->or_like('fm_models.title', $search); // Fixed alias
+	        $this->db->group_end();
+	    }
+
+	    $this->db->order_by('vehicles.plate_no', 'ASC');
+	    $this->db->limit(5); // Add limit here
+	    $query = $this->db->get()->result();
+
+	    $results = [];
+	    foreach ($query as $v) {
+	        $results[] = [
+	            'id'                  => $v->id,
+	            'text'                => $v->plate_no,
+	            'plate_no'            => $v->plate_no,
+	            'vin'                 => $v->vin,
+	            'manufacturer'        => $v->manufacturer_title,
+	            'model'               => $v->model_title,
+	            'model_year'          => $v->model_year,
+	            'customer_id'         => $v->customer_id,
+	            'customer'            => $v->customer_name,
+	            'phone'				  => $v->phone,
+	            'customer_type'       => $v->customer_type,
+	            'customer_type_label' => $v->customer_type == 1 ? 'QID' : 'Business Reg #',
+	            'customer_qid_bus'    => $v->customer_type == 1 ? $v->business_registration_no : $v->qid,
+	            'image'               => !empty($v->image)
+	                ? base_url('assets/uploads/vehicles/' . $v->image)
+	                : base_url('assets/images/no-image.png')
+	        ];
+	    }
+
+	    echo json_encode($results);
+	}
+
+	public function load_customers()
+	{
+	    $search = $this->input->post('searchTerm');
+
+	    $this->db->select('
+	        clients.id,
+	        clients.name,
+	        clients.phone,
+	        clients.customer_type,
+	        clients.qid,
+	        clients.business_registration_no 
+	    ');
+	    $this->db->from('clients');
+	    $this->db->where('deleted', 0);
+
+	    if (!empty($search)) {
+	        $this->db->group_start();
+	        $this->db->like('clients.name', $search);
+	        $this->db->or_like('clients.phone', $search);
+	        $this->db->or_like('clients.qid', $search);
+	        $this->db->or_like('clients.business_registration_no', $search);
+	        $this->db->group_end();
+	    }
+
+	    $this->db->order_by('clients.name', 'ASC');
+	    $this->db->limit(20);
+
+	    $query = $this->db->get()->result();
+
+	    $results = [];
+	    foreach ($query as $c) {
+	        $results[] = [
+	            'id'            => $c->id,
+	            'text'          => $c->name,
+	            'phone'         => $c->phone,
+	            'qid'           => $c->qid,
+	            'business_registration_no'  => $c->business_registration_no,
+	            'customer_type' => $c->customer_type == 1 ? 'business' : 'individual',
+	            'image'         => file_exists('./assets/images/clients/logo-'.$c->id.'.png') ? base_url('assets/images/clients/logo-'.$c->id.'.png?'.time()) : base_url('assets/images/no-image.png')
+	        ];
+	    }
+
+	    echo json_encode($results);
+	}
+
+ 
 	public function load_items(){
 		
 		$json = [];

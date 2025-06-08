@@ -787,17 +787,7 @@
                 $('.add_item .select2-container .select2-selection__rendered').html('(+) add more item');
                 return;
               }
-
-              // <th>Part No.</th>
-              // <th>Description</th>   
-              // <th>Quantity on Hand</th> 
-              // <th>Unit Cost Price</th> 
-              // <th>Selling Price</th>
-              // <th>Quantity</th> 
-              // <th>Unit Price</th>
-              // <th>Total Price</th> 
-              // <th>Remarks</th> 
-
+ 
               if ($('#added' + e_obj.id).length == 0) {
                 $('#selected_ids').val($('#selected_ids').val() + '(' + e_obj.id + ')-');
                 var price = 0;
@@ -813,32 +803,79 @@
                 var newRow = `
                   <tr id="tr${e_obj.id}">
                     <td>
-                      <a href="<?=base_url('inventory/view_inventory')?>/${e_obj.id}" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl">${e_obj.item_code}</a>
+                      <a href="<?=base_url('inventory/view_inventory')?>/${e_obj.id}" 
+                         class="load_modal_details" 
+                         data-bs-toggle="modal" 
+                         data-bs-target=".bs-example-modal-lg" 
+                         data-modal-size="xl">
+                         ${e_obj.item_code}
+                      </a>
                       <input type="hidden" name="items[${e_obj.id}]" id="added${e_obj.id}" value="${e_obj.id}"/>
                       <input type="hidden" name="inventory_id${e_obj.id}" value="${e_obj.id}"/>
                     </td>
                     <td>${e_obj.item_name}</td>
-                    <td align="right" id="t_qty${e_obj.id}">${e_obj.qty}</td>
-                    <td align="right">${e_obj.unit_cost_price}</td>
-                    <td align="right">
-                        <span class="default_price">${price}</span>
-                        <span class="b2c_price" style="display: none;">${e_obj.unit_price_b2c}</span>
-                        <span class="b2b_price" style="display: none;">${e_obj.unit_price_b2b}</span>
-                    </td>
-                 
-                    <td align="center">
-                      <input type="number" id="qty${e_obj.id}" name="qty${e_obj.id}" required style="border:0px; text-align:center; width:75px;" value="1" min="1" max="${e_obj.qty}">
-                    </td>
-                    <td align="right">
-                      <input type="number" name="selling_price${e_obj.id}" value="${price}" style="border:0px; width:100%;">
+                    <td style="text-align:right;" id="t_qty${e_obj.id}">${e_obj.qty}</td>
+                    <td style="text-align:right;">${e_obj.unit_cost_price}</td>
+
+                    <td style="text-align:center;">
+                      <input type="number" 
+                             id="qty${e_obj.id}" 
+                             name="qty${e_obj.id}" 
+                             required 
+                             value="1" 
+                             min="1" 
+                             max="${e_obj.qty}" 
+                             style="border:0; background:transparent; text-align:center; width:60px;">
+                    </td>  
+
+                    <td style="text-align:right;">
+                       
                       <input type="hidden" name="unit_cost_price${e_obj.id}" id="unit_cost_price${e_obj.id}" value="${e_obj.selling_price}"/>
+
+                      <span class="default_price">${price}</span>
+                      <span class="b2c_price" style="display: none;">${e_obj.unit_price_b2c}</span>
+                      <span class="b2b_price" style="display: none;">${e_obj.unit_price_b2b}</span>
+                      <input type="hidden" name="selling_price_b2c${e_obj.id}" value="${e_obj.unit_price_b2c}">
+                      <input type="hidden" name="selling_price_b2b${e_obj.id}" value="${e_obj.unit_price_b2b}">
                     </td>
-                    <td>${price}</td> 
-                    <td><input type="text" name="remarks${e_obj.id}" style="border:0px; width:100%;" ></td>
-                    <td align="center"><a href="javascript:remove_item(${e_obj.id})"><i title="remove" class="fa fa-trash" style="color:red"></i></a></td>
+
+                    <td>total here</td>
+
+                    <td style="text-align:right;">
+                      <input type="number" 
+                             name="discount_percentage${e_obj.id}" 
+                             style="border:0; background:transparent; text-align:right; width:60px;" maxlength="5">
+                    </td>
+
+                    <td style="text-align:right;">
+                      <input type="number" 
+                             name="discount_amount${e_obj.id}" 
+                             maxlength="2" 
+                             style="border:0; background:transparent; text-align:right; width:80px;" maxlength="7">
+                    </td>
+
+                    <td style="text-align:right;"><span id="row_total">${price}</span></td> 
+
+                    <td style="text-align:center;">
+                      <a href="javascript:remove_item(${e_obj.id})">
+                        <i title="remove" class="fa fa-trash" style="color:red"></i>
+                      </a>
+                    </td>
                   </tr>`;
 
+
                 $('#item_selector').before(newRow);
+
+                const newRowEl = $(`#tr${e_obj.id}`);
+
+                newRowEl.find('[name^="qty"], [name^="discount_amount"], [name^="discount_percentage"]').on('input', function () {
+                  calculateRowTotal(newRowEl);
+                  computeGrandTotal();
+                });
+
+                // Initial calculation
+                calculateRowTotal(newRowEl);
+                computeGrandTotal();
               }
 
               $('.add_item .select2-container .select2-selection__rendered').html('(+) add more item');
@@ -848,31 +885,54 @@
             });
           }
 
-          if($('.select2_so_customer').length){
-
+          if ($('.select2_so_customer').length) {
             $('.select2_so_customer').select2({
+              placeholder: 'Search customer...',
+              allowClear: true,
+
+              ajax: {
+                url: '<?= base_url('outgoing/load_customers') ?>',
+                type: 'POST',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                  return {
+                    searchTerm: params.term
+                  };
+                },
+                processResults: function (data) {
+                  return {
+                    results: $.map(data, function (obj) {
+                      return {
+                        id: obj.id,
+                        text: obj.text,
+                        phone: obj.phone,
+                        qid: obj.qid,
+                        bis: obj.business_registration_no,
+                        customer_type: obj.customer_type,
+                        image: obj.image
+                      };
+                    })
+                  };
+                },
+                cache: true
+              },
+
               templateResult: function (data) {
                 if (!data.id) return data.text;
 
-                const option = $(data.element);
-                const customerType = option.data('customer-type');
-                const phone = option.data('phone');
-                const qid = option.data('qid');
-                const bis = option.data('bis');
-                const img = option.data('img') || '<?= base_url("assets/images/no-image.png") ?>';
-
-                const idLabel = customerType === 'business'
-                  ? `<strong>Business Reg. #:</strong> ${bis || '-'}`
-                  : `<strong>QID:</strong> ${qid || '-'}`;
+                const idLabel = data.customer_type === 'business'
+                  ? `<strong>Business Reg. #:</strong> ${data.bis || '-'}`
+                  : `<strong>QID:</strong> ${data.qid || '-'}`;
 
                 const markup = `
                   <div style="display: flex; align-items: flex-start; gap: 10px; padding: 6px;">
-                    <img src="${img}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;" />
+                    <img src="${data.image}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;" />
                     <div style="flex: 1;">
-                      <div><strong>${data.text}</strong> (${customerType})</div>
+                      <div><strong>${data.text}</strong> (${data.customer_type})</div>
                       <div style="font-size: 12px; color: #555;">
                         <div>${idLabel}</div>
-                        <div><strong>Phone:</strong> ${phone || '-'}</div>
+                        <div><strong>Phone:</strong> ${data.phone || '-'}</div>
                       </div>
                     </div>
                   </div>
@@ -880,44 +940,192 @@
                 return $(markup);
               },
 
-              templateSelection: function (data) {
-                return data.text;
-              },
-
-              // ✅ Add this matcher
-              matcher: function(params, data) {
-                if ($.trim(params.term) === '') {
-                  return data;
-                }
-
-                const option = $(data.element);
-
-                const searchTerm = params.term.toLowerCase();
-                const text = data.text.toLowerCase();
-                const phone = (option.data('phone') || '').toString().toLowerCase();
-                const qid = (option.data('qid') || '').toString().toLowerCase();
-                const bis = (option.data('bis') || '').toString().toLowerCase();
-                const customerType = (option.data('customer-type') || '').toLowerCase();
-
-                // Check if any of the fields match
-                if (
-                  text.includes(searchTerm) ||
-                  phone.includes(searchTerm) ||
-                  qid.includes(searchTerm) ||
-                  bis.includes(searchTerm) ||
-                  customerType.includes(searchTerm)
-                ) {
-                  return data;
-                }
-
-                // Otherwise, exclude it
-                return null;
+              templateSelection: function (data) { 
+                return data.text || '';
               }
             });
 
+            $('.select2_so_customer').on('select2:select', function (e) {
+              const data = e.params.data;
+
+              $('#phone').val(data.phone);
+              $('#customer_number').html(data.customer_type === 'business' ? 'Business Reg. #' : 'QID');
+              $('#customer_qid_bus').val(data.customer_type === 'business' ? data.bis : data.qid);
+
+              update_so_price();
+            });
+
+            $('.select2_so_customer').on('select2:clear', function () {
+              $('#phone').val('');
+              $('#customer_number').html('QID'); // Default label
+              $('#customer_qid_bus').val('');
+
+              update_so_price();
+            });
           }
 
-          //=========================================================== END
+
+          if($('.select2-ajax-vehicle').length){
+
+                $('.select2-ajax-vehicle').select2({
+                  placeholder: "Search vehicle...",
+                  allowClear: true, 
+                  ajax: {
+                    url: '<?= base_url('outgoing/load_vehicles') ?>',
+                    type: 'POST',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                      return {
+                        searchTerm: params.term
+                      };
+                    },
+                    processResults: function (data) {
+                      return {
+                        results: $.map(data, function (obj) {
+                          return {
+                            id: obj.id,
+                            text: obj.plate_no,
+                            phone: obj.phone,
+                            plate_no: obj.plate_no,
+                            model: obj.model,
+                            manufacturer: obj.manufacturer,
+                            model_year: obj.model_year,
+                            customer: obj.customer,
+                            customer_type: obj.customer_type,
+                            customer_type_label: obj.customer_type_label,
+                            customer_qid_bus: obj.customer_qid_bus,
+                            vin: obj.vin,
+                            image: obj.image
+                          };
+                        })
+                      };
+                    },
+                    cache: true
+                  },
+
+                  templateResult: function (data) {
+                    if (!data.id) return data.text;
+
+                    let markup = `
+                      <div style="display:flex; align-items:center; gap:10px;">
+                        <img src="${data.image}" style="width:60px; height:60px; object-fit:cover; border-radius:4px;" />
+                        <div>
+                          <div><strong>${data.manufacturer} ${data.model} - ${data.model_year}</strong></div>
+                          <div style="font-size:12px; color:#555;"><i>Plate No.: ${data.plate_no}</i></div>
+                          <div style="font-size:12px; color:#555;"><i>Owner: ${data.customer}</div>
+                          <div style="font-size:12px; color:#555;"><i>${data.customer_type_label}: ${data.customer_qid_bus}</i></div>
+                        </div>
+                      </div>
+                    `;
+                    return $(markup);
+                  },
+
+                  templateSelection: function (data) {
+
+                    $('#vin').val(data.vin);
+                    $('#plate_no').val(data.plate_no);
+
+                    $('#customer_number').html(data.customer_type_label);
+                    $('#customer_qid_bus').val(data.customer_qid_bus);
+
+                    $('#phone').val(data.phone);
+
+                    $('#customer').val(data.customer);
+
+                    if(data.customer){    
+                        $('#customer_selection').hide();
+                        $('#customer_fixed').show();
+                    }else{
+                        $('#customer_selection').show();
+                        $('#customer_fixed').hide();
+                    }
+
+                   $('.default_price').hide(); 
+
+                   if(data.customer_type == 1){
+                      $('.b2c_price').hide();
+                      $('.b2b_price').show();
+                   }else{
+                      $('.b2c_price').show();
+                      $('.b2b_price').hide(); 
+                   }
+
+                    return data.plate_no ? `${data.manufacturer} ${data.model} - ${data.model_year}` : '';
+                  }
+                });  
+
+
+          }
+
+
+          function formatMoney(value) {
+            return parseFloat(value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+          }
+
+          let isUpdating = false;
+
+          function formatMoney(value) {
+            return parseFloat(value || 0).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+          }
+
+          function calculateRowTotal(row) {
+            if (isUpdating) return;
+            isUpdating = true;
+
+            const qty = parseFloat(row.find('[name^="qty"]').val()) || 0;
+            
+            const price = parseFloat(row.find('.default_price').text()) || 0;
+
+            const $discountPctInput = row.find('[name^="discount_percentage"]');
+            const $discountAmtInput = row.find('[name^="discount_amount"]');
+
+            let discountPct = parseFloat($discountPctInput.val()) || 0;
+            let discountAmt = parseFloat($discountAmtInput.val()) || 0;
+
+            const totalBeforeDiscount = qty * price;
+            row.find('td:nth-child(7)').html(`<span>${formatMoney(totalBeforeDiscount)}</span>`);
+
+            // When quantity changes, recalculate amount if % is available and amount not manually being edited
+            if (!$discountAmtInput.is(':focus') && discountPct > 0) {
+              discountAmt = totalBeforeDiscount * (discountPct / 100);
+              $discountAmtInput.val(discountAmt.toFixed(2));
+            }
+
+            // Vice versa: when amount is edited, update percent
+            if ($discountAmtInput.is(':focus') && !$discountPctInput.is(':focus')) {
+              discountPct = (discountAmt / totalBeforeDiscount) * 100;
+              $discountPctInput.val(discountPct.toFixed(2));
+            }
+
+            // When % is edited, update amount
+            if ($discountPctInput.is(':focus') && !$discountAmtInput.is(':focus')) {
+              discountAmt = totalBeforeDiscount * (discountPct / 100);
+              $discountAmtInput.val(discountAmt.toFixed(2));
+            }
+
+            const rowTotal = totalBeforeDiscount - discountAmt;
+            row.find('#row_total').text(formatMoney(rowTotal));
+
+            isUpdating = false;
+            return rowTotal;
+          }
+
+
+
+          function computeGrandTotal() {
+            let grandTotal = 0;
+            $('tr[id^="tr"]').each(function () {
+              grandTotal += calculateRowTotal($(this));
+            });
+
+            $('#grand_total').html(formatMoney(grandTotal)); // remove old total if exists
+ 
+
+            $('#item_selector').before(totalRow);
+          }
+
+          //=========================================================== END OF Sales ORDER
 
 
 

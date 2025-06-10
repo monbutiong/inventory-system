@@ -297,6 +297,7 @@
                          $('.select2-tags').select2({
                              tags: true,
                              width: '100%',
+                             allowClear: true,
                              dropdownParent: $('#global_modal')
                          });
                      }
@@ -706,21 +707,15 @@
                         text: obj.text,
                         item_code: obj.item_code,
                         item_name: obj.item_name,
-                        qty: obj.qty,
-                        unit_price_b2c: obj.unit_price_b2c,
-                        unit_price_b2b: obj.unit_price_b2b,
+                        brand: obj.brand,
+                        qty: obj.qty, 
                         unit_cost_price: obj.unit_cost_price,
                         selling_price: obj.selling_price,
                         image_url: obj.image_url 
                             ? '<?=base_url("assets/uploads/inventory/")?>' + obj.image_url 
                             : '<?=base_url("assets/images/no-image.png")?>'
                       };
-
-                      if (customerType == 0) {
-                        unit_cost = item.unit_price_b2c;
-                      } else if (customerType == 1) {
-                        unit_cost = item.unit_price_b2b;
-                      }
+  
 
                     })
                   };
@@ -735,11 +730,12 @@
                 var markup =
                   '<div style="display:flex; align-items:center;">' +
                     '<div style="flex:0 0 40px; margin-right:8px;">' +
-                      '<img src="' + item.image_url + '" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" />' +
+                      '<img src="' + item.image_url + '" style="width:75px; height:75px; object-fit:cover; border-radius:4px;" />' +
                     '</div>' +
                     '<div style="flex:1;">' +
                       '<div><strong>Code:</strong> ' + item.item_code + '</div>' +
                       '<div><strong>Name:</strong> ' + item.item_name + '</div>' +
+                      '<div><strong>Brand:</strong> ' + item.brand + '</div>' +
                       '<div><strong>Unit Cost Price:</strong> ' + item.selling_price + '</div>' +
                     '</div>' +
                     '<div style="flex:0 0 80px; text-align:right; font-weight:bold;">' +
@@ -748,21 +744,6 @@
                   '</div>';
                 return markup
 
-                // var markup =
-                //     '<table style="width:100%; border-collapse:collapse; margin-bottom:4px;">' +
-                //       '<tr>' +
-                //         '<td rowspan="2" style="width:50px; padding:4px;">' +
-                //           '<img src="' + item.image_url + '" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" />' +
-                //         '</td>' +
-                //         '<td style="padding:2px;"><strong>Code:</strong> ' + item.item_code + '</td>' +
-                //         '<td style="padding:2px; text-align:right;"><strong>QOH:</strong> ' + item.qty + '</td>' +
-                //       '</tr>' +
-                //       '<tr>' +
-                //         '<td style="padding:2px;" colspan="2"><strong>Name:</strong> ' + item.item_name + '</td>' +
-                //       '</tr>' +
-                //     '</table>';
-
-                //   return markup;
               },
 
               // ✅ This controls how selected item appears
@@ -792,16 +773,16 @@
                 $('#selected_ids').val($('#selected_ids').val() + '(' + e_obj.id + ')-');
                 var price = 0;
 
-                var customerType = $('#customer_id option:selected').data('customer-type');
+                var customerType = $('#customer_number').html();
 
-                if(customerType == 1){
-                    price = e_obj.unit_price_b2b;
-                }else{
+                if(customerType == 'QID'){
                     price = e_obj.unit_price_b2c;
+                }else{
+                    price = e_obj.unit_price_b2b;
                 }
 
                 var newRow = `
-                  <tr id="tr${e_obj.id}">
+                  <tr id="tr${e_obj.id}" class="data-row">
                     <td>
                       <a href="<?=base_url('inventory/view_inventory')?>/${e_obj.id}" 
                          class="load_modal_details" 
@@ -814,8 +795,9 @@
                       <input type="hidden" name="inventory_id${e_obj.id}" value="${e_obj.id}"/>
                     </td>
                     <td>${e_obj.item_name}</td>
+                    <td>${e_obj.brand}</td>
                     <td style="text-align:right;" id="t_qty${e_obj.id}">${e_obj.qty}</td>
-                    <td style="text-align:right;">${e_obj.unit_cost_price}</td>
+                    <td style="text-align:right;">${formatMoney(e_obj.unit_cost_price)}</td>
 
                     <td style="text-align:center;">
                       <input type="number" 
@@ -829,17 +811,22 @@
                     </td>  
 
                     <td style="text-align:right;">
-                       
                       <input type="hidden" name="unit_cost_price${e_obj.id}" id="unit_cost_price${e_obj.id}" value="${e_obj.selling_price}"/>
 
-                      <span class="default_price">${price}</span>
-                      <span class="b2c_price" style="display: none;">${e_obj.unit_price_b2c}</span>
-                      <span class="b2b_price" style="display: none;">${e_obj.unit_price_b2b}</span>
+                      <span class="b2c_price" style="display: ${customerType === 'QID' ? 'inline' : 'none'};">
+                        ${formatMoney(e_obj.unit_price_b2c)}
+                      </span>
+                      <span class="b2b_price" style="display: ${customerType === 'QID' ? 'none' : 'inline'};">
+                        ${formatMoney(e_obj.unit_price_b2b)}
+                      </span>
+
                       <input type="hidden" name="selling_price_b2c${e_obj.id}" value="${e_obj.unit_price_b2c}">
                       <input type="hidden" name="selling_price_b2b${e_obj.id}" value="${e_obj.unit_price_b2b}">
                     </td>
 
-                    <td>total here</td>
+                    <td style="text-align:right;">
+                      <span id="row_total">${price}</span>
+                    </td> 
 
                     <td style="text-align:right;">
                       <input type="number" 
@@ -850,11 +837,9 @@
                     <td style="text-align:right;">
                       <input type="number" 
                              name="discount_amount${e_obj.id}" 
-                             maxlength="2" 
-                             style="border:0; background:transparent; text-align:right; width:80px;" maxlength="7">
+                             maxlength="7" 
+                             style="border:0; background:transparent; text-align:right; width:80px;">
                     </td>
-
-                    <td style="text-align:right;"><span id="row_total">${price}</span></td> 
 
                     <td style="text-align:center;">
                       <a href="javascript:remove_item(${e_obj.id})">
@@ -862,6 +847,7 @@
                       </a>
                     </td>
                   </tr>`;
+
 
 
                 $('#item_selector').before(newRow);
@@ -1041,21 +1027,19 @@
                         $('#customer_fixed').hide();
                     }
 
-                   $('.default_price').hide(); 
-
-                   if(data.customer_type == 1){
-                      $('.b2c_price').hide();
-                      $('.b2b_price').show();
-                   }else{
-                      $('.b2c_price').show();
-                      $('.b2b_price').hide(); 
-                   }
+                    if($('#customer_number').html().trim() == 'QID'){ 
+                        console.log('will use bc2',$('#customer_number').html().trim());
+                        $('.b2c_price').show();
+                        $('.b2b_price').hide();
+                    }else{
+                        console.log('will use bcb',$('#customer_number').html().trim());
+                        $('.b2c_price').hide();
+                        $('.b2b_price').show();
+                    }
 
                     return data.plate_no ? `${data.manufacturer} ${data.model} - ${data.model_year}` : '';
                   }
-                });  
-
-
+                });   
           }
 
 
@@ -1074,8 +1058,19 @@
             isUpdating = true;
 
             const qty = parseFloat(row.find('[name^="qty"]').val()) || 0;
-            
-            const price = parseFloat(row.find('.default_price').text()) || 0;
+
+            //const price = parseFloat(row.find('.default_price').text()) || 0;
+
+            var price = 0;
+
+            if($('#customer_number').html().trim() == 'QID'){ 
+                 price = parseFloat(row.find('[name^="selling_price_b2c"]').val()) || 0;
+            }else{
+                 price = parseFloat(row.find('[name^="selling_price_b2b"]').val()) || 0;
+            }
+
+            console.log('Cust:',$('#customer_number').html());
+            console.log('price:',price);
 
             const $discountPctInput = row.find('[name^="discount_percentage"]');
             const $discountAmtInput = row.find('[name^="discount_amount"]');
@@ -1119,11 +1114,9 @@
               grandTotal += calculateRowTotal($(this));
             });
 
-            $('#grand_total').html(formatMoney(grandTotal)); // remove old total if exists
- 
-
-            $('#item_selector').before(totalRow);
+            $('#grand_total').html(formatMoney(grandTotal)); // remove old total if exists 
           }
+
 
           //=========================================================== END OF Sales ORDER
 
@@ -1157,8 +1150,16 @@
                   { data: 'type' },
                   { data: 'qty' },
                   { data: 'bin_location' },
-                  { data: 'primary_model' },
+                  { data: 'manufacturer_price' }, 
+                  { data: 'unit_cost_price' },
+                  { data: 'retail_price' },
                   { data: 'options', orderable: false }
+                ],
+                columnDefs: [
+                    {
+                      targets: [8, 9, 10], // Column indexes for prices
+                      className: 'dt-right'
+                    }
                 ],
                 createdRow: function (row, data, dataIndex) {
                   // Use `data.id` from your PHP data array

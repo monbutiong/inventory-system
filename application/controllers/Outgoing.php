@@ -214,10 +214,11 @@ class Outgoing extends CI_Controller {
 		    }
 
 		    // Query by these IDs only
-		    $this->db->where_in('id', $ids);
-		    $items = $this->db->select('id, item_code, item_name, manufacturer_price, qty, picture_1')
-		                      ->get('inventory')
-		                      ->result();
+		    $this->db->where_in('a.id', $ids);
+		    $this->db->select('a.id, a.item_code, a.item_name, a.manufacturer_price, a.qty, a.picture_1, b.title as brand');
+		    $this->db->from('inventory as a');
+		    $this->db->join('fm_item_brand as b', 'b.id = a.item_brand_id', 'left');
+		    $items = $this->db->get()->result();
 
 		    foreach ($items as $r) {
 		        $json[] = [
@@ -230,7 +231,8 @@ class Outgoing extends CI_Controller {
 		            'unit_cost_price' => $r->unit_cost_price,
 		            'unit_price_b2c' => $r->unit_price_b2c,
 		            'unit_price_b2b' => $r->unit_price_b2b,
-		            'qty' => $r->qty
+		            'qty' => $r->qty,
+		            'brand' => $r->brand,
 		        ];
 		    }
 
@@ -247,7 +249,7 @@ class Outgoing extends CI_Controller {
 		if ($this->input->post('excluded_ids', TRUE)) {
 		    foreach (explode('-', $this->input->post('excluded_ids', TRUE)) as $id) {
 		        if ($id) {
-		            $excluded_id .= ' AND id != ' . $id;
+		            $excluded_id .= ' AND a.id != ' . $id;
 		        }
 		    }
 		}
@@ -261,13 +263,18 @@ class Outgoing extends CI_Controller {
 		$search = $this->input->post('searchTerm');
 
 		$this->db->group_start();
-		$this->db->like('item_code', $search);
-		$this->db->or_like('item_name', $search);
+		$this->db->like('a.item_code', $search);
+		$this->db->or_like('a.item_name', $search);
+		$this->db->or_like('b.title', $search);
 		$this->db->group_end();
 
 		$this->db->limit(7, 0);
 
-		$items = $this->db->select('id, item_code, item_name, manufacturer_price, qty,picture_1, unit_cost_price, unit_price_b2c, unit_price_b2b')->get('inventory')->result();
+		$this->db->where_in('id', $ids);
+		$this->db->select('a.id, a.item_code, a.item_name, a.manufacturer_price, a.qty, a.picture_1, b.title as brand');
+		$this->db->from('inventory as a');
+		$this->db->join('fm_item_brand as b', 'b.id = a.item_brand_id', 'left');
+		$items = $this->db->get()->result();
 
 		foreach ($items as $r) {
 		    $json[] = [
@@ -280,7 +287,8 @@ class Outgoing extends CI_Controller {
 		        'unit_price_b2b' => $r->unit_price_b2b,
 		        'selling_price' => 0,
 		        'image_url' => $r->picture_1,
-		        'qty' => $r->qty
+		        'qty' => $r->qty,
+		        'brand' => $r->brand,
 		    ];
 		}
 

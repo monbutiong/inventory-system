@@ -33,6 +33,11 @@ select, .text_input {
   border: 1px dashed #999;
   background-color: #f9f9f9;
 }
+
+.auto-expand {
+  overflow-y: hidden;
+  resize: none; /* optional */
+}
 </style>
 
 <div class="row">
@@ -78,21 +83,7 @@ select, .text_input {
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <input type="number" step="any" min="0" id="manufacturer_price" name="manufacturer_price" required class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->manufacturer_price)?>">
                   </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="unit_price_b2b">Unit Price B2B</label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="number" step="any" min="0" id="unit_price_b2b" name="unit_price_b2b" required class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->unit_price_b2b)?>">
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="unit_price_b2c">Unit Price B2C</label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="number" step="any" min="0" id="unit_price_b2c" name="unit_price_b2c" required class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->unit_price_b2c)?>">
-                  </div>
-                </div>
+                </div> 
 
                 <div class="row mb-3">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="unit_cost_price">Unit Cost Price</label>
@@ -100,6 +91,13 @@ select, .text_input {
                     <input type="number" step="any" min="0" disabled class="form-control col-md-7 col-xs-12 readonlyx" value="<?=htmlspecialchars($item->unit_cost_price)?>">
                   </div>
                 </div>
+
+                <div class="row mb-3">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="unit_price_b2b">Retail Price</label>
+                  <div class="col-md-9 col-sm-9 col-xs-12">
+                    <input type="number" step="any" min="0" id="retail_price" name="retail_price" required class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->retail_price)?>">
+                  </div>
+                </div> 
 
                 <div class="row mb-3">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bin_1">Bin Location 1</label>
@@ -217,54 +215,12 @@ select, .text_input {
                 
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Primary Car Models
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Applicable Car Models
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <select id="primary_vehicle_model_id" name="primary_vehicle_model_id" class="form-control col-md-7 col-xs-12 select2">
-                      <option value="">none</option>
-                      <?php 
-                      if(@$manufacturers){
-                        foreach($manufacturers as $rs){
-                          $arr_manu[$rs->id] = $rs->title;
-                      }}
-                      if(@$models){
-                        foreach($models as $rs){
-                      ?>
-                      <option <?php if($rs->id==$item->primary_vehicle_model_id){echo 'selected';}?> value="<?=$rs->id?>"><?=@$arr_manu[$rs->manufacturer_id].' '.$rs->title.' '.$rs->model_year?></option>
-                    <?php }}?>
-                    </select>
+                    <textarea id="applicable_vehicle_model" name="applicable_vehicle_model" placeholder="" class="form-control col-md-7 col-xs-12 auto-expand"><?=$item->applicable_vehicle_model?></textarea>
                   </div>
-                </div> 
-
-                <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Applicable Car Model 
-                  </label> 
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <select id="applicable_vehicle_model_ids[]" name="applicable_vehicle_model_ids[]" multiple class="form-control col-md-7 col-xs-12 select2item">
-                      <option value="">none</option>
-                      <?php  
-                      if($item->applicable_vehicle_model_ids){
-                        foreach(json_decode($item->applicable_vehicle_model_ids) as $mod_id){
-                          $arr_am[$mod_id] = 1;
-                        }
-                      }
- 
-                      if(@$models){
-                        foreach($models as $rs){
-                      ?>
-                      <option  
-                      <?php 
-                      if(@$arr_am[$rs->id] == 1){
-                        echo 'selected'; 
-                      }
-                      ?> 
-                      data-item_code="<?=@$arr_manu[$rs->manufacturer_id]?>" 
-                      data-item_name="<?=@$rs->title . ' ' . $rs->model_year?>" 
-                      value="<?=$rs->id?>"><?=@$arr_manu[$rs->manufacturer_id].' '.$rs->title.' '.$rs->model_year?></option>
-                    <?php }}?>
-                    </select>
-                  </div>
-                </div> 
+                </div>   
 
                 <div class="row mb-3">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Cross-Compatible Parts
@@ -328,6 +284,23 @@ select, .text_input {
   </div>
 </div>
 <script type="text/javascript">
+
+  $(document).ready(function () {
+    function autoResize($textarea) {
+      $textarea.height(0); // Reset height
+      $textarea.height($textarea[0].scrollHeight);
+    }
+
+    const $textareas = $('.auto-expand');
+
+    $textareas.each(function () {
+      autoResize($(this)); // Expand on page load
+    });
+
+    $textareas.on('input', function () {
+      autoResize($(this)); // Expand as user types
+    });
+  });
 
   $('#frm_validation').on('submit', function(e) {
       e.preventDefault(); // Prevent default form submission

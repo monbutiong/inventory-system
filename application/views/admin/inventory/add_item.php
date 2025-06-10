@@ -52,7 +52,7 @@ select, .text_input {
                 
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Part Number *<font id="exist" style="display: none;" color="red">(exist!)</font>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Part Number *<font id="exist" style="display: none;" color="red">(exist!)</font>
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <input required type="text" id="item_code" name="item_code" required onkeyup="chk_item_code(this.value)" class="form-control col-md-7 col-xs-12">
@@ -60,7 +60,7 @@ select, .text_input {
                 </div> 
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Description *
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Description *
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <input required type="text" id="item_name" name="item_name" required class="form-control col-md-7 col-xs-12">
@@ -68,7 +68,7 @@ select, .text_input {
                 </div>
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Initial Quantity
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Initial Quantity
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <input type="number" id="qty" name="qty" value="0" class="form-control col-md-7 col-xs-12">
@@ -76,7 +76,7 @@ select, .text_input {
                 </div>
 
                 <!-- <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Min-Max Quantity
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Min-Max Quantity
                   </label>
                   <div class="col-md-3 col-sm-3 col-xs-12">
                     <input type="number" id="min_qty" name="min_qty" value="0" class="form-control col-md-7 col-xs-12">
@@ -88,39 +88,31 @@ select, .text_input {
        
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Manufacturer Price
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Manufacturer Price
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <input type="number" step="any" min="0" id="manufacturer_price" name="manufacturer_price" required class="form-control col-md-7 col-xs-12">
                   </div>
-                </div>
-
+                </div> 
+  
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Unit Price B2B
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Unit Cost Price
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="number" step="any" min="0" id="unit_price_b2b" name="unit_price_b2b" required class="form-control col-md-7 col-xs-12">
+                    <input type="number" step="any" min="0" id="unit_cost_price" name="unit_cost_price" class="form-control col-md-7 col-xs-12" value="0">
                   </div>
                 </div>
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Unit Price B2C
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Retail Price
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="number" step="any" min="0" id="unit_price_b2c" name="unit_price_b2c" required class="form-control col-md-7 col-xs-12">
+                    <input type="number" step="any" min="0" id="retail_price" name="retail_price" class="form-control col-md-7 col-xs-12" value="0">
                   </div>
                 </div>
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Unit Cost Price
-                  </label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="number" step="any" min="0" id="unit_cost_price" name="unit_cost_price" required class="form-control col-md-7 col-xs-12">
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Bin Location 1
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Bin Location 1
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <input type="text" id="bin_1" name="bin_1" placeholder="" class="form-control col-md-7 col-xs-12">
@@ -128,7 +120,7 @@ select, .text_input {
                 </div>
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Bin Location 2
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Bin Location 2
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <input type="text" id="bin_2" name="bin_2" placeholder="" class="form-control col-md-7 col-xs-12">
@@ -136,7 +128,7 @@ select, .text_input {
                 </div>
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Bin Location 3
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Bin Location 3
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <input type="text" id="bin_3" name="bin_3" placeholder="" class="form-control col-md-7 col-xs-12">
@@ -146,99 +138,77 @@ select, .text_input {
 
 
           </div>
-          <div class="col col-6">
+          <div id="reload_data" class="col col-6">
 
+            <!-- Category -->
             <div class="row mb-3">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Item Category
+              <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                Category &nbsp;
+                <a href="javascript:void(0);" onclick="toggleInput(this)" data-target="category">
+                  (<i class="fa fa-plus"></i>)
+                </a>
               </label>
               <div class="col-md-9 col-sm-9 col-xs-12">
-                <select id="item_category_id" name="item_category_id" class="form-control col-md-7 col-xs-12 select2">
+                <input type="text" name="new_item_category" class="form-control toggle-input category" style="display:none;">
+                <select id="item_category_id" name="item_category_id" class="form-control select2 category">
                   <option value=""></option>
-                  <?php 
-                  if(@$item_category){
-                    foreach($item_category as $rs){
-                  ?>
-                  <option value="<?=$rs->id?>"><?=$rs->title?></option>
-                <?php }}?>
+                  <?php if (@$item_category) { foreach ($item_category as $rs) { ?>
+                    <option value="<?= $rs->id ?>"><?= $rs->title ?></option>
+                  <?php }} ?>
                 </select>
               </div>
             </div>
 
+            <!-- Item Type -->
             <div class="row mb-3">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Item Type
+              <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                Item Type &nbsp;
+                <a href="javascript:void(0);" onclick="toggleInput(this)" data-target="type">
+                  (<i class="fa fa-plus"></i>)
+                </a>
               </label>
               <div class="col-md-9 col-sm-9 col-xs-12">
-                <select id="item_type_id" name="item_type_id" class="form-control col-md-7 col-xs-12 select2">
+                <input type="text" name="new_item_type" class="form-control toggle-input type" style="display:none;">
+                <select id="item_type_id" name="item_type_id" class="form-control select2 type">
                   <option value=""></option>
-                  <?php 
-                  if(@$item_types){
-                    foreach($item_types as $rs){
-                  ?>
-                  <option value="<?=$rs->id?>"><?=$rs->title?></option>
-                <?php }}?>
+                  <?php if (@$item_types) { foreach ($item_types as $rs) { ?>
+                    <option value="<?= $rs->id ?>"><?= $rs->title ?></option>
+                  <?php }} ?>
                 </select>
+              </div>
+            </div>
+
+            <!-- Item Brand -->
+            <div class="row mb-3">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                Item Brand &nbsp;
+                <a href="javascript:void(0);" onclick="toggleInput(this)" data-target="brand">
+                  (<i class="fa fa-plus"></i>)
+                </a>
+              </label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <input type="text" name="new_item_brand" class="form-control toggle-input brand" style="display:none;">
+                <select id="item_brand_id" name="item_brand_id" class="form-control select2 brand">
+                  <option value=""></option>
+                  <?php if (@$item_brand) { foreach ($item_brand as $rs) { ?>
+                    <option value="<?= $rs->id ?>"><?= $rs->title ?></option>
+                  <?php }} ?>
+                </select>
+              </div>
+            </div>
+
+
+ 
+            <div class="row mb-3">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12">Applicable Car Models
+              </label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <textarea id="applicable_vehicle_model" name="applicable_vehicle_model" placeholder="" class="form-control col-md-7 col-xs-12"></textarea>
               </div>
             </div>  
 
             <div class="row mb-3">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Item Brand
-              </label>
-              <div class="col-md-9 col-sm-9 col-xs-12">
-                <select id="item_brand_id" name="item_brand_id" class="form-control col-md-7 col-xs-12 select2">
-                  <option value=""></option>
-                  <?php 
-                  if(@$item_brand){
-                    foreach($item_brand as $rs){
-                  ?>
-                  <option value="<?=$rs->id?>"><?=$rs->title?></option>
-                <?php }}?>
-                </select>
-              </div>
-            </div>  
-
-
-                
-            <div class="row mb-3">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Primary Car Models
-              </label>
-              <div class="col-md-9 col-sm-9 col-xs-12">
-                <select id="primary_vehicle_model_id" name="primary_vehicle_model_id" class="form-control col-md-7 col-xs-12 select2">
-                  <option value="">none</option>
-                  <?php 
-                  if(@$manufacturers){
-                    foreach($manufacturers as $rs){
-                      $arr_manu[$rs->id] = $rs->title;
-                  }}
-                  if(@$models){
-                    foreach($models as $rs){
-                  ?>
-                  <option value="<?=$rs->id?>"><?=@$arr_manu[$rs->manufacturer_id].' '.$rs->title.' '.$rs->model_year?></option>
-                <?php }}?>
-                </select>
-              </div>
-            </div> 
-
-            <div class="row mb-3">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Applicable Car Model
-              </label>
-              <div class="col-md-9 col-sm-9 col-xs-12">
-                <select id="applicable_vehicle_model_ids[]" name="applicable_vehicle_model_ids[]" multiple class="form-control col-md-7 col-xs-12 select2item">
-                
-                  <?php  
-                  if(@$models){
-                    foreach($models as $rs){
-                  ?>
-                  <option 
-                  data-item_code="<?=@$arr_manu[$rs->manufacturer_id]?>" 
-                  data-item_name="<?=@$rs->title . ' ' . $rs->model_year?>" 
-                  value="<?=$rs->id?>"><?=@$arr_manu[$rs->manufacturer_id].' '.$rs->title.' '.$rs->model_year?></option>
-                <?php }}?>
-                </select>
-              </div>
-            </div> 
-
-            <div class="row mb-3">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Cross-Compatible Parts
+              <label class="control-label col-md-3 col-sm-3 col-xs-12">Cross-Compatible Parts
               </label>
               <div class="col-md-9 col-sm-9 col-xs-12">
                 <select id="cross_compatible_part_ids[]" name="cross_compatible_part_ids[]" class="form-control col-md-7 col-xs-12 select2-ajax-modal" multiple>
@@ -249,7 +219,7 @@ select, .text_input {
 
                   
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Picture (main)
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Picture (main)
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <input type="file" id="picture_1" name="picture_1" class="form-control col-md-7 col-xs-12">
@@ -257,7 +227,7 @@ select, .text_input {
                 </div> 
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Picture
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Picture
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <input type="file" id="picture_2" name="picture_2" class="form-control col-md-7 col-xs-12">
@@ -265,7 +235,7 @@ select, .text_input {
                 </div> 
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Picture
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Picture
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <input type="file" id="picture_3" name="picture_3" class="form-control col-md-7 col-xs-12">
@@ -290,6 +260,30 @@ select, .text_input {
 </div> 
  
  <script type="text/javascript">
+ 
+ 
+
+  function toggleInput(el) {
+    const $icon = $(el).find('i');
+    const type = el.dataset ? el.dataset.target : $(el).attr('data-target');
+
+    const $input = $('.toggle-input.' + type);
+    const $select = $('select.' + type);
+
+    if ($input.is(':visible')) {
+      // Show Select2, hide input
+      $input.hide().val('');
+      $select.next('.select2-container').show(); // show select2 UI
+      $icon.removeClass('fa-minus').addClass('fa-plus');
+    } else {
+      // Hide Select2, show input
+      $select.next('.select2-container').hide(); // hide select2 UI only
+      $input.show().focus();
+      $icon.removeClass('fa-plus').addClass('fa-minus');
+    }
+  }
+
+
 
   $('#frm_validation').on('submit', function(e) {
       e.preventDefault(); // Prevent default form submission
@@ -322,6 +316,8 @@ select, .text_input {
 
             // Hide error indicators
             $('#exist').hide();
+
+            $('#reload_data').load('<?=base_url("inventory/reload_form_data")?>');
 
             refresh_inv_table();
 
@@ -399,5 +395,5 @@ select, .text_input {
       });
     });
 
-
+    preselectedIds = [];
  </script>

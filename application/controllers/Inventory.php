@@ -87,24 +87,26 @@ class Inventory extends CI_Controller {
 	    $this->db->select('i.*, 
 	        b.title as brand,
 	        c.title as category,
-	        t.title as type,
-	        CONCAT(manu.title, " ", m.title, " - ", m.model_year) as primary_model
+	        t.title as type 
 	    ');
 	    $this->db->from($table);
 	    $this->db->join('fm_item_brand b', 'b.id = i.item_brand_id', 'left');
 	    $this->db->join('fm_item_category c', 'c.id = i.item_category_id', 'left');
-	    $this->db->join('fm_item_type t', 't.id = i.item_type_id', 'left');
-	    $this->db->join('fm_models m', 'm.id = i.primary_vehicle_model_id', 'left');
-	    $this->db->join('fm_manufacturers manu', 'manu.id = m.manufacturer_id', 'left');
+	    $this->db->join('fm_item_type t', 't.id = i.item_type_id', 'left'); 
 
 	    $this->db->where('deleted',0);
 	    // Search filter
 	    if (!empty($_POST['search']['value'])) {
 	        $this->db->group_start();
-	        foreach ($column_search as $i => $item) {
-	            $method = $i == 0 ? 'like' : 'or_like';
-	            $this->db->$method($item, $_POST['search']['value']);
-	        }
+	     
+	        $this->db->like('i.item_code', $_POST['search']['value']);
+	        $this->db->or_like('i.item_name', $_POST['search']['value']);
+	        $this->db->or_like('b.title', $_POST['search']['value']);
+	        $this->db->or_like('c.title', $_POST['search']['value']);
+	        $this->db->or_like('t.title', $_POST['search']['value']);
+	        $this->db->or_like('i.bin_1', $_POST['search']['value']);
+	        $this->db->or_like('i.bin_2', $_POST['search']['value']);
+	        $this->db->or_like('i.bin_3', $_POST['search']['value']);
 	        $this->db->group_end();
 	    }
 
@@ -139,8 +141,10 @@ class Inventory extends CI_Controller {
 	            'category' => $rs->category,
 	            'type' => $rs->type,
 	            'qty' => $rs->qty,
-	            'bin_location' => $bin_location,
-	            'primary_model' => $rs->primary_model,
+	            'bin_location' => $bin_location, 
+	            'manufacturer_price' => number_format($rs->manufacturer_price,2), 
+	            'unit_cost_price' => number_format($rs->unit_cost_price,2), 
+	            'retail_price' => number_format($rs->retail_price,2), 
 	            'options' => '
 	                <a href="' . base_url('inventory/view_inventory/' . $rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl">
 	                    <i class="fa fa-eye"></i> view
@@ -260,6 +264,40 @@ class Inventory extends CI_Controller {
 			echo 2; die(2);
 		}
 
+		if($this->input->post('new_item_category',TRUE)){
+			$title = trim($this->input->post('new_item_category',TRUE));
+			$e = $this->db->select('id')->get_where('fm_item_category',['title'=>$title])->row();
+			if(@$e->id){
+				$_POST['item_category_id'] = $e->id;
+			}else{ 
+				$this->db->insert('fm_item_category',['title'=>$title,'ds'=>$title]);
+				$_POST['item_category_id'] = $this->db->insert_id();
+			}
+		}
+
+		if($this->input->post('new_item_type',TRUE)){
+			$title = trim($this->input->post('new_item_type',TRUE));
+			$e = $this->db->select('id')->get_where('fm_item_type',['title'=>$title])->row();
+			if(@$e->id){
+				$_POST['item_type_id'] = $e->id;
+			}else{ 
+				$this->db->insert('fm_item_type',['title'=>$title,'ds'=>$title]);
+				$_POST['item_type_id'] = $this->db->insert_id();
+			}
+		}
+
+		if($this->input->post('new_item_brand',TRUE)){
+			$title = trim($this->input->post('new_item_brand',TRUE));
+			$e = $this->db->select('id')->get_where('fm_item_brand',['title'=>$title])->row();
+			if(@$e->id){
+				$_POST['item_brand_id'] = $e->id;
+			}else{ 
+				$this->db->insert('fm_item_brand',['title'=>$title,'ds'=>$title]);
+				$_POST['item_brand_id'] = $this->db->insert_id();
+			}
+		}
+
+
 		$model = $this->core->global_query(1,'inventory'); 
 
 		if($model['result']){ 
@@ -342,6 +380,20 @@ class Inventory extends CI_Controller {
 		die();
 		//redirect("inventory/masterlist","refresh");
 
+	}
+
+	public function reload_form_data()
+	{
+		$result = $this->admin_model->load_filemaintenance('fm_item_type');
+		$module['item_types'] = $result['maintenance_data'];
+
+		$result = $this->admin_model->load_filemaintenance('fm_item_category');
+		$module['item_category'] = $result['maintenance_data'];
+
+		$result = $this->admin_model->load_filemaintenance('fm_item_brand');
+		$module['item_brand'] = $result['maintenance_data'];  
+		
+		$this->load->view('admin/inventory/reload_form_data',$module);
 	}
 
 	public function edit_inventory(int $id){

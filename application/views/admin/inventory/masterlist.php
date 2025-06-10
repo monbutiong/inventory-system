@@ -33,8 +33,12 @@
               <th>Category</th>
               <th>Type</th>
               <th>QOH</th>
-              <th>Bin Location</th>
-              <th>Primary Car Models</th>
+              <th>Bin Location</th> 
+
+              <th>Supplier Price</th> 
+              <th>Unit Cost Price</th> 
+              <th>Retail Price</th> 
+
               <th>Options</th>
             </tr>
           </thead>

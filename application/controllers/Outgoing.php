@@ -83,6 +83,7 @@ class Outgoing extends CI_Controller {
 	public function load_vehicles()
 	{
 	    $search = $this->input->post('searchTerm');
+	    $id = $this->input->post('id'); // Support fetching by ID
 
 	    $this->db->select('
 	        vehicles.id,
@@ -105,7 +106,9 @@ class Outgoing extends CI_Controller {
 	    $this->db->join('fm_models', 'fm_models.id = vehicles.vehicle_model_id', 'left');
 	    $this->db->where('vehicles.deleted', 0);
 
-	    if (!empty($search)) {
+	    if (!empty($id)) {
+	        $this->db->where('vehicles.id', $id);
+	    } elseif (!empty($search)) {
 	        $this->db->group_start();
 	        $this->db->like('vehicles.plate_no', $search);
 	        $this->db->or_like('vehicles.vin', $search);
@@ -114,12 +117,12 @@ class Outgoing extends CI_Controller {
 	        $this->db->or_like('clients.qid', $search);
 	        $this->db->or_like('clients.business_registration_no', $search);
 	        $this->db->or_like('fm_manufacturers.title', $search);
-	        $this->db->or_like('fm_models.title', $search); // Fixed alias
+	        $this->db->or_like('fm_models.title', $search);
 	        $this->db->group_end();
+	        $this->db->limit(5);
 	    }
 
 	    $this->db->order_by('vehicles.plate_no', 'ASC');
-	    $this->db->limit(5); // Add limit here
 	    $query = $this->db->get()->result();
 
 	    $results = [];
@@ -134,8 +137,8 @@ class Outgoing extends CI_Controller {
 	            'model_year'          => $v->model_year,
 	            'customer_id'         => $v->customer_id,
 	            'customer'            => $v->customer_name,
-	            'phone'				  => $v->phone,
-	            'customer_type'       => $v->customer_type,
+	            'phone'               => $v->phone,
+	            'customer_type'       => $v->customer_type ? 1 : 0,
 	            'customer_type_label' => $v->customer_type == 1 ? 'QID' : 'Business Reg #',
 	            'customer_qid_bus'    => $v->customer_type == 1 ? $v->business_registration_no : $v->qid,
 	            'image'               => !empty($v->image)
@@ -146,6 +149,7 @@ class Outgoing extends CI_Controller {
 
 	    echo json_encode($results);
 	}
+
 
 	public function load_customers()
 	{
@@ -215,7 +219,7 @@ class Outgoing extends CI_Controller {
 
 		    // Query by these IDs only
 		    $this->db->where_in('a.id', $ids);
-		    $this->db->select('a.id, a.item_code, a.item_name, a.manufacturer_price, a.qty, a.picture_1, b.title as brand');
+		    $this->db->select('a.id, a.item_code, a.item_name, a.supplier_price, a.qty, a.picture_1, b.title as brand, a.unit_cost_price, a.retail_price');
 		    $this->db->from('inventory as a');
 		    $this->db->join('fm_item_brand as b', 'b.id = a.item_brand_id', 'left');
 		    $items = $this->db->get()->result();
@@ -225,12 +229,11 @@ class Outgoing extends CI_Controller {
 		            'id' => $r->id,
 		            'text' => $r->item_code . ' | ' . $r->item_name,
 		            'item_code' => $r->item_code,
-		            'item_name' => $r->item_name,
-		            'manufacturer_price' => $r->manufacturer_price,
+		            'item_name' => $r->item_name, 
 		            'image_url' => $r->picture_1, 
-		            'unit_cost_price' => $r->unit_cost_price,
-		            'unit_price_b2c' => $r->unit_price_b2c,
-		            'unit_price_b2b' => $r->unit_price_b2b,
+		            'unit_cost_price' => round($r->unit_cost_price,2),
+		            'supplier_price' => round($r->supplier_price,2), 
+		            'retail_price' => round($r->retail_price,2),
 		            'qty' => $r->qty,
 		            'brand' => $r->brand,
 		        ];
@@ -271,7 +274,7 @@ class Outgoing extends CI_Controller {
 		$this->db->limit(7, 0);
 
 		$this->db->where_in('id', $ids);
-		$this->db->select('a.id, a.item_code, a.item_name, a.manufacturer_price, a.qty, a.picture_1, b.title as brand');
+		$this->db->select('a.id, a.item_code, a.item_name, a.supplier_price, a.qty, a.picture_1, b.title as brand, a.unit_cost_price, a.retail_price');
 		$this->db->from('inventory as a');
 		$this->db->join('fm_item_brand as b', 'b.id = a.item_brand_id', 'left');
 		$items = $this->db->get()->result();
@@ -283,9 +286,8 @@ class Outgoing extends CI_Controller {
 		        'item_code' => $r->item_code,
 		        'item_name' => $r->item_name,
 		        'unit_cost_price' => $r->unit_cost_price,
-		        'unit_price_b2c' => $r->unit_price_b2c,
-		        'unit_price_b2b' => $r->unit_price_b2b,
-		        'selling_price' => 0,
+		        'supplier_price' => $r->supplier_price, 
+		        'retail_price' => $r->retail_price,
 		        'image_url' => $r->picture_1,
 		        'qty' => $r->qty,
 		        'brand' => $r->brand,
@@ -294,6 +296,118 @@ class Outgoing extends CI_Controller {
 
 		print_r(json_encode($json));
 
+	}
+
+	public function add_vehicle(){
+ 	 
+ 		$result = $this->admin_model->load_filemaintenance('fm_models');
+ 		$module['models'] = $result['maintenance_data'];
+ 		
+ 		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+ 		$module['manufacturers'] = $result['maintenance_data'];
+
+ 		$module['customers'] = $this->core->load_core_data('clients');
+		
+		$this->load->view('admin/outgoing/add_vehicle',$module);
+
+	}
+
+	public function save_vehicle() { 
+
+		if($this->input->post('new_customer_name',TRUE)){
+			$name = trim($this->input->post('new_customer_name',TRUE));
+			$e = $this->db->select('id')->get_where('clients',['name'=>$name,'deleted'=>0])->row();
+			if(@$e->id){
+				$_POST['customer_id'] = $e->id;
+			}else{ 
+				$this->db->insert('clients',['name'=>$name,'qid'=>$this->input->post('new_customer_qid',TRUE)]);
+				$_POST['customer_id'] = $this->db->insert_id();
+			}
+		}
+
+	    $model = $this->core->global_query(1, 'vehicles');
+
+	    if ($model) {
+	        $pid = $model['query_id'];
+
+	        $targetDir = "./assets/uploads/vehicles/";
+	        if (!file_exists($targetDir)) {
+	            mkdir($targetDir, 0755, true);
+	        }
+
+	        $this->load->library('image_lib');
+	        $this->load->helper('string');
+
+	        for ($pic_count = 1; $pic_count <= 3; $pic_count++) {
+	            $field_name = 'picture_' . $pic_count;
+
+	            if (!empty($_FILES[$field_name]['name'])) {
+	                $fileTmp = $_FILES[$field_name]['tmp_name'];
+	                $fileExt = pathinfo($_FILES[$field_name]['name'], PATHINFO_EXTENSION);
+	                $random = random_string('alnum', 20) . '.' . strtolower($fileExt);
+	                $fullPath = $targetDir . $random;
+
+	                if (move_uploaded_file($fileTmp, $fullPath)) {
+	                    $config['image_library']  = 'gd2';
+	                    $config['source_image']   = $fullPath;
+	                    $config['maintain_ratio'] = TRUE;
+	                    $config['width']          = 800;
+	                    $config['height']         = 600;
+	                    $config['new_image']      = $fullPath;
+
+	                    $this->image_lib->initialize($config);
+	                    if (!$this->image_lib->resize()) {
+	                        log_message('error', 'Image resize failed: ' . $this->image_lib->display_errors());
+	                    }
+	                    $this->image_lib->clear();
+
+	                    $this->db->where('id', $pid)->update('vehicles', [
+	                        $field_name => $random
+	                    ]);
+	                }
+	            }
+	        }
+
+	        echo @$pid;
+	        //$this->session->set_flashdata("success", $this->system_menu['clang']["successfuly saved."] ?? "Successfully saved.");
+	    } else {
+	        echo 0;
+	        //$this->session->set_flashdata("error", "Error saving.");
+	    }
+
+	    die();
+	}
+
+	public function add_customer($value='')
+	{
+		$module['clients_code'] = count($this->core->load_core_data('clients','','id','code LIKE "%CNO%"'))+1;
+
+		$this->load->view('admin/outgoing/add_customer',$module);
+	}
+
+	public function save_customer()
+	{
+		$model = $this->core->global_query(1,'clients'); 
+
+ 		if($_FILES["logo"]){
+			move_uploaded_file($_FILES["logo"]["tmp_name"], './assets/images/clients/logo-'.$model['query_id'].'.png');
+		} 
+		
+		if($model['result']){ 
+			 
+			echo 1; 	
+			//$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
+			  
+		}else{
+
+			echo 0;
+			//$this->session->set_flashdata("error","error saving.");
+
+		}
+
+		die();
+		//redirect("crm/clients","refresh");
+		 
 	}
 
 	public function load_client(int $id){  
@@ -368,6 +482,225 @@ class Outgoing extends CI_Controller {
 		}
 
 		redirect("outgoing/create_issuance","refresh");	
+	}
+
+
+	public function create_quotation(){
+	
+		$module = $this->system_menu;
+
+		$url = $this->router->class.'/'.$this->router->method; 
+		$this->check_access($url, $module['sub_menu'], $module['index_user_roles']);
+
+		$module['module'] = "outgoing/create_quotation";
+		$module['map_link']   = "outgoing->create_quotation";   
+ 
+		 
+		$result = $this->admin_model->load_filemaintenance('fm_payment_type');
+		$module['payment_type'] = $result['maintenance_data'];
+
+		$module['vehicles'] = $this->core->load_core_data('vehicles');
+		
+		$result = $this->admin_model->load_filemaintenance('fm_models');
+		$module['models'] = $result['maintenance_data'];
+		
+		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+		$module['manufacturers'] = $result['maintenance_data'];
+
+		$module['customers'] = $this->core->load_core_data('clients');
+		
+		$this->load->view('admin/index',$module);
+
+	}
+
+	public function save_quotation(){
+
+		if(@$this->input->post('items',TRUE)){
+ 			
+ 			if($this->input->post('vehicle_id',TRUE)){
+ 				$vh = $this->db->select('customer_id')->get_where('vehicles',['id'=>$this->input->post('vehicle_id',TRUE)])->row();
+ 				$_POST['customer_id'] = @$vh->customer_id;
+ 			}
+
+			$result = $this->core->global_query(1,'issuance_quotation','','',[
+				'confirmed' => 1 
+			]); 
+ 
+
+			if($result['result']){ 
+
+				$qid = $result['query_id']; 
+ 				
+ 				$vehicle_id = @$this->input->post('vehicle_id',TRUE);
+ 				$customer_id = @$this->input->post('customer_id',TRUE);
+
+		    	foreach ($this->input->post('items',TRUE) as $iid => $val) {
+	 
+		    		if($this->input->post('qty'.$iid,TRUE) > 0 && $this->input->post('discount_amount'.$iid,TRUE)<=($this->input->post('qty'.$iid,TRUE)*$this->input->post('retail_price'.$iid,TRUE))){
+
+		    			$inventory_id = $this->input->post('inventory_id'.$iid,TRUE); 
+
+	    				$has = 1;
+	    				
+				    	$this->db->insert('issuance_quotation_items',[
+							'date_created' => date('Y-m-d H:i'),
+							'user_id' => $this->session->user_id, 
+							'issuance_quotation_id' => $qid,   
+							'vehicle_id' => $vehicle_id,
+							'customer_id' => $customer_id,
+							'qoh' => $this->input->post('qoh'.$iid,TRUE),
+							'qty' => $this->input->post('qty'.$iid,TRUE),
+							'unit_cost_price' => $this->input->post('unit_cost_price'.$iid,TRUE), 
+							'supplier_price' => $this->input->post('supplier_price'.$iid,TRUE), 
+							'retail_price' => $this->input->post('retail_price'.$iid,TRUE), 
+							'inventory_id' => $inventory_id,
+							'discount_percentage' => $this->input->post('discount_percentage'.$iid,TRUE),
+							'discount_amount' => $this->input->post('discount_amount'.$iid,TRUE)
+						]); 
+	  
+					}
+
+				}
+
+			}
+
+		}
+
+		if(@$has == 1){
+
+			$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
+			  
+		}else{
+
+			$this->session->set_flashdata("error","error saving.");
+			 
+		}
+
+		redirect("outgoing/quotation_list","refresh");
+		//redirect("outgoing/edit_quotation/".$qid,"refresh");	
+	}
+
+	public function quotation_list($value='')
+	{
+		$module = $this->system_menu; 
+
+		$module['module'] = "outgoing/quotation_list";
+		$module['map_link']   = "outgoing->quotation_list";    
+		
+		$this->load->view('admin/index',$module);
+	}
+
+	public function quotations_ajax()
+	{
+	    // Get DataTables parameters
+	    $start = $this->input->get('start');
+	    $length = $this->input->get('length');
+	    $search = $this->input->get('search')['value'];
+
+	    // Count total records
+	    $this->db->from('issuance_quotation');
+	    $recordsTotal = $this->db->count_all_results();
+
+	    // Main query with joins
+	    $this->db->select('q.*, c.name AS client_name, a.name AS account_name');
+	    $this->db->from('issuance_quotation q');
+	    $this->db->join('clients c', 'q.customer_id = c.id', 'left');
+	    $this->db->join('account a', 'q.user_id = a.id', 'left');
+
+	    // Apply search filter if any
+	    if (!empty($search)) {
+	        $this->db->group_start();
+	        $this->db->like('q.plate_no', $search);
+	        $this->db->or_like('q.vin', $search);
+	        $this->db->or_like('c.name', $search);
+	        $this->db->or_like('q.phone', $search);
+	        $this->db->or_like('q.remarks', $search);
+	        $this->db->group_end();
+	    }
+
+	    $recordsFiltered = $this->db->count_all_results('', false); // for filtered count
+
+	    // Apply limit and offset
+	    $this->db->order_by('q.id', 'DESC');
+	    $this->db->limit($length, $start);
+	    $query = $this->db->get();
+	    $quotations = $query->result();
+
+	    $data = [];
+	    foreach ($quotations as $q) {
+	        $qn = 'QO' . sprintf("%06d", $q->id);
+	        $data[] = [
+	            'date_created' => date('M d, Y', strtotime($q->date_created)),
+	            'valid_until' => $q->valid_until ? date('M d, Y', strtotime($q->valid_until)) : '',
+	            'quotation_no' => $qn,
+	            'plate_no' => $q->plate_no,
+	            'vin' => $q->vin,
+	            'client_name' => @$q->client_name,
+	            'phone' => $q->phone,
+	            'remarks' => $q->remarks,
+	            'created_by' => $q->account_name,
+	            'options' => '
+	                <a href="' . base_url('outgoing/view_quotation/' . $q->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
+	                    <i class="fa fa-eye"></i> View
+	                </a> | 
+	                <a href="' . base_url('outgoing/edit_quotation/' . $q->id) . '">
+	                    <i class="fa fa-edit"></i> Edit
+	                </a> | 
+	                <a href="javascript:prompt_delete(\'Delete\', \'Delete Quotation # ' . $qn . '?\', \'' . base_url('outgoing/delete_quotation/' . $q->id) . '\', \'tr' . $q->id . '\')">
+	                    <i class="fa fa-trash"></i> Delete
+	                </a> | 
+	                <a target="_blank" href="' . base_url('outgoing/print_quotation/' . $q->id) . '">
+	                    <i class="fa fa-print"></i> Print
+	                </a>'
+	        ];
+	    }
+
+	    // Return JSON in DataTables format
+	    echo json_encode([
+	        'draw' => intval($this->input->get('draw')),
+	        'recordsTotal' => $recordsTotal,
+	        'recordsFiltered' => $recordsFiltered,
+	        'data' => $data
+	    ]);
+	}
+
+
+	public function edit_quotation($id){
+	
+		$module = $this->system_menu;
+  
+		$module['module'] = "outgoing/edit_quotation";
+		$module['map_link']   = "outgoing->edit_quotation";   
+	
+		$module['quotation'] = $this->core->load_core_data('issuance_quotation',$id);
+		$module['items'] = $this->core->load_core_data('issuance_quotation_items');
+
+		if($module['quotation']->vehicle_id){
+			$module['vehicles'] = $this->core->load_core_data('vehicles',$module['quotation']->vehicle_id);
+		}
+		
+
+		if($module['quotation']->customer_id){
+			$module['clients'] = $this->core->load_core_data('clients',$module['quotation']->customer_id);  
+		}
+
+		$result = $this->admin_model->load_filemaintenance('fm_payment_type');
+		$module['payment_type'] = $result['maintenance_data'];
+
+		if($module['quotation']->vehicle_id){
+			$module['vehicle'] = $this->core->load_core_data('vehicles',$module['quotation']->vehicle_id);
+		}
+		
+		$result = $this->admin_model->load_filemaintenance('fm_models');
+		$module['models'] = $result['maintenance_data'];
+		
+		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+		$module['manufacturers'] = $result['maintenance_data'];
+
+		$module['customers'] = $this->core->load_core_data('clients');
+		
+		$this->load->view('admin/index',$module);
+
 	}
 
 	public function issue_batch(){
@@ -475,13 +808,8 @@ class Outgoing extends CI_Controller {
 		$module['module'] = "outgoing/issuance_records";
 		$module['map_link']   = "outgoing->issuance_records";   
 
-		$module['issuance'] = $this->core->load_core_data('issuance','','','confirmed=0');
-
-		$module['users'] = $this->core->load_core_data('account','','id,name');
-
-		$module['projects'] = $this->core->load_core_data('projects','','id,name');
-
-		$module['jo'] = $this->core->load_core_data('projects_job_order','','id,job_order_number,project_id,client_id,quotation_id');
+		$module['quotations'] = $this->core->load_core_data('issuance_quotation','','','confirmed=1'); 
+		$module['users'] = $this->core->load_core_data('account','','id,name'); 
   
 		$this->load->view('admin/index',$module);
 

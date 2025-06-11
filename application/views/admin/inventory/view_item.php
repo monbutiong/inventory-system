@@ -73,9 +73,9 @@ select, .text_input {
                 </div>
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="manufacturer_price">Manufacturer Price</label>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="supplier_price">Manufacturer Price</label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="number" step="any" min="0" id="manufacturer_price" name="manufacturer_price" required class="form-control col-md-7 col-xs-12" style="text-align: right;" value="<?=number_format($item->manufacturer_price,2)?>">
+                    <input type="number" step="any" min="0" id="supplier_price" name="supplier_price" required class="form-control col-md-7 col-xs-12" style="text-align: right;" value="<?=number_format($item->supplier_price,2)?>">
                   </div>
                 </div> 
 
@@ -212,6 +212,18 @@ select, .text_input {
                 </div> 
 
                 <div class="row mb-3">
+                  <?php 
+                  $preload_avm = '';
+                  if($item->cross_compatible_part_ids){
+                    foreach(json_decode($item->cross_compatible_part_ids) as $ccp_id){
+                       if(@$preload_avm){
+                         $preload_avm.=(','.$ccp_id);
+                       }else{
+                         $preload_avm=$ccp_id;
+                       }
+                    }
+                  }
+                  ?>
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Cross-Compatible Parts
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
@@ -275,4 +287,5 @@ select, .text_input {
     });
   });
 
+  preselectedIds = [<?=$preload_avm?>];
 </script>

@@ -94,7 +94,7 @@ class Inventory extends CI_Controller {
 	    $this->db->join('fm_item_category c', 'c.id = i.item_category_id', 'left');
 	    $this->db->join('fm_item_type t', 't.id = i.item_type_id', 'left'); 
 
-	    $this->db->where('deleted',0);
+	    $this->db->where('i.deleted',0);
 	    // Search filter
 	    if (!empty($_POST['search']['value'])) {
 	        $this->db->group_start();
@@ -142,7 +142,7 @@ class Inventory extends CI_Controller {
 	            'type' => $rs->type,
 	            'qty' => $rs->qty,
 	            'bin_location' => $bin_location, 
-	            'manufacturer_price' => number_format($rs->manufacturer_price,2), 
+	            'supplier_price' => number_format($rs->supplier_price,2), 
 	            'unit_cost_price' => number_format($rs->unit_cost_price,2), 
 	            'retail_price' => number_format($rs->retail_price,2), 
 	            'options' => '
@@ -176,7 +176,7 @@ class Inventory extends CI_Controller {
 	    $this->db->join('fm_item_type t', 't.id = i.item_type_id', 'left');
 	    $this->db->join('fm_models m', 'm.id = i.primary_vehicle_model_id', 'left');
 	    $this->db->join('fm_manufacturers manu', 'manu.id = m.manufacturer_id', 'left');
-	    $this->db->where('deleted',0);
+	    $this->db->where('i.deleted',0);
 	    if (!empty($_POST['search']['value'])) {
 	        $this->db->group_start();
 	        foreach ($column_search as $i => $item) {

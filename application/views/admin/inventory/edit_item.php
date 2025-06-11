@@ -79,9 +79,9 @@ select, .text_input {
                 </div>
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="manufacturer_price">Manufacturer Price</label>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="supplier_price">Supplier Price</label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="number" step="any" min="0" id="manufacturer_price" name="manufacturer_price" required class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->manufacturer_price)?>">
+                    <input type="number" step="any" min="0" id="supplier_price" name="supplier_price" required class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->supplier_price)?>">
                   </div>
                 </div> 
 

@@ -15,7 +15,7 @@
     cursor: pointer;
   }
 </style>
-<form method="post" name="so_form" id="so_form" action="<?=base_url('outgoing/save_issuance')?>" enctype="multipart/form-data">
+<form method="post" name="quotation_form" id="quotation_form" action="<?=base_url('outgoing/save_quotation')?>" enctype="multipart/form-data">
 <div class="row">
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
@@ -25,14 +25,14 @@
         <div class="page-title-box">
             <div class="row align-items-center">
                 <div class="col-md-8"> 
-                    <h6 class="page-title">Create Sales Order</h6>
+                    <h6 class="page-title">Create Quotation</h6>
                     Date: <?=date('M d, Y')?> 
 
-                    <input type="hidden" id="customer_type" name="customer_type" readonly class="form-control ridonly"> 
+                    <input type="hidden" id="customer_type" name="customer_type" class="form-control ridonly" value="0"> 
                 </div>
                 <div class="col-md-4">
                     <div class="float-end d-none d-md-block">
-                        <a class="btn btn-md btn-primary" href="Javascript:save_issuance()"  >Save Sales Order</a>
+                        <a class="btn btn-md btn-primary" href="Javascript:save_quotation()"  >Save Quotation</a>
                     </div>
                 </div>
             </div>
@@ -50,20 +50,15 @@
           <div class="row">
 
             <div class="col-md-2 col-sm-12 mb-3">
-              <label >Payment Type</label>
-              <select name="pay_type" id="pay_type" class="form-control">
-                <?php if(@$payment_type){
-                  foreach($payment_type as $rs){?>
-                <option value="<?=$rs->id?>"><?=$rs->title?></option>
-                <?php }}  ?>
-              </select>
+              <label >Valid Until</label> 
+              <input type="date" name="valid_until" id="valid_until" class="form-control"> 
             </div>
 
             <div class="col-md-4 col-sm-12 mb-3 select2">
               <label >Vehicle Records <a class="load_modal_details" href="<?php echo base_url('outgoing/add_vehicle');?>" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
                   (<i class="fa fa-plus"></i>)
                 </a></label>
-              <select id="vehicle_select" class="form-control select2-ajax-vehicle">
+              <select id="vehicle_select" name="vehicle_id" class="form-control select2-ajax-vehicle">
                   <option value="">Select vehicle</option>
                 </select>
             </div>  
@@ -94,22 +89,7 @@
                   (<i class="fa fa-plus"></i>)
                 </a></label>
               <select name="customer_id" id="customer_id" class="form-control select2_so_customer">
-                <option value=""></option>
-                <?php  
-                $arr_type[0] = 'individual';
-                $arr_type[1] = 'business';
-
-                if(@$clients){
-                  foreach ($clients as $rs) {
-
-                    if(file_exists('./assets/images/clients/logo-'.$rs->id.'.png')){
-                      $img = base_url('assets/images/clients/logo-'.$rs->id.'.png?'.time());
-                    }else{
-                      $img = base_url('assets/images/img.png');
-                    }
-                ?>
-                <option data-customer-type-id="<?=$rs->customer_type?>" data-customer-type="<?=$arr_type[$rs->customer_type]?>" data-phone="<?=$rs->phone?>" data-qid="<?=$rs->qid?>" data-bis="<?=$rs->business_registration_no?>" data-img="<?=$img?>" value="<?=$rs->id?>"><?=$rs->name?></option>
-              <?php }}?>
+                 
               </select>
             </div>
 
@@ -154,7 +134,10 @@
                   <div class="select2-ajax-so" style="width: 100%;"> 
                 </td>
                 <td align="right"><b style="font-size: 15px;">Total</b></td>
-                <td colspan="2" align="right">QAR <b id="grand_total" style="font-size: 15px;"></b></td>
+                <td colspan="2" align="right">
+                	QAR <b id="grand_total" style="font-size: 15px;"></b>
+                	<input type="hidden" id="quotation_grand_total" name="quotation_grand_total">
+                </td>
               </tr> 
             </tbody>
           </table>
@@ -162,10 +145,7 @@
           <input type="hidden" name="row_counter" id="row_counter">
 
           <input type="hidden" id="selected_ids">
-          
-         
-          
- 
+           
 
       </div>
 
@@ -197,30 +177,53 @@
     })
   }
 
-  function save_issuance(){ 
+  function save_quotation(){ 
 
-    if($('#project_id').val() == ''){
-      alertify.error("Project is required");
-    }else if($('#issued_date').val() == ''){
-      alertify.error("Issue date is required"); 
-    }else{
+  	if($('#grand_total').html().trim()=='0.00' || $('#grand_total').html().trim()==''){
 
-      reset(); 
+  		Swal.fire({
+  		    title: "Invalid",
+  		    text: "Quotation total amount invalid",
+  		    icon: "error",
+  		    timer: 1500,
+  		    showConfirmButton: false
+  		});
 
-      alertify.confirm("Save receiving details?", function (e) {
-            if (e) {  
-                alertify.log("saving...");
-                document.so_form.submit();
-            } else {
-                alertify.log("cancelled");
-            }
-        }, "Confirm");
-    
-    }
+  	}else{
+
+	    Swal.fire({
+	        title: "Save Quotation?",
+	        text: "Do you want to save this quotation now?",
+	        icon: "question",
+	        showCancelButton: true,
+	        confirmButtonText: "Yes, save it",
+	        cancelButtonText: "No, cancel",
+	        reverseButtons: true
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+	            Swal.fire({
+	                title: "Saving...",
+	                icon: "info",
+	                timer: 1000,
+	                showConfirmButton: false
+	            });
+	            document.quotation_form.submit();
+	        } else {
+	            Swal.fire({
+	                title: "Cancelled",
+	                text: "The quotation was not saved.",
+	                icon: "error",
+	                timer: 1500,
+	                showConfirmButton: false
+	            });
+	        }
+	    });
+
+	}
+
 
   }
-
-
+ 
   function remove_item(id){ 
     $('#tr'+id).fadeOut();
     $('#tr'+id).remove();

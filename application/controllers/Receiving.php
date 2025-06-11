@@ -830,7 +830,7 @@ class Receiving extends CI_Controller {
 
 			$unit_cost_price = (($inv->unit_cost_price * $inv->qty) + ($rs->unit_cost_price * $rs->qty)) / ($inv->qty + $rs->qty);
 
-			$manufacturer_price = $rs->price;
+			$supplier_price = $rs->price;
 
 			if($inv->receiving_history){
 				$receiving_history = json_decode($inv->receiving_history);
@@ -850,7 +850,7 @@ class Receiving extends CI_Controller {
 				'qty' => ($inv->qty + $rs->qty),
 				'unit_cost_price' => $unit_cost_price,
 				'receiving_history'=>json_encode($receiving_history),
-				'manufacturer_price'=>$manufacturer_price
+				'supplier_price'=>$supplier_price
 			] );
 
 			$this->db->insert('inventory_movement',[

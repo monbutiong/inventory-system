@@ -2,11 +2,21 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Issuance <small>Sales Order Records (unconfimed)</small></h2> 
- 
- 
-           
-        <div class="clearfix"></div>
+        
+
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-md-8"> 
+                    <h6 class="page-title">Unconfirmed Sales Order</h6>
+                </div>
+                <div class="col-md-4">
+                    <div class="float-end d-none d-md-block">
+                         
+                    </div>
+                </div>
+            </div>
+        </div>
+
       </div>
       <div class="x_content">
         <p class="text-muted font-13 m-b-30">

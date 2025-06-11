@@ -268,10 +268,20 @@ class Purchasing extends CI_Controller {
 	        }
 
 	        // Query by these IDs only
-	        $this->db->where_in('id', $ids);
-	        $items = $this->db->select('id, item_code, item_name, manufacturer_price, qty, picture_1')
-	                          ->get('inventory')
-	                          ->result();
+	        
+
+	        $this->db->where_in('i.id', $ids); 
+	        $this->db->select('
+	        	i.id, i.item_code, i.item_name, i.supplier_price, i.qty, i.picture_1, 
+	            b.title as brand,
+	            c.title as category,
+	            t.title as type 
+	        ');
+	        $this->db->from('inventory as i');
+	        $this->db->join('fm_item_brand b', 'b.id = i.item_brand_id', 'left');
+	        $this->db->join('fm_item_category c', 'c.id = i.item_category_id', 'left');
+	        $this->db->join('fm_item_type t', 't.id = i.item_type_id', 'left'); 
+	        $items = $this->db->get()->result();
 
 	        foreach ($items as $r) {
 	            $json[] = [
@@ -279,7 +289,10 @@ class Purchasing extends CI_Controller {
 	                'text' => $r->item_code . ' | ' . $r->item_name,
 	                'item_code' => $r->item_code,
 	                'item_name' => $r->item_name,
-	                'manufacturer_price' => $r->manufacturer_price,
+	                'brand' => $r->brand,
+	                'category' => $r->category,
+	                'type' => $r->type,
+	                'supplier_price' => $r->supplier_price,
 	                'image_url' => $r->picture_1, 
 	                'qty' => $r->qty
 	            ];
@@ -311,14 +324,26 @@ class Purchasing extends CI_Controller {
 
 	    $search = $this->input->post('searchTerm');
 
+	    $this->db->where_in('i.deleted', 0);
 	    $this->db->group_start();
-	    $this->db->like('item_code', $search);
-	    $this->db->or_like('item_name', $search);
+	    $this->db->like('i.item_code', $search);
+	    $this->db->or_like('i.item_name', $search);
+	    $this->db->or_like('b.title', $search);
 	    $this->db->group_end();
 
 	    $this->db->limit(7, 0);
-
-	    $items = $this->db->select('id, item_code, item_name, manufacturer_price, qty,picture_1')->get('inventory')->result();
+ 
+	    $this->db->select('
+	    	i.id, i.item_code, i.item_name, i.supplier_price, i.qty, i.picture_1, 
+	        b.title as brand,
+	        c.title as category,
+	        t.title as type 
+	    ');
+	    $this->db->from('inventory as i');
+	    $this->db->join('fm_item_brand b', 'b.id = i.item_brand_id', 'left');
+	    $this->db->join('fm_item_category c', 'c.id = i.item_category_id', 'left');
+	    $this->db->join('fm_item_type t', 't.id = i.item_type_id', 'left'); 
+	    $items = $this->db->get()->result();
 
 	    foreach ($items as $r) {
 	        $json[] = [
@@ -326,9 +351,12 @@ class Purchasing extends CI_Controller {
 	            'text' => $r->item_code . ' | ' . $r->item_name,
 	            'item_code' => $r->item_code,
 	            'item_name' => $r->item_name,
-	            'manufacturer_price' => $r->manufacturer_price,
+	            'supplier_price' => $r->supplier_price,
 	            'image_url' => $r->picture_1,
-	            'qty' => $r->qty
+	            'qty' => $r->qty,
+	            'brand' => $r->brand,
+	            'category' => $r->category,
+	            'type' => $r->type
 	        ];
 	    }
 

@@ -88,10 +88,10 @@ select, .text_input {
        
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Manufacturer Price
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Supplier Price
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="number" step="any" min="0" id="manufacturer_price" name="manufacturer_price" required class="form-control col-md-7 col-xs-12">
+                    <input type="number" step="any" min="0" id="supplier_price" name="supplier_price" required class="form-control col-md-7 col-xs-12">
                   </div>
                 </div> 
   

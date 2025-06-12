@@ -11,7 +11,7 @@
  Target Server Version : 100427
  File Encoding         : 65001
 
- Date: 11/06/2025 17:58:08
+ Date: 12/06/2025 18:20:28
 */
 
 SET NAMES utf8mb4;
@@ -46,7 +46,7 @@ CREATE TABLE `account`  (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 1, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, 'a38169a9cd72a1661cb612f7144840c35ce246a15ecb1e8d08636459a7e48f64', '2025-06-11 10:24:05');
+INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 1, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, '8e968b8b5c874849312f8a718b7cbe504c20ac60cbe34a9201088b3fe065c637', '2025-06-12 10:29:50');
 INSERT INTO `account` VALUES (37, '', NULL, '2024-05-15', 'silambu', '$2a$08$j.FhunOL0ywwPrANlITow.mveuu/bCghDmEQGlCdBxKtElgkiprMC', 1, NULL, 'Accounts', NULL, 0, 'Silambu', 0, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
@@ -90,7 +90,7 @@ CREATE TABLE `audit_trail`  (
   `log` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 133 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 137 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of audit_trail
@@ -227,6 +227,10 @@ INSERT INTO `audit_trail` VALUES (129, 2, 'home > system user > update user role
 INSERT INTO `audit_trail` VALUES (130, 2, 'login page', 'login to account.', '2025-06-11 10:23:57', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (131, 2, 'login page', 'login to account.', '2025-06-11 10:23:58', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (132, 2, 'login page', 'login to account.', '2025-06-11 10:24:00', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (133, 2, 'login page', 'login to account.', '2025-06-12 08:22:23', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (134, 2, 'login page', 'login to account.', '2025-06-12 10:29:50', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (135, 2, 'file maintenance > currency rate > update data', 'update data in currency rate , id : 3', '2025-06-12 10:48:27', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (136, 2, 'account page', 'logout to account.', '2025-06-12 17:36:41', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for clients
@@ -931,7 +935,7 @@ CREATE TABLE `fm_currency_rate`  (
 -- ----------------------------
 INSERT INTO `fm_currency_rate` VALUES (1, 'QAR', '1.000000', '2023-09-03', 2, 'QAR');
 INSERT INTO `fm_currency_rate` VALUES (2, 'USD', '4.521300', '2023-09-03', 2, '$');
-INSERT INTO `fm_currency_rate` VALUES (3, 'EUR', '5.320011', '2023-09-03', 2, '€');
+INSERT INTO `fm_currency_rate` VALUES (3, 'EUR', '4.5', '2025-06-12', 2, '€');
 INSERT INTO `fm_currency_rate` VALUES (4, 'UK', '6.43211', '2023-09-03', 2, '£');
 
 -- ----------------------------
@@ -1102,7 +1106,7 @@ CREATE TABLE `fm_item_brand`  (
   `dc` date NULL DEFAULT NULL,
   `user_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of fm_item_brand
@@ -1138,6 +1142,7 @@ INSERT INTO `fm_item_brand` VALUES (28, 'HYUNDAI MOBIS', 'HYUNDAI MOBIS', '2025-
 INSERT INTO `fm_item_brand` VALUES (29, 'CCCCC1', 'CCCCC1', NULL, NULL);
 INSERT INTO `fm_item_brand` VALUES (30, 'QQQQQ3', 'QQQQQ3', NULL, NULL);
 INSERT INTO `fm_item_brand` VALUES (31, 'MMM3', 'MMM3', NULL, NULL);
+INSERT INTO `fm_item_brand` VALUES (32, 'PORSCHE', 'PORSCHE', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for fm_item_category
@@ -1398,7 +1403,7 @@ CREATE TABLE `inventory`  (
   `primary_vehicle_model_id` int NULL DEFAULT NULL,
   `applicable_vehicle_model` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 43 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC STATS_AUTO_RECALC = 1;
+) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC STATS_AUTO_RECALC = 1;
 
 -- ----------------------------
 -- Records of inventory
@@ -1445,6 +1450,8 @@ INSERT INTO `inventory` VALUES (39, '2025-06-06 20:17:00', 2, 0, '', NULL, '', N
 INSERT INTO `inventory` VALUES (40, '2025-06-11 05:15:03', 2, 0, '', NULL, '2025-06-11 13:09:43', 2, 'ZZZZZZZ', 'SDFSDFSDFSDF', 34, NULL, '554', '666', '0', 0, NULL, NULL, '344', NULL, '[\"4\",\"1\",\"5\"]', 21, 16, 29, 'SDF', 'SSD', 'RTG', NULL, NULL, NULL, NULL, NULL, NULL, 'SDF SDF SDF SDFDSF\r\nDSFSD\r\nSDFSD\r\nFSDF\r\nSDFSDF');
 INSERT INTO `inventory` VALUES (41, '2025-06-11 05:20:41', 2, 0, '', NULL, '', NULL, 'VAVASAFDD', 'DSFF SDF SDF S', 45, NULL, '666', '777', '0', 0, NULL, NULL, '555', NULL, '[\"1\",\"2\"]', 22, 17, 30, 'GDF', 'DFG', 'DFG', NULL, NULL, NULL, NULL, NULL, NULL, 'DSFFSDF SD SD');
 INSERT INTO `inventory` VALUES (42, '2025-06-11 05:22:22', 2, 0, '', NULL, '', NULL, 'REEREREERERE', 'XCCVXCXC VX CVXCV', 435, NULL, '4553', '6666', '0', 0, NULL, NULL, '453', NULL, NULL, 23, 18, 31, 'FDGF', '', '', NULL, NULL, NULL, NULL, NULL, NULL, 'FDG DFG DFG DG');
+INSERT INTO `inventory` VALUES (43, '2025-06-12 15:46:03', 2, 0, '', NULL, '2025-06-12 15:46:28', 2, '98011614700', 'SCREW', 1, NULL, '430.3557741', '264', '0', 0, '[{\"rr_id\":\"3\",\"date\":\"2025-06-12 15:56\",\"qty\":1,\"ucp\":430.3557741}]', NULL, '27.93', NULL, NULL, 3, 2, 32, '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, '');
+INSERT INTO `inventory` VALUES (44, '2025-06-12 15:47:35', 2, 0, '', NULL, '', NULL, '99170105121OK1', 'ASSEMBLY KIT', 1, NULL, '346.5342413', '78', '0', 0, '[{\"rr_id\":\"3\",\"date\":\"2025-06-12 15:56\",\"qty\":1,\"ucp\":346.5342413}]', NULL, '22.49', NULL, NULL, 2, 2, 32, '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, '');
 
 -- ----------------------------
 -- Table structure for inventory_adjustments
@@ -1528,7 +1535,7 @@ CREATE TABLE `inventory_movement`  (
   `unit_cost_price` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `vehicle_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC STATS_AUTO_RECALC = 1;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC STATS_AUTO_RECALC = 1;
 
 -- ----------------------------
 -- Records of inventory_movement
@@ -1540,6 +1547,10 @@ INSERT INTO `inventory_movement` VALUES (4, '2025-06-07 07:37', 2, 0, '', NULL, 
 INSERT INTO `inventory_movement` VALUES (5, '2025-06-11 05:15', 2, 0, '', NULL, '', NULL, 40, 'new', '0', '34', '34', 1, NULL, NULL, NULL, NULL, '554', NULL);
 INSERT INTO `inventory_movement` VALUES (6, '2025-06-11 05:20', 2, 0, '', NULL, '', NULL, 41, 'new', '0', '45', '45', 1, NULL, NULL, NULL, NULL, '666', NULL);
 INSERT INTO `inventory_movement` VALUES (7, '2025-06-11 05:22', 2, 0, '', NULL, '', NULL, 42, 'new', '0', '435', '435', 1, NULL, NULL, NULL, NULL, '4553', NULL);
+INSERT INTO `inventory_movement` VALUES (8, '2025-06-12 15:46', 2, 0, '', NULL, '', NULL, 43, 'new', '0', '0', '0', 1, NULL, NULL, NULL, NULL, '0', NULL);
+INSERT INTO `inventory_movement` VALUES (9, '2025-06-12 15:47', 2, 0, '', NULL, '', NULL, 44, 'new', '0', '0', '0', 1, NULL, NULL, NULL, NULL, '0', NULL);
+INSERT INTO `inventory_movement` VALUES (10, '2025-06-12 15:56', 2, 0, '', NULL, '', NULL, 43, 'receiving', '0', '1', '1', 1, NULL, 3, NULL, NULL, '430.3557741', 0);
+INSERT INTO `inventory_movement` VALUES (11, '2025-06-12 15:56', 2, 0, '', NULL, '', NULL, 44, 'receiving', '0', '1', '1', 1, NULL, 3, NULL, NULL, '346.5342413', 0);
 
 -- ----------------------------
 -- Table structure for inventory_quotation
@@ -1657,19 +1668,26 @@ CREATE TABLE `issuance`  (
   `confirmed_date` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `confirmed_by` int NULL DEFAULT NULL,
   `customer_id` int NULL DEFAULT NULL,
-  `job_order_id` int NULL DEFAULT NULL,
-  `quotation_id` int NULL DEFAULT NULL,
   `vehicle_id` int NULL DEFAULT NULL,
   `customer_type` int NULL DEFAULT NULL,
   `phone` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `vin` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `plate_no` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `valid_until` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `customer_qid_bus` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `issuance_grand_total` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `attention_to` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `quotation_id` int NULL DEFAULT NULL,
+  `pay_type_id` int NULL DEFAULT NULL,
+  `discount_percentage_total` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `discount_amount_total` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of issuance
 -- ----------------------------
+INSERT INTO `issuance` VALUES (1, '2025-06-12 22:51:03', 2, 0, '', NULL, '2025-06-12 23:08:54', 2, NULL, 'TEST 2 , A TEST QUOTETATION 2. TEST 2 , A TEST QUOTETATION 2', NULL, NULL, 0, NULL, NULL, 9, 7, 0, '3453345', 'C092793409007170927X2', '458844', NULL, '364622325', '6048.92', NULL, 2, 1, '17.20', '1562.08');
 
 -- ----------------------------
 -- Table structure for issuance_items
@@ -1691,21 +1709,25 @@ CREATE TABLE `issuance_items`  (
   `remarks` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `inventory_id` int NULL DEFAULT NULL,
   `unit_cost_price` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `job_order_id` int NULL DEFAULT NULL,
-  `unit_cost_price_orig` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `hoq` int NULL DEFAULT NULL,
-  `selling_price_b2c` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `selling_price_b2b` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `qoh` int NULL DEFAULT NULL,
   `discount_percentage` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `discount_amount` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `total` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `selling_price` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `retail_price` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `customer_id` int NULL DEFAULT NULL,
+  `supplier_price` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of issuance_items
 -- ----------------------------
+INSERT INTO `issuance_items` VALUES (1, '2025-06-12 22:51', 2, 0, NULL, NULL, '', NULL, NULL, 7, 1, 21, NULL, 1, '64.8400288', 200, '20.00', '33.60', NULL, '8.00', 9, NULL);
+INSERT INTO `issuance_items` VALUES (2, '2025-06-12 22:51', 2, 0, NULL, NULL, '', NULL, NULL, 7, 1, 31, NULL, 3, '3.00', 20, '20.43', '38.00', NULL, '6.00', 9, NULL);
+INSERT INTO `issuance_items` VALUES (3, '2025-06-12 22:51', 2, 0, NULL, NULL, '', NULL, NULL, 7, 1, 41, NULL, 4, '50.00', 5, '21.79', '670.04', NULL, '75.00', 9, NULL);
+INSERT INTO `issuance_items` VALUES (4, '2025-06-12 22:51', 2, 0, NULL, NULL, '', NULL, NULL, 7, 1, 21, NULL, 2, '12.00', 15, '20.00', '75.60', NULL, '18.00', 9, NULL);
+INSERT INTO `issuance_items` VALUES (5, '2025-06-12 22:51', 2, 0, NULL, NULL, '', NULL, NULL, 7, 1, 31, NULL, 6, '75.00', 3, '20.00', '744.00', NULL, '120.00', 9, NULL);
+INSERT INTO `issuance_items` VALUES (6, '2025-06-12 22:51', 2, 0, NULL, NULL, '', NULL, NULL, 7, 1, 21, NULL, 7, '2.00', 50, '1', '0.84', NULL, '4.00', 9, NULL);
 
 -- ----------------------------
 -- Table structure for issuance_quotation
@@ -1736,16 +1758,18 @@ CREATE TABLE `issuance_quotation`  (
   `valid_until` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `customer_qid_bus` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `quotation_grand_total` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `attention_to` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `quotation_id` int NULL DEFAULT NULL,
+  `discount_percentage_total` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `discount_amount_total` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of issuance_quotation
 -- ----------------------------
-INSERT INTO `issuance_quotation` VALUES (1, '2025-06-11 20:09:32', 2, 0, '', NULL, '', NULL, NULL, 'TEST 23423 243234', NULL, NULL, 1, NULL, NULL, 0, 3, 0, '5419631', 'AD00430589223XAAA', '554190', '2025-06-27', '734004584', '2073.52');
-INSERT INTO `issuance_quotation` VALUES (2, '2025-06-11 20:53:19', 2, 0, '', NULL, '', NULL, NULL, 'TEST 2', NULL, NULL, 0, NULL, NULL, 0, 9, 0, '56456', 'HIOO875635453453', '8990', '', '800000756', '1964.07');
-INSERT INTO `issuance_quotation` VALUES (3, '2025-06-11 20:56:09', 2, 0, '', NULL, '', NULL, NULL, 'SDSS23543245', NULL, NULL, 0, NULL, NULL, 12, 0, 0, '56456', '', '', '2025-07-12', '263463346', '4377.00');
-INSERT INTO `issuance_quotation` VALUES (4, '2025-06-11 20:59:06', 2, 0, '', NULL, '', NULL, NULL, '4TH TIME', NULL, NULL, 0, NULL, NULL, 18, 8, 0, '56456', 'JSDF2342348900', '8875', '', '800000756', '40050.71');
+INSERT INTO `issuance_quotation` VALUES (1, '2025-06-12 22:21:25', 2, 0, '', NULL, '', NULL, NULL, 'TEST 1, A TEST QUOTATION ONY, TEST 1, A TEST QUOTATION ONY, !!!', NULL, NULL, 1, NULL, NULL, 2, 3, 0, '5419631', 'AD00430589223XAAA', '554190', '', '734004584', '4129.20', 'JOE DOOM', NULL, '40.00', '2752.80');
+INSERT INTO `issuance_quotation` VALUES (2, '2025-06-12 22:26:32', 2, 0, '', NULL, '', NULL, NULL, 'TEST 2 , A TEST QUOTETATION 2. TEST 2 , A TEST QUOTETATION 2', NULL, NULL, 1, NULL, NULL, 9, 7, 1, '3453345', 'C092793409007170927X2', '458844', '', '364622325', '5965.80', 'MR A', NULL, '20.44', '1561.20');
 
 -- ----------------------------
 -- Table structure for issuance_quotation_items
@@ -1775,23 +1799,22 @@ CREATE TABLE `issuance_quotation_items`  (
   `customer_id` int NULL DEFAULT NULL,
   `supplier_price` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of issuance_quotation_items
 -- ----------------------------
-INSERT INTO `issuance_quotation_items` VALUES (1, '2025-06-11 20:53', 2, 0, '', NULL, '', NULL, NULL, 9, 2, 21, NULL, 1, '64.8400288', 200, '45', '75.60', NULL, '8.00', 0, NULL);
-INSERT INTO `issuance_quotation_items` VALUES (2, '2025-06-11 20:53', 2, 0, '', NULL, '', NULL, NULL, 9, 2, 31, NULL, 3, '3.00', 20, '3', '5.58', NULL, '6.00', 0, NULL);
-INSERT INTO `issuance_quotation_items` VALUES (3, '2025-06-11 20:53', 2, 0, '', NULL, '', NULL, NULL, 9, 2, 41, NULL, 4, '50.00', 5, '45', '1383.75', NULL, '75.00', 0, NULL);
-INSERT INTO `issuance_quotation_items` VALUES (4, '2025-06-11 20:56', 2, 0, '', NULL, '', NULL, NULL, 0, 3, 31, NULL, 1, '64.8400288', 200, '', '', NULL, '8.00', 12, NULL);
-INSERT INTO `issuance_quotation_items` VALUES (5, '2025-06-11 20:56', 2, 0, '', NULL, '', NULL, NULL, 0, 3, 5, NULL, 41, '666', 45, '', '', NULL, '777', 12, NULL);
-INSERT INTO `issuance_quotation_items` VALUES (6, '2025-06-11 20:56', 2, 0, '', NULL, '', NULL, NULL, 0, 3, 4, NULL, 24, '342', 3, '', '', NULL, '0', 12, NULL);
-INSERT INTO `issuance_quotation_items` VALUES (7, '2025-06-11 20:56', 2, 0, '', NULL, '', NULL, NULL, 0, 3, 61, NULL, 7, '2.00', 50, '', '', NULL, '4.00', 12, NULL);
-INSERT INTO `issuance_quotation_items` VALUES (8, '2025-06-11 20:59', 2, 0, '', NULL, '', NULL, NULL, 8, 4, 41, NULL, 3, '3.00', 20, '56', '137.76', NULL, '6.00', 18, NULL);
-INSERT INTO `issuance_quotation_items` VALUES (9, '2025-06-11 20:59', 2, 0, '', NULL, '', NULL, NULL, 8, 4, 51, NULL, 41, '666', 45, '5', '1981.35', NULL, '777', 18, NULL);
-INSERT INTO `issuance_quotation_items` VALUES (10, '2025-06-11 20:59', 2, 0, '', NULL, '', NULL, NULL, 8, 4, 61, NULL, 8, '20.00', 8, '6', '128.10', NULL, '35.00', 18, NULL);
-INSERT INTO `issuance_quotation_items` VALUES (11, '2025-06-11 20:59', 2, 0, '', NULL, '', NULL, NULL, 8, 4, 71, NULL, 7, '2.00', 50, '4', '11.36', NULL, '4.00', 18, NULL);
-INSERT INTO `issuance_quotation_items` VALUES (12, '2025-06-11 20:59', 2, 0, '', NULL, '', NULL, NULL, 8, 4, 1, NULL, 2, '12.00', 15, '4', '0.72', NULL, '18.00', 18, NULL);
+INSERT INTO `issuance_quotation_items` VALUES (1, '2025-06-12 22:21', 2, 0, '', NULL, '', NULL, NULL, 3, 1, 51, NULL, 1, '64.8400288', 200, '40.00', '163.20', NULL, '8.00', 2, NULL);
+INSERT INTO `issuance_quotation_items` VALUES (2, '2025-06-12 22:21', 2, 0, '', NULL, '', NULL, NULL, 3, 1, 6, NULL, 3, '3.00', 20, '40.00', '14.40', NULL, '6.00', 2, NULL);
+INSERT INTO `issuance_quotation_items` VALUES (3, '2025-06-12 22:21', 2, 0, '', NULL, '', NULL, NULL, 3, 1, 5, NULL, 38, '324', 4345, '40.00', '0.00', NULL, '0', 2, NULL);
+INSERT INTO `issuance_quotation_items` VALUES (4, '2025-06-12 22:21', 2, 0, '', NULL, '', NULL, NULL, 3, 1, 6, NULL, 23, '342', 3, '40.00', '0.00', NULL, '0', 2, NULL);
+INSERT INTO `issuance_quotation_items` VALUES (5, '2025-06-12 22:21', 2, 0, '', NULL, '', NULL, NULL, 3, 1, 41, NULL, 9, '40.00', 6, '40.00', '984.00', NULL, '60.00', 2, NULL);
+INSERT INTO `issuance_quotation_items` VALUES (6, '2025-06-12 22:21', 2, 0, '', NULL, '', NULL, NULL, 3, 1, 51, NULL, 44, '346.5342413', 1, '40.00', '1591.20', NULL, '78', 2, NULL);
+INSERT INTO `issuance_quotation_items` VALUES (7, '2025-06-12 22:26', 2, 0, '', NULL, '', NULL, NULL, 7, 2, 21, NULL, 1, '64.8400288', 200, '20.00', '33.60', NULL, '8.00', 9, NULL);
+INSERT INTO `issuance_quotation_items` VALUES (8, '2025-06-12 22:26', 2, 0, '', NULL, '', NULL, NULL, 7, 2, 31, NULL, 3, '3.00', 20, '20.43', '38.00', NULL, '6.00', 9, NULL);
+INSERT INTO `issuance_quotation_items` VALUES (9, '2025-06-12 22:26', 2, 0, '', NULL, '', NULL, NULL, 7, 2, 41, NULL, 4, '50.00', 5, '21.79', '670', NULL, '75.00', 9, NULL);
+INSERT INTO `issuance_quotation_items` VALUES (10, '2025-06-12 22:26', 2, 0, '', NULL, '', NULL, NULL, 7, 2, 21, NULL, 2, '12.00', 15, '20.00', '75.60', NULL, '18.00', 9, NULL);
+INSERT INTO `issuance_quotation_items` VALUES (11, '2025-06-12 22:26', 2, 0, '', NULL, '', NULL, NULL, 7, 2, 31, NULL, 6, '75.00', 3, '20.00', '744.00', NULL, '120.00', 9, NULL);
 
 -- ----------------------------
 -- Table structure for landed_cost_rate
@@ -2011,7 +2034,7 @@ CREATE TABLE `purchase_order`  (
   `exchange_rate` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `vehicle_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of purchase_order
@@ -2020,6 +2043,7 @@ INSERT INTO `purchase_order` VALUES (1, '2025-06-05 22:04', 2, 0, '', NULL, '202
 INSERT INTO `purchase_order` VALUES (2, '2025-06-05 22:18', 2, 0, '', NULL, '2025-06-06 14:45', 2, 'PO000002', NULL, NULL, 2, 'ASDASD@FG', 'FSDSDF 34534534', 'DSFS FS DFSDFS D', NULL, 'SUPER DISCOUNT', 3660.000000, 'dsaa asdasd', 1, '2025-06-06 15:14', 2, 1, NULL, '1.000000', 3);
 INSERT INTO `purchase_order` VALUES (3, '2025-06-07 05:11', 2, 0, '', NULL, '', NULL, 'PO000003', NULL, NULL, 1, 'DFSD@SDFSDF', NULL, 'DSFSDFSDF', NULL, 'DDSEW', 45630.000000, 'SSFDDFS', 1, '2025-06-07 05:44', 2, 2, NULL, '4.521300', 3);
 INSERT INTO `purchase_order` VALUES (4, '2025-06-07 06:51', 2, 0, '', NULL, '', NULL, 'PO000004', NULL, NULL, 2, 'DFSD@SDFSDF', NULL, 'SDFSDFSDF', NULL, '', 0.000000, 'SDFSDFS', 0, NULL, NULL, 1, NULL, '1.000000', 7);
+INSERT INTO `purchase_order` VALUES (5, '2025-06-12 15:48', 2, 0, '', NULL, '', NULL, 'PO000005', NULL, NULL, 4, '', NULL, '', NULL, '', 0.000000, '', 1, '2025-06-12 15:49', 2, 3, NULL, '4.5', 0);
 
 -- ----------------------------
 -- Table structure for purchase_order_items
@@ -2045,7 +2069,7 @@ CREATE TABLE `purchase_order_items`  (
   `rate_id` int NULL DEFAULT 0,
   `vehicle_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of purchase_order_items
@@ -2079,6 +2103,8 @@ INSERT INTO `purchase_order_items` VALUES (26, '2025-06-07 06:51', 2, 0, '', NUL
 INSERT INTO `purchase_order_items` VALUES (27, '2025-06-07 06:51', 2, 0, '', NULL, '', NULL, 4, 'PART005', 'HEADLIGHT ASSEMBLY', '31', '775', 0, NULL, 5, 1, 7);
 INSERT INTO `purchase_order_items` VALUES (28, '2025-06-07 06:51', 2, 0, '', NULL, '', NULL, 4, '12345678901234567890', 'AIR FILTER', '21', '75', 0, NULL, 3, 1, 7);
 INSERT INTO `purchase_order_items` VALUES (29, '2025-06-07 06:51', 2, 0, '', NULL, '', NULL, 4, 'PART007', 'SPARK PLUG', '1', '760', 0, NULL, 7, 1, 7);
+INSERT INTO `purchase_order_items` VALUES (30, '2025-06-12 15:48', 2, 0, '', NULL, '', NULL, 5, '98011614700', 'SCREW', '1', '27.93', 0, NULL, 43, 3, 0);
+INSERT INTO `purchase_order_items` VALUES (31, '2025-06-12 15:48', 2, 0, '', NULL, '', NULL, 5, '99170105121OK1', 'ASSEMBLY KIT', '1', '22.49', 0, NULL, 44, 3, 0);
 
 -- ----------------------------
 -- Table structure for receiving
@@ -2111,13 +2137,14 @@ CREATE TABLE `receiving`  (
   `supplier_id` int NULL DEFAULT NULL,
   `grv_transport_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of receiving
 -- ----------------------------
 INSERT INTO `receiving` VALUES (1, '2025-06-07 06:35', 2, 0, '', NULL, '2025-06-07 06:42', 2, '[\"1\"]', 'TRTR', 'YTRYY', 'TRYRTYRTY', NULL, NULL, NULL, '2025-06-04', '2025-06-06', '2.887794', '1', 0, NULL, NULL, 'QAR', 1, 1);
 INSERT INTO `receiving` VALUES (2, '2025-06-07 06:47', 2, 0, '', NULL, '', NULL, '[\"1\"]', 'RFS34534', 'D4G43F', 'DFGDF GDFG DFG', NULL, NULL, NULL, '2025-06-08', '2025-06-07', '1.030144', '1', 1, '2025-06-07 07:37', 2, 'QAR', 1, 1);
+INSERT INTO `receiving` VALUES (3, '2025-06-12 15:56', 2, 0, '', NULL, '', NULL, '[\"5\"]', 'DADASD', 'DADAD', '', NULL, NULL, NULL, '2025-06-12', '2025-06-12', '15.408370', '4.5', 1, '2025-06-12 15:56', 2, 'EUR', 4, 0);
 
 -- ----------------------------
 -- Table structure for receiving_fc
@@ -2137,7 +2164,7 @@ CREATE TABLE `receiving_fc`  (
   `remarks` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `receiving_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of receiving_fc
@@ -2147,6 +2174,7 @@ INSERT INTO `receiving_fc` VALUES (2, '2025-06-07 06:39', 2, 1, '2025-06-07 06:4
 INSERT INTO `receiving_fc` VALUES (3, '2025-06-07 06:41', 2, 1, '2025-06-07 06:42', 2, '', NULL, 4, '5454', '', 1);
 INSERT INTO `receiving_fc` VALUES (4, '2025-06-07 06:42', 2, 0, '', NULL, '', NULL, 4, '5454', '', 1);
 INSERT INTO `receiving_fc` VALUES (5, '2025-06-07 06:47', 2, 0, '', NULL, '', NULL, 3, '144', '', 2);
+INSERT INTO `receiving_fc` VALUES (6, '2025-06-12 15:56', 2, 0, '', NULL, '', NULL, 1, '100', '', 3);
 
 -- ----------------------------
 -- Table structure for receiving_items
@@ -2176,7 +2204,7 @@ CREATE TABLE `receiving_items`  (
   `bad_qty` int NULL DEFAULT 0,
   `vehicle_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of receiving_items
@@ -2186,6 +2214,8 @@ INSERT INTO `receiving_items` VALUES (2, '2025-06-07 06:35', 2, 0, '', 0, '2025-
 INSERT INTO `receiving_items` VALUES (3, '2025-06-07 06:35', 2, 0, '', 0, '2025-06-07 06:42', 2, 1, NULL, NULL, 1, 3, 4, '', NULL, 3, '75', 0, '216.58455', 0, 3);
 INSERT INTO `receiving_items` VALUES (4, '2025-06-07 06:35', 2, 0, '', 0, '2025-06-07 06:42', 2, 1, NULL, NULL, 1, 4, 4, '', NULL, 4, '457', 0, '1319.721858', 0, 3);
 INSERT INTO `receiving_items` VALUES (5, '2025-06-07 06:47', 2, 0, '', NULL, '', NULL, 1, NULL, NULL, 2, 1, 95, '', NULL, 1, '66', 0, '67.989504', 0, 3);
+INSERT INTO `receiving_items` VALUES (6, '2025-06-12 15:56', 2, 0, '', NULL, '', NULL, 5, NULL, NULL, 3, 30, 1, '', NULL, 43, '27.93', 0, '430.3557741', 0, 0);
+INSERT INTO `receiving_items` VALUES (7, '2025-06-12 15:56', 2, 0, '', NULL, '', NULL, 5, NULL, NULL, 3, 31, 1, '', NULL, 44, '22.49', 0, '346.5342413', 0, 0);
 
 -- ----------------------------
 -- Table structure for receiving_lc
@@ -2205,7 +2235,7 @@ CREATE TABLE `receiving_lc`  (
   `remarks` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `receiving_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of receiving_lc
@@ -2215,6 +2245,7 @@ INSERT INTO `receiving_lc` VALUES (2, '2025-06-07 06:39', 2, 1, '2025-06-07 06:4
 INSERT INTO `receiving_lc` VALUES (3, '2025-06-07 06:41', 2, 1, '2025-06-07 06:42', 2, '', NULL, 6, '5465', '', 1);
 INSERT INTO `receiving_lc` VALUES (4, '2025-06-07 06:42', 2, 0, '', NULL, '', NULL, 6, '5465', '', 1);
 INSERT INTO `receiving_lc` VALUES (5, '2025-06-07 06:47', 2, 0, '', NULL, '', NULL, 2, '45', '', 2);
+INSERT INTO `receiving_lc` VALUES (6, '2025-06-12 15:56', 2, 0, '', NULL, '', NULL, 1, '100', '', 3);
 
 -- ----------------------------
 -- Table structure for settings
@@ -2293,7 +2324,7 @@ CREATE TABLE `suppliers_po`  (
   `po_attension_to` varchar(125) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `fax_no` varchar(125) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of suppliers_po
@@ -2301,6 +2332,7 @@ CREATE TABLE `suppliers_po`  (
 INSERT INTO `suppliers_po` VALUES (1, '2023-12-05 20:50:51', 2, 0, '', NULL, '2025-06-06 15:25:07', 2, 'AUTO TECH W.L.L', 'MAITHA MITSUKA', 'JOHN BARRY', '343 3422', '941 2132', 'SAN DON DOAHA', NULL, NULL, NULL, 'apple@gmail.com', 'Mohammad Saleh', '344 3455');
 INSERT INTO `suppliers_po` VALUES (2, '2023-12-05 20:52:01', 2, 0, '', NULL, '2025-06-06 15:25:27', 2, 'DOHA AUTO SPORTS W.L.L', 'MIKE KORRS', 'JOE ROGAAN', '344 7576', '435 4676', 'MARINA BAY', NULL, NULL, NULL, 'laccoustics@mail.com', 'Mohhamad Fali', '343 4577');
 INSERT INTO `suppliers_po` VALUES (3, '2025-06-07 05:10:24', 2, 1, '2025-06-07 05:10:29', 2, '', NULL, 'SDFSD', 'FSDF', 'SDF', 'SDFSD', 'FSDF', 'SDFSDF', NULL, NULL, NULL, 'SDF@DSFG', 'SDFSDF', 'SDFSDF');
+INSERT INTO `suppliers_po` VALUES (4, '2025-06-12 15:48:04', 2, 0, '', NULL, '', NULL, 'PORSCHE AG', '', '', '', '', '', NULL, NULL, NULL, '', '', '');
 
 -- ----------------------------
 -- Table structure for terms_and_conditions
@@ -2903,19 +2935,5 @@ INSERT INTO `vehicles` VALUES (11, '2025-06-11 14:39:16', 2, 0, '', NULL, '', NU
 INSERT INTO `vehicles` VALUES (12, '2025-06-11 14:40:05', 2, 0, '', NULL, '', NULL, 2, 0, 6, '808080', '99099990999', NULL, NULL, NULL, NULL);
 INSERT INTO `vehicles` VALUES (13, '2025-06-11 14:47:49', 2, 0, '', NULL, '', NULL, 92, 0, 7, '707070707', '7777', NULL, NULL, NULL, NULL);
 INSERT INTO `vehicles` VALUES (14, '2025-06-11 14:48:45', 2, 0, '', NULL, '', NULL, 92, 5, 1, '60606060', '6666', NULL, NULL, NULL, NULL);
-INSERT INTO `vehicles` VALUES (15, '2025-06-11 14:53:53', 2, 0, '', NULL, '', NULL, 17, 7, 2, '999999', '88889999', NULL, NULL, NULL, NULL);
-INSERT INTO `vehicles` VALUES (16, '2025-06-11 14:56:44', 2, 0, '', NULL, '', NULL, 12, 0, 7, '00900909', '75675675', NULL, NULL, NULL, NULL);
-INSERT INTO `vehicles` VALUES (17, '2025-06-11 15:00:41', 2, 0, '', NULL, '', NULL, 6, 6, 2, '22222234234', '3453345', NULL, NULL, NULL, NULL);
-INSERT INTO `vehicles` VALUES (34, '2025-06-11 16:06:54', 2, 0, '', NULL, '', NULL, 0, 6, 2, 'XXXXXXX', 'XXXXXXXXX', NULL, NULL, NULL, NULL);
-INSERT INTO `vehicles` VALUES (35, '2025-06-11 16:10:38', 2, 0, '', NULL, '', NULL, 0, 4, 1, '6GHJH', 'JGHJGH', NULL, NULL, NULL, NULL);
-INSERT INTO `vehicles` VALUES (36, '2025-06-11 16:15:17', 2, 0, '', NULL, '', NULL, 0, 6, 2, '696060606060', '68678678', NULL, NULL, NULL, NULL);
-INSERT INTO `vehicles` VALUES (37, '2025-06-11 16:15:57', 2, 0, '', NULL, '', NULL, 0, 6, 2, '5050505050', '5050505050', NULL, NULL, NULL, NULL);
-INSERT INTO `vehicles` VALUES (38, '2025-06-11 16:16:56', 2, 0, '', NULL, '', NULL, 0, 6, 2, '30303000337', '7656475675', NULL, NULL, NULL, NULL);
-INSERT INTO `vehicles` VALUES (39, '2025-06-11 16:21:42', 2, 0, '', NULL, '', NULL, 0, 7, 2, '59595959', '59595959', NULL, NULL, NULL, NULL);
-INSERT INTO `vehicles` VALUES (40, '2025-06-11 16:23:24', 2, 0, '', NULL, '', NULL, 0, 1, 3, '44422442224', '242424', NULL, NULL, NULL, NULL);
-INSERT INTO `vehicles` VALUES (41, '2025-06-11 16:26:12', 2, 0, '', NULL, '', NULL, 0, 6, 2, '141414141', '4141414', NULL, NULL, NULL, NULL);
-INSERT INTO `vehicles` VALUES (42, '2025-06-11 16:28:16', 2, 0, '', NULL, '', NULL, 0, 6, 2, '74747474747', '7447474747', NULL, NULL, NULL, NULL);
-INSERT INTO `vehicles` VALUES (43, '2025-06-11 16:29:23', 2, 0, '', NULL, '', NULL, 0, 5, 1, '07070707070', '70707070', NULL, NULL, NULL, NULL);
-INSERT INTO `vehicles` VALUES (44, '2025-06-11 16:31:02', 2, 0, '', NULL, '', NULL, 0, 2, 3, '40040404040', '4040404040', NULL, NULL, NULL, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

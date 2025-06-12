@@ -49,7 +49,7 @@ class Outgoing extends CI_Controller {
 
 	}
 
-	public function create_issuance(){
+	public function create_issuance($id = ''){
 	
 		$module = $this->system_menu;
 
@@ -66,15 +66,52 @@ class Outgoing extends CI_Controller {
 		$result = $this->admin_model->load_filemaintenance('fm_payment_type');
 		$module['payment_type'] = $result['maintenance_data'];
 
-		$module['vehicles'] = $this->core->load_core_data('vehicles');
-		
 		$result = $this->admin_model->load_filemaintenance('fm_models');
 		$module['models'] = $result['maintenance_data'];
 		
 		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
 		$module['manufacturers'] = $result['maintenance_data'];
+ 
 
-		$module['customers'] = $this->core->load_core_data('clients');
+		if($id){
+			$module['quotation'] = $this->core->load_core_data('issuance_quotation',$id);
+	 		
+	 		$this->db->where('issuance_quotation_id',$id);
+			$this->db->select('
+				i.id as id, 
+				i.qty as qty, 
+				i.retail_price as retail_price, 
+				i.inventory_id as inventory_id, 
+				inv.qty as qoh, 
+				i.unit_cost_price as unit_cost_price,
+				i.discount_percentage as discount_percentage, 
+				i.discount_amount as discount_amount, 
+				inv.item_code, 
+				inv.item_name, 
+				b.title as brand'); 
+	        $this->db->from('issuance_quotation_items i');  
+	        $this->db->join('inventory inv', 'i.inventory_id=inv.id', 'left');
+	        $this->db->join('fm_item_brand b', 'inv.item_brand_id=b.id', 'left');  
+			$module['items'] = $this->db->get()->result(); 
+
+			if($module['quotation']->vehicle_id){
+				$module['vehicles'] = $this->core->load_core_data('vehicles',$module['quotation']->vehicle_id);
+			}
+
+			if($module['quotation']->customer_id){
+				$module['clients'] = $this->core->load_core_data('clients',$module['quotation']->customer_id);  
+			}
+
+			$result = $this->admin_model->load_filemaintenance('fm_payment_type');
+			$module['payment_type'] = $result['maintenance_data'];
+
+			if($module['quotation']->vehicle_id){
+				$module['vehicle'] = $this->core->load_core_data('vehicles',$module['quotation']->vehicle_id);
+			}
+			
+		  
+			$module['user'] = $this->core->load_core_data('account',$module['quotation']->user_id);
+		}
 		
 		$this->load->view('admin/index',$module);
 
@@ -119,9 +156,9 @@ class Outgoing extends CI_Controller {
 	        $this->db->or_like('fm_manufacturers.title', $search);
 	        $this->db->or_like('fm_models.title', $search);
 	        $this->db->group_end();
-	        $this->db->limit(5);
+	        
 	    }
-
+		$this->db->limit(5);
 	    $this->db->order_by('vehicles.plate_no', 'ASC');
 	    $query = $this->db->get()->result();
 
@@ -146,6 +183,8 @@ class Outgoing extends CI_Controller {
 	                : base_url('assets/images/no-image.png')
 	        ];
 	    }
+
+
 
 	    echo json_encode($results);
 	}
@@ -416,55 +455,54 @@ class Outgoing extends CI_Controller {
 		echo @$c->id.'-'.@$c->name;
 	}
 
-	public function save_issuance(){
+	public function save_issuance($qid = ''){
 
 		if(@$this->input->post('items',TRUE)){
+		 			
+ 			if($this->input->post('vehicle_id',TRUE)){
+ 				$vh = $this->db->select('customer_id')->get_where('vehicles',['id'=>$this->input->post('vehicle_id',TRUE)])->row();
+ 				$_POST['customer_id'] = @$vh->customer_id;
+ 			}
 
-			$jo_id = $this->input->post('job_order_id',TRUE);
-
-			$jo = $this->db->get_where('projects_job_order',['id'=>$jo_id])->row();
-
-			$i = $this->db->insert('issuance',[
-				'date_created' => date('Y-m-d H:i'),
-				'user_id' => $this->session->user_id, 
-				'job_order_id' => $jo_id,   
-				'project_id' => $jo->project_id,   
-				'client_id' => $jo->client_id,
-				'quotation_id' => $jo->quotation_id,   
-				'ref_no' => $this->input->post('ref_no',TRUE),  
-				'issued_date' => $this->input->post('issued_date',TRUE), 
-				'remarks' => $this->input->post('remarks',TRUE),
-				'confirmed' => 0 
+			$result = $this->core->global_query(1,'issuance','',[
+				'confirmed' => 0,
+				'quotation_id'=> $qid 
 			]); 
-
-			$i_id = $this->db->insert_id();
-
-			$ids = '';
-
-			 
  
-	    	foreach ($this->input->post('items',TRUE) as $iid => $val) {
- 
-	    		if($this->input->post('qty'.$iid,TRUE) > 0){
 
-	    			$inventory_id = $this->input->post('inventory_id'.$iid,TRUE); 
+			if($result['result']){ 
 
-    				$has = 1;
-    				
-			    	$this->db->insert('issuance_items',[
-						'date_created' => date('Y-m-d H:i'),
-						'user_id' => $this->session->user_id, 
-						'issuance_id' => $i_id,  
-						'project_id' => $jo->project_id,
-						'quotation_id' => $jo->quotation_id,
-						'job_order_id' => $jo_id,
-						'qty' => $this->input->post('qty'.$iid,TRUE),
-						'unit_cost_price' => $this->input->post('unit_cost_price'.$iid,TRUE), 
-						'unit_cost_price_orig' => $this->input->post('unit_cost_price'.$iid,TRUE), 
-						'inventory_id' => $inventory_id,
-						'remarks' => $this->input->post('remarks'.$iid,TRUE) 
-					]); 
-  
+				$qid = $result['query_id']; 
+ 				
+ 				$vehicle_id = @$this->input->post('vehicle_id',TRUE);
+ 				$customer_id = @$this->input->post('customer_id',TRUE);
+
+		    	foreach ($this->input->post('items',TRUE) as $iid => $val) {
+	 
+		    		if($this->input->post('qty'.$iid,TRUE) > 0 && $this->input->post('discount_amount'.$iid,TRUE)<=($this->input->post('qty'.$iid,TRUE)*$this->input->post('retail_price'.$iid,TRUE))){
+
+		    			$inventory_id = $this->input->post('inventory_id'.$iid,TRUE); 
+
+	    				$has = 1;
+	    				
+				    	$this->db->insert('issuance_items',[
+							'date_created' => date('Y-m-d H:i'),
+							'user_id' => $this->session->user_id, 
+							'issuance_id' => $qid,   
+							'vehicle_id' => $vehicle_id,
+							'customer_id' => $customer_id,
+							'qoh' => $this->input->post('qoh'.$iid,TRUE),
+							'qty' => $this->input->post('qty'.$iid,TRUE),
+							'unit_cost_price' => $this->input->post('unit_cost_price'.$iid,TRUE), 
+							'supplier_price' => $this->input->post('supplier_price'.$iid,TRUE), 
+							'retail_price' => $this->input->post('retail_price'.$iid,TRUE), 
+							'inventory_id' => $inventory_id,
+							'discount_percentage' => $this->input->post('discount_percentage'.$iid,TRUE),
+							'discount_amount' => $this->input->post('discount_amount'.$iid,TRUE)
+						]); 
+	  
+					}
+
 				}
 
 			}
@@ -481,7 +519,120 @@ class Outgoing extends CI_Controller {
 			 
 		}
 
-		redirect("outgoing/create_issuance","refresh");	
+		redirect("outgoing/view_issuance/".$qid,"refresh");
+	}
+
+	public function view_issuance($id){
+	
+		$module = $this->system_menu;
+  
+		$module['module'] = "outgoing/view_issuance";
+		$module['map_link']   = "outgoing->view_issuance";   
+	
+		$module['issuance'] = $this->core->load_core_data('issuance',$id);
+ 		
+ 		$this->db->where('issuance_id',$id);
+		$this->db->select('
+			i.id as id, 
+			i.qty as qty, 
+			i.retail_price as retail_price, 
+			i.inventory_id as inventory_id, 
+			inv.qty as qoh, 
+			i.unit_cost_price as unit_cost_price,
+			i.discount_percentage as discount_percentage, 
+			i.discount_amount as discount_amount, 
+			inv.item_code, 
+			inv.item_name, 
+			b.title as brand'); 
+        $this->db->from('issuance_items i');  
+        $this->db->join('inventory inv', 'i.inventory_id=inv.id', 'left');
+        $this->db->join('fm_item_brand b', 'inv.item_brand_id=b.id', 'left');  
+		$module['items'] = $this->db->get()->result(); 
+
+		if($module['issuance']->vehicle_id){
+			$module['vehicles'] = $this->core->load_core_data('vehicles',$module['issuance']->vehicle_id);
+		}
+		 
+		if($module['issuance']->customer_id){
+			$module['clients'] = $this->core->load_core_data('clients',$module['issuance']->customer_id);  
+		}
+
+		$result = $this->admin_model->load_filemaintenance('fm_payment_type');
+		$module['payment_type'] = $result['maintenance_data'];
+
+		if($module['issuance']->vehicle_id){
+			$module['vehicle'] = $this->core->load_core_data('vehicles',$module['issuance']->vehicle_id);
+		}
+		
+		$result = $this->admin_model->load_filemaintenance('fm_models');
+		$module['models'] = $result['maintenance_data'];
+		
+		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+		$module['manufacturers'] = $result['maintenance_data']; 
+
+		$module['user'] = $this->core->load_core_data('account',$module['issuance']->user_id);
+
+		if($module['issuance']->confirmed_by){
+			$module['user_confirmed'] = $this->core->load_core_data('account',$module['issuance']->confirmed_by);
+		}
+		
+		$this->load->view('admin/index',$module);
+
+	}
+
+
+	public function edit_issuance($id){
+	
+		$module = $this->system_menu;
+  
+		$module['module'] = "outgoing/edit_issuance";
+		$module['map_link']   = "outgoing->edit_issuance";   
+	
+		$module['issuance'] = $this->core->load_core_data('issuance',$id);
+ 		
+ 		$this->db->where('issuance_id',$id);
+		$this->db->select('
+			i.id as id, 
+			i.qty as qty, 
+			i.retail_price as retail_price, 
+			i.inventory_id as inventory_id, 
+			inv.qty as qoh, 
+			i.unit_cost_price as unit_cost_price,
+			i.discount_percentage as discount_percentage, 
+			i.discount_amount as discount_amount, 
+			inv.item_code, 
+			inv.item_name, 
+			b.title as brand'); 
+        $this->db->from('issuance_items i');  
+        $this->db->join('inventory inv', 'i.inventory_id=inv.id', 'left');
+        $this->db->join('fm_item_brand b', 'inv.item_brand_id=b.id', 'left');  
+		$module['items'] = $this->db->get()->result(); 
+
+		if($module['issuance']->vehicle_id){
+			$module['vehicles'] = $this->core->load_core_data('vehicles',$module['issuance']->vehicle_id);
+		}
+		 
+		if($module['issuance']->customer_id){
+			$module['clients'] = $this->core->load_core_data('clients',$module['issuance']->customer_id);  
+		}
+
+		$result = $this->admin_model->load_filemaintenance('fm_payment_type');
+		$module['payment_type'] = $result['maintenance_data'];
+
+		if($module['issuance']->vehicle_id){
+			$module['vehicle'] = $this->core->load_core_data('vehicles',$module['issuance']->vehicle_id);
+		}
+		
+		$result = $this->admin_model->load_filemaintenance('fm_models');
+		$module['models'] = $result['maintenance_data'];
+		
+		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+		$module['manufacturers'] = $result['maintenance_data']; 
+
+		$module['user'] = $this->core->load_core_data('account',$module['issuance']->user_id);
+		
+		$this->load->view('admin/index',$module);
+
 	}
 
 
@@ -522,7 +673,7 @@ class Outgoing extends CI_Controller {
  				$_POST['customer_id'] = @$vh->customer_id;
  			}
 
-			$result = $this->core->global_query(1,'issuance_quotation','','',[
+			$result = $this->core->global_query(1,'issuance_quotation','',[
 				'confirmed' => 1 
 			]); 
  
@@ -576,8 +727,8 @@ class Outgoing extends CI_Controller {
 			 
 		}
 
-		redirect("outgoing/quotation_list","refresh");
-		//redirect("outgoing/edit_quotation/".$qid,"refresh");	
+		//redirect("outgoing/quotation_list","refresh");
+		redirect("outgoing/view_quotation/".$qid,"refresh");	
 	}
 
 	public function quotation_list($value='')
@@ -590,7 +741,7 @@ class Outgoing extends CI_Controller {
 		$this->load->view('admin/index',$module);
 	}
 
-	public function quotations_ajax()
+	public function quotations_ajax($modal = '')
 	{
 	    // Get DataTables parameters
 	    $start = $this->input->get('start');
@@ -602,7 +753,7 @@ class Outgoing extends CI_Controller {
 	    $recordsTotal = $this->db->count_all_results();
 
 	    // Main query with joins
-	    $this->db->select('q.*, c.name AS client_name, a.name AS account_name');
+	    $this->db->select('q.*, q.id as id, c.name AS client_name, a.name AS account_name');
 	    $this->db->from('issuance_quotation q');
 	    $this->db->join('clients c', 'q.customer_id = c.id', 'left');
 	    $this->db->join('account a', 'q.user_id = a.id', 'left');
@@ -615,8 +766,10 @@ class Outgoing extends CI_Controller {
 	        $this->db->or_like('c.name', $search);
 	        $this->db->or_like('q.phone', $search);
 	        $this->db->or_like('q.remarks', $search);
+	        $this->db->or_like("CONCAT('QO', LPAD(q.id, 6, '0'))", $search);
 	        $this->db->group_end();
 	    }
+	    $this->db->where('q.deleted', 0);
 
 	    $recordsFiltered = $this->db->count_all_results('', false); // for filtered count
 
@@ -629,18 +782,19 @@ class Outgoing extends CI_Controller {
 	    $data = [];
 	    foreach ($quotations as $q) {
 	        $qn = 'QO' . sprintf("%06d", $q->id);
-	        $data[] = [
-	            'date_created' => date('M d, Y', strtotime($q->date_created)),
-	            'valid_until' => $q->valid_until ? date('M d, Y', strtotime($q->valid_until)) : '',
-	            'quotation_no' => $qn,
-	            'plate_no' => $q->plate_no,
-	            'vin' => $q->vin,
-	            'client_name' => @$q->client_name,
-	            'phone' => $q->phone,
-	            'remarks' => $q->remarks,
-	            'created_by' => $q->account_name,
-	            'options' => '
-	                <a href="' . base_url('outgoing/view_quotation/' . $q->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
+
+	        if($modal){
+	        	$option = '
+	                <a href="Javascript:select_quotatation(' . $q->id . ');"   >
+	                    <i class="fa fa-download"></i> Select
+	                </a> | 
+	                <a target="_blank" href="' . base_url('outgoing/print_quotation/' . $q->id) . '">
+	                    <i class="fa fa-print"></i> Print
+	                </a>
+	                ';
+	        }else{
+	        	$option = '
+	                <a href="' . base_url('outgoing/view_quotation/' . $q->id) . '"   >
 	                    <i class="fa fa-eye"></i> View
 	                </a> | 
 	                <a href="' . base_url('outgoing/edit_quotation/' . $q->id) . '">
@@ -651,7 +805,21 @@ class Outgoing extends CI_Controller {
 	                </a> | 
 	                <a target="_blank" href="' . base_url('outgoing/print_quotation/' . $q->id) . '">
 	                    <i class="fa fa-print"></i> Print
-	                </a>'
+	                </a>'; 
+	        }
+
+	        $data[] = [
+	        	'id'=>$q->id,
+	            'date_created' => date('M d, Y', strtotime($q->date_created)),
+	            'valid_until' => $q->valid_until ? date('M d, Y', strtotime($q->valid_until)) : '',
+	            'quotation_no' => $qn,
+	            'plate_no' => $q->plate_no,
+	            'vin' => $q->vin,
+	            'client_name' => @$q->client_name,
+	            'phone' => $q->phone,
+	            'remarks' => $q->remarks,
+	            'created_by' => $q->account_name,
+	            'options' => $option
 	        ];
 	    }
 
@@ -665,6 +833,129 @@ class Outgoing extends CI_Controller {
 	}
 
 
+	public function issuance_ajax($modal = '')
+	{
+	    // Get DataTables parameters
+	    $start = $this->input->get('start');
+	    $length = $this->input->get('length');
+	    $search = $this->input->get('search')['value'];
+
+	    // Count total records
+	    $this->db->from('issuance');
+	    $recordsTotal = $this->db->count_all_results();
+
+	    // Main query with joins
+	    $this->db->select("q.*, 
+	    	q.id as id,  
+	    	c.name AS client_name, 
+	    	a.name AS account_name,
+	    	e.title as pay_type");
+	    $this->db->from('issuance q');
+	    $this->db->join('clients c', 'q.customer_id = c.id', 'left');
+	    $this->db->join('account a', 'q.user_id = a.id', 'left');
+	    $this->db->join('fm_payment_type e', 'q.pay_type_id = e.id', 'left');
+
+	    // Apply search filter if any
+	    if (!empty($search)) {
+	        $this->db->group_start();
+	        $this->db->like('q.plate_no', $search);
+	        $this->db->or_like('q.vin', $search);
+	        $this->db->or_like('e.title', $search);
+	        $this->db->or_like('c.name', $search);
+	        $this->db->or_like('q.phone', $search);
+	        $this->db->or_like('q.remarks', $search);
+	        $this->db->or_like("CONCAT('SO', LPAD(q.id, 6, '0'))", $search);
+	        $this->db->group_end();
+	    }
+	    $this->db->where('q.deleted', 0);
+
+	    $recordsFiltered = $this->db->count_all_results('', false); // for filtered count
+
+	    // Apply limit and offset
+	    $this->db->order_by('q.id', 'DESC');
+	    $this->db->limit($length, $start);
+	    $query = $this->db->get();
+	    $quotations = $query->result();
+
+	    $data = [];
+	    foreach ($quotations as $q) {
+	        $qn = 'SO' . sprintf("%06d", $q->id);
+
+	        if($modal){
+	        	$option = '
+	                <a href="Javascript:select_quotatation(' . $q->id . ');"   >
+	                    <i class="fa fa-download"></i> Select
+	                </a> | 
+	                <a target="_blank" href="' . base_url('outgoing/print_issuance/' . $q->id) . '">
+	                    <i class="fa fa-print"></i> Print
+	                </a>
+	                ';
+	        }else{
+	        	$option = '
+	                <a href="' . base_url('outgoing/view_issuance/' . $q->id) . '"   >
+	                    <i class="fa fa-eye"></i> View
+	                </a> | 
+	                <a href="' . base_url('outgoing/edit_issuance/' . $q->id) . '">
+	                    <i class="fa fa-edit"></i> Edit
+	                </a> | 
+	                <a href="javascript:prompt_delete(\'Delete\', \'Delete Sales Order # ' . $qn . '?\', \'' . base_url('outgoing/delete_issuance/' . $q->id) . '\', \'tr' . $q->id . '\')">
+	                    <i class="fa fa-trash"></i> Delete
+	                </a> | 
+	                <a target="_blank" href="' . base_url('outgoing/print_issuance/' . $q->id) . '">
+	                    <i class="fa fa-print"></i> Print
+	                </a>'; 
+	        }
+
+	        $data[] = [
+	        	'id'=>$q->id,
+	            'date_created' => date('M d, Y', strtotime($q->date_created)),
+	            'pay_type' => $q->pay_type,
+	            'sales_order_no' => $qn,
+	            'plate_no' => $q->plate_no,
+	            'vin' => $q->vin,
+	            'client_name' => @$q->client_name,
+	            'phone' => $q->phone,
+	            'remarks' => $q->remarks,
+	            'created_by' => $q->account_name,
+	            'options' => $option
+	        ];
+	    }
+
+	    // Return JSON in DataTables format
+	    echo json_encode([
+	        'draw' => intval($this->input->get('draw')),
+	        'recordsTotal' => $recordsTotal,
+	        'recordsFiltered' => $recordsFiltered,
+	        'data' => $data
+	    ]);
+	}
+
+	public function delete_quotation(int $id)
+	{
+		$model = $this->core->global_query(3,'issuance_quotation', $id); 
+
+		if($model['result']){ 
+
+			$this->db->where('issuance_quotation_id',$id)->update('issuance_quotation_items',[
+				'deleted'=>1,
+				'deleted_by'=>$this->session->user_id,
+				'date_deleted'=>date('Y-m-d H:i')
+			]);
+			
+			echo 1;
+			//$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
+			  
+		}else{
+
+			echo 0;
+			//$this->session->set_flashdata("error","error saving.");
+
+		}
+
+		die();
+	}
+
+
 	public function edit_quotation($id){
 	
 		$module = $this->system_menu;
@@ -673,13 +964,29 @@ class Outgoing extends CI_Controller {
 		$module['map_link']   = "outgoing->edit_quotation";   
 	
 		$module['quotation'] = $this->core->load_core_data('issuance_quotation',$id);
-		$module['items'] = $this->core->load_core_data('issuance_quotation_items');
+ 		
+ 		$this->db->where('issuance_quotation_id',$id);
+		$this->db->select('
+			i.id as id, 
+			i.qty as qty, 
+			i.retail_price as retail_price, 
+			i.inventory_id as inventory_id, 
+			inv.qty as qoh, 
+			i.unit_cost_price as unit_cost_price,
+			i.discount_percentage as discount_percentage, 
+			i.discount_amount as discount_amount, 
+			inv.item_code, 
+			inv.item_name, 
+			b.title as brand'); 
+        $this->db->from('issuance_quotation_items i');  
+        $this->db->join('inventory inv', 'i.inventory_id=inv.id', 'left');
+        $this->db->join('fm_item_brand b', 'inv.item_brand_id=b.id', 'left');  
+		$module['items'] = $this->db->get()->result(); 
 
 		if($module['quotation']->vehicle_id){
 			$module['vehicles'] = $this->core->load_core_data('vehicles',$module['quotation']->vehicle_id);
 		}
-		
-
+		 
 		if($module['quotation']->customer_id){
 			$module['clients'] = $this->core->load_core_data('clients',$module['quotation']->customer_id);  
 		}
@@ -695,12 +1002,306 @@ class Outgoing extends CI_Controller {
 		$module['models'] = $result['maintenance_data'];
 		
 		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
-		$module['manufacturers'] = $result['maintenance_data'];
+		$module['manufacturers'] = $result['maintenance_data']; 
 
-		$module['customers'] = $this->core->load_core_data('clients');
+		$module['user'] = $this->core->load_core_data('account',$module['quotation']->user_id);
 		
 		$this->load->view('admin/index',$module);
 
+	}
+
+	public function update_quotation(int $qid){
+
+		if(@$this->input->post('items',TRUE)){
+ 			
+ 			if($this->input->post('vehicle_id',TRUE)){
+ 				$vh = $this->db->select('customer_id')->get_where('vehicles',['id'=>$this->input->post('vehicle_id',TRUE)])->row();
+ 				$_POST['customer_id'] = @$vh->customer_id;
+ 			}
+
+			$result = $this->core->global_query(2,'issuance_quotation',$qid); 
+  
+			if($result['result']){ 
+  
+				$this->db->where('issuance_quotation_id',$qid)->update('issuance_quotation_items',[
+					'deleted'=>1,
+					'date_deleted'=>date("Y-m-d"),
+					'deleted_by'=>$this->session->user_id
+				]);
+ 				
+ 				$vehicle_id = @$this->input->post('vehicle_id',TRUE);
+ 				$customer_id = @$this->input->post('customer_id',TRUE);
+
+		    	foreach ($this->input->post('items',TRUE) as $iid => $val) {
+	 
+		    		if($this->input->post('qty'.$iid,TRUE) > 0 && $this->input->post('discount_amount'.$iid,TRUE)<=($this->input->post('qty'.$iid,TRUE)*$this->input->post('retail_price'.$iid,TRUE))){
+
+		    			$inventory_id = $this->input->post('inventory_id'.$iid,TRUE); 
+
+	    				$has = 1;
+
+	    				if(@$this->input->post('ex_inventory_id'.$iid,TRUE)){
+
+	    					$tid = $this->input->post('ex_inventory_id'.$iid,TRUE);
+
+					    	$this->db->where('id',$tid)->update('issuance_quotation_items',[
+								'deleted'=>0,
+								'date_deleted'=>null,
+								'deleted_by'=>null,  
+								'vehicle_id' => $vehicle_id,
+								'customer_id' => $customer_id,
+								'qoh' => $this->input->post('qoh'.$iid,TRUE),
+								'qty' => $this->input->post('qty'.$iid,TRUE),
+								'unit_cost_price' => $this->input->post('unit_cost_price'.$iid,TRUE), 
+								'supplier_price' => $this->input->post('supplier_price'.$iid,TRUE), 
+								'retail_price' => $this->input->post('retail_price'.$iid,TRUE), 
+								'inventory_id' => $inventory_id,
+								'discount_percentage' => $this->input->post('discount_percentage'.$iid,TRUE),
+								'discount_amount' => $this->input->post('discount_amount'.$iid,TRUE)
+							]); 
+
+	    				}else{
+	    				
+					    	$this->db->insert('issuance_quotation_items',[
+								'date_created' => date('Y-m-d H:i'),
+								'user_id' => $this->session->user_id, 
+								'issuance_quotation_id' => $qid,   
+								'vehicle_id' => $vehicle_id,
+								'customer_id' => $customer_id,
+								'qoh' => $this->input->post('qoh'.$iid,TRUE),
+								'qty' => $this->input->post('qty'.$iid,TRUE),
+								'unit_cost_price' => $this->input->post('unit_cost_price'.$iid,TRUE), 
+								'supplier_price' => $this->input->post('supplier_price'.$iid,TRUE), 
+								'retail_price' => $this->input->post('retail_price'.$iid,TRUE), 
+								'inventory_id' => $inventory_id,
+								'discount_percentage' => $this->input->post('discount_percentage'.$iid,TRUE),
+								'discount_amount' => $this->input->post('discount_amount'.$iid,TRUE)
+							]); 
+
+					    }
+	  
+					}
+
+				}
+
+			}
+
+		}
+
+		if(@$has == 1){
+
+			$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
+			  
+		}else{
+
+			$this->session->set_flashdata("error","error saving.");
+			 
+		}
+
+		redirect("outgoing/edit_quotation/".$qid,"refresh");
+		//redirect("outgoing/edit_quotation/".$qid,"refresh");	
+	}
+
+
+	public function update_issuance(int $qid){
+
+		if(@$this->input->post('items',TRUE)){
+ 			
+ 			if($this->input->post('vehicle_id',TRUE)){
+ 				$vh = $this->db->select('customer_id')->get_where('vehicles',['id'=>$this->input->post('vehicle_id',TRUE)])->row();
+ 				$_POST['customer_id'] = @$vh->customer_id;
+ 			}
+
+			$result = $this->core->global_query(2,'issuance',$qid); 
+  
+			if($result['result']){ 
+  
+				$this->db->where('issuance_id',$qid)->update('issuance_items',[
+					'deleted'=>1,
+					'date_deleted'=>date("Y-m-d"),
+					'deleted_by'=>$this->session->user_id
+				]);
+ 				
+ 				$vehicle_id = @$this->input->post('vehicle_id',TRUE);
+ 				$customer_id = @$this->input->post('customer_id',TRUE);
+
+		    	foreach ($this->input->post('items',TRUE) as $iid => $val) {
+	 
+		    		if($this->input->post('qty'.$iid,TRUE) > 0 && $this->input->post('discount_amount'.$iid,TRUE)<=($this->input->post('qty'.$iid,TRUE)*$this->input->post('retail_price'.$iid,TRUE))){
+
+		    			$inventory_id = $this->input->post('inventory_id'.$iid,TRUE); 
+
+	    				$has = 1;
+
+	    				if(@$this->input->post('ex_inventory_id'.$iid,TRUE)){
+
+	    					$tid = $this->input->post('ex_inventory_id'.$iid,TRUE);
+
+					    	$this->db->where('id',$tid)->update('issuance_items',[
+								'deleted'=>0,
+								'date_deleted'=>null,
+								'deleted_by'=>null,  
+								'vehicle_id' => $vehicle_id,
+								'customer_id' => $customer_id,
+								'qoh' => $this->input->post('qoh'.$iid,TRUE),
+								'qty' => $this->input->post('qty'.$iid,TRUE),
+								'unit_cost_price' => $this->input->post('unit_cost_price'.$iid,TRUE), 
+								'supplier_price' => $this->input->post('supplier_price'.$iid,TRUE), 
+								'retail_price' => $this->input->post('retail_price'.$iid,TRUE), 
+								'inventory_id' => $inventory_id,
+								'discount_percentage' => $this->input->post('discount_percentage'.$iid,TRUE),
+								'discount_amount' => $this->input->post('discount_amount'.$iid,TRUE)
+							]); 
+
+	    				}else{
+	    				
+					    	$this->db->insert('issuance_items',[
+								'date_created' => date('Y-m-d H:i'),
+								'user_id' => $this->session->user_id, 
+								'issuance_id' => $qid,   
+								'vehicle_id' => $vehicle_id,
+								'customer_id' => $customer_id,
+								'qoh' => $this->input->post('qoh'.$iid,TRUE),
+								'qty' => $this->input->post('qty'.$iid,TRUE),
+								'unit_cost_price' => $this->input->post('unit_cost_price'.$iid,TRUE), 
+								'supplier_price' => $this->input->post('supplier_price'.$iid,TRUE), 
+								'retail_price' => $this->input->post('retail_price'.$iid,TRUE), 
+								'inventory_id' => $inventory_id,
+								'discount_percentage' => $this->input->post('discount_percentage'.$iid,TRUE),
+								'discount_amount' => $this->input->post('discount_amount'.$iid,TRUE)
+							]); 
+
+					    }
+	  
+					}
+
+				}
+
+			}
+
+		}
+
+		if(@$has == 1){
+
+			$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
+			  
+		}else{
+
+			$this->session->set_flashdata("error","error saving.");
+			 
+		}
+
+		redirect("outgoing/edit_issuance/".$qid,"refresh");
+		//redirect("outgoing/edit_quotation/".$qid,"refresh");	
+	}
+
+
+	public function view_quotation($id){
+	
+		$module = $this->system_menu;
+  
+		$module['module'] = "outgoing/view_quotation";
+		$module['map_link']   = "outgoing->view_quotation";   
+	
+		$module['quotation'] = $this->core->load_core_data('issuance_quotation',$id);
+ 		
+ 		$this->db->where('issuance_quotation_id',$id);
+		$this->db->select('
+			i.id as id, 
+			i.qty as qty, 
+			i.retail_price as retail_price, 
+			i.inventory_id as inventory_id, 
+			inv.qty as qoh, 
+			i.unit_cost_price as unit_cost_price,
+			i.discount_percentage as discount_percentage, 
+			i.discount_amount as discount_amount, 
+			inv.item_code, 
+			inv.item_name, 
+			b.title as brand'); 
+        $this->db->from('issuance_quotation_items i');  
+        $this->db->join('inventory inv', 'i.inventory_id=inv.id', 'left');
+        $this->db->join('fm_item_brand b', 'inv.item_brand_id=b.id', 'left');  
+		$module['items'] = $this->db->get()->result(); 
+
+		if($module['quotation']->vehicle_id){
+			$module['vehicles'] = $this->core->load_core_data('vehicles',$module['quotation']->vehicle_id);
+		}
+		 
+		if($module['quotation']->customer_id){
+			$module['clients'] = $this->core->load_core_data('clients',$module['quotation']->customer_id);  
+		}
+
+		$result = $this->admin_model->load_filemaintenance('fm_payment_type');
+		$module['payment_type'] = $result['maintenance_data'];
+
+		if($module['quotation']->vehicle_id){
+			$module['vehicle'] = $this->core->load_core_data('vehicles',$module['quotation']->vehicle_id);
+		}
+		
+		$result = $this->admin_model->load_filemaintenance('fm_models');
+		$module['models'] = $result['maintenance_data'];
+		
+		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+		$module['manufacturers'] = $result['maintenance_data']; 
+
+		$module['user'] = $this->core->load_core_data('account',$module['quotation']->user_id);
+		
+		$this->load->view('admin/index',$module);
+
+	}
+
+	public function print_quotation(int $id){
+
+		$module['quotation'] = $this->core->load_core_data('issuance_quotation',$id);
+ 		
+ 		$this->db->where('issuance_quotation_id',$id);
+		$this->db->select('
+			i.id as id, 
+			i.qty as qty, 
+			i.retail_price as retail_price, 
+			i.inventory_id as inventory_id, 
+			inv.qty as qoh, 
+			i.unit_cost_price as unit_cost_price,
+			i.discount_percentage as discount_percentage, 
+			i.discount_amount as discount_amount, 
+			inv.item_code, 
+			inv.item_name, 
+			b.title as brand'); 
+        $this->db->from('issuance_quotation_items i');  
+        $this->db->join('inventory inv', 'i.inventory_id=inv.id', 'left');
+        $this->db->join('fm_item_brand b', 'inv.item_brand_id=b.id', 'left');  
+		$module['items'] = $this->db->get()->result(); 
+
+		if($module['quotation']->vehicle_id){
+			$module['vehicles'] = $this->core->load_core_data('vehicles',$module['quotation']->vehicle_id);
+		}
+		 
+		if($module['quotation']->customer_id){
+			$module['clients'] = $this->core->load_core_data('clients',$module['quotation']->customer_id);  
+		}
+
+		$result = $this->admin_model->load_filemaintenance('fm_payment_type');
+		$module['payment_type'] = $result['maintenance_data'];
+
+		if($module['quotation']->vehicle_id){
+			$module['vehicle'] = $this->core->load_core_data('vehicles',$module['quotation']->vehicle_id);
+		}
+		
+		$result = $this->admin_model->load_filemaintenance('fm_models');
+		$module['models'] = $result['maintenance_data'];
+		
+		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+		$module['manufacturers'] = $result['maintenance_data']; 
+
+		$module['user'] = $this->core->load_core_data('account',$module['quotation']->user_id);
+		
+		$this->load->view('admin/outgoing/print_quotation',$module);
+
+	}
+
+	public function load_quotation_list()
+	{
+		$this->load->view('admin/outgoing/load_quotation_list');
 	}
 
 	public function issue_batch(){
@@ -808,7 +1409,7 @@ class Outgoing extends CI_Controller {
 		$module['module'] = "outgoing/issuance_records";
 		$module['map_link']   = "outgoing->issuance_records";   
 
-		$module['quotations'] = $this->core->load_core_data('issuance_quotation','','','confirmed=1'); 
+		$module['issuances'] = $this->core->load_core_data('issuance','','','confirmed=1'); 
 		$module['users'] = $this->core->load_core_data('account','','id,name'); 
   
 		$this->load->view('admin/index',$module);
@@ -859,89 +1460,7 @@ class Outgoing extends CI_Controller {
 		$this->load->view('admin/index',$module);
 	}
 
-	public function update_issuance(int $i_id){
-
-		if(@$this->input->post('items',TRUE)){ 
-
-			$ii = $this->db->get_where('issuance',['id'=>$i_id])->row();
-			
-			$jo = $this->db->get_where('projects_job_order',['id'=>$ii->job_order_id])->row();
- 
-			$i = $this->db->where('id',$i_id)->update('issuance',[
-				'date_modified' => date('Y-m-d H:i'),
-				'modified_by' => $this->session->user_id, 
-				'ref_no' => $this->input->post('ref_no',TRUE),  
-				'issued_date' => $this->input->post('issued_date',TRUE), 
-				'remarks' => $this->input->post('remarks',TRUE)
-			]); 
-
-		    $this->db->where('issuance_id',$i_id)->update('issuance_items',[
-		    	'deleted'=>1,
-				'date_deleted' => date('Y-m-d H:i'),
-				'deleted_by' => $this->session->user_id
-			]);
-
-			$iii = $this->db->select('inventory_id')->get_where('issuance_items',['issuance_id' => $i_id])->result(); 
-			if(@$iii){
-				foreach ($iii as $rs) {
-					$arr_iii[$rs->inventory_id] = $rs->inventory_id;
-				}
-			} 
-	    	
-	    	foreach ($this->input->post('items',TRUE) as $inv_id => $val) {
-
-	    		$has = 1;
-  
-	    		if($this->input->post('qty'.$inv_id,TRUE) > 0 && !@$arr_iii[$inv_id] && $inv_id){
-
-			    	$this->db->insert('issuance_items',[
-						'date_created' => date('Y-m-d H:i'),
-						'user_id' => $this->session->user_id, 
-						'issuance_id' => $i_id,
-						'project_id' => $jo->project_id,
-						'job_order_id' => $jo->id,
-						'qty' => $this->input->post('qty'.$inv_id,TRUE),
-						'unit_cost_price' => $this->input->post('unit_cost_price'.$inv_id,TRUE), 
-						'unit_cost_price_orig' => $this->input->post('unit_cost_price'.$inv_id,TRUE),  
-						'remarks' => $this->input->post('remarks'.$inv_id,TRUE) 
-					]);
-					 	
-				}elseif($this->input->post('qty'.$inv_id,TRUE) > 0 && @$arr_iii[$inv_id] && $inv_id){
-
-					$this->db->where('id',$this->input->post('iii_id'.$inv_id,TRUE));
-			    	$this->db->update('issuance_items',[
-						'date_modified' => date('Y-m-d H:i'),
-						'modified_by' => $this->session->user_id, 
-						'job_order_id' => $jo->id,
-						'project_id' => $jo->project_id,
-						'qty' => $this->input->post('qty'.$inv_id,TRUE),
-						'unit_cost_price' => $this->input->post('unit_cost_price'.$inv_id,TRUE), 
-						'unit_cost_price_orig' => $this->input->post('unit_cost_price'.$inv_id,TRUE),  
-						'remarks' => $this->input->post('remarks'.$inv_id,TRUE),
-				    	'deleted'=>0,
-						'date_deleted' => '',
-						'deleted_by' => ''
-					]);
-
-				}
-
-			}
-
-		}
-
-		if(@$has == 1){
-
-			$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
-			  
-		}else{
-
-			$this->session->set_flashdata("error","error saving.");
-			 
-		}
-
-		redirect("outgoing/edit_ii/".$i_id,"refresh");	
-	}
-
+	 
 
 	public function view_ii(int $id,$from_confirm=0){
 

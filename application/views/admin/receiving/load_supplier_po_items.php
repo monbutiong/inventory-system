@@ -109,7 +109,7 @@ select, .text_input {
               <td><?=$rs->item_code?>
                 
                 <input type="hidden" id="inv_id<?=$rs->id?>" value="<?=$rs->inventory_id?>"> 
-                <input type="hidden" id="inventory_vehicle_id<?=$rs->id?>" value="<?=$rs->inventory_vehicle_id?>">  
+                <input type="hidden" id="vehicle_id<?=$rs->id?>" value="<?=$rs->vehicle_id?>">  
 
               </td>
               

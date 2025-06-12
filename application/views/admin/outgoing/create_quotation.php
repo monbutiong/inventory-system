@@ -58,19 +58,25 @@
               <label >Vehicle Records <a class="load_modal_details" href="<?php echo base_url('outgoing/add_vehicle');?>" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
                   (<i class="fa fa-plus"></i>)
                 </a></label>
+              <input type="hidden" id="default_vehicle_id" >   
               <select id="vehicle_select" name="vehicle_id" class="form-control select2-ajax-vehicle">
                   <option value="">Select vehicle</option>
                 </select>
             </div>  
  
-            <div class="col-md-3 col-sm-12 mb-3">
+            <div class="col-md-2 col-sm-12 mb-3">
               <label >Plate No.</label>
               <input type="text" readonly name="plate_no" id="plate_no" class="form-control ridonly">
             </div>
 
-            <div class="col-md-3 col-sm-12 mb-3">
+            <div class="col-md-2 col-sm-12 mb-3">
               <label >VIN</label>
               <input type="text" readonly name="vin" id="vin" class="form-control ridonly">
+            </div> 
+
+            <div class="col-md-2 col-sm-12 mb-3">
+              <label >Attention To</label>
+              <input type="text" name="attention_to" id="attention_to" class="form-control">
             </div> 
  
             <div class="col-md-2 col-sm-12 mb-3">
@@ -122,27 +128,33 @@
               <th nowrap>Quantity</th> 
               <th>Unit Price</th>
               <th>Line Total</th>
-              <th nowrap>Discount. %</th>
-              <th nowrap>Discount. Amt.</th>
+              <th nowrap style="width: 100px;">Discount. %</th>
+              <th nowrap style="width: 100px;">Discount. Amt.</th>
               <th>Net Total</th>  
               <th style="width:10px;"></th>  
             </tr>
             </thead> 
             <tbody>
               <tr id="item_selector">
-                <td colspan="9" class="add_item">
+                <td colspan="8" class="add_item">
                   <div class="select2-ajax-so" style="width: 100%;"> 
                 </td>
-                <td align="right"><b style="font-size: 15px;">Total</b></td>
-                <td colspan="2" align="right">
+                <td align="right"> 
+                  <input type="number" id="discount_percentage_total" name="discount_percentage_total" value="" class="form-control" style="width: 100px; text-align: right;" step="any">
+                </td>
+                <td align="right"> 
+                  <input type="text" readonly id="discount_amount_total" name="discount_amount_total" value="" class="form-control ridonly" style="width: 100px; text-align: right;" step="any">
+                </td>
+                <td  align="right">
                 	QAR <b id="grand_total" style="font-size: 15px;"></b>
                 	<input type="hidden" id="quotation_grand_total" name="quotation_grand_total">
                 </td>
+                <td></td>
               </tr> 
             </tbody>
           </table>
           
-          <input type="hidden" name="row_counter" id="row_counter">
+          <input type="hidden" name="row_counter" id="row_counter" value="0">
 
           <input type="hidden" id="selected_ids">
            
@@ -231,6 +243,7 @@
     all-=1;
     var excluded_ids = $('#selected_ids').val();
     $('#selected_ids').val( excluded_ids.replace("("+id+")-", "") );
+    computeGrandTotal();
   }
 
    

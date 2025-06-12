@@ -285,6 +285,16 @@ select, .text_input {
 </div>
 <script type="text/javascript">
 
+  $('#supplier_price, #unit_cost_price, #retail_price').on('blur', function () {
+      let val = parseFloat($(this).val());
+      
+      if (!isNaN(val)) {
+        $(this).val(val.toFixed(2));
+      } else {
+        $(this).val('0.00');
+      }
+    });
+  
   $(document).ready(function () {
     function autoResize($textarea) {
       $textarea.height(0); // Reset height

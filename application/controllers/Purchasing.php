@@ -252,7 +252,7 @@ class Purchasing extends CI_Controller {
 	    $json = [];
 
 	    // Check if specific IDs are passed (single or multiple)
-	    $ids = $this->input->post('id', TRUE);  // can be a single id or array or CSV string
+	    $ids = @$this->input->post('id', TRUE);  // can be a single id or array or CSV string
 
 	    $is_new = $this->input->post('is_new', TRUE);
 
@@ -311,7 +311,9 @@ class Purchasing extends CI_Controller {
 	    if ($this->input->post('excluded_ids', TRUE)) {
 	        foreach (explode('-', $this->input->post('excluded_ids', TRUE)) as $id) {
 	            if ($id) {
-	                $excluded_id .= ' AND id != ' . $id;
+	            	$id = str_replace('(','',$id);
+	            	$id = str_replace(')','',$id);
+	                $excluded_id .= ' AND i.id != ' . $id;
 	            }
 	        }
 	    }

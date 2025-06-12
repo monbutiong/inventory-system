@@ -15,7 +15,7 @@
     cursor: pointer;
   }
 </style>
-<form method="post" name="quotation_form" id="quotation_form" action="<?=base_url('outgoing/update_quotation/'.$quotation->id)?>" enctype="multipart/form-data">
+<form method="post" name="so_form" id="so_form" action="<?=base_url('outgoing/update_issuance/'.$issuance->id)?>" enctype="multipart/form-data">
   <div class="row">
     <div class="col-md-12">
       <div class="x_panel">
@@ -23,18 +23,22 @@
           <div class="page-title-box">
             <div class="row align-items-center">
               <div class="col-md-8">
-                <h6 class="page-title">Edit Quotation #<?='QO' . sprintf("%06d", $quotation->id)?></h6>
-                Date: <?=date('M d, Y', strtotime($quotation->date_created))?><br/>
+                <h6 class="page-title">Edit Sales Order #<?='SO' . sprintf("%06d", $issuance->id)?></h6>
+                Date: <?=date('M d, Y', strtotime($issuance->date_created))?><br/>
                 Filed by: <?=$user->name?>
-                <input type="hidden" id="customer_type" name="customer_type" class="form-control ridonly" value="<?=$quotation->customer_type?>">
+                <?php if(@$issuance->quotation_id){?>
+                  <br/>
+                From Quotation <a target="_blank" href="<?=base_url('outgoing/print_quotation/' . $issuance->quotation_id)?>">#<?='QO' . sprintf("%06d", $issuance->quotation_id)?></a>
+                <?php }?>
+                <input type="hidden" id="customer_type" name="customer_type" class="form-control ridonly" value="<?=$issuance->customer_type?>">
               </div>
               <div class="col-md-4">
                 <div class="float-end d-none d-md-block">
                    
 
-                  <a class="btn btn-md btn-success" href="Javascript:update_quotation()"><i class="fa fa-save"></i> Update Quotation</a>
+                  <a class="btn btn-md btn-success" href="Javascript:update_issuance()"><i class="fa fa-save"></i> Update Sales Order</a>
                   
-                  <a class="btn btn-md btn-warning" href="<?=base_url("outgoing/view_quotation/".$quotation->id)?>">Go Back</a>
+                  <a class="btn btn-md btn-warning" href="<?=base_url("outgoing/view_issuance/".$issuance->id)?>">Go Back</a>
                 </div>
               </div>
             </div>
@@ -45,10 +49,14 @@
           <div class="card">
             <div class="card-body">
               <div class="row">
-                <div class="col-md-2 mb-3">
-
-                  <label>Valid Until</label>
-                  <input type="date" name="valid_until" id="valid_until" class="form-control" value="<?=$quotation->valid_until?>">
+                <div class="col-md-2 col-sm-12 mb-3">
+                  <label >Payment Type</label>
+                  <select name="pay_type_id" id="pay_type_id" class="form-control">
+                    <?php if(@$payment_type){
+                      foreach($payment_type as $rs){?>
+                    <option <?php if($rs->id == @$issuance->pay_type_id){echo 'selected';}?> value="<?=$rs->id?>"><?=$rs->title?></option>
+                    <?php }}  ?>
+                  </select>
                 </div>
 
                 <div class="col-md-4 col-sm-12 mb-3 select2">
@@ -68,31 +76,26 @@
                    	}
                    }
                    ?> 
-                   <input type="hidden" id="default_vehicle_id" value="<?=$quotation->vehicle_id?>">
+                   <input type="hidden" id="default_vehicle_id" value="<?=$issuance->vehicle_id?>">
                    <input type="hidden" id="default_vehicle_val" value="<?=@$arr_manu[$vehicle->manufacturer_id].' '.@$arr_mod[$vehicle->vehicle_model_id]?>"> 
                   <select id="vehicle_select" name="vehicle_id" class="form-control select2-ajax-vehicle">
-                  	<option value="<?=@$quotation->vehicle_id?>" selected="selected"><?=@$arr_manu[$vehicle->manufacturer_id].' '.@$arr_mod[$vehicle->vehicle_model_id]?></option> 
+                  	<option value="<?=@$issuance->vehicle_id?>" selected="selected"><?=@$arr_manu[$vehicle->manufacturer_id].' '.@$arr_mod[$vehicle->vehicle_model_id]?></option> 
                     </select>
                 </div>
 
-                <div class="col-md-2 mb-3">
+                <div class="col-md-3 mb-3">
                   <label>Plate No.</label>
-                  <input type="text" readonly name="plate_no" id="plate_no" class="form-control ridonly" value="<?=$quotation->plate_no?>">
+                  <input type="text" readonly name="plate_no" id="plate_no" class="form-control ridonly" value="<?=$issuance->plate_no?>">
                 </div>
 
-                <div class="col-md-2 mb-3">
+                <div class="col-md-3 mb-3">
                   <label>VIN</label>
-                  <input type="text" readonly name="vin" id="vin" class="form-control ridonly" value="<?=$quotation->vin?>">
-                </div>
-
-                <div class="col-md-2 col-sm-12 mb-3">
-                  <label >Attention To</label>
-                  <input type="text" value="<?=$quotation->attention_to?>" name="attention_to" id="attention_to" class="form-control">
+                  <input type="text" readonly name="vin" id="vin" class="form-control ridonly" value="<?=$issuance->vin?>">
                 </div> 
 
                 <div class="col-md-2 mb-3">
                   <label>QID</label>
-                  <input type="text" name="customer_qid_bus" id="customer_qid_bus" readonly class="form-control ridonly" value="<?=$quotation->customer_qid_bus?>">
+                  <input type="text" name="customer_qid_bus" id="customer_qid_bus" readonly class="form-control ridonly" value="<?=$issuance->customer_qid_bus?>">
                 </div>
 
                 <div id="customer_fixed" class="col-md-4 col-sm-12 mb-3" style="display: none;">
@@ -105,18 +108,18 @@
                       (<i class="fa fa-plus"></i>)
                     </a></label>
                   <select name="customer_id" id="customer_id" class="form-control select2_so_customer">
-                     <option value="<?=@$quotation->customer_id?>" selected="selected"><?=$clients->name?></option> 
+                     <option value="<?=@$issuance->customer_id?>" selected="selected"><?=$clients->name?></option> 
                   </select>
                 </div>
 
                 <div class="col-md-2 mb-3">
                   <label>Contact Number</label>
-                  <input type="text" name="phone" id="phone" value="<?=$quotation->phone?>" class="form-control">
+                  <input type="text" name="phone" id="phone" value="<?=$issuance->phone?>" class="form-control">
                 </div>
 
                 <div class="col-md-4 mb-3">
                   <label>Remarks</label>
-                  <input type="text" name="remarks" id="remarks" value="<?=$quotation->remarks?>" class="form-control">
+                  <input type="text" name="remarks" id="remarks" value="<?=$issuance->remarks?>" class="form-control">
                 </div>
               </div>
 
@@ -224,14 +227,14 @@
                                 <div class="select2-ajax-so" style="width: 100%;"> 
                               </td>
                               <td align="right"> 
-                                <input type="number" id="discount_percentage_total" name="discount_percentage_total" value="<?=@$quotation->discount_percentage_total?>" class="form-control" style="width: 100px; text-align: right;" step="any">
+                                <input type="number" id="discount_percentage_total" name="discount_percentage_total" value="<?=@$issuance->discount_percentage_total?>" class="form-control" style="width: 100px; text-align: right;" step="any">
                               </td>
                               <td align="right"> 
-                                <input type="text" readonly id="discount_amount_total" name="discount_amount_total" value="<?=@$quotation->discount_amount_total?>" class="form-control ridonly" style="width: 100px; text-align: right;" step="any">
+                                <input type="text" readonly id="discount_amount_total" name="discount_amount_total" value="<?=@$issuance->discount_amount_total?>" class="form-control ridonly" style="width: 100px; text-align: right;" step="any">
                               </td>
                               <td  align="right">
-                                QAR <b id="grand_total" style="font-size: 15px;"><?=@$quotation->quotation_grand_total ? number_format($quotation->quotation_grand_total) : '0.00'?></b>
-                                <input type="hidden" id="quotation_grand_total" name="quotation_grand_total" value="<?=@$quotation->quotation_grand_total ? round($quotation->quotation_grand_total) : 0?>">
+                                QAR <b id="grand_total" style="font-size: 15px;"><?=@$issuance->issuance_grand_total ? number_format($issuance->issuance_grand_total) : '0.00'?></b>
+                                <input type="hidden" id="issuance_grand_total" name="issuance_grand_total" value="<?=@$issuance->issuance_grand_total ? round($issuance->issuance_grand_total) : 0?>">
                               </td>
                               <td></td>
                             </tr> 
@@ -265,13 +268,13 @@
     })
   }
 
-  function update_quotation(){ 
+  function update_issuance(){ 
 
   	if($('#grand_total').html().trim()=='0.00' || $('#grand_total').html().trim()==''){
 
   		Swal.fire({
   		    title: "Invalid",
-  		    text: "Quotation total amount invalid",
+  		    text: "Sales Order total amount invalid",
   		    icon: "error",
   		    timer: 1500,
   		    showConfirmButton: false
@@ -280,8 +283,8 @@
   	}else{
 
 	    Swal.fire({
-	        title: "Update Quotation?",
-	        text: "Do you want to update this quotation now?",
+	        title: "Update Sales Order?",
+	        text: "Do you want to update this sales order now?",
 	        icon: "question",
 	        showCancelButton: true,
 	        confirmButtonText: "Yes, save it",
@@ -295,11 +298,11 @@
 	                timer: 1000,
 	                showConfirmButton: false
 	            });
-	            document.quotation_form.submit();
+	            document.so_form.submit();
 	        } else {
 	            Swal.fire({
 	                title: "Cancelled",
-	                text: "The quotation was not saved.",
+	                text: "The sales order was not saved.",
 	                icon: "error",
 	                timer: 1500,
 	                showConfirmButton: false

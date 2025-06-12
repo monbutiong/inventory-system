@@ -442,6 +442,36 @@
                      }
 
 
+                   if($('#quotation_datatable_modal').length){ 
+                       $('#quotation_datatable_modal').DataTable({
+                           processing: true,
+                           serverSide: true,
+                           ajax: {
+                               url: "<?= base_url('outgoing/quotations_ajax/modal') ?>",
+                               type: "GET"
+                           },
+                           columns: [
+                               { data: "date_created" },
+                               { data: "valid_until" },
+                               { data: "quotation_no" },
+                               { data: "plate_no" },
+                               { data: "vin" },
+                               { data: "client_name" },
+                               { data: "phone" },
+                               { data: "remarks" },
+                               { data: "created_by" },
+                               { data: "options", orderable: false, searchable: false }
+                           ], 
+                           createdRow: function (row, data, dataIndex) {
+                               // Use `data.id` from your PHP data array
+                               $(row).attr('id', 'tr' + data.id);
+                               $('td:last', row).css('white-space', 'nowrap');
+                           }
+                       });
+
+                 }
+
+
 
                  });
              }, 300);
@@ -684,7 +714,7 @@
 
 
 
-            var c = 0;
+            var c = $('#row_counter').val();
             var all = 0; 
              
             $(".select2-ajax-so").select2({
@@ -766,11 +796,11 @@
               var e_obj = e.params.data;
               c += 1;
 
-              if (e_obj.qty <= 0) {
-                alert("Error: The item quantity is zero, and cannot be issued.");
-                $('.add_item .select2-container .select2-selection__rendered').html('(+) add more item');
-                return;
-              }
+              // if (e_obj.qty <= 0) {
+              //   alert("Error: The item quantity is zero, and cannot be issued.");
+              //   $('.add_item .select2-container .select2-selection__rendered').html('(+) add more item');
+              //   return;
+              // }
  
               if ($('#added' + e_obj.id).length == 0) {
                 $('#selected_ids').val($('#selected_ids').val() + '(' + e_obj.id + ')-');
@@ -872,7 +902,147 @@
               $('#row_counter').val(c);
               $(".select2-ajax-so").val('').trigger('change');
             });
+
+            let pctInputTimeout;
+            $('#discount_percentage_total').on('input', function () {
+                clearTimeout(pctInputTimeout);
+                const $this = $(this);
+
+                pctInputTimeout = setTimeout(() => {
+                    const globalDiscountPct = parseFloat($this.val()) || 0;
+
+                    $('tr.data-row').each(function () {
+                        const $row = $(this);
+                        const $discountPctInput = $row.find('[name^="discount_percentage"]');
+                        const $discountAmtInput = $row.find('[name^="discount_amount"]');
+
+                        $discountPctInput.val(globalDiscountPct.toFixed(2));
+                        $discountAmtInput.blur();
+                        $discountPctInput.trigger('input');
+                    });
+
+                    computeGrandTotal();
+                }, 500); // 0.5 second delay after last input
+            });
+
+ 
+
+            function calculateRowTotal(row) {
+              if (isUpdating) return;
+              isUpdating = true;
+
+              const qty = parseFloat(row.find('[name^="qty"]').val()) || 0;
+
+              //const price = parseFloat(row.find('.default_price').text()) || 0;
+
+              var price = parseFloat(row.find('[name^="retail_price"]').val()) || 0;
+              
+              console.log('Cust:',$('#customer_number').html());
+              console.log('price:',price);
+
+              const $discountPctInput = row.find('[name^="discount_percentage"]');
+              const $discountAmtInput = row.find('[name^="discount_amount"]');
+
+              let discountPct = parseFloat($discountPctInput.val()) || 0;
+              let discountAmt = parseFloat($discountAmtInput.val()) || 0;
+
+              const totalBeforeDiscount = qty * price;
+              row.find('td:nth-child(8)').html(`<span>${formatMoney(totalBeforeDiscount)}</span>`);
+
+              // Clear discount amount if discount percentage is zero
+              if (discountPct === 0 && !$discountAmtInput.is(':focus')) {
+                discountAmt = 0;
+                $discountAmtInput.val('0.00');
+              }
+
+              // When quantity changes, recalculate amount if % is available and amount not manually being edited
+              if (!$discountAmtInput.is(':focus') && discountPct > 0) {
+                discountAmt = totalBeforeDiscount * (discountPct / 100);
+                $discountAmtInput.val(discountAmt.toFixed(2));
+              }
+
+              // Vice versa: when amount is edited, update percent
+              if ($discountAmtInput.is(':focus') && !$discountPctInput.is(':focus')) {
+                discountPct = (discountAmt / totalBeforeDiscount) * 100;
+                $discountPctInput.val(discountPct.toFixed(2));
+              }
+
+              // When % is edited, update amount
+              if ($discountPctInput.is(':focus') && !$discountAmtInput.is(':focus')) {
+                discountAmt = totalBeforeDiscount * (discountPct / 100);
+                $discountAmtInput.val(discountAmt.toFixed(2));
+              }
+
+              const rowTotal = totalBeforeDiscount - discountAmt;
+              row.find('#row_grand_total').text(formatMoney(rowTotal));
+
+              isUpdating = false;
+              return rowTotal;
+            }
+
+            function computeGrandTotal() {
+                let grandTotal = 0;
+                let totalDiscountPercentage = 0;
+                let totalDiscountAmount = 0;
+                let rowCount = 0;
+
+                $('tr[id^="tr"]').each(function () {
+                    const $row = $(this);
+                    grandTotal += calculateRowTotal($row);
+
+                    const discountPct = parseFloat($row.find('[name^="discount_percentage"]').val()) || 0;
+                    const discountAmt = parseFloat($row.find('[name^="discount_amount"]').val()) || 0;
+
+                    totalDiscountPercentage += discountPct;
+                    totalDiscountAmount += discountAmt;
+                    rowCount++;
+                });
+
+                if($('#issuance_grand_total').length){
+                    $('#issuance_grand_total').val(grandTotal.toFixed(2));
+                }else{
+                    $('#quotation_grand_total').val(grandTotal.toFixed(2));
+                }
+                
+                $('#grand_total').html(formatMoney(grandTotal));
+
+                if (rowCount > 0) {
+                    const avgDiscountPct = totalDiscountPercentage / rowCount;
+
+                    // Don't overwrite if the user is actively typing
+                    if (!$('#discount_percentage_total').is(':focus')) {
+                        $('#discount_percentage_total').val(avgDiscountPct.toFixed(2));
+                    }
+
+                    if (!$('#discount_amount_total').is(':focus')) {
+                        $('#discount_amount_total').val(totalDiscountAmount.toFixed(2));
+                    }
+                }
+            }
+
+
+
           }
+
+          $(document).ready(function () {
+            // Attach event listeners to preloaded rows
+            $('#so_table .data-row').each(function () {
+              const $row = $(this);
+
+              // Attach input event listener
+              $row.find('[name^="qty"], [name^="discount_amount"], [name^="discount_percentage"]').on('input', function () {
+                calculateRowTotal($row);
+                computeGrandTotal();
+              });
+
+              // Initial calculation (optional, in case values are not 0)
+              calculateRowTotal($row);
+            });
+
+            // Also run grand total on load
+            computeGrandTotal();
+          });
+
 
           if ($('.select2_so_customer').length) {
             $('.select2_so_customer').select2({
@@ -997,10 +1167,11 @@
 
                     let markup = `
                       <div style="display:flex; align-items:center; gap:10px;">
-                        <img src="${data.image}" style="width:60px; height:60px; object-fit:cover; border-radius:4px;" />
+                        <img src="${data.image}" style="width:70px; height:70px; object-fit:cover; border-radius:4px;" />
                         <div>
                           <div><strong>${data.manufacturer} ${data.model} - ${data.model_year}</strong></div>
                           <div style="font-size:12px; color:#555;"><i>Plate No.: ${data.plate_no}</i></div>
+                          <div style="font-size:12px; color:#555;"><i>VIN: ${data.vin}</i></div>
                           <div style="font-size:12px; color:#555;"><i>Owner: ${data.customer}</div>
                           <div style="font-size:12px; color:#555;"><i>${data.customer_type_label}: ${data.customer_qid_bus}</i></div>
                         </div>
@@ -1010,9 +1181,10 @@
                   },
 
                   templateSelection: function (data) {
-                     
+
+
                         if($('#default_vehicle_id').val() == ''){
-    
+        
                             $('#vin').val(data.vin);
                             $('#plate_no').val(data.plate_no);
 
@@ -1054,65 +1226,9 @@
             return parseFloat(value || 0).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
           }
 
-          function calculateRowTotal(row) {
-            if (isUpdating) return;
-            isUpdating = true;
+          
 
-            const qty = parseFloat(row.find('[name^="qty"]').val()) || 0;
-
-            //const price = parseFloat(row.find('.default_price').text()) || 0;
-
-            var price = parseFloat(row.find('[name^="retail_price"]').val()) || 0;
-            
-            console.log('Cust:',$('#customer_number').html());
-            console.log('price:',price);
-
-            const $discountPctInput = row.find('[name^="discount_percentage"]');
-            const $discountAmtInput = row.find('[name^="discount_amount"]');
-
-            let discountPct = parseFloat($discountPctInput.val()) || 0;
-            let discountAmt = parseFloat($discountAmtInput.val()) || 0;
-
-            const totalBeforeDiscount = qty * price;
-            row.find('td:nth-child(8)').html(`<span>${formatMoney(totalBeforeDiscount)}</span>`);
-
-            // When quantity changes, recalculate amount if % is available and amount not manually being edited
-            if (!$discountAmtInput.is(':focus') && discountPct > 0) {
-              discountAmt = totalBeforeDiscount * (discountPct / 100);
-              $discountAmtInput.val(discountAmt.toFixed(2));
-            }
-
-            // Vice versa: when amount is edited, update percent
-            if ($discountAmtInput.is(':focus') && !$discountPctInput.is(':focus')) {
-              discountPct = (discountAmt / totalBeforeDiscount) * 100;
-              $discountPctInput.val(discountPct.toFixed(2));
-            }
-
-            // When % is edited, update amount
-            if ($discountPctInput.is(':focus') && !$discountAmtInput.is(':focus')) {
-              discountAmt = totalBeforeDiscount * (discountPct / 100);
-              $discountAmtInput.val(discountAmt.toFixed(2));
-            }
-
-            const rowTotal = totalBeforeDiscount - discountAmt;
-            row.find('#row_grand_total').text(formatMoney(rowTotal));
-
-            isUpdating = false;
-            return rowTotal;
-          }
-
-
-
-          function computeGrandTotal() {
-            let grandTotal = 0;
-            $('tr[id^="tr"]').each(function () {
-              grandTotal += calculateRowTotal($(this));
-            });
-
-            $('#quotation_grand_total').val(grandTotal.toFixed(2));
-            $('#grand_total').html(formatMoney(grandTotal)); // remove old total if exists 
-          }
-
+ 
 
           //=========================================================== END OF Sales ORDER
 
@@ -1140,14 +1256,47 @@
                       { data: "remarks" },
                       { data: "created_by" },
                       { data: "options", orderable: false, searchable: false }
-                  ]
+                  ], 
+                  createdRow: function (row, data, dataIndex) {
+                      // Use `data.id` from your PHP data array
+                      $(row).attr('id', 'tr' + data.id);
+                      $('td:last', row).css('white-space', 'nowrap');
+                  }
               });
 
         }
 
- 
 
+          //===Quotation Dtatable
+          if($('#issuance_datatable').length){
+              $('#issuance_datatable').DataTable({
+                  processing: true,
+                  serverSide: true,
+                  ajax: {
+                      url: "<?= base_url('outgoing/issuance_ajax') ?>",
+                      type: "GET"
+                  },
+                  columns: [
+                      { data: "date_created" },
+                      { data: "pay_type" },
+                      { data: "sales_order_no" },
+                      { data: "plate_no" },
+                      { data: "vin" },
+                      { data: "client_name" },
+                      { data: "phone" },
+                      { data: "remarks" },
+                      { data: "created_by" },
+                      { data: "options", orderable: false, searchable: false }
+                  ], 
+                  createdRow: function (row, data, dataIndex) {
+                      // Use `data.id` from your PHP data array
+                      $(row).attr('id', 'tr' + data.id);
+                      $('td:last', row).css('white-space', 'nowrap');
+                  }
+              });
 
+        }
+  
           let inventoryTable;
           
           if ($('#datatable_inventory').length) {

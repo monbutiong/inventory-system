@@ -109,7 +109,7 @@ class Receiving extends CI_Controller {
 
 		$module['rri'] = $this->core->load_core_data('receiving_items','','id,qty,po_item_id','po_id='.$id.@$not_equal);
 
-		$module['receiving'] = $this->core->load_core_data('receiving','','','po_id='.$id,1);
+		// $module['receiving'] = $this->core->load_core_data('receiving','','','po_ids='.$id,1);
 
 		$result = $this->admin_model->load_filemaintenance('fm_foreign_charges');
 		$module['fc'] = $result['maintenance_data'];
@@ -840,15 +840,15 @@ class Receiving extends CI_Controller {
 				'rr_id' => $id,
 				'date'=>date('Y-m-d H:i'),
 				'qty' => ($inv->qty + $rs->qty),
-				'ucp' => $unit_cost_price
+				'ucp' => round($unit_cost_price,2)
 			];
 
 			$this->db->where('id', @$rs->inventory_id); 
 			$this->db->update('inventory',[
 				'old_qty' => $inv->qty,
-				'old_unit_cost_price' => $inv->unit_cost_price,
+				'old_unit_cost_price' => round($inv->unit_cost_price,2),
 				'qty' => ($inv->qty + $rs->qty),
-				'unit_cost_price' => $unit_cost_price,
+				'unit_cost_price' => round($unit_cost_price,2),
 				'receiving_history'=>json_encode($receiving_history),
 				'supplier_price'=>$supplier_price
 			] );
@@ -864,7 +864,7 @@ class Receiving extends CI_Controller {
 				'qty_after' => ($inv->qty + $rs->qty), 
 				'movement_from' => 'receiving',
 				'addition' => 1,
-				'unit_cost_price' => $unit_cost_price
+				'unit_cost_price' => round($unit_cost_price,2)
 			]);
 
 		}

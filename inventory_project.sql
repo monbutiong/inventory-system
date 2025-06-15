@@ -11,7 +11,7 @@
  Target Server Version : 100427
  File Encoding         : 65001
 
- Date: 12/06/2025 18:20:28
+ Date: 15/06/2025 15:18:04
 */
 
 SET NAMES utf8mb4;
@@ -46,7 +46,7 @@ CREATE TABLE `account`  (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 1, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, '8e968b8b5c874849312f8a718b7cbe504c20ac60cbe34a9201088b3fe065c637', '2025-06-12 10:29:50');
+INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 1, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, '1db4fed46d5354cf01c16f40973c5aa1d2de76888c0f19b22e0bdca6e2eac04d', '2025-06-15 09:19:44');
 INSERT INTO `account` VALUES (37, '', NULL, '2024-05-15', 'silambu', '$2a$08$j.FhunOL0ywwPrANlITow.mveuu/bCghDmEQGlCdBxKtElgkiprMC', 1, NULL, 'Accounts', NULL, 0, 'Silambu', 0, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
@@ -90,7 +90,7 @@ CREATE TABLE `audit_trail`  (
   `log` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 137 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 141 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of audit_trail
@@ -231,6 +231,10 @@ INSERT INTO `audit_trail` VALUES (133, 2, 'login page', 'login to account.', '20
 INSERT INTO `audit_trail` VALUES (134, 2, 'login page', 'login to account.', '2025-06-12 10:29:50', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (135, 2, 'file maintenance > currency rate > update data', 'update data in currency rate , id : 3', '2025-06-12 10:48:27', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (136, 2, 'account page', 'logout to account.', '2025-06-12 17:36:41', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (137, 2, 'login page', 'login to account.', '2025-06-14 09:55:10', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (138, 2, 'login page', 'login to account.', '2025-06-15 09:19:44', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (139, 2, 'home > system user > update user roles', 'update system user restriction, user id : 2', '2025-06-15 14:25:03', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (140, 2, 'home > system user > update user roles', 'update system user restriction, user id : 2', '2025-06-15 14:28:26', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for clients
@@ -1408,13 +1412,13 @@ CREATE TABLE `inventory`  (
 -- ----------------------------
 -- Records of inventory
 -- ----------------------------
-INSERT INTO `inventory` VALUES (1, '2025-06-04', 1, 0, '', NULL, '2025-06-05 20:15:49', 2, 'PART001', 'OIL FILTER', 200, 'system', '64.8400288', '8.00', '61.990503619048', 105, '[{\"rr_id\":\"2\",\"date\":\"2025-06-07 07:35\",\"qty\":105,\"ucp\":61.99050361904762},{\"rr_id\":\"2\",\"date\":\"2025-06-07 07:37\",\"qty\":200,\"ucp\":64.8400288000002}]', NULL, '66', '[\"4\",\"6\"]', '[\"2\"]', 1, 1, 1, 'A1', 'B1', 'C1', 5, 50, '', '', '', 3, NULL);
-INSERT INTO `inventory` VALUES (2, '2025-06-04', 2, 0, '', NULL, '2025-06-04 22:18:55', 2, 'PART002', 'BRAKE PAD SET', 15, 'system', '12.00', '18.00', '10.00', 10, NULL, NULL, '66', '[\"3\",\"6\"]', '[\"2\",\"5\"]', 2, 2, 1, 'A2', 'B2', 'C2', 5, 100, 'G5gVMtpquRQwHy3WExSB.jpg', '', '', 1, NULL);
-INSERT INTO `inventory` VALUES (3, '2025-06-04', 1, 1, '2025-06-06 16:44:29', 2, '2025-06-05 19:54:59', 2, '12345678901234567890', 'AIR FILTER', 20, 'system', '3.00', '6.00', '2.50', 8, NULL, NULL, '75', '[\"4\",\"6\"]', '[\"2\",\"5\"]', 1, 3, 2, 'A3', 'B3', 'C3', 5, 80, '', '', '', 1, NULL);
-INSERT INTO `inventory` VALUES (4, '2025-06-04', 3, 0, '', NULL, '2025-06-11 05:40:51', 2, 'PART004', 'FUEL PUMP', 5, 'system', '50.00', '75.00', '45.00', 3, NULL, NULL, '457', '[\"4\",\"6\"]', '[\"2\",\"1\",\"42\"]', 2, 1, 3, 'A4', 'B4', 'C4', 2, 20, '8d1NI4JTMB6aLqzUHvVF.jpg', 'GHOckFyPv06ZL7ox1Tb2.jpg', NULL, 2, 'TES MODEL 123\r\nTEST MODEL 321\r\nTEST MODEL 456\r\nTEST MODEL 6788');
+INSERT INTO `inventory` VALUES (1, '2025-06-04', 1, 0, '', NULL, '2025-06-05 20:15:49', 2, 'PART001', 'OIL FILTER', 0, 'system', '64.8400288', '8.00', '61.990503619048', 21, '[{\"rr_id\":\"2\",\"date\":\"2025-06-07 07:35\",\"qty\":105,\"ucp\":61.99050361904762},{\"rr_id\":\"2\",\"date\":\"2025-06-07 07:37\",\"qty\":200,\"ucp\":64.8400288000002}]', '[{\"ii_id\":1,\"date\":\"2025-06-14 15:42\",\"qty\":0,\"ucp\":null},{\"ii_id\":1,\"date\":\"2025-06-14 15:43\",\"qty\":0,\"ucp\":null},{\"ii_id\":1,\"date\":\"2025-06-14 15:43\",\"qty\":0,\"ucp\":\"64.8400288\"}]', '66', '[\"4\",\"6\"]', '[\"2\"]', 1, 1, 1, 'A1', 'B1', 'C1', 5, 50, '', '', '', 3, NULL);
+INSERT INTO `inventory` VALUES (2, '2025-06-04', 2, 0, '', NULL, '2025-06-04 22:18:55', 2, 'PART002', 'BRAKE PAD SET', 0, 'system', '12.00', '18.00', '10.00', 21, NULL, '[{\"ii_id\":1,\"date\":\"2025-06-14 15:42\",\"qty\":0,\"ucp\":null},{\"ii_id\":1,\"date\":\"2025-06-14 15:43\",\"qty\":0,\"ucp\":null},{\"ii_id\":1,\"date\":\"2025-06-14 15:43\",\"qty\":0,\"ucp\":\"12.00\"}]', '66', '[\"3\",\"6\"]', '[\"2\",\"5\"]', 2, 2, 1, 'A2', 'B2', 'C2', 5, 100, 'G5gVMtpquRQwHy3WExSB.jpg', '', '', 1, NULL);
+INSERT INTO `inventory` VALUES (3, '2025-06-04', 1, 1, '2025-06-06 16:44:29', 2, '2025-06-05 19:54:59', 2, '12345678901234567890', 'AIR FILTER', 0, 'system', '3.00', '6.00', '2.50', 31, NULL, '[{\"ii_id\":1,\"date\":\"2025-06-14 15:42\",\"qty\":0,\"ucp\":null},{\"ii_id\":1,\"date\":\"2025-06-14 15:43\",\"qty\":0,\"ucp\":null},{\"ii_id\":1,\"date\":\"2025-06-14 15:43\",\"qty\":0,\"ucp\":\"3.00\"}]', '75', '[\"4\",\"6\"]', '[\"2\",\"5\"]', 1, 3, 2, 'A3', 'B3', 'C3', 5, 80, '', '', '', 1, NULL);
+INSERT INTO `inventory` VALUES (4, '2025-06-04', 3, 0, '', NULL, '2025-06-11 05:40:51', 2, 'PART004', 'FUEL PUMP', 0, 'system', '50.00', '75.00', '45.00', 41, NULL, '[{\"ii_id\":1,\"date\":\"2025-06-14 15:42\",\"qty\":0,\"ucp\":null},{\"ii_id\":1,\"date\":\"2025-06-14 15:43\",\"qty\":0,\"ucp\":null},{\"ii_id\":1,\"date\":\"2025-06-14 15:43\",\"qty\":0,\"ucp\":\"50.00\"}]', '457', '[\"4\",\"6\"]', '[\"2\",\"1\",\"42\"]', 2, 1, 3, 'A4', 'B4', 'C4', 2, 20, '8d1NI4JTMB6aLqzUHvVF.jpg', 'GHOckFyPv06ZL7ox1Tb2.jpg', NULL, 2, 'TES MODEL 123\r\nTEST MODEL 321\r\nTEST MODEL 456\r\nTEST MODEL 6788');
 INSERT INTO `inventory` VALUES (5, '2025-06-04', 2, 0, '', NULL, '2025-06-04 21:38:12', 2, 'PART005', 'HEADLIGHT ASSEMBLY', 7, 'system', '30.00', '45.00', '28.00', 4, NULL, NULL, '775', '[\"1\",\"4\",\"6\",\"7\"]', '[\"2\",\"5\"]', 3, 2, 2, 'A5', 'B5', 'C5', 3, 30, '', '', '', 3, NULL);
-INSERT INTO `inventory` VALUES (6, '2025-06-04', 1, 0, '', NULL, '2025-06-05 16:58:19', 2, 'PART006', 'ALTERNATOR', 3, 'system', '75.00', '120.00', '70.00', 2, NULL, NULL, '500', '[\"1\",\"4\"]', '[\"2\",\"5\"]', 1, 2, 1, 'A6', 'B6', 'C6', 1, 10, NULL, NULL, NULL, 3, NULL);
-INSERT INTO `inventory` VALUES (7, '2025-06-04', 2, 0, '', NULL, '2025-06-05 16:57:35', 2, 'PART007', 'SPARK PLUG', 50, 'system', '2.00', '4.00', '1.80', 30, NULL, NULL, '760', NULL, '[\"2\",\"5\"]', 2, 3, 2, 'A7', 'B7', 'C7', 20, 200, NULL, NULL, NULL, 4, NULL);
+INSERT INTO `inventory` VALUES (6, '2025-06-04', 1, 0, '', NULL, '2025-06-05 16:58:19', 2, 'PART006', 'ALTERNATOR', 0, 'system', '75.00', '120.00', '70.00', 31, NULL, '[{\"ii_id\":1,\"date\":\"2025-06-14 15:42\",\"qty\":0,\"ucp\":null},{\"ii_id\":1,\"date\":\"2025-06-14 15:43\",\"qty\":0,\"ucp\":null},{\"ii_id\":1,\"date\":\"2025-06-14 15:43\",\"qty\":0,\"ucp\":\"75.00\"}]', '500', '[\"1\",\"4\"]', '[\"2\",\"5\"]', 1, 2, 1, 'A6', 'B6', 'C6', 1, 10, NULL, NULL, NULL, 3, NULL);
+INSERT INTO `inventory` VALUES (7, '2025-06-04', 2, 0, '', NULL, '2025-06-05 16:57:35', 2, 'PART007', 'SPARK PLUG', 0, 'system', '2.00', '4.00', '1.80', 21, NULL, '[{\"ii_id\":1,\"date\":\"2025-06-14 15:42\",\"qty\":0,\"ucp\":null},{\"ii_id\":1,\"date\":\"2025-06-14 15:43\",\"qty\":0,\"ucp\":null},{\"ii_id\":1,\"date\":\"2025-06-14 15:43\",\"qty\":0,\"ucp\":\"2.00\"}]', '760', NULL, '[\"2\",\"5\"]', 2, 3, 2, 'A7', 'B7', 'C7', 20, 200, NULL, NULL, NULL, 4, NULL);
 INSERT INTO `inventory` VALUES (8, '2025-06-04', 3, 0, '', NULL, '2025-06-05 20:16:10', 2, 'PART008', 'TIMING BELT', 8, 'system', '20.00', '35.00', '18.00', 5, NULL, NULL, '56', '[\"2\",\"3\"]', '[\"2\",\"5\",\"7\"]', 3, 1, 3, 'A8', 'B8', 'C8', 3, 25, '', '', '', 5, NULL);
 INSERT INTO `inventory` VALUES (9, '2025-06-04', 1, 0, '', NULL, '2025-06-05 16:38:50', 2, 'PART009', 'BATTERY 12V', 6, 'system', '40.00', '60.00', '38.00', 4, NULL, NULL, '54', NULL, '[\"2\",\"5\"]', 1, 1, 1, 'A9', 'B9', 'C9', 2, 15, '3FEXY2vnOb6gHBNjpUxT.png', NULL, NULL, 4, NULL);
 INSERT INTO `inventory` VALUES (10, '2025-06-04', 2, 0, '', NULL, '2025-06-05 17:10:58', 2, 'PART010', 'RADIATOR HOSE', 25, 'system', '6.00', '10.00', '5.50', 12, NULL, NULL, '67', NULL, '[\"2\",\"5\"]', 2, 2, 3, 'A10', 'B10', 'C10', 10, 60, NULL, NULL, NULL, 6, NULL);
@@ -1531,26 +1535,46 @@ CREATE TABLE `inventory_movement`  (
   `quotation_id` int NULL DEFAULT NULL,
   `ref_id` int NULL DEFAULT NULL,
   `project_id` int NULL DEFAULT NULL,
-  `inventory_quotation_id` int NULL DEFAULT NULL,
+  `issuance_item_id` int NULL DEFAULT NULL,
   `unit_cost_price` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `vehicle_id` int NULL DEFAULT NULL,
+  `retail_price` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `customer_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC STATS_AUTO_RECALC = 1;
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC STATS_AUTO_RECALC = 1;
 
 -- ----------------------------
 -- Records of inventory_movement
 -- ----------------------------
-INSERT INTO `inventory_movement` VALUES (1, '2025-06-06 17:04', 2, 0, '', NULL, '', NULL, 37, 'new', '0', '0', '0', 1, NULL, NULL, NULL, NULL, '345', NULL);
-INSERT INTO `inventory_movement` VALUES (2, '2025-06-06 17:06', 2, 0, '', NULL, '', NULL, 38, 'new', '0', '4345', '4345', 1, NULL, NULL, NULL, NULL, '324', NULL);
-INSERT INTO `inventory_movement` VALUES (3, '2025-06-06 20:17', 2, 0, '', NULL, '', NULL, 39, 'new', '0', '43', '43', 1, NULL, NULL, NULL, NULL, '433', NULL);
-INSERT INTO `inventory_movement` VALUES (4, '2025-06-07 07:37', 2, 0, '', NULL, '', NULL, 1, 'receiving', '105', '95', '200', 1, NULL, 2, NULL, NULL, '64.8400288', 3);
-INSERT INTO `inventory_movement` VALUES (5, '2025-06-11 05:15', 2, 0, '', NULL, '', NULL, 40, 'new', '0', '34', '34', 1, NULL, NULL, NULL, NULL, '554', NULL);
-INSERT INTO `inventory_movement` VALUES (6, '2025-06-11 05:20', 2, 0, '', NULL, '', NULL, 41, 'new', '0', '45', '45', 1, NULL, NULL, NULL, NULL, '666', NULL);
-INSERT INTO `inventory_movement` VALUES (7, '2025-06-11 05:22', 2, 0, '', NULL, '', NULL, 42, 'new', '0', '435', '435', 1, NULL, NULL, NULL, NULL, '4553', NULL);
-INSERT INTO `inventory_movement` VALUES (8, '2025-06-12 15:46', 2, 0, '', NULL, '', NULL, 43, 'new', '0', '0', '0', 1, NULL, NULL, NULL, NULL, '0', NULL);
-INSERT INTO `inventory_movement` VALUES (9, '2025-06-12 15:47', 2, 0, '', NULL, '', NULL, 44, 'new', '0', '0', '0', 1, NULL, NULL, NULL, NULL, '0', NULL);
-INSERT INTO `inventory_movement` VALUES (10, '2025-06-12 15:56', 2, 0, '', NULL, '', NULL, 43, 'receiving', '0', '1', '1', 1, NULL, 3, NULL, NULL, '430.3557741', 0);
-INSERT INTO `inventory_movement` VALUES (11, '2025-06-12 15:56', 2, 0, '', NULL, '', NULL, 44, 'receiving', '0', '1', '1', 1, NULL, 3, NULL, NULL, '346.5342413', 0);
+INSERT INTO `inventory_movement` VALUES (1, '2025-06-06 17:04', 2, 0, '', NULL, '', NULL, 37, 'new', '0', '0', '0', 1, NULL, NULL, NULL, NULL, '345', NULL, NULL, NULL);
+INSERT INTO `inventory_movement` VALUES (2, '2025-06-06 17:06', 2, 0, '', NULL, '', NULL, 38, 'new', '0', '4345', '4345', 1, NULL, NULL, NULL, NULL, '324', NULL, NULL, NULL);
+INSERT INTO `inventory_movement` VALUES (3, '2025-06-06 20:17', 2, 0, '', NULL, '', NULL, 39, 'new', '0', '43', '43', 1, NULL, NULL, NULL, NULL, '433', NULL, NULL, NULL);
+INSERT INTO `inventory_movement` VALUES (4, '2025-06-07 07:37', 2, 0, '', NULL, '', NULL, 1, 'receiving', '105', '95', '200', 1, NULL, 2, NULL, NULL, '64.8400288', 3, NULL, NULL);
+INSERT INTO `inventory_movement` VALUES (5, '2025-06-11 05:15', 2, 0, '', NULL, '', NULL, 40, 'new', '0', '34', '34', 1, NULL, NULL, NULL, NULL, '554', NULL, NULL, NULL);
+INSERT INTO `inventory_movement` VALUES (6, '2025-06-11 05:20', 2, 0, '', NULL, '', NULL, 41, 'new', '0', '45', '45', 1, NULL, NULL, NULL, NULL, '666', NULL, NULL, NULL);
+INSERT INTO `inventory_movement` VALUES (7, '2025-06-11 05:22', 2, 0, '', NULL, '', NULL, 42, 'new', '0', '435', '435', 1, NULL, NULL, NULL, NULL, '4553', NULL, NULL, NULL);
+INSERT INTO `inventory_movement` VALUES (8, '2025-06-12 15:46', 2, 0, '', NULL, '', NULL, 43, 'new', '0', '0', '0', 1, NULL, NULL, NULL, NULL, '0', NULL, NULL, NULL);
+INSERT INTO `inventory_movement` VALUES (9, '2025-06-12 15:47', 2, 0, '', NULL, '', NULL, 44, 'new', '0', '0', '0', 1, NULL, NULL, NULL, NULL, '0', NULL, NULL, NULL);
+INSERT INTO `inventory_movement` VALUES (10, '2025-06-12 15:56', 2, 0, '', NULL, '', NULL, 43, 'receiving', '0', '1', '1', 1, NULL, 3, NULL, NULL, '430.3557741', 0, NULL, NULL);
+INSERT INTO `inventory_movement` VALUES (11, '2025-06-12 15:56', 2, 0, '', NULL, '', NULL, 44, 'receiving', '0', '1', '1', 1, NULL, 3, NULL, NULL, '346.5342413', 0, NULL, NULL);
+INSERT INTO `inventory_movement` VALUES (12, '2025-06-14 15:42', 2, 0, '', NULL, '', NULL, 1, 'sales order', '21', '21', '0', 0, NULL, 1, NULL, 1, NULL, NULL, '8.00', NULL);
+INSERT INTO `inventory_movement` VALUES (13, '2025-06-14 15:42', 2, 0, '', NULL, '', NULL, 3, 'sales order', '31', '31', '0', 0, NULL, 1, NULL, 2, NULL, NULL, '6.00', NULL);
+INSERT INTO `inventory_movement` VALUES (14, '2025-06-14 15:42', 2, 0, '', NULL, '', NULL, 4, 'sales order', '41', '41', '0', 0, NULL, 1, NULL, 3, NULL, NULL, '75.00', NULL);
+INSERT INTO `inventory_movement` VALUES (15, '2025-06-14 15:42', 2, 0, '', NULL, '', NULL, 2, 'sales order', '21', '21', '0', 0, NULL, 1, NULL, 4, NULL, NULL, '18.00', NULL);
+INSERT INTO `inventory_movement` VALUES (16, '2025-06-14 15:42', 2, 0, '', NULL, '', NULL, 6, 'sales order', '31', '31', '0', 0, NULL, 1, NULL, 5, NULL, NULL, '120.00', NULL);
+INSERT INTO `inventory_movement` VALUES (17, '2025-06-14 15:42', 2, 0, '', NULL, '', NULL, 7, 'sales order', '21', '21', '0', 0, NULL, 1, NULL, 6, NULL, NULL, '4.00', NULL);
+INSERT INTO `inventory_movement` VALUES (18, '2025-06-14 15:43', 2, 0, '', NULL, '', NULL, 1, 'sales order', '21', '21', '0', 0, NULL, 1, NULL, 1, NULL, 7, '8.00', 9);
+INSERT INTO `inventory_movement` VALUES (19, '2025-06-14 15:43', 2, 0, '', NULL, '', NULL, 3, 'sales order', '31', '31', '0', 0, NULL, 1, NULL, 2, NULL, 7, '6.00', 9);
+INSERT INTO `inventory_movement` VALUES (20, '2025-06-14 15:43', 2, 0, '', NULL, '', NULL, 4, 'sales order', '41', '41', '0', 0, NULL, 1, NULL, 3, NULL, 7, '75.00', 9);
+INSERT INTO `inventory_movement` VALUES (21, '2025-06-14 15:43', 2, 0, '', NULL, '', NULL, 2, 'sales order', '21', '21', '0', 0, NULL, 1, NULL, 4, NULL, 7, '18.00', 9);
+INSERT INTO `inventory_movement` VALUES (22, '2025-06-14 15:43', 2, 0, '', NULL, '', NULL, 6, 'sales order', '31', '31', '0', 0, NULL, 1, NULL, 5, NULL, 7, '120.00', 9);
+INSERT INTO `inventory_movement` VALUES (23, '2025-06-14 15:43', 2, 0, '', NULL, '', NULL, 7, 'sales order', '21', '21', '0', 0, NULL, 1, NULL, 6, NULL, 7, '4.00', 9);
+INSERT INTO `inventory_movement` VALUES (24, '2025-06-14 15:43', 2, 0, '', NULL, '', NULL, 1, 'sales order', '21', '21', '0', 0, NULL, 1, NULL, 1, '64.8400288', 7, '8.00', 9);
+INSERT INTO `inventory_movement` VALUES (25, '2025-06-14 15:43', 2, 0, '', NULL, '', NULL, 3, 'sales order', '31', '31', '0', 0, NULL, 1, NULL, 2, '3.00', 7, '6.00', 9);
+INSERT INTO `inventory_movement` VALUES (26, '2025-06-14 15:43', 2, 0, '', NULL, '', NULL, 4, 'sales order', '41', '41', '0', 0, NULL, 1, NULL, 3, '50.00', 7, '75.00', 9);
+INSERT INTO `inventory_movement` VALUES (27, '2025-06-14 15:43', 2, 0, '', NULL, '', NULL, 2, 'sales order', '21', '21', '0', 0, NULL, 1, NULL, 4, '12.00', 7, '18.00', 9);
+INSERT INTO `inventory_movement` VALUES (28, '2025-06-14 15:43', 2, 0, '', NULL, '', NULL, 6, 'sales order', '31', '31', '0', 0, NULL, 1, NULL, 5, '75.00', 7, '120.00', 9);
+INSERT INTO `inventory_movement` VALUES (29, '2025-06-14 15:43', 2, 0, '', NULL, '', NULL, 7, 'sales order', '21', '21', '0', 0, NULL, 1, NULL, 6, '2.00', 7, '4.00', 9);
 
 -- ----------------------------
 -- Table structure for inventory_quotation
@@ -1687,7 +1711,7 @@ CREATE TABLE `issuance`  (
 -- ----------------------------
 -- Records of issuance
 -- ----------------------------
-INSERT INTO `issuance` VALUES (1, '2025-06-12 22:51:03', 2, 0, '', NULL, '2025-06-12 23:08:54', 2, NULL, 'TEST 2 , A TEST QUOTETATION 2. TEST 2 , A TEST QUOTETATION 2', NULL, NULL, 0, NULL, NULL, 9, 7, 0, '3453345', 'C092793409007170927X2', '458844', NULL, '364622325', '6048.92', NULL, 2, 1, '17.20', '1562.08');
+INSERT INTO `issuance` VALUES (1, '2025-06-12 22:51:03', 2, 0, '', NULL, '2025-06-12 23:08:54', 2, NULL, 'TEST 2 , A TEST QUOTETATION 2. TEST 2 , A TEST QUOTETATION 2', NULL, NULL, 1, '2025-06-14 15:43', 2, 9, 7, 0, '3453345', 'C092793409007170927X2', '458844', NULL, '364622325', '6048.92', NULL, 2, 1, '17.20', '1562.08');
 
 -- ----------------------------
 -- Table structure for issuance_items
@@ -1898,7 +1922,7 @@ CREATE TABLE `menu_main`  (
   `url_link` varchar(225) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `act` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of menu_main
@@ -1906,7 +1930,7 @@ CREATE TABLE `menu_main`  (
 INSERT INTO `menu_main` VALUES (1, 'Admin', NULL, 13, 'fa-star', 'admin/home', 1);
 INSERT INTO `menu_main` VALUES (2, 'System Parameters', NULL, 11, 'fa-table', 'admin/file_maintenance', 0);
 INSERT INTO `menu_main` VALUES (3, 'Purchasing', NULL, 4, 'fa-file', 'admin/employee', 1);
-INSERT INTO `menu_main` VALUES (5, 'Reports', NULL, 9, 'fa-print', 'admin/fixed_asset_transfer', 0);
+INSERT INTO `menu_main` VALUES (5, 'Reports', NULL, 9, 'fa-print', 'admin/fixed_asset_transfer', 1);
 INSERT INTO `menu_main` VALUES (11, 'Parts Inventory', NULL, 8, 'fa-cubes', NULL, 1);
 INSERT INTO `menu_main` VALUES (13, 'Accounts', NULL, 10, 'fa-money', NULL, 0);
 INSERT INTO `menu_main` VALUES (15, 'HR', NULL, 8, 'fa-users', NULL, 0);
@@ -1948,22 +1972,18 @@ INSERT INTO `menu_sub` VALUES (45, 'Backup Databse', NULL, 6, NULL, 'bib/backup_
 INSERT INTO `menu_sub` VALUES (50, 'Inventory Masterlist', NULL, 1, NULL, 'inventory/masterlist', 1, 11, 1, 'Inventory');
 INSERT INTO `menu_sub` VALUES (52, 'UOM Conversion', NULL, 5, NULL, 'inventory/uom', 0, 11, 0, NULL);
 INSERT INTO `menu_sub` VALUES (57, 'Inventory Adjustments', NULL, 6, NULL, 'inventory/adjustments', 0, 11, 0, NULL);
-INSERT INTO `menu_sub` VALUES (58, 'Inventory Movements', NULL, 3, NULL, 'reports/inventory_movement', 0, 5, 0, NULL);
+INSERT INTO `menu_sub` VALUES (58, 'Inventory Movements', NULL, 3, NULL, 'reports/inventory_movement', 1, 5, 0, NULL);
 INSERT INTO `menu_sub` VALUES (68, 'Upload', NULL, 7, NULL, 'inventory/upload', 0, 11, 0, NULL);
 INSERT INTO `menu_sub` VALUES (69, 'Projects', NULL, 3, NULL, 'admin/projects', 1, 13, 0, NULL);
 INSERT INTO `menu_sub` VALUES (76, 'Masterlist (Breakdown)', NULL, 2, NULL, 'inventory/inventory_masterlist_breakdown', 0, 11, 0, NULL);
-INSERT INTO `menu_sub` VALUES (82, 'Inventory Report', NULL, 2, NULL, 'reports/inventory_report', 0, 5, 0, NULL);
+INSERT INTO `menu_sub` VALUES (82, 'Inventory Report', NULL, 2, NULL, 'reports/inventory_report', 1, 5, 0, NULL);
 INSERT INTO `menu_sub` VALUES (83, 'Employee', NULL, 4, NULL, 'employee/master_list', 0, 1, 0, NULL);
-INSERT INTO `menu_sub` VALUES (84, 'Monitoring Of Materials', NULL, 1, NULL, 'reports/monitoring_of_materials', 1, 5, 0, NULL);
 INSERT INTO `menu_sub` VALUES (86, 'Accounts Payable', NULL, 1, NULL, 'accounts/accounts_payable', 1, 13, 0, NULL);
-INSERT INTO `menu_sub` VALUES (88, 'P.O. From Supplier Monitoring', NULL, 2, NULL, 'reports/po_supplier_monitoring', 1, 5, 0, NULL);
 INSERT INTO `menu_sub` VALUES (89, 'Customer Masterlist', NULL, 1, NULL, 'crm/clients', 1, 17, 1, 'Clients Information');
 INSERT INTO `menu_sub` VALUES (92, 'Inventory Monitoring', NULL, 2, NULL, 'inventory/inventory_monitoring', 0, 11, 0, NULL);
 INSERT INTO `menu_sub` VALUES (94, 'Inventory - Project', NULL, 3, NULL, 'inventory/inventory_project', 0, 11, 0, NULL);
 INSERT INTO `menu_sub` VALUES (95, 'Overhead Cost', NULL, 10, NULL, 'accounts/overhead_cost', 1, 13, 0, NULL);
-INSERT INTO `menu_sub` VALUES (96, 'Overhead Cost', NULL, 3, NULL, 'reports/overhead_cost', 1, 5, 0, NULL);
 INSERT INTO `menu_sub` VALUES (98, 'Inventory Cost', NULL, 4, NULL, 'inventory/inventory_cost', 0, 11, 0, NULL);
-INSERT INTO `menu_sub` VALUES (100, 'Manpower', NULL, 11, NULL, 'reports/manpower', 1, 5, 0, NULL);
 INSERT INTO `menu_sub` VALUES (105, 'Unconfirmed P.O.', NULL, 3, NULL, 'purchasing/po_list', 1, 3, 0, NULL);
 INSERT INTO `menu_sub` VALUES (106, 'Create P.O.', NULL, 2, NULL, 'purchasing/create_po', 1, 3, 1, 'Purchase Order Transactions');
 INSERT INTO `menu_sub` VALUES (107, 'Confirmed P.O.', NULL, 5, NULL, 'purchasing/confirmed_po', 1, 3, 0, NULL);
@@ -2406,7 +2426,7 @@ CREATE TABLE `user_roles`  (
   `sub_menu_id` int NOT NULL,
   `main_menu_id` int NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2432 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2506 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_roles
@@ -2860,40 +2880,42 @@ INSERT INTO `user_roles` VALUES (2289, 37, 136, 20);
 INSERT INTO `user_roles` VALUES (2290, 37, 142, 20);
 INSERT INTO `user_roles` VALUES (2291, 37, 143, 11);
 INSERT INTO `user_roles` VALUES (2292, 37, 144, 11);
-INSERT INTO `user_roles` VALUES (2398, 2, 8, 1);
-INSERT INTO `user_roles` VALUES (2399, 2, 45, 1);
-INSERT INTO `user_roles` VALUES (2400, 2, 50, 11);
-INSERT INTO `user_roles` VALUES (2401, 2, 89, 17);
-INSERT INTO `user_roles` VALUES (2402, 2, 105, 3);
-INSERT INTO `user_roles` VALUES (2403, 2, 106, 3);
-INSERT INTO `user_roles` VALUES (2404, 2, 107, 3);
-INSERT INTO `user_roles` VALUES (2405, 2, 108, 16);
-INSERT INTO `user_roles` VALUES (2406, 2, 109, 16);
-INSERT INTO `user_roles` VALUES (2407, 2, 110, 18);
-INSERT INTO `user_roles` VALUES (2408, 2, 111, 18);
-INSERT INTO `user_roles` VALUES (2409, 2, 114, 16);
-INSERT INTO `user_roles` VALUES (2410, 2, 115, 16);
-INSERT INTO `user_roles` VALUES (2411, 2, 116, 16);
-INSERT INTO `user_roles` VALUES (2412, 2, 117, 16);
-INSERT INTO `user_roles` VALUES (2413, 2, 118, 18);
-INSERT INTO `user_roles` VALUES (2414, 2, 119, 19);
-INSERT INTO `user_roles` VALUES (2415, 2, 123, 3);
-INSERT INTO `user_roles` VALUES (2416, 2, 124, 19);
-INSERT INTO `user_roles` VALUES (2417, 2, 126, 19);
-INSERT INTO `user_roles` VALUES (2418, 2, 127, 21);
-INSERT INTO `user_roles` VALUES (2419, 2, 128, 21);
-INSERT INTO `user_roles` VALUES (2420, 2, 129, 21);
-INSERT INTO `user_roles` VALUES (2421, 2, 130, 21);
-INSERT INTO `user_roles` VALUES (2422, 2, 131, 11);
-INSERT INTO `user_roles` VALUES (2423, 2, 132, 11);
-INSERT INTO `user_roles` VALUES (2424, 2, 133, 11);
-INSERT INTO `user_roles` VALUES (2425, 2, 141, 16);
-INSERT INTO `user_roles` VALUES (2426, 2, 143, 11);
-INSERT INTO `user_roles` VALUES (2427, 2, 144, 11);
-INSERT INTO `user_roles` VALUES (2428, 2, 145, 11);
-INSERT INTO `user_roles` VALUES (2429, 2, 146, 18);
-INSERT INTO `user_roles` VALUES (2430, 2, 147, 18);
-INSERT INTO `user_roles` VALUES (2431, 2, 148, 18);
+INSERT INTO `user_roles` VALUES (2470, 2, 8, 1);
+INSERT INTO `user_roles` VALUES (2471, 2, 45, 1);
+INSERT INTO `user_roles` VALUES (2472, 2, 50, 11);
+INSERT INTO `user_roles` VALUES (2473, 2, 58, 5);
+INSERT INTO `user_roles` VALUES (2474, 2, 82, 5);
+INSERT INTO `user_roles` VALUES (2475, 2, 89, 17);
+INSERT INTO `user_roles` VALUES (2476, 2, 105, 3);
+INSERT INTO `user_roles` VALUES (2477, 2, 106, 3);
+INSERT INTO `user_roles` VALUES (2478, 2, 107, 3);
+INSERT INTO `user_roles` VALUES (2479, 2, 108, 16);
+INSERT INTO `user_roles` VALUES (2480, 2, 109, 16);
+INSERT INTO `user_roles` VALUES (2481, 2, 110, 18);
+INSERT INTO `user_roles` VALUES (2482, 2, 111, 18);
+INSERT INTO `user_roles` VALUES (2483, 2, 114, 16);
+INSERT INTO `user_roles` VALUES (2484, 2, 115, 16);
+INSERT INTO `user_roles` VALUES (2485, 2, 116, 16);
+INSERT INTO `user_roles` VALUES (2486, 2, 117, 16);
+INSERT INTO `user_roles` VALUES (2487, 2, 118, 18);
+INSERT INTO `user_roles` VALUES (2488, 2, 119, 19);
+INSERT INTO `user_roles` VALUES (2489, 2, 123, 3);
+INSERT INTO `user_roles` VALUES (2490, 2, 124, 19);
+INSERT INTO `user_roles` VALUES (2491, 2, 126, 19);
+INSERT INTO `user_roles` VALUES (2492, 2, 127, 21);
+INSERT INTO `user_roles` VALUES (2493, 2, 128, 21);
+INSERT INTO `user_roles` VALUES (2494, 2, 129, 21);
+INSERT INTO `user_roles` VALUES (2495, 2, 130, 21);
+INSERT INTO `user_roles` VALUES (2496, 2, 131, 11);
+INSERT INTO `user_roles` VALUES (2497, 2, 132, 11);
+INSERT INTO `user_roles` VALUES (2498, 2, 133, 11);
+INSERT INTO `user_roles` VALUES (2499, 2, 141, 16);
+INSERT INTO `user_roles` VALUES (2500, 2, 143, 11);
+INSERT INTO `user_roles` VALUES (2501, 2, 144, 11);
+INSERT INTO `user_roles` VALUES (2502, 2, 145, 11);
+INSERT INTO `user_roles` VALUES (2503, 2, 146, 18);
+INSERT INTO `user_roles` VALUES (2504, 2, 147, 18);
+INSERT INTO `user_roles` VALUES (2505, 2, 148, 18);
 
 -- ----------------------------
 -- Table structure for vehicles

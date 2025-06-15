@@ -80,6 +80,142 @@ class Receiving extends CI_Controller {
 
 	}
 
+	public function fetch_grv_data($confirmed = '')
+	{
+	    $request = $this->input->post();
+
+	    $columns = [
+	        'receiving.date_created',
+	        'receiving.id',
+	        'receiving.po_ids',
+	        'receiving.dr_number',
+	        'receiving.invoice_number',
+	        'receiving.remarks',
+	        'a.name'
+	    ];
+
+	    $this->db->select('
+	        receiving.*, 
+	        a.name as user_name,
+	        b.name as confirmed_by
+	    ');
+	    $this->db->from('receiving');
+	    $this->db->join('account a', 'a.id = receiving.user_id', 'left');
+	    $this->db->join('account b', 'b.id = receiving.confirmed_by', 'left');
+	    $this->db->where('receiving.deleted', 0);
+	    if($confirmed){	
+	    	$this->db->where('receiving.confirmed', 1);
+	    }else{
+	    	$this->db->where('receiving.confirmed', 0);
+	    }
+
+	    // Search
+	    if (!empty($request['search']['value'])) {
+	        $search = $request['search']['value'];
+	        $this->db->group_start();
+	        foreach ($columns as $i => $col) {
+	            $i === 0 ? $this->db->like($col, $search) : $this->db->or_like($col, $search);
+	        }
+	        $this->db->group_end();
+	    }
+
+	    // Ordering
+	    if (!empty($request['order'])) {
+	        $colIndex = $request['order'][0]['column'];
+	        $dir = $request['order'][0]['dir'];
+	        $this->db->order_by($columns[$colIndex], $dir);
+	    } else {
+	        $this->db->order_by('receiving.id', 'desc');
+	    }
+
+	    // Pagination
+	    if ($request['length'] != -1) {
+	        $this->db->limit($request['length'], $request['start']);
+	    }
+
+	    $query = $this->db->get();
+	    $data = [];
+
+	    foreach ($query->result() as $grv) {
+	        $grv_number = 'GV' . str_pad($grv->id, 6, '0', STR_PAD_LEFT);
+
+	        // Format po_ids from JSON to PO000001 format
+	        $po_ids_array = json_decode($grv->po_ids ?? '[]');
+	        $po_numbers = implode(', ', array_map(function($id) {
+	            return '<a target="_blank" href="'.base_url('vendor/print_po/'.$id).'">PO' . str_pad($id, 6, '0', STR_PAD_LEFT).'</a>';
+	        }, $po_ids_array));
+
+	        if($confirmed){
+	        	$option = '
+	        	     
+	        	    <a href="' . base_url('receiving/view_rr/' . $grv->id) . '"><i class="fa fa-eye"></i> View</a> | 
+	        	    <a target="_blank" href="' . base_url('receiving/print_rr/' . $grv->id) . '"><i class="fa fa-print"></i> Print</a>
+	        	';
+	        }else{
+	        	$option = '
+	        	    <a href="javascript:confirm_receiving(' . $grv->id . ', \'' . $grv_number . '\')"><i class="fa fa-check"></i> Confirm</a> |
+	        	    <a href="' . base_url('receiving/view_rr/' . $grv->id) . '"><i class="fa fa-eye"></i> View</a> |
+	        	    <a href="' . base_url('receiving/edit_rr/' . $grv->id) . '"><i class="fa fa-edit"></i> Edit</a><br>
+	        	    <a href="javascript:prompt_delete(\'Delete\', \'Delete GRV# ' . $grv->dr_number . '?\', \'' . base_url('receiving/delete_rr/' . $grv->id) . '\', \'tr' . $grv->id . '\')"><i class="fa fa-trash"></i> Delete</a> |
+	        	    <a target="_blank" href="' . base_url('receiving/print_rr/' . $grv->id) . '"><i class="fa fa-print"></i> Print</a>
+	        	';
+	        }
+
+	        $data[] = [
+	            'date_created'    => date('M d, Y', strtotime($grv->date_created)),
+	            'grv_number'      => $grv_number,
+	            'po_number'       => $po_numbers,
+	            'dr_number'       => $grv->dr_number,
+	            'invoice_number'  => $grv->invoice_number,
+	            'remarks'         => $grv->remarks,
+	            'user'            => $grv->user_name,
+	            'confirmed_by'    => $grv->confirmed_by,
+	            'date_confirmed'  => @$grv->confirmed_date ? date('M d, Y H:i', strtotime($grv->confirmed_date)) : '',
+	            'options'         => $option
+	        ];
+	    }
+
+	    // Total count
+	    $this->db->reset_query();
+	    $this->db->from('receiving');
+	    $this->db->where('receiving.deleted', 0);
+	    if($confirmed){	
+	    	$this->db->where('receiving.confirmed', 1);
+	    }else{
+	    	$this->db->where('receiving.confirmed', 0);
+	    }
+	    $total = $this->db->count_all_results();
+
+	    // Filtered count
+	    $this->db->select('receiving.id');
+	    $this->db->from('receiving');
+	    $this->db->join('account', 'account.id = receiving.user_id', 'left');
+	    $this->db->where('receiving.deleted', 0);
+	    if($confirmed){	
+	    	$this->db->where('receiving.confirmed', 1);
+	    }else{
+	    	$this->db->where('receiving.confirmed', 0);
+	    }
+	    if (!empty($request['search']['value'])) {
+	        $this->db->group_start();
+	        foreach ($columns as $i => $col) {
+	            $i === 0 ? $this->db->like($col, $search) : $this->db->or_like($col, $search);
+	        }
+	        $this->db->group_end();
+	    }
+	    $filtered = $this->db->count_all_results();
+
+	    echo json_encode([
+	        "draw" => intval($request['draw']),
+	        "recordsTotal" => $total,
+	        "recordsFiltered" => $filtered,
+	        "data" => $data
+	    ]);
+	}
+
+
+
+
 	public function load_supplier_po($supplier_id){
 
 		$module['po'] = $this->core->load_core_data('purchase_order','','id,po_number','supplier_id='.$supplier_id.' AND confirmed=1');
@@ -384,14 +520,7 @@ class Receiving extends CI_Controller {
 
 		$module['module'] = "receiving/receiving_records";
 		$module['map_link']   = "receiving->receiving_records";   
-
-		$module['receiving'] = $this->core->load_core_data('receiving','', '','confirmed=0');
-
-		$module['po'] = $this->core->load_core_data('purchase_order','','id,po_number','confirmed=1');
-
-		$module['users'] = $this->core->load_core_data('account','','id,name');
-
-		$module['suppliers'] = $this->core->load_core_data('suppliers_po');
+ 
 		
 		$this->load->view('admin/index',$module);
 
@@ -892,13 +1021,7 @@ class Receiving extends CI_Controller {
 
 		$module['module'] = "receiving/confirmed_receiving_records";
 		$module['map_link']   = "receiving->confirmed_receiving_records";   
-
-		$module['receiving'] = $this->core->load_core_data('receiving','', '','confirmed=1');
-
-		$module['po'] = $this->core->load_core_data('purchase_order','','id,po_number','confirmed=1');
-
-		$module['users'] = $this->core->load_core_data('account','','id,name');
-		
+ 
 		$this->load->view('admin/index',$module);
 
 	}

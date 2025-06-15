@@ -56,8 +56,161 @@ class Purchasing extends CI_Controller {
 
 	}
 
-	 
- 
+	 		
+ 	public function fetch_po_data($confirmed='')
+ 	{
+ 		$request = $this->input->post();
+
+ 		    $columns = [
+ 		        'purchase_order.date_created',
+ 		        'purchase_order.confirmed_date',
+ 		        'vehicles.plate_no',
+ 		        'clients.name',
+ 		        'purchase_order.po_number',
+ 		        'suppliers_po.name',
+ 		        'purchase_order.att_to',
+ 		        'purchase_order.reference_no',
+ 		        'a.name',
+ 		        'b.name'
+ 		    ];
+
+ 		    $this->db->select('
+ 		        purchase_order.*, 
+ 		        a.name as user_name, 
+ 		        b.name as user_confirmed, 
+ 		        clients.name as customer_name,
+ 		        fm_manufacturers.title as manufacturer_title, 
+ 		        vehicles.plate_no,
+ 		        suppliers_po.name as supplier_name
+ 		    ');
+ 		    $this->db->from('purchase_order');
+ 		    $this->db->join('vehicles', 'vehicles.id = purchase_order.vehicle_id', 'left');
+ 		    $this->db->join('clients', 'clients.id = vehicles.customer_id', 'left');
+ 		    $this->db->join('fm_manufacturers', 'fm_manufacturers.id = vehicles.manufacturer_id', 'left');
+ 		    $this->db->join('account a', 'a.id = purchase_order.user_id', 'left');
+ 		    $this->db->join('account b', 'b.id = purchase_order.confirmed_by', 'left');
+ 		    $this->db->join('suppliers_po', 'suppliers_po.id = purchase_order.supplier_id', 'left');
+
+ 		    // Search
+ 		    if (!empty($request['search']['value'])) {
+ 		        $search = $request['search']['value'];
+ 		        $this->db->group_start();
+ 		        foreach ($columns as $i => $col) {
+ 		            if ($i === 0) {
+ 		                $this->db->like($col, $search);
+ 		            } else {
+ 		                $this->db->or_like($col, $search);
+ 		            }
+ 		        }
+ 		        $this->db->group_end();
+ 		    }
+ 		    if($confirmed){
+	 		    $this->db->where([
+	 		    	'purchase_order.deleted'=>0,
+	 		    	'purchase_order.confirmed'=>1
+	 		    ]);
+	 		}else{
+	 			$this->db->where([
+	 		    	'purchase_order.deleted'=>0,
+	 		    	'purchase_order.confirmed'=>0
+	 		    ]);
+	 		}
+
+ 		    // Order
+ 		    if (!empty($request['order'])) {
+ 		        $colIndex = $request['order'][0]['column'];
+ 		        $dir = $request['order'][0]['dir'];
+ 		        $this->db->order_by($columns[$colIndex], $dir);
+ 		    } else {
+ 		        $this->db->order_by('purchase_order.id', 'desc');
+ 		    }
+
+ 		    // Pagination
+ 		    if ($request['length'] != -1) {
+ 		        $this->db->limit($request['length'], $request['start']);
+ 		    }
+
+ 		    $query = $this->db->get();
+ 		    $data = [];
+
+ 		    foreach ($query->result() as $po) {
+
+ 		    	if($confirmed){
+ 		    		$option = ' 
+ 		                <a href="' . base_url('purchasing/view_po/' . $po->id) . '"><i class="fa fa-eye"></i> View</a> |
+ 		                <a target="_blank" href="' . base_url('vendor/print_po/' . $po->id) . '"><i class="fa fa-print"></i> Print</a>  
+ 		            ';
+ 		    	}else{
+ 		    		$option = '
+ 		                <a href="javascript:confirm_po(' . $po->id . ')"><i class="fa fa-check"></i> Confirm</a> |
+ 		                <a href="' . base_url('purchasing/edit_po/' . $po->id) . '"><i class="fa fa-edit"></i> Edit</a> |
+ 		                <a href="' . base_url('purchasing/view_po/' . $po->id) . '"><i class="fa fa-eye"></i> View</a> |
+ 		                <a target="_blank" href="' . base_url('vendor/print_po/' . $po->id) . '"><i class="fa fa-print"></i> Print</a> |
+ 		                <a href="javascript:prompt_delete(\'Delete\', \'Delete P.O. Number ' . $po->po_number . '?\', \'' . base_url('purchasing/delete_po/' . $po->id) . '\', \'tr' . $po->id . '\')"><i class="fa fa-trash"></i> Delete</a>
+ 		            ';
+ 		    	}
+
+ 		        $data[] = [
+ 		            'date_created' => date('M d, Y', strtotime($po->date_created)),
+ 		            'vehicle' => $po->manufacturer_title . ' - ' . $po->plate_no,
+ 		            'customer' => $po->customer_name,
+ 		            'po_number' => $po->po_number,
+ 		            'supplier' => $po->supplier_name,
+ 		            'att_to' => $po->att_to,
+ 		            'reference_no' => $po->reference_no,
+ 		            'user' => $po->user_name,
+ 		            'date_confirmed'=>@$po->date_confirmed ? date('M d, Y H:i', strtotime($po->date_confirmed)) : '',
+ 		            'confirmed_by'=>@$po->user_confirmed,
+ 		            'options' => $option
+ 		        ];
+ 		    }
+
+ 		    // Get total count
+ 		    $this->db->reset_query();
+ 		    $this->db->from('purchase_order');
+ 		    $total = $this->db->count_all_results();
+
+ 		    // Filtered count
+ 		    $this->db->select('purchase_order.id');
+ 		    $this->db->from('purchase_order');
+ 		    $this->db->join('vehicles', 'vehicles.id = purchase_order.vehicle_id', 'left');
+ 		    $this->db->join('clients', 'clients.id = vehicles.customer_id', 'left');
+ 		    $this->db->join('fm_manufacturers', 'fm_manufacturers.id = vehicles.manufacturer_id', 'left');
+ 		    $this->db->join('account', 'account.id = purchase_order.user_id', 'left');
+ 		    $this->db->join('suppliers_po', 'suppliers_po.id = purchase_order.supplier_id', 'left');
+
+ 		    if (!empty($request['search']['value'])) {
+ 		        $this->db->group_start();
+ 		        foreach ($columns as $i => $col) {
+ 		            if ($i === 0) {
+ 		                $this->db->like($col, $search);
+ 		            } else {
+ 		                $this->db->or_like($col, $search);
+ 		            }
+ 		        }
+ 		        $this->db->group_end();
+ 		    }
+ 		    if($confirmed){
+	 		    $this->db->where([
+	 		    	'purchase_order.deleted'=>0,
+	 		    	'purchase_order.confirmed'=>1
+	 		    ]);
+	 		}else{
+	 			$this->db->where([
+	 		    	'purchase_order.deleted'=>0,
+	 		    	'purchase_order.confirmed'=>0
+	 		    ]);
+	 		}
+ 		    $filtered = $this->db->get()->num_rows();
+
+ 		    // JSON Response
+ 		    echo json_encode([
+ 		        "draw" => intval($request['draw']),
+ 		        "recordsTotal" => $total,
+ 		        "recordsFiltered" => $filtered,
+ 		        "data" => $data
+ 		    ]);
+ 	}
 
 	public function supplier(){
 
@@ -172,18 +325,7 @@ class Purchasing extends CI_Controller {
 		$module['module'] = "purchasing/po_list";
 		$module['map_link']   = "sales->quotations";  
 		 
-		$module['customers'] = $this->core->load_core_data('clients','','id,name');
-
-		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
-		$module['manufacturers'] = $result['maintenance_data'];
-
-		$module['vehicles'] = $this->core->load_core_data('vehicles','','id,customer_id,manufacturer_id,plate_no');
-		
-		$module['users'] = $this->core->load_core_data('account','','id,name');
-
-		$module['suppliers'] = $this->core->load_core_data('suppliers_po','','id,name');
-
-		$module['purchase_order'] = $this->core->load_core_data('purchase_order','','','confirmed=0');
+		 
 		
 		$this->load->view('admin/index',$module);
 
@@ -371,7 +513,7 @@ class Purchasing extends CI_Controller {
 		$po = $this->db->insert('purchase_order',[
 			'date_created' => date('Y-m-d H:i'),
 			'user_id' => $this->session->user_id,
-			'po_number' => $this->input->post('po_number',TRUE), 
+			// 'po_number' => $this->input->post('po_number',TRUE), 
 			'vehicle_id' => $this->input->post('vehicle_id',TRUE),
 			'supplier_id' => $this->input->post('supplier_id',TRUE),
 			'att_to' => $this->input->post('att_to',TRUE),
@@ -388,6 +530,10 @@ class Purchasing extends CI_Controller {
 		if($po){ 
 
 			$po_id = $this->db->insert_id();
+
+			$po_number = sprintf("%06d",($po_id));
+
+			$this->db->where('id',$po_id)->update('purchase_order',['po_number' => $po_number]);
 
 			if(@$this->input->post('items',TRUE)){
 				foreach ($this->input->post('items',TRUE) as $key => $item_id) {
@@ -794,18 +940,8 @@ class Purchasing extends CI_Controller {
 		$module['map_link']   = "sales->quotations";  
 		
 		$module['customers'] = $this->core->load_core_data('clients','','id,name');
-
-		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
-		$module['manufacturers'] = $result['maintenance_data'];
-
-		$module['vehicles'] = $this->core->load_core_data('vehicles','','id,customer_id,manufacturer_id,plate_no');
-		
-		$module['users'] = $this->core->load_core_data('account','','id,name');
-
-		$module['suppliers'] = $this->core->load_core_data('suppliers_po','','id,name');
-
-		$module['purchase_order'] = $this->core->load_core_data('purchase_order','','','confirmed=1');
-		
+ 
+	 
 		$this->load->view('admin/index',$module);
 
 	}

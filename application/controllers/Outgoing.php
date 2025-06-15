@@ -833,7 +833,7 @@ class Outgoing extends CI_Controller {
 	}
 
 
-	public function issuance_ajax($modal = '')
+	public function issuance_ajax($confirmed = '')
 	{
 	    // Get DataTables parameters
 	    $start = $this->input->get('start');
@@ -849,10 +849,12 @@ class Outgoing extends CI_Controller {
 	    	q.id as id,  
 	    	c.name AS client_name, 
 	    	a.name AS account_name,
+	    	b.name AS confirmed_account_name,
 	    	e.title as pay_type");
 	    $this->db->from('issuance q');
 	    $this->db->join('clients c', 'q.customer_id = c.id', 'left');
 	    $this->db->join('account a', 'q.user_id = a.id', 'left');
+	    $this->db->join('account b', 'q.confirmed_by = b.id', 'left');
 	    $this->db->join('fm_payment_type e', 'q.pay_type_id = e.id', 'left');
 
 	    // Apply search filter if any
@@ -868,6 +870,11 @@ class Outgoing extends CI_Controller {
 	        $this->db->group_end();
 	    }
 	    $this->db->where('q.deleted', 0);
+	    if($confirmed){
+	    	$this->db->where('q.confirmed', 1);
+	    }else{
+	    	$this->db->where('q.confirmed', 0);
+	    }
 
 	    $recordsFiltered = $this->db->count_all_results('', false); // for filtered count
 
@@ -881,11 +888,8 @@ class Outgoing extends CI_Controller {
 	    foreach ($quotations as $q) {
 	        $qn = 'SO' . sprintf("%06d", $q->id);
 
-	        if($modal){
-	        	$option = '
-	                <a href="Javascript:select_quotatation(' . $q->id . ');"   >
-	                    <i class="fa fa-download"></i> Select
-	                </a> | 
+	        if($confirmed){
+	        	$option = ' 
 	                <a target="_blank" href="' . base_url('outgoing/print_issuance/' . $q->id) . '">
 	                    <i class="fa fa-print"></i> Print
 	                </a>
@@ -906,19 +910,42 @@ class Outgoing extends CI_Controller {
 	                </a>'; 
 	        }
 
-	        $data[] = [
-	        	'id'=>$q->id,
-	            'date_created' => date('M d, Y', strtotime($q->date_created)),
-	            'pay_type' => $q->pay_type,
-	            'sales_order_no' => $qn,
-	            'plate_no' => $q->plate_no,
-	            'vin' => $q->vin,
-	            'client_name' => @$q->client_name,
-	            'phone' => $q->phone,
-	            'remarks' => $q->remarks,
-	            'created_by' => $q->account_name,
-	            'options' => $option
-	        ];
+	        if($confirmed){
+
+	        	$data[] = [
+	        		'id'=>$q->id,
+	        	    'date_created' => date('M d, Y', strtotime($q->date_created)),
+	        	    'pay_type' => $q->pay_type,
+	        	    'sales_order_no' => $qn,
+	        	    'plate_no' => $q->plate_no,
+	        	    'vin' => $q->vin,
+	        	    'client_name' => @$q->client_name,
+	        	    'phone' => $q->phone,
+	        	    'remarks' => $q->remarks,
+	        	    'created_by' => $q->account_name,
+	        	    'confirmed_date' => date('M d, Y', strtotime($q->confirmed_date)),
+	        	    'confirmed_by' => $q->confirmed_account_name,
+	        	    'options' => $option
+	        	];
+
+
+	        }else{
+
+	        	$data[] = [
+	        		'id'=>$q->id,
+	        	    'date_created' => date('M d, Y', strtotime($q->date_created)),
+	        	    'pay_type' => $q->pay_type,
+	        	    'sales_order_no' => $qn,
+	        	    'plate_no' => $q->plate_no,
+	        	    'vin' => $q->vin,
+	        	    'client_name' => @$q->client_name,
+	        	    'phone' => $q->phone,
+	        	    'remarks' => $q->remarks,
+	        	    'created_by' => $q->account_name,
+	        	    'options' => $option
+	        	];
+
+	        } 
 	    }
 
 	    // Return JSON in DataTables format
@@ -1299,6 +1326,64 @@ class Outgoing extends CI_Controller {
 
 	}
 
+	public function print_issuance(int $id){
+
+		$module = $this->system_menu;
+		  
+		$module['module'] = "outgoing/print_issuance";
+		$module['map_link']   = "outgoing->print_issuance";   
+	
+		$module['issuance'] = $this->core->load_core_data('issuance',$id);
+ 		
+ 		$this->db->where('issuance_id',$id);
+		$this->db->select('
+			i.id as id, 
+			i.qty as qty, 
+			i.retail_price as retail_price, 
+			i.inventory_id as inventory_id, 
+			inv.qty as qoh, 
+			i.unit_cost_price as unit_cost_price,
+			i.discount_percentage as discount_percentage, 
+			i.discount_amount as discount_amount, 
+			inv.item_code, 
+			inv.item_name, 
+			b.title as brand'); 
+        $this->db->from('issuance_items i');  
+        $this->db->join('inventory inv', 'i.inventory_id=inv.id', 'left');
+        $this->db->join('fm_item_brand b', 'inv.item_brand_id=b.id', 'left');  
+		$module['items'] = $this->db->get()->result(); 
+
+		if($module['issuance']->vehicle_id){
+			$module['vehicles'] = $this->core->load_core_data('vehicles',$module['issuance']->vehicle_id);
+		}
+		 
+		if($module['issuance']->customer_id){
+			$module['clients'] = $this->core->load_core_data('clients',$module['issuance']->customer_id);  
+		}
+
+		$result = $this->admin_model->load_filemaintenance('fm_payment_type');
+		$module['payment_type'] = $result['maintenance_data'];
+
+		if($module['issuance']->vehicle_id){
+			$module['vehicle'] = $this->core->load_core_data('vehicles',$module['issuance']->vehicle_id);
+		}
+		
+		$result = $this->admin_model->load_filemaintenance('fm_models');
+		$module['models'] = $result['maintenance_data'];
+		
+		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
+		$module['manufacturers'] = $result['maintenance_data']; 
+
+		$module['user'] = $this->core->load_core_data('account',$module['issuance']->user_id);
+
+		if($module['issuance']->confirmed_by){
+			$module['user_confirmed'] = $this->core->load_core_data('account',$module['issuance']->confirmed_by);
+		}
+
+		$this->load->view('admin/outgoing/print_issuance',$module);
+
+	}
+
 	public function load_quotation_list()
 	{
 		$this->load->view('admin/outgoing/load_quotation_list');
@@ -1549,7 +1634,25 @@ class Outgoing extends CI_Controller {
 		]); 
 
 		$ii = $this->core->load_core_data('issuance',$id);
-		$iii = $this->db->select('inventory_id, quotation_id, qty, unit_cost_price')->get_where('issuance_items',['issuance_id'=>$id,'deleted'=>0])->result();
+		$iii = $this->db
+		    ->select('
+		    	ii.id as id,
+		        ii.inventory_id,
+		        ii.qty,
+		        ii.unit_cost_price AS item_cost,
+		        ii.customer_id,
+		        ii.vehicle_id,
+		        inv.qty AS inv_qty,
+		        inv.issuance_history,
+		        inv.unit_cost_price AS unit_cost_price,
+		        ii.retail_price,
+		    ')
+		    ->from('issuance_items ii')
+		    ->join('inventory inv', 'inv.id = ii.inventory_id', 'left')
+		    ->where('ii.issuance_id', $id)
+		    ->where('ii.deleted', 0)
+		    ->get()
+		    ->result();
 
 		$i_id = $id;
 
@@ -1557,25 +1660,25 @@ class Outgoing extends CI_Controller {
 
 			$has = 1;
   
-			$inv = $this->db->select('qty,issuance_history,unit_cost_price')->get_where('inventory',['id' => $rs->inventory_id])->row();
+			
  
 			$issuance_history = [];
 
-			if(@$inv->issuance_history){
-				$issuance_history = json_decode($inv->issuance_history);
+			if(@$rs->issuance_history){
+				$issuance_history = json_decode($rs->issuance_history);
 			}
 			 
 			$issuance_history[] = [
 				'ii_id' => $i_id,
 				'date'=>date('Y-m-d H:i'),
-				'qty' => ($inv->qty - $rs->qty),
-				'ucp' => @$inv->unit_cost_price
+				'qty' => ($rs->qty - $rs->qty),
+				'ucp' => @$rs->unit_cost_price
 			]; 
 			
 			$this->db->where('id', $rs->inventory_id); 
 			$this->db->update('inventory',[
-				'old_qty' => $inv->qty, 
-				'qty' => ($inv->qty - $rs->qty), 
+				'old_qty' => $rs->qty, 
+				'qty' => ($rs->qty - $rs->qty), 
 				'issuance_history'=>json_encode($issuance_history)
 			] );
   
@@ -1584,14 +1687,16 @@ class Outgoing extends CI_Controller {
 				'user_id' => $this->session->user_id,
 				'inventory_id' => $rs->inventory_id, 
 				'ref_id' => $id, 
-				'project_id' => $ii->project_id, 
-				'quotation_id' => $rs->quotation_id,  
+				'issuance_item_id'=>$rs->id,
+				'vehicle_id' => $rs->vehicle_id, 
+				'customer_id' => $rs->customer_id,  
 				'qty' => $rs->qty,
-				'qty_before' => $inv->qty,
-				'qty_after' => ($inv->qty - $rs->qty), 
-				'movement_from' => 'issuance',
+				'qty_before' => $rs->qty,
+				'qty_after' => ($rs->qty - $rs->qty), 
+				'movement_from' => 'sales order',
 				'addition' => 0,
-				'unit_cost_price' => $rs->unit_cost_price
+				'unit_cost_price' => $rs->unit_cost_price,
+				'retail_price' => $rs->retail_price,
 			]);
 
 		}
@@ -1606,7 +1711,7 @@ class Outgoing extends CI_Controller {
 			 
 		}
 
-		redirect("outgoing/issuance_records","refresh");
+		redirect("outgoing/view_issuance/".$id,"refresh");
 
 	}
 
@@ -1616,14 +1721,7 @@ class Outgoing extends CI_Controller {
 
 		$module['module'] = "outgoing/confirm_issuance_records";
 		$module['map_link']   = "outgoing->confirm_issuance_records";   
-
-		$module['issuance'] = $this->core->load_core_data('issuance','','','confirmed=1');
-
-		$module['users'] = $this->core->load_core_data('account','','id,name');
-
-		$module['projects'] = $this->core->load_core_data('projects','','id,name');
-
-		$module['jo'] = $this->core->load_core_data('projects_job_order','','id,job_order_number,project_id,client_id,quotation_id');
+ 
 	 
 		$this->load->view('admin/index',$module);
 

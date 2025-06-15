@@ -2,15 +2,26 @@
   <div class="col-md-6 col-sm-8 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Report <small>Inventory Masterlist</small></h2>
-        <ul class="nav navbar-right panel_toolbox">
-          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-          </li> 
-           
-        </ul>
-        <div class="clearfix"></div>
+         
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-md-8"> 
+                    <h6 class="page-title">Report - Inventory Masterlist</h6>
+                </div>
+                <div class="col-md-4">
+                    <div class="float-end d-none d-md-block">
+                         
+                    </div>
+                </div>
+            </div>
+        </div>
+
       </div>
       <div class="x_content">
+
+        <div class="card">
+            <div class="card-body">
+
       <form method="post" id="frm_gen_report" name="frm_gen_report" target="_blank" action="<?php echo base_url();?>reports/generate_inventory_masterlist" data-bs-toggle="validator" class="form-horizontal form-label-left" enctype="multipart/form-data">
         <p class="text-muted font-13 m-b-30">
        
@@ -63,6 +74,10 @@
             </div>
           </div>
     </form>
+
+  </div>
+</div>
+
       </div>
     </div>
   </div> 

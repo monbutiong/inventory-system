@@ -18,84 +18,32 @@
 
       </div>
       <div class="x_content">
-        <p class="text-muted font-13 m-b-30">
-          
-        </p>
-
+        <div class="card">
+            <div class="card-body">
         
-        
-        <table id="datatable" class="table table-striped table-bordered table-hover">
-           
+        <table id="datatable_po_confirmed" class="table table-striped table-bordered table-hover" style="font-size: 12px;">
           <thead>
-            <tr style="font-size: 12px;">
+            <tr>
               <th>Date</th>
-              <td>Vehicle</td> 
-              <td>Customer</td> 
+              <th>Vehicle</th>
+              <th>Customer</th>
               <th>P.O. Number</th>
               <th>Supplier</th>
-              <th>Att. To</th>  
-              <td>Reference No.</td>  
-              <td>Created By</td>
-              <td>Confirmed Date</td>    
-              <td>Confirmed By</td>
+              <th>Att. To</th>
+              <th>Reference No.</th>
+              <th>Created By</th>
+              <th>Date Confirmed</th>
+              <th>Confirmed By</th>
               <th>Options</th>
             </tr>
-            </thead> 
-            <tbody>
-            <?php 
-            if(@$users){
-              foreach($users as $rs){
-              $arr_user[$rs->id] = $rs->name;
-            }}
- 
-            if(@$customers){
-              foreach($customers as $rs){
-                $arr_c[$rs->id] = $rs->name;
-            }}
-
-            if(@$manufacturers){
-              foreach($manufacturers as $rs){
-                $arr_m[$rs->id] = $rs->title;
-            }}
-
-            if(@$vehicles){
-              foreach($vehicles as $rs){
-                $arr_v[$rs->id] = $rs;
-            }}
-
-            if(@$suppliers){
-              foreach($suppliers as $rs){
-                $arr_s[$rs->id] = $rs->name;
-            }}
-
-            if(@$purchase_order){
-              foreach($purchase_order as $rs){
-            ?>
-            <tr>
-              <td data-order="-<?=$rs->id?>"><?=date('M d, Y',strtotime($rs->date_created))?></td>
-              <td><?=@$arr_m[@$arr_v[$rs->vehicle_id]->manufacturer_id].' - '.@$arr_v[$rs->vehicle_id]->plate_no?></td>
-              <td><?=@$arr_c[@$arr_v[$rs->vehicle_id]->customer_id]?></td> 
-              <td><?=@$rs->po_number?></td>
-              <td><?=@$arr_s[$rs->supplier_id]?></td> 
-              <td><?=$rs->att_to?></td>  
-              <td><?=$rs->reference_no?></td> 
-              <td><?=@$arr_user[$rs->user_id]?></td>
-              <td><?=date('M d, Y H:i',strtotime($rs->date_confirmed))?></td>
-              <td><?=@$arr_user[$rs->confirmed_by]?></td>
-              <td nowrap>
-                   
-                <a href="<?php echo base_url('purchasing/view_po/'.$rs->id);?>"  ><i class="fa fa-eye"></i> View</a>
-                 |  
-                <a target="_blank" href="<?php echo base_url('vendor/print_po/'.$rs->id);?>" ><i class="fa fa-print"></i> Print</a> 
-                  
-              </td>
-            </tr>
-            <?php }}?>
-           </tbody>
-
+          </thead>
         </table>
       </div>
     </div>
+
+      </div>
+    </div>
+    
   </div> 
    
 </div>

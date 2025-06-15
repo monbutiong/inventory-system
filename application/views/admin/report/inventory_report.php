@@ -2,49 +2,36 @@
   <div class="col-md-6 col-sm-8 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Report <small>Inventory Report</small></h2>
-        <ul class="nav navbar-right panel_toolbox">
-          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-          </li> 
-           
-        </ul>
-        <div class="clearfix"></div>
+
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-md-8"> 
+                    <h6 class="page-title">Report - Inventory Masterlist</h6>
+                </div>
+                <div class="col-md-4">
+                    <div class="float-end d-none d-md-block">
+                         
+                    </div>
+                </div>
+            </div>
+        </div>
+
       </div>
       <div class="x_content">
+
+        <div class="card">
+            <div class="card-body">
+
       <form method="post" id="frm_gen_report" name="frm_gen_report" target="_blank" action="<?php echo base_url();?>reports/generate_inventory_report" data-bs-toggle="validator" class="form-horizontal form-label-left" enctype="multipart/form-data">
         <p class="text-muted font-13 m-b-30">
        
         <div class="container">
 
-        <label>Accounts : </label> 
-
-        <select name="accounts[]" id="accounts" class="multiselect-ui form-control" multiple="multiple">
-            <?php  
-
-            if($accounts){
-              foreach($accounts as $rs){   ?>
-            <option value="<?php echo $rs->id;?>"><?php echo $rs->title;?></option> 
-            <?php  }}?>
-        </select>  
-          
-        <br/>  
         
-        <label>Project | Control Number : </label> 
-
-        <select name="projects[]" id="projects" class="multiselect-ui form-control" multiple="multiple">
-            <?php  
-
-            if($projects){
-              foreach($projects as $rs){   ?>
-            <option value="<?php echo $rs->id;?>"><?php echo $rs->name;?> | <?php echo $rs->control_number;?></option> 
-            <?php  }}?>
-        </select>  
-          
-        <br/> 
 
         <label>Category : </label> 
 
-        <select name="category[]" id="category" class="multiselect-ui form-control" multiple="multiple">
+        <select name="category[]" id="category" class="multiselect-ui form-control select2_" multiple="multiple">
             <?php  
 
             if($category){
@@ -57,7 +44,7 @@
 
         <label>Type : </label> 
 
-        <select name="type[]" id="type" class="multiselect-ui form-control" multiple="multiple">
+        <select name="type[]" id="type" class="multiselect-ui form-control select2_" multiple="multiple">
             <?php  
 
             if($type){
@@ -68,13 +55,13 @@
 
         <br/>
 
-        <label>Classification : </label> 
+        <label>Brand : </label> 
 
-        <select name="classification[]" id="classification" class="multiselect-ui form-control" multiple="multiple">
+        <select name="classification[]" id="classification" class="multiselect-ui form-control select2_" multiple="multiple">
             <?php  
 
-            if($classification){
-              foreach($classification as $rs){   ?>
+            if($brand){
+              foreach($brand as $rs){   ?>
             <option value="<?php echo $rs->id;?>"><?php echo $rs->title;?></option> 
             <?php  }}?>
         </select>   
@@ -112,6 +99,10 @@
             </div>
           </div>
     </form>
+
+    </div>
+    </div>
+
       </div>
     </div>
   </div> 

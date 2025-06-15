@@ -1020,28 +1020,28 @@
                 }
             }
 
+            $(document).ready(function () {
+              // Attach event listeners to preloaded rows
+              $('#so_table .data-row').each(function () {
+                const $row = $(this);
 
+                // Attach input event listener
+                $row.find('[name^="qty"], [name^="discount_amount"], [name^="discount_percentage"]').on('input', function () {
+                  calculateRowTotal($row);
+                  computeGrandTotal();
+                });
 
-          }
-
-          $(document).ready(function () {
-            // Attach event listeners to preloaded rows
-            $('#so_table .data-row').each(function () {
-              const $row = $(this);
-
-              // Attach input event listener
-              $row.find('[name^="qty"], [name^="discount_amount"], [name^="discount_percentage"]').on('input', function () {
+                // Initial calculation (optional, in case values are not 0)
                 calculateRowTotal($row);
-                computeGrandTotal();
               });
 
-              // Initial calculation (optional, in case values are not 0)
-              calculateRowTotal($row);
+              // Also run grand total on load
+              computeGrandTotal();
             });
+ 
 
-            // Also run grand total on load
-            computeGrandTotal();
-          });
+          }
+ 
 
 
           if ($('.select2_so_customer').length) {
@@ -1233,6 +1233,104 @@
           //=========================================================== END OF Sales ORDER
 
 
+          //=============Purchase Order
+          if($('#datatable_po').length){
+            $('#datatable_po').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                  url: "<?=base_url('purchasing/fetch_po_data')?>",
+                  type: "POST"
+                },
+                columns: [
+                  { data: "date_created" },
+                  { data: "vehicle" },
+                  { data: "customer" },
+                  { data: "po_number" },
+                  { data: "supplier" },
+                  { data: "att_to" },
+                  { data: "reference_no" },
+                  { data: "user" },
+                  { data: "options", orderable: false, searchable: false }
+                ]
+              });
+          }
+
+          if($('#datatable_po_confirmed').length){
+            $('#datatable_po_confirmed').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                  url: "<?=base_url('purchasing/fetch_po_data/confirmed')?>",
+                  type: "POST"
+                },
+                columns: [
+                  { data: "date_created" },
+                  { data: "vehicle" },
+                  { data: "customer" },
+                  { data: "po_number" },
+                  { data: "supplier" },
+                  { data: "att_to" },
+                  { data: "reference_no" },
+                  { data: "user" },
+                  { data: "date_confirmed" },
+                  { data: "confirmed_by" },
+                  { data: "options", orderable: false, searchable: false }
+                ]
+              });
+          }
+
+          //===GRV table
+
+          if($('#grv_datatable').length){
+            $('#grv_datatable').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                  "url": "<?= base_url('receiving/fetch_grv_data') ?>",
+                  "type": "POST"
+                },
+                "columns": [
+                  { "data": "date_created" },
+                  { "data": "grv_number" },
+                  { "data": "po_number" },
+                  { "data": "dr_number" },
+                  { "data": "invoice_number" },
+                  { "data": "remarks" },
+                  { "data": "user" },
+                  { "data": "options", "orderable": false }
+                ], 
+                createdRow: function (row, data, dataIndex) {
+                    // Use `data.id` from your PHP data array
+                    $(row).attr('id', 'tr' + data.id);
+                    $('td:last', row).css('white-space', 'nowrap');
+                }
+              });
+          }
+
+        if($('#grv_datatable_confirmed').length){
+            $('#grv_datatable_confirmed').DataTable({
+                processing: true,
+                serverSide: true,
+                "ajax": {
+                  "url": "<?= base_url('receiving/fetch_grv_data/confirmed') ?>",
+                  "type": "POST"
+                },
+                "columns": [
+                  { "data": "date_created" },
+                  { "data": "grv_number" },
+                  { "data": "po_number" },
+                  { "data": "dr_number" },
+                  { "data": "invoice_number" },
+                  { "data": "remarks" },
+                  { "data": "user" },
+                  { "data": "date_confirmed" },
+                  { "data": "confirmed_by" },
+                  { "data": "options", "orderable": false }
+                ] 
+            });
+
+          }
 
 
 
@@ -1286,6 +1384,37 @@
                       { data: "phone" },
                       { data: "remarks" },
                       { data: "created_by" },
+                      { data: "options", orderable: false, searchable: false }
+                  ], 
+                  createdRow: function (row, data, dataIndex) {
+                      // Use `data.id` from your PHP data array
+                      $(row).attr('id', 'tr' + data.id);
+                      $('td:last', row).css('white-space', 'nowrap');
+                  }
+              });
+
+        }
+
+        if($('#issuance_confirmed_datatable').length){
+              $('#issuance_confirmed_datatable').DataTable({
+                  processing: true,
+                  serverSide: true,
+                  ajax: {
+                      url: "<?= base_url('outgoing/issuance_ajax/confirmed') ?>",
+                      type: "GET"
+                  },
+                  columns: [
+                      { data: "date_created" },
+                      { data: "pay_type" },
+                      { data: "sales_order_no" },
+                      { data: "plate_no" },
+                      { data: "vin" },
+                      { data: "client_name" },
+                      { data: "phone" },
+                      { data: "remarks" },
+                      { data: "created_by" },
+                      { data: "confirmed_by" },
+                      { data: "confirmed_date" },
                       { data: "options", orderable: false, searchable: false }
                   ], 
                   createdRow: function (row, data, dataIndex) {

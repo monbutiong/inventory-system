@@ -20,9 +20,7 @@ class Reports extends CI_Controller {
 		$this->system_menu['sub_menu'] = $result['sub_menu'];  
 		$this->system_menu['index_user_roles'] = $result['index_user_roles'];
 		$this->system_menu['settings'] = $result['settings']; 
-		$this->system_menu['avatar'] = $result['avatar'];
-		$this->system_menu['pr_request'] = $result['pr_request'];
-		$this->system_menu['po_request'] = $result['po_request'];
+		$this->system_menu['avatar'] = $result['avatar']; 
 
 
 		/* check session if valid $this->load->helper("accountsession"); */
@@ -129,34 +127,65 @@ class Reports extends CI_Controller {
 		$module['module'] = "report/inventory_report";
 		$module['map_link']   = "report > inventory_report";  
 
-		$result = $this->admin_model->load_filemaintenance('fm_inventory_type');
-		$module['type'] = $result['maintenance_data'];
+		$result = $this->admin_model->load_filemaintenance('fm_item_brand');
+		$module['brand'] = $result['maintenance_data'];
 
-		$result = $this->admin_model->load_filemaintenance('fm_inventory_category');
+		$result = $this->admin_model->load_filemaintenance('fm_item_category');
 		$module['category'] = $result['maintenance_data'];
 
-		$result = $this->admin_model->load_filemaintenance('fm_classification');
-		$module['classification'] = $result['maintenance_data'];
-
-		$result = $this->admin_model->load_filemaintenance('fm_inventory_accounts');
-		$module['accounts'] = $result['maintenance_data'];
-
-		$module['projects'] = $this->core->load_core_data('projects');
+		$result = $this->admin_model->load_filemaintenance('fm_item_type');
+		$module['type'] = $result['maintenance_data'];
+ 
 
 		$this->load->view('admin/index',$module);
 
 	}
 
-	public function generate_inventory_report(){ 
+	public function generate_inventory_report()
+	{
+	    if ($this->input->post('export_to_excel') == 1) {
+	        header("Content-type: application/vnd.ms-excel");
+	        header("Content-Disposition: attachment; filename=inventory_report.xls");
+	        header("Pragma: no-cache");
+	        header("Expires: 0");
+	    }
 
-		$module['inventory_report'] = $this->core->generate_inventory_report();
+	    $this->db->select('i.*, 
+	        b.title as brand,
+	        c.title as category,
+	        t.title as type 
+	    ');
+	    $this->db->from('inventory i');
+	    $this->db->join('fm_item_brand b', 'b.id = i.item_brand_id', 'left');
+	    $this->db->join('fm_item_category c', 'c.id = i.item_category_id', 'left');
+	    $this->db->join('fm_item_type t', 't.id = i.item_type_id', 'left');
+	    $this->db->where('i.deleted', 0);
 
-		$result = $this->admin_model->load_filemaintenance('fm_currency_type');
-		$module['currency'] = $result['maintenance_data']; 
-		
-		$this->load->view('admin/report/generate_inventory_report',$module);
+	    // Filters
+	    if (!empty($this->input->post('category'))) {
+	        $this->db->where_in('i.item_category_id', $this->input->post('category'));
+	    }
 
+	    if (!empty($this->input->post('type'))) {
+	        $this->db->where_in('i.item_type_id', $this->input->post('type'));
+	    }
 
+	    if (!empty($this->input->post('classification'))) {
+	        $this->db->where_in('i.item_brand_id', $this->input->post('classification'));
+	    }
+
+	    if (!empty($this->input->post('date_from'))) {
+	        $this->db->where('DATE(i.date_created) >=', $this->input->post('date_from'));
+	    }
+
+	    if (!empty($this->input->post('date_to'))) {
+	        $this->db->where('DATE(i.date_created) <=', $this->input->post('date_to'));
+	    }
+
+	    $query = $this->db->get();
+	    $data['inventory'] = $query->result();
+
+	    $this->load->view('admin/report/generate_inventory_report', $data);
 	}
 
  

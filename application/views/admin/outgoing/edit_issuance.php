@@ -28,14 +28,14 @@
                 Filed by: <?=$user->name?>
                 <?php if(@$issuance->quotation_id){?>
                   <br/>
-                From Quotation <a target="_blank" href="<?=base_url('outgoing/print_quotation/' . $issuance->quotation_id)?>">#<?='QO' . sprintf("%06d", $issuance->quotation_id)?></a>
+                From Quotation <a target="_blank" href="<?=base_url('outgoing/print_issuance/' . $issuance->quotation_id)?>">#<?='QO' . sprintf("%06d", $issuance->quotation_id)?></a>
                 <?php }?>
                 <input type="hidden" id="customer_type" name="customer_type" class="form-control ridonly" value="<?=$issuance->customer_type?>">
               </div>
               <div class="col-md-4">
                 <div class="float-end d-none d-md-block">
                    
-
+                  
                   <a class="btn btn-md btn-success" href="Javascript:update_issuance()"><i class="fa fa-save"></i> Update Sales Order</a>
                   
                   <a class="btn btn-md btn-warning" href="<?=base_url("outgoing/view_issuance/".$issuance->id)?>">Go Back</a>

@@ -72,7 +72,7 @@ select, .text_input {
                 </div>
 
                 <div class="row mb-3">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="qty">Initial Quantity</label>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="qty">Quantity on Hand</label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <input type="number" disabled value="<?=htmlspecialchars($item->qty)?>" class="form-control col-md-7 col-xs-12 readonlyx">
                   </div>

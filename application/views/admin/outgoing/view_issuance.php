@@ -36,13 +36,18 @@
                 <div class="float-end d-none d-md-block">
                    
 
-                  <a target="_blank" class="btn btn-md btn-success" href="<?=base_url('outgoing/print_quotation/'.$issuance->id)?>"><i class="fa fa-print"></i></a>
+                  <a target="_blank" class="btn btn-md btn-success" href="<?=base_url('outgoing/print_issuance/'.$issuance->id)?>"><i class="fa fa-print"></i></a>
                   
-                  <a class="btn btn-md btn-success" href="Javascript:confirm_quotation()"><i class="fa fa-check"></i> Confirm Sales Order</a>
+                  <?php if($issuance->confirmed == 0){?>
+                  <a class="btn btn-md btn-success" href="Javascript:confirm_issuance()"><i class="fa fa-check"></i> Confirm Sales Order</a>
 
-                  <a class="btn btn-md btn-success" href="Javascript:edit_quotation()"><i class="fa fa-edit"></i> Edit Sales Order</a>
+                  <a class="btn btn-md btn-success" href="Javascript:edit_issuance()"><i class="fa fa-edit"></i> Edit Sales Order</a>
                   
                   <a class="btn btn-md btn-warning" href="<?=base_url("outgoing/issuance_records")?>">Go Back</a>
+                  <?php }else{?>
+                  <a class="btn btn-md btn-warning" href="<?=base_url("outgoing/confirm_issuance_records")?>">Go Back</a>  
+                  <?php }?>
+
                 </div>
               </div>
             </div>
@@ -212,7 +217,7 @@
                                  <?=@$issuance->discount_amount_total?> 
                               </td>
                               <td  align="right">
-                                QAR <?=@$issuance->issuance_grand_total ? number_format($issuance->issuance_grand_total) : '0.00'?> 
+                                QAR <?=@$issuance->issuance_grand_total ? number_format($issuance->issuance_grand_total, 2) : '0.00'?> 
                                  
                               </td>
                             
@@ -234,20 +239,26 @@
   var c = 0;
   var all = 0; 
     
-  function load_client(id){
+  function confirm_issuance() {
     
-    $.get("<?=base_url('outgoing/load_client')?>/"+id, function(data) {
-        // Handle the response data here
-        console.log(data);
+    Swal.fire({
+        title: "Confirm Sales Order?",
+        text: "Do you want to confirm this sales order now?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes, save it",
+        cancelButtonText: "No, cancel",
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+           
+            location.href = "<?=base_url('outgoing/confirm_issuance/'.$issuance->id);?>";
+        }  
+    });
 
-        var cli = data.split('-');
-
-        $('#client_id').val(cli[0]);
-        $('#client').val(cli[1]);
-    })
   }
 
-  function edit_quotation(){ 
+  function edit_issuance(){ 
  
 	    Swal.fire({
 	        title: "Edit Sales Order?",

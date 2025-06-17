@@ -34,6 +34,22 @@
               max-height: 95vh;
               overflow-y: auto;
             }
+            .badge {
+              display: inline-block;
+              padding: 0.35em 0.65em;
+              font-size: 0.55rem;
+              font-weight: 100;
+              line-height: 1;
+              color: #fff;
+              text-align: center;
+              white-space: nowrap;
+              vertical-align: baseline;
+              border-radius: 0.375rem;
+            }
+
+            .badge-success {
+              background-color: #02a499;
+            }
         </style>
     </head>
 
@@ -135,10 +151,15 @@
                                 if($main_menu){
                                 foreach ($main_menu as $rs) { 
                                   if(isset($arr_index_user_roles_main_menu[$rs->id]) && $arr_index_user_roles_main_menu[$rs->id]){
+
+                                    $title_link = explode('-',$rs->title);
                                 ?>
                                 <li class="nav-item dropdown mega-dropdown">
                                     <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-menu<?=$rs->id?>" role="button">
-                                        <i class="fa <?php echo $rs->font_icon;?> me-2"></i><?php echo $rs->title;?>
+                                        <i class="fa <?php echo $rs->font_icon;?> me-2"></i><?=@$title_link[0];?>
+                                        <?php if(@$title_link[1]){?>
+                                        <span class="badge badge-success"><?=$title_link[1]?></span>
+                                        <?php }?>
                                     </a> 
                                     <div class="dropdown-menu" aria-labelledby="topnav-menu<?=$rs->id?>"> 
                                             <?php 
@@ -147,7 +168,12 @@
                                               if($rs_sub->main_menu_id==$rs->id && isset($arr_index_user_roles_sub_menu[$rs_sub->id]) && $arr_index_user_roles_sub_menu[$rs_sub->id]){
  
                                             ?>
-                                            <a href="<?php echo base_url().$rs_sub->url_link;?>" class="dropdown-item"><?php echo $rs_sub->title;?></a>  
+                                                <?php if($rs_sub->border_top==1){?>
+                                                    <a href="<?php echo base_url().$rs_sub->url_link;?>" class="dropdown-item" style="border-top: 1px solid #ccc; cursor: context-menu;"><?php echo $rs_sub->title;?></a>  
+                                                <?php }else{?>
+                                                    <a href="<?php echo base_url().$rs_sub->url_link;?>" class="dropdown-item"><?php echo $rs_sub->title;?></a>  
+                                                <?php }?>
+
                                             <?php }}}?>
                                        </div>
                                     
@@ -256,7 +282,15 @@
          
           // Apply to all input and textarea fields
           $(document).on('input', 'input[type="text"], input[type="email"], textarea', function() {
-            this.value = this.value.toUpperCase();
+            const start = this.selectionStart;
+            const end = this.selectionEnd;
+            const original = this.value;
+            const uppercased = original.toUpperCase();
+
+            if (original !== uppercased) {
+              this.value = uppercased;
+              this.setSelectionRange(start, end); // restore cursor position
+            }
           });
 
           // Optional: Apply CSS for visual cue
@@ -1473,6 +1507,170 @@
                  inventoryTable.ajax.reload(null, false); // false = retain current page
               }
           }
+
+
+          //================= RETURN INVENTORY
+          if ($(".select2-ajax-ri").length) {
+
+            var c = $('#row_counter').val();
+            var all = 0; 
+            var so_id = $('#so_id').val();
+             
+            $(".select2-ajax-ri").select2({
+              placeholder: "Select Item",
+              ajax: {
+                url: "<?= base_url('outgoing/load_so_items') ?>",
+                type: "post",
+                dataType: 'json',
+                delay: 250,
+                dropdownAutoWidth: true,
+                data: function (params) {
+                  return {
+                    searchTerm: params.term,
+                    excluded_ids: $('#selected_ids').val(),
+                    so_id: $('#so_id').val()
+                  };
+                },
+                processResults: function (data) {
+                  return {
+                    results: $.map(data, function (obj) {
+                      return {
+                        id: obj.id,
+                        text: obj.text,
+                        item_code: obj.item_code,
+                        item_name: obj.item_name,
+                        brand: obj.brand,
+                        qty: obj.qty, 
+                        inv_stock: obj.inv_stock,
+                        unit_cost_price: obj.unit_cost_price,
+                        retail_price: obj.retail_price,
+                        image_url: obj.image_url 
+                            ? '<?=base_url("assets/uploads/inventory/")?>' + obj.image_url 
+                            : '<?=base_url("assets/images/no-image.png")?>'
+                      };
+          
+
+                    })
+                  };
+                },
+                cache: true
+              },
+
+              // ✅ This formats the dropdown result
+              templateResult: function (item) {
+                if (!item.id) return item.text;
+
+                var markup =
+                  '<div style="display:flex; align-items:center;">' +
+                    '<div style="flex:0 0 40px; margin-right:8px;">' +
+                      '<img src="' + item.image_url + '" style="width:75px; height:75px; object-fit:cover; border-radius:4px;" />' +
+                    '</div>' +
+                    '<div style="flex:1;">' +
+                      '<div><strong>Code:</strong> ' + item.item_code + '</div>' +
+                      '<div><strong>Name:</strong> ' + item.item_name + '</div>' +
+                      '<div><small>Brand: ' + item.brand + '</small></div>' +
+                      '<div><small>Unit Cost Price: ' + formatMoney(item.unit_cost_price) + '</small></div>' +
+                      '<div><small>Retail Price: ' + formatMoney(item.retail_price) + '</small></div>' +
+                    '</div>' +
+                    '<div style="flex:0 0 80px; text-align:right; font-weight:bold;">' +
+                      'S.O. Qty: ' + item.qty +
+                    '</div>' +
+                  '</div>';
+                return markup
+
+              },
+
+              // ✅ This controls how selected item appears
+              templateSelection: function (item) {
+                if (!item.id) return item.text;
+                return `${item.item_code} - ${item.item_name}`;
+              },
+
+              // ✅ Important to allow HTML rendering
+              escapeMarkup: function (markup) {
+                return markup;
+              }
+            });
+
+            // Select handler
+            $(".select2-ajax-ri").on("select2:select", function (e) {
+              var e_obj = e.params.data;
+              c += 1;
+
+              // if (e_obj.qty <= 0) {
+              //   alert("Error: The item quantity is zero, and cannot be issued.");
+              //   $('.add_item .select2-container .select2-selection__rendered').html('(+) add more item');
+              //   return;
+              // }
+          
+              if ($('#added' + e_obj.id).length == 0) {
+                $('#selected_ids').val($('#selected_ids').val() + '(' + e_obj.id + ')-');
+                   
+           
+
+                var newRow = `
+                  <tr id="tr${e_obj.id}" class="data-row">
+                    <td>
+                      <a href="<?=base_url('inventory/view_inventory')?>/${e_obj.id}" 
+                         class="load_modal_details" 
+                         data-bs-toggle="modal" 
+                         data-bs-target=".bs-example-modal-lg" 
+                         data-modal-size="xl">
+                         ${e_obj.item_code}
+                      </a>
+                      <input type="hidden" name="items[${e_obj.id}]" id="added${e_obj.id}" value="${e_obj.id}"/>
+                      <input type="hidden" name="inventory_id${e_obj.id}" value="${e_obj.id}"/>
+                    </td>
+                    <td>${e_obj.item_name}</td>
+                    <td>${e_obj.brand}</td>
+                    <td style="text-align:right;" id="t_qty${e_obj.id}">${e_obj.qty} 
+                    </td>
+                    <td style="text-align:right;">${formatMoney(e_obj.retail_price)} 
+                    </td>
+
+                    <td style="text-align:center;  width:60px;">
+                      <input type="number" 
+                             id="qty${e_obj.id}" 
+                             name="qty${e_obj.id}" 
+                             required 
+                             value="1" 
+                             min="1" 
+                             max="${e_obj.qty}" 
+                             style="border:0; background:transparent; text-align:right; width:60px;">
+                      <input type="hidden" name="issued_qty${e_obj.id}" value="${e_obj.qty}"/>
+                      <input type="hidden" name="old_stock_qty${e_obj.id}" value="${e_obj.inv_stock}"/>
+                    </td> 
+
+                    <td style="text-align:center;  width:260px;">
+                      <input type="text" 
+                             id="remarks${e_obj.id}" 
+                             name="remarks${e_obj.id}"  
+                             min="1" 
+                             max="${e_obj.qty}" 
+                             style="border:0; background:transparent; text-align:left; width:260px;">
+                    </td>  
+
+                    <td style="text-align:center;">
+                      <a href="javascript:remove_item(${e_obj.id})">
+                        <i title="remove" class="fa fa-trash" style="color:red"></i>
+                      </a>
+                    </td>
+                  </tr>`;
+
+
+
+                $('#item_selector').before(newRow);
+
+                const newRowEl = $(`#tr${e_obj.id}`);
+ 
+              }
+
+              $('.add_item .select2-container .select2-selection__rendered').html('(+) add more item');
+              all += 1;
+              $('#row_counter').val(c);
+              $(".select2-ajax-so").val('').trigger('change');
+            });
+        }
 
 
         </script>

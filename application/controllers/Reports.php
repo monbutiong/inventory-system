@@ -30,47 +30,7 @@ class Reports extends CI_Controller {
 	}
  
  
-	public function inventory_masterlist(){
-
-		$module = $this->system_menu;
-
-		$module['module'] = "report/inventory_masterlist";
-		$module['map_link']   = "report > inventory_masterlist";  
-
-		$result = $this->admin_model->load_filemaintenance('fm_inventory_type');
-		$module['type'] = $result['maintenance_data'];
-
-		$result = $this->admin_model->load_filemaintenance('fm_inventory_category');
-		$module['category'] = $result['maintenance_data'];
-
-		$module['projects'] = $this->core->load_core_data('projects');
-
-		$this->load->view('admin/index',$module);
-
-	}
-
-	public function generate_inventory_masterlist(){
-
-		$result = $this->admin_model->load_filemaintenance('fm_inventory_type');
-		$module['type'] = $result['maintenance_data'];
-
-		$result = $this->admin_model->load_filemaintenance('fm_inventory_category');
-		$module['category'] = $result['maintenance_data'];
-
-		$result = $this->admin_model->load_filemaintenance('fm_manufacturer');
-		$module['manufacturer'] = $result['maintenance_data'];
-
-		$result = $this->admin_model->load_filemaintenance('fm_uom');
-		$module['uom'] = $result['maintenance_data'];
-
-		$module['projects'] = $this->core->load_core_data('projects');
-
-		$module['inventory'] = $this->core->load_core_data('inventory');
-
-		$this->load->view('admin/report/generate_inventory_masterlist',$module);
-
-
-	}
+	 
 
 
 	public function inventory_movement(){

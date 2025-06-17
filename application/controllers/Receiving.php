@@ -507,7 +507,7 @@ class Receiving extends CI_Controller {
 	    	 
 	    }
 
-	    redirect("receiving/edit_rr/".$r_id,"refresh");
+	    redirect("receiving/view_rr/".$r_id,"refresh");
 
 	}
 
@@ -880,7 +880,7 @@ class Receiving extends CI_Controller {
 
 	}
 
-	public function print_rr($id){ 
+	public function print_rr(int $id){ 
 
 		$module['rr'] = $this->core->load_core_data('receiving',$id);
 
@@ -957,7 +957,9 @@ class Receiving extends CI_Controller {
  
 			$inv = $this->db->select('id,qty,unit_cost_price,receiving_history')->get_where('inventory',['id' => $rs->inventory_id])->row();
 
-			$unit_cost_price = (($inv->unit_cost_price * $inv->qty) + ($rs->unit_cost_price * $rs->qty)) / ($inv->qty + $rs->qty);
+			$unit_cost_price = ((
+				($inv->unit_cost_price > 0 ? $inv->unit_cost_price : $rs->price)
+				 * $inv->qty) + ($rs->unit_cost_price * $rs->qty)) / ($inv->qty + $rs->qty);
 
 			$supplier_price = $rs->price;
 

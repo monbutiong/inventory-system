@@ -984,24 +984,19 @@ class Inventory extends CI_Controller {
 
 		$module['module'] = "inventory/create_returns";
 		$module['map_link']   = "inventory->create_returns";   
-		
-		$module['issuance'] = $this->core->load_core_data('issuance','','id,project_id,job_order_id,date_created,ref_no','confirmed=1');
-
-		$module['users'] = $this->core->load_core_data('account','','id,name');
-
-		$module['projects'] = $this->core->load_core_data('projects','','id,name');
-
-		$module['jo'] = $this->core->load_core_data('projects_job_order','','id,job_order_number');
+		  
+		$module['so'] = $this->core->load_core_data('issuance','','id',['confirmed'=>1]);
+  
 		
 		$this->load->view('admin/index',$module);
 
 	}
-
+ 
 	public function save_return_inventory(){
 
-		$jo_id = $this->input->post('job_order_id',TRUE);
+		$issuance_id = $this->input->post('issuance_id',TRUE);
 
-		$jo = $this->db->select('project_id,client_id')->get_where('projects_job_order',['id'=>$jo_id])->row();
+		$so = $this->db->select('customer_id,vehicle_id,confirmed_date')->get_where('issuance',['id'=>$issuance_id])->row();
 
 		$items = $this->input->post('items',TRUE);
 
@@ -1010,14 +1005,13 @@ class Inventory extends CI_Controller {
 			$r = $this->db->insert('inventory_returns',[
 				'date_created' => date('Y-m-d H:i'),
 				'user_id' => $this->session->user_id,
-				'issuance_id' => $this->input->post('issuance_id',TRUE), 
+				'issuance_id' => $issuance_id, 
 				'return_date' => $this->input->post('return_date',TRUE), 
-				'ref_no' => $this->input->post('ref_no',TRUE),  
+				'puchase_date' => $this->input->post('puchase_date',TRUE),  
 				'remarks' => $this->input->post('remarks',TRUE),
 				'confirmed' => 0,
-				'project_id'=>@$jo->project_id,
-				'job_order_id'=>$jo_id,
-				'client_id'=>@$jo->client_id,
+				'vehicle_id'=>@$so->vehicle_id,
+				'customer_id'=>@$so->customer_id,
 			]); 
 
 			$r_id = $this->db->insert_id();
@@ -1025,29 +1019,26 @@ class Inventory extends CI_Controller {
  
 			if($r){ 
 
-				foreach ($this->db->select('id,qty')->get_where('inventory',['deleted'=>0])->result() as $rs) {
-					$arr_inv[$rs->id] = $rs;
-				}
-
 				foreach ($items as $key => $ii_id) {
 
 					$qty = $this->input->post('qty'.$ii_id,TRUE);
+					$old_stock_qty = $this->input->post('old_stock_qty'.$ii_id,TRUE);
+					$remarks = $this->input->post('remarks'.$ii_id,TRUE);
  
-				    $new_qty = @$arr_inv[$ii_id]->qty+$qty;
+				    $new_qty = @$old_stock_qty+$qty;
 					  
 					$this->db->insert('inventory_returns_items',[ 
 						'return_id'=>$r_id,
-						'project_id'=>$jo->project_id,
-						'job_order_id'=>$jo_id,
-						'client_id'=>$jo->client_id,
+						'vehicle_id'=>$so->vehicle_id, 
+						'customer_id'=>$so->customer_id,
 						'issuance_id'=>$this->input->post('issuance_id'.$ii_id,TRUE),
 						'issuance_item_id'=>$ii_id,
 						'inventory_id'=>$this->input->post('inventory_id'.$ii_id,TRUE),  
-						'qty'=>$this->input->post('qty'.$ii_id,TRUE),
-						'qty_before'=>@$arr_inv[$ii_id]->qty,
+						'qty'=>$qty,
+						'qty_before'=>@$old_stock_qty,
 						'qty_after'=>$new_qty,
 						'remarks'=>$this->input->post('remarks'.$ii_id,TRUE),
-						'date_issued'=>@$this->input->post('date_issued'.$ii_id,TRUE),
+						'date_issued'=>$so->confirmed_date,
 						'issued_qty'=>@$this->input->post('issued_qty'.$ii_id,TRUE),
 						'user_id'=>$this->session->user_id,
 						'date_created'=>date("Y-m-d H:i"),
@@ -1070,7 +1061,7 @@ class Inventory extends CI_Controller {
 
 		}
 
-		redirect("inventory/create_returns","refresh");
+		redirect("inventory/view_returns/".$r_id,"refresh");
 
 	}
 

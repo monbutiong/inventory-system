@@ -253,8 +253,7 @@
 
               <input type="hidden" name="row_counter" id="row_counter" value="<?=@$counter?>">
               <input type="hidden" id="selected_ids" value="<?=@$selected_ids?>">
- 
-
+  
       </div>
 
       

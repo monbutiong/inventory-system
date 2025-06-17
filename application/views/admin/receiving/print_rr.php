@@ -408,5 +408,5 @@
 </html>
 <!-- end of accordion -->
 <script type="text/javascript">
-  //self.print()
+  self.print()
 </script>

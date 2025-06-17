@@ -189,6 +189,14 @@ class Outgoing extends CI_Controller {
 	    echo json_encode($results);
 	}
 
+	public function load_so($id)
+	{
+		$data = $this->core->load_core_data('issuance',$id);
+		$cus = $this->core->load_core_data('clients',$data->customer_id);
+		$data->customer = @$cus->name ? $cus->name : 'none';
+		echo json_encode($data);
+		die();
+	}
 
 	public function load_customers()
 	{
@@ -329,6 +337,82 @@ class Outgoing extends CI_Controller {
 		        'retail_price' => $r->retail_price,
 		        'image_url' => $r->picture_1,
 		        'qty' => $r->qty,
+		        'brand' => $r->brand,
+		    ];
+		}
+
+		print_r(json_encode($json));
+
+	}
+
+
+	public function load_so_items(){
+		
+		$json = [];
+
+		// Check if specific IDs are passed (single or multiple)
+		$so_id = $this->input->post('so_id', TRUE);  // can be a single id or array or CSV string
+
+		$is_new = $this->input->post('is_new', TRUE);
+ 
+		// Continue with original logic if no ids requested
+
+		$excluded_id = '';
+
+		if ($this->input->post('excluded_ids', TRUE)) {
+		    foreach (explode('-', $this->input->post('excluded_ids', TRUE)) as $id) {
+		        if ($id) {
+		            $excluded_id .= ' AND a.id != ' . $id;
+		        }
+		    }
+		}
+
+		if ($excluded_id) {
+		    $excluded_id = '(' . $excluded_id . ')';
+		    $excluded_id = str_replace('( AND', '(', $excluded_id);
+		    $this->db->where($excluded_id);
+		}
+
+		$search = $this->input->post('searchTerm');
+
+		$this->db->group_start();
+		$this->db->like('a.item_code', $search);
+		$this->db->or_like('a.item_name', $search);
+		$this->db->or_like('b.title', $search);
+		$this->db->group_end();
+
+		$this->db->limit(7, 0);
+
+		$this->db->where('issuance_id', $so_id);
+		$this->db->select('
+			a.id, 
+			a.item_code, 
+			a.item_name, 
+			a.supplier_price, 
+			a.qty, 
+			a.picture_1, 
+			b.title as brand, 
+			a.unit_cost_price, 
+			i.retail_price as retail_price,  
+			i.qty as so_qty,
+			a.qty as inv_stock');
+		$this->db->from('issuance_items as i');
+		$this->db->join('inventory as a', 'a.id = i.inventory_id', 'left');
+		$this->db->join('fm_item_brand as b', 'b.id = a.item_brand_id', 'left');
+		$items = $this->db->get()->result();
+
+		foreach ($items as $r) {
+		    $json[] = [
+		        'id' => $r->id,
+		        'text' => $r->item_code . ' | ' . $r->item_name,
+		        'item_code' => $r->item_code,
+		        'item_name' => $r->item_name,
+		        'unit_cost_price' => $r->unit_cost_price,
+		        'supplier_price' => $r->supplier_price, 
+		        'retail_price' => $r->retail_price,
+		        'image_url' => $r->picture_1,
+		        'qty' => $r->so_qty,
+		        'inv_stock' => $r->inv_stock,
 		        'brand' => $r->brand,
 		    ];
 		}
@@ -1671,14 +1755,14 @@ class Outgoing extends CI_Controller {
 			$issuance_history[] = [
 				'ii_id' => $i_id,
 				'date'=>date('Y-m-d H:i'),
-				'qty' => ($rs->qty - $rs->qty),
+				'qty' => ($rs->inv_qty - $rs->qty),
 				'ucp' => @$rs->unit_cost_price
 			]; 
 			
 			$this->db->where('id', $rs->inventory_id); 
 			$this->db->update('inventory',[
-				'old_qty' => $rs->qty, 
-				'qty' => ($rs->qty - $rs->qty), 
+				'old_qty' => $rs->inv_qty, 
+				'qty' => ($rs->inv_qty - $rs->qty), 
 				'issuance_history'=>json_encode($issuance_history)
 			] );
   
@@ -1691,8 +1775,8 @@ class Outgoing extends CI_Controller {
 				'vehicle_id' => $rs->vehicle_id, 
 				'customer_id' => $rs->customer_id,  
 				'qty' => $rs->qty,
-				'qty_before' => $rs->qty,
-				'qty_after' => ($rs->qty - $rs->qty), 
+				'qty_before' => $rs->inv_qty,
+				'qty_after' => ($rs->inv_qty - $rs->qty), 
 				'movement_from' => 'sales order',
 				'addition' => 0,
 				'unit_cost_price' => $rs->unit_cost_price,

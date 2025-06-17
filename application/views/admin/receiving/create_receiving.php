@@ -47,7 +47,7 @@
                   
                   <div class="col-md-2 col-sm-12 mb-3">
                     <label >Supplier</label>
-                    <select name="supplier_id" id="supplier_id" class="form-control " onchange="load_supplier_po(this.value)">
+                    <select name="supplier_id" id="supplier_id" class="form-control  select2_" onchange="load_supplier_po(this.value)">
                       <option value="">select</option> 
                       <?php 
                       if($suppliers){

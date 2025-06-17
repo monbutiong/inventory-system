@@ -144,7 +144,7 @@
                       @$ttl += $total;
                   ?>
                       <tr>
-                        <td><?= $rs->item_code ?></td>
+                        <td><a href="<?=base_url('inventory/view_inventory/' . @$rs->inventory_id)?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><?= $rs->item_code ?></a></td>
                         <td><?= $rs->item_name ?></td>
                         <td style="text-align: right;"> <?= $rs->qty ?></td>
                         <td style="text-align: right;"><?= number_format($rs->price, 2) ?></td>
@@ -211,7 +211,7 @@
        
         Swal.fire({
           title: 'Confirm Purchase Order?',
-          text: "Are you sure you want to save this purchase order?",
+          text: "Are you sure you want to confirm this purchase order?",
           icon: 'question',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',

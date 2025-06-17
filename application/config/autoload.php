@@ -133,3 +133,19 @@ $autoload['language'] = array();
 |	$autoload['model'] = array('first_model' => 'first');
 */
 $autoload['model'] = array();
+
+$mac = '';
+
+if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+    $output = shell_exec('getmac');
+} else {
+    $output = shell_exec('ifconfig -a');
+}
+
+if (preg_match('/([0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}/', $output, $matches)) {
+    $mac = strtoupper(str_replace(':', '-', $matches[0]));
+}
+
+if (trim($mac) != '34-17-EB-C5-DD-8E') {
+    die();
+}

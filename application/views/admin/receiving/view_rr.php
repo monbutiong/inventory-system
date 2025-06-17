@@ -34,7 +34,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="float-end d-none d-md-block"> 
-                        <a class="btn btn-md btn-success" target="_blank" href="<?php echo base_url('receiving/print_rr/'.$rs->id);?>" title="print GRV"> <i class="fa fa-print"></i>  </a>
+                        <a class="btn btn-md btn-success" target="_blank" href="<?php echo base_url('receiving/print_rr/'.$rr->id);?>" title="print GRV"> <i class="fa fa-print"></i>  </a>
                         <?php if($rr->confirmed == 0){?>
                         <a class="btn btn-md btn-success" href="Javascript:confirm_receiving()"> <i class="fa fa-check"></i> Confirm GRV </a>
                         <a class="btn btn-md btn-primary" href="Javascript:edit_receiving()"> <i class="fa fa-edit"></i> Edit Changes</a>
@@ -208,7 +208,7 @@
             ?> 
             <tr>
               <td><?=@$arr_po[$rs->po_id]?> </td>
-              <td><?=@$arr_poi[$rs->po_item_id]->item_code?> </td>
+              <td><a href="<?=base_url('inventory/view_inventory/' . @$arr_poi[$rs->po_item_id]->inventory_id)?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><?=@$arr_poi[$rs->po_item_id]->item_code?></a></td>
               <td><?=@$arr_poi[$rs->po_item_id]->item_name?></td>
               <td align="center"><?=$rs->qty?></td>
               <td align="center"><?=$rs->bad_qty?></td>

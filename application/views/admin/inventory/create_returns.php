@@ -9,18 +9,29 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Inventory <small>Create Inventory Returns</small></h2> 
  
-          <div class="input-group-btn pull-right" style="padding-right: 135px;">
-                  <a class="btn btn-sm btn-primary" href="Javascript:save_returns()"  >Save Inventory Returns</a>
-              </div>
-           
-        <div class="clearfix"></div>
+
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-md-8"> 
+                    <h6 class="page-title">Create Return Inventory</h6>
+                   
+                </div>
+                <div class="col-md-4">
+                    <div class="float-end d-none d-md-block">
+                       
+                        <a class="btn btn-md btn-primary" href="Javascript:save_returns()"  ><i class="fa fa-save"></i> Save Return Inventory</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
       </div>
       <div class="x_content">
-        <p class="text-muted font-13 m-b-30">
+        <div class="card">
+            <div class="card-body">
             
-
+              <p class="text-muted font-13 m-b-30">
           <div class="row">
 
             <div class="col-md-2 col-sm-12 ">
@@ -29,28 +40,32 @@
             </div>
             
             <div class="col-md-2 col-sm-12 ">
-              <label >Job Order </label>
-              <select name="job_order_id" id="job_order_id" class="form-control select2_" onchange="load_jo(this.value)">
+              <label >Sales Order </label>
+              <select name="issuance_id" id="so_id" class="form-control select2_" onchange="load_so(this.value)">
                 <option value="">select</option> 
                 <?php  
-                if($jo){
-                  foreach ($jo as $rs) { 
+                if($so){
+                  foreach ($so as $rs) { 
                 ?>
-                <option value="<?=$rs->id?>"><?=$rs->job_order_number?></option>
+                <option value="<?=$rs->id?>">SO<?=sprintf("%06d",($rs->id))?></option>
               <?php }}?>
               </select>
               
             </div>
- 
-
+   
             <div class="col-md-2 col-sm-12 ">
-              <label >Project</label>
-              <input type="text" id="project" readonly class="form-control ridonly"> 
+              <label >Customer</label>
+              <input type="text" id="customer" name="customer"  readonly class="form-control ridonly"> 
             </div>
 
             <div class="col-md-2 col-sm-12 ">
-              <label >Client</label>
-              <input type="text" id="client" readonly class="form-control ridonly"> 
+              <label >Conatact Number</label>
+              <input type="text" id="phone" name="phone" readonly class="form-control ridonly"> 
+            </div>
+
+            <div class="col-md-2 col-sm-12 ">
+              <label >Purchase Date</label>
+              <input type="text" required readonly name="puchase_date" id="puchase_date" class="form-control ridonly">
             </div>
 
             <div class="col-md-2 col-sm-12 ">
@@ -58,10 +73,7 @@
               <input type="date" required name="return_date" id="return_date" class="form-control">
             </div>
 
-            <div class="col-md-2 col-sm-12 ">
-              <label >Reference Number</label>
-              <input type="text" name="ref_no" id="ref_no" class="form-control">
-            </div>
+             
 
             
  
@@ -73,65 +85,60 @@
  
           </div>
 
-        </p>
- 
         
-        <table id="po_table" class="table table-striped table-bordered table-hover">
+        </p>
+        
+        <table id="ri_table" class="table table-striped table-bordered table-hover">
            
           <thead>
             <tr style="font-size: 12px;">
                
-              <th>Sales Order No.</th>
-              <th>Date Issued</th>
               <th>Part No.</th>
               <th>Description</th>   
-              <th>Issue Qty</th> 
-              <th>Return Qty</th>
-              <th>Remarks</th>
-              <th></th>  
+              <th>Brand</th>
+              <th>S.O. Quantity</th> 
+              <th>Retail Price</th>  
+              <th nowrap>Return Quantity</th> 
+              <th nowrap>Remarks</th>  
+              <th style="width:10px;"></th>  
             </tr>
             </thead> 
             <tbody>
-              <tr id="item_selector">
-                <td colspan="8" class="add_item">
-                  <div class="select2-ajax" style="width: 100%;"> 
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          
-          <input type="hidden" name="row_counter" id="row_counter">
+                   
+                    <tr id="item_selector">
+                      <td colspan="6" class="add_item">
+                        <div class="select2-ajax-ri" style="width: 100%;"> 
+                      </td> 
+                      <td></td>
+                    </tr> 
+                  </tbody>
+                </table>
 
-          <input type="hidden" id="selected_ids">
-          
-          <!-- <table class="table" id="add_item_section" >
-            <tr>
-              <td colspan="7" id="add_row">
-                <a id="add_item_link" class="btn btn-info load_modal_details" href="<?php echo base_url('outgoing/issue_batch');?>" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-plus"></i> Add By Batch</a> 
-              </td>
-            </tr>
-          </table>   -->    
+              <input type="hidden" name="row_counter" id="row_counter" value="<?=@$counter?>">
+              <input type="hidden" id="selected_ids" value="<?=@$selected_ids?>">   
          
       </div>
  
     </div>
+  </div> 
+
+  </div>
   </div> 
    
 </div>
 </form>
 <script type="text/javascript">
 
-  function load_jo(id){
+  function load_so(id){
     $.ajax({
-        url: '<?=base_url("outgoing/load_jo")?>/'+id, // Replace with your API endpoint
+        url: '<?=base_url("outgoing/load_so")?>/'+id, // Replace with your API endpoint
         type: 'GET', 
         success: function(response) { 
-            console.log('GGG',JSON.parse(response)); 
-
+            console.log('GGG',JSON.parse(response));  
             var data = JSON.parse(response);
-
-            $('#project').val(data.project.name);
-            $('#client').val(data.client.name); 
+            $('#customer').val(data.customer);
+            $('#phone').val(data.phone);
+            $('#puchase_date').val(data.confirmed_date); 
         } 
     });
   }
@@ -176,7 +183,7 @@
   }
 
 
-  function remove_item(c,id){ 
+  function remove_item(id){ 
     $('#tr'+id).fadeOut();
     $('#tr'+id).remove();
     $('#added'+id).remove();

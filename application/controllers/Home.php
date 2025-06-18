@@ -334,7 +334,7 @@ class Home extends CI_Controller {
  		$this->form_validation->set_rules('username','Username','required');
  		$this->form_validation->set_rules('password','Password','required|min_length[5]|max_length[225]');
 		$this->form_validation->set_rules('cpassword','Confirm Password','required|matches[password]');
-
+		
 		if($this->form_validation->run() == true){
 
 			$result = $this->home_model->add_system_user(); 
@@ -368,11 +368,15 @@ class Home extends CI_Controller {
 
 		 		$this->session->set_flashdata("success","new system user added"); 
 		 		redirect("home/system_users","refresh"); 
+			}else{
+				$this->session->set_flashdata("error","Error saving");
 			}
 
-		} 
+		}else{
+			$this->session->set_flashdata("error","Error saving: Invalid Entry");
+		}
 
-		$this->system_users();
+		redirect("home/system_users","refresh");
 	}
 
 	public function save_user_roles($id){

@@ -108,6 +108,21 @@
 
         <script src="<?=base_url('assets/template/assets')?>/js/app.js"></script>
 
+        <script type="text/javascript">
+            // Apply to all input and textarea fields
+            $(document).on('input', 'input[type="text"], input[type="email"], textarea', function() {
+              const start = this.selectionStart;
+              const end = this.selectionEnd;
+              const original = this.value;
+              const uppercased = original.toUpperCase();
+
+              if (original !== uppercased) {
+                this.value = uppercased;
+                this.setSelectionRange(start, end); // restore cursor position
+              }
+            });
+        </script>
+
     </body>
 </html>
 <?php 

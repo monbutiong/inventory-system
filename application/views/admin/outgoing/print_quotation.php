@@ -235,7 +235,9 @@
         <table class="qtable">
             <thead>
                 <tr>
+                    <?php if(@$_GET['with_partnumber']==1){?>
                     <th>Part No.</th>
+                    <?php }?>
                     <th>Description</th>
                     <th>Qty</th>
                     <th class="td_currency">Unit Price</th>
@@ -262,7 +264,9 @@
                         $ttl += $netTotal;
                         ?>
                         <tr>
+                            <?php if(@$_GET['with_partnumber']==1){?>
                             <td><?= @$rs->item_code ?></td>
+                            <?php }?>
                             <td><?= @$rs->item_name ?></td>
                             <td align="center"><?= $rs->qty ?></td>
                             <td class="td_currency"><?= number_format($rs->retail_price, 2) ?></td>
@@ -276,7 +280,7 @@
                 }
                 ?>
                 <tr class="total-row">
-                    <td colspan="7" style="text-align: right;">TOTAL (QAR)</td>
+                    <td colspan="<?php if(@$_GET['with_partnumber']==1){ echo '7'; }else{echo '6';}?>" style="text-align: right;">TOTAL (QAR)</td>
                     <td class="td_currency"><?= number_format($ttl, 2) ?></td>
                 </tr>
             </tbody>

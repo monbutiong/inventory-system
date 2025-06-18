@@ -395,7 +395,9 @@ class Outgoing extends CI_Controller {
 			a.unit_cost_price, 
 			i.retail_price as retail_price,  
 			i.qty as so_qty,
-			a.qty as inv_stock');
+			a.qty as inv_stock,
+			i.discount_percentage as discount_percentage,
+			i.discount_amount as discount_amount');
 		$this->db->from('issuance_items as i');
 		$this->db->join('inventory as a', 'a.id = i.inventory_id', 'left');
 		$this->db->join('fm_item_brand as b', 'b.id = a.item_brand_id', 'left');
@@ -414,6 +416,8 @@ class Outgoing extends CI_Controller {
 		        'qty' => $r->so_qty,
 		        'inv_stock' => $r->inv_stock,
 		        'brand' => $r->brand,
+		        'discount_percentage'=> $r->discount_percentage,
+		        'discount_amount'=> $r->discount_amount
 		    ];
 		}
 
@@ -872,7 +876,7 @@ class Outgoing extends CI_Controller {
 	                <a href="Javascript:select_quotatation(' . $q->id . ');"   >
 	                    <i class="fa fa-download"></i> Select
 	                </a> | 
-	                <a target="_blank" href="' . base_url('outgoing/print_quotation/' . $q->id) . '">
+	                <a  href="Javascript:print_quo('.$q->id.')">
 	                    <i class="fa fa-print"></i> Print
 	                </a>
 	                ';
@@ -887,7 +891,7 @@ class Outgoing extends CI_Controller {
 	                <a href="javascript:prompt_delete(\'Delete\', \'Delete Quotation # ' . $qn . '?\', \'' . base_url('outgoing/delete_quotation/' . $q->id) . '\', \'tr' . $q->id . '\')">
 	                    <i class="fa fa-trash"></i> Delete
 	                </a> | 
-	                <a target="_blank" href="' . base_url('outgoing/print_quotation/' . $q->id) . '">
+	                <a href="Javascript:print_quo('.$q->id.')">
 	                    <i class="fa fa-print"></i> Print
 	                </a>'; 
 	        }
@@ -974,7 +978,7 @@ class Outgoing extends CI_Controller {
 
 	        if($confirmed){
 	        	$option = ' 
-	                <a target="_blank" href="' . base_url('outgoing/print_issuance/' . $q->id) . '">
+	                <a href="Javascript:print_so(' . $q->id . ')">
 	                    <i class="fa fa-print"></i> Print
 	                </a>
 	                ';
@@ -989,7 +993,7 @@ class Outgoing extends CI_Controller {
 	                <a href="javascript:prompt_delete(\'Delete\', \'Delete Sales Order # ' . $qn . '?\', \'' . base_url('outgoing/delete_issuance/' . $q->id) . '\', \'tr' . $q->id . '\')">
 	                    <i class="fa fa-trash"></i> Delete
 	                </a> | 
-	                <a target="_blank" href="' . base_url('outgoing/print_issuance/' . $q->id) . '">
+	                <a href="Javascript:print_so(' . $q->id . ')">
 	                    <i class="fa fa-print"></i> Print
 	                </a>'; 
 	        }

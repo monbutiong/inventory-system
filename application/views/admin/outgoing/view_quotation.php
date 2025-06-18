@@ -32,7 +32,7 @@
                 <div class="float-end d-none d-md-block">
                    
 
-                  <a target="_blank" class="btn btn-md btn-success" href="<?=base_url('outgoing/print_quotation/'.$quotation->id)?>"><i class="fa fa-print"></i></a>
+                  <a class="btn btn-md btn-success" href="Javascript:print_quo(<?=$quotation->id?>)"><i class="fa fa-print"></i></a>
                   
                   <a class="btn btn-md btn-success" href="Javascript:edit_quotation()"><i class="fa fa-edit"></i> Edit Quotation</a>
                   
@@ -222,12 +222,31 @@
   </div>
 </form>
 <script type="text/javascript">
- 
+  
+  function print_quo(id) {
+      Swal.fire({
+          title: 'Print Quotation',
+          text: "Print quotation with part number included?",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',          // Red confirm button
+          cancelButtonColor: '#3085d6',        // Blue cancel button
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              // If Yes is clicked
+              window.open("<?php echo base_url('outgoing/print_quotation') ?>/"+id+'?with_partnumber=1', '_blank');
+          } else {
+              // If No is clicked
+              window.open("<?php echo base_url('outgoing/print_quotation') ?>/"+id, '_blank');
+          }
+      });
+  }
+
   var c = 0;
   var all = 0; 
-    
-   
-
+  
   function edit_quotation(){ 
  
 	    Swal.fire({

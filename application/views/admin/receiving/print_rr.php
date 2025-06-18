@@ -20,6 +20,22 @@
             padding: 10px;
             text-align: center;
         }
+        .badge {
+          display: inline-block;
+          padding: 0.35em 0.65em;
+          font-size: 0.75rem;
+          font-weight: 600;
+          line-height: 1;
+          color: #fff;
+          text-align: center;
+          white-space: nowrap;
+          vertical-align: baseline;
+          border-radius: 0.375rem;
+        }
+
+        .badge-danger {
+          background-color: #dc3545;
+        }
     </style>
 </head>
 <body style="background-color: #fff;">
@@ -33,7 +49,11 @@
           </td> 
         </tr>
         <tr>
-          <td colspan="4"><h2 style="color: #65aadb;">Goods Receipt Voucher <?php if($rr->confirmed==0){echo '<font color="red">(Unconfirmed)</font>';}?></h2></td>
+          <td colspan="4"><h2 style="color: #65aadb;">Goods Receipt Voucher
+            <?php if ($rr->confirmed == 0): ?>
+                <span class="badge badge-danger">Unconfimed</span>
+            <?php endif; ?>
+            </h2></td>
         </tr> 
         <tr>
           <td valign="top"> 
@@ -214,7 +234,9 @@
           </td> 
         </tr>
         <tr>
-          <td colspan="4"><h2 style="color: #65aadb;">Goods Receipt Voucher <?php if($rr->confirmed==0){echo '<font color="red">(Unconfirmed)</font>';}?></h2></td>
+          <td colspan="4"><h2 style="color: #65aadb;">Goods Receipt Voucher <?php if ($rr->confirmed == 0): ?>
+                <span class="badge badge-danger">Unconfimed</span>
+            <?php endif; ?></h2></td>
         </tr> 
         <tr>
           <td valign="top"> 

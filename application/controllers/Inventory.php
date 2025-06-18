@@ -1008,10 +1008,12 @@ class Inventory extends CI_Controller {
 				'issuance_id' => $issuance_id, 
 				'return_date' => $this->input->post('return_date',TRUE), 
 				'puchase_date' => $this->input->post('puchase_date',TRUE),  
+				'phone' => $this->input->post('phone',TRUE),
 				'remarks' => $this->input->post('remarks',TRUE),
 				'confirmed' => 0,
 				'vehicle_id'=>@$so->vehicle_id,
 				'customer_id'=>@$so->customer_id,
+				'grand_total_amt' => $this->input->post('grand_total_amt',TRUE),
 			]); 
 
 			$r_id = $this->db->insert_id();
@@ -1039,7 +1041,10 @@ class Inventory extends CI_Controller {
 						'qty_after'=>$new_qty,
 						'remarks'=>$this->input->post('remarks'.$ii_id,TRUE),
 						'date_issued'=>$so->confirmed_date,
+						'retail_price'=>@$this->input->post('retail_price'.$ii_id,TRUE),
 						'issued_qty'=>@$this->input->post('issued_qty'.$ii_id,TRUE),
+						'discount_percentage'=>@$this->input->post('discount_percentage'.$ii_id,TRUE),
+						'discount_amount'=>@$this->input->post('discount_amount'.$ii_id,TRUE),
 						'user_id'=>$this->session->user_id,
 						'date_created'=>date("Y-m-d H:i"),
 						'confirmed' => 0 
@@ -1086,60 +1091,89 @@ class Inventory extends CI_Controller {
 
 	}
 
-	public function view_returns(int $id,$confirm = ''){
+	public function view_returns(int $id){
 
-		$module['confirm'] = $confirm;
+		$module = $this->system_menu;
 
+		$module['module'] = "inventory/view_returns";
+		$module['map_link']   = "inventory->view_returns";   
+  
 		$module['inv'] = $this->core->load_core_data('inventory','','id,item_code,item_name,qty');
 
-		$module['ii'] = $this->core->load_core_data('issuance','','id,job_order_id','confirmed=1');
-
+		 
 		$module['users'] = $this->core->load_core_data('account','','id,name');
 		 
-		$module['returns'] = $this->core->load_core_data('inventory_returns',$id);
+		$module['ir'] = $this->core->load_core_data('inventory_returns',$id);
 
-		$module['return_items'] = $this->core->load_core_data('inventory_returns_items','','','return_id='.$module['returns']->id);
+		$module['so'] = $this->core->load_core_data('issuance',$module['ir']->issuance_id);
 
-		$module['ii'] = $this->core->load_core_data('issuance',$module['returns']->issuance_id);
+		$module['return_items'] = $this->core->load_core_data('inventory_returns_items','','','return_id='.$module['ir']->id);
 
-		$module['jo'] = $this->core->load_core_data('projects_job_order',$module['returns']->job_order_id,'id,job_order_number,project_id,client_id');
+		$module['ii'] = $this->core->load_core_data('issuance',$module['ir']->issuance_id);
 
-		$module['project'] = $this->core->load_core_data('projects',$module['jo']->project_id);
+	  
+		$module['vehicle'] = $this->core->load_core_data('vehicles',$module['ir']->vehicle_id);
 
-		$module['client'] = $this->core->load_core_data('clients',$module['jo']->client_id);
+		$module['client'] = $this->core->load_core_data('clients',$module['ir']->customer_id);
 
-		$module['user'] = $this->core->load_core_data('account',$module['returns']->user_id); 
+		$module['user'] = $this->core->load_core_data('account',$module['ir']->user_id); 
 
-		$module['confirm_user'] = $this->core->load_core_data('account',$module['returns']->confirmed_by); 
+		if(@$module['ir']->confirmed_by){
+			$module['confirm_user'] = $this->core->load_core_data('account',$module['ir']->confirmed_by); 
+		} 
 		
-		$this->load->view('admin/inventory/view_returns',$module);
+		$this->load->view('admin/index',$module);
 
 	}	
 
 	public function edit_returns(int $id){
 	
 		$module = $this->system_menu;
-  
+				
 		$module['module'] = "inventory/edit_returns";
 		$module['map_link']   = "inventory->edit_returns";   
-		
-		$module['inv'] = $this->core->load_core_data('inventory','','id,item_code,item_name,qty'); 
-
+  
+		$module['inv'] = $this->core->load_core_data('inventory','','id,item_code,item_name,qty');
+ 
 		$module['users'] = $this->core->load_core_data('account','','id,name');
 		 
-		$module['returns'] = $this->core->load_core_data('inventory_returns',$id);
+		$module['ir'] = $this->core->load_core_data('inventory_returns',$id);
 
-		$module['return_items'] = $this->core->load_core_data('inventory_returns_items','','','return_id='.$module['returns']->id);
+		if($module['ir']->confirmed == 1){die('Already Confirmed!');}
 
-		$module['jo'] = $this->core->load_core_data('projects_job_order',$module['returns']->job_order_id,'id,job_order_number,project_id,client_id');
+		$module['so'] = $this->core->load_core_data('issuance','','id',['confirmed'=>1]);
+ 
+		$this->db->select('
+			a.id as id,
+			b.item_code as item_code,
+			b.item_name as item_name,
+			c.title as item_brand,
+			a.issued_qty as so_qty,
+			a.qty as qty,
+			a.retail_price as retail_price,
+			b.qty as inv_stock,
+			a.remarks as remarks,
+			a.discount_percentage as discount_percentage,
+			a.discount_amount as discount_amount
+		');
+		$this->db->from('inventory_returns_items a');
+		$this->db->join('inventory b', 'b.id = a.inventory_id', 'left');
+		$this->db->join('fm_item_brand c', 'c.id = b.item_brand_id', 'left'); 
+		$this->db->where(['a.return_id'=>$module['ir']->id, 'a.deleted'=>0]);
+		$module['return_items'] = $this->db->get()->result();
 
-		$module['project'] = $this->core->load_core_data('projects',$module['jo']->project_id);
+		$module['ii'] = $this->core->load_core_data('issuance',$module['ir']->issuance_id);
 
-		$module['client'] = $this->core->load_core_data('clients',$module['jo']->client_id);
+	  
+		$module['vehicle'] = $this->core->load_core_data('vehicles',$module['ir']->vehicle_id);
 
-		$module['user'] = $this->core->load_core_data('account',$module['returns']->user_id); 
+		$module['client'] = $this->core->load_core_data('clients',$module['ir']->customer_id);
 
-		$module['confirm_user'] = $this->core->load_core_data('account',$module['returns']->confirmed_by); 
+		$module['user'] = $this->core->load_core_data('account',$module['ir']->user_id); 
+
+		if(@$module['ir']->confirmed_by){
+			$module['confirm_user'] = $this->core->load_core_data('account',$module['ir']->confirmed_by); 
+		} 
 		
 		$this->load->view('admin/index',$module);
 

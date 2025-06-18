@@ -36,7 +36,7 @@
                 <div class="float-end d-none d-md-block">
                    
 
-                  <a target="_blank" class="btn btn-md btn-success" href="<?=base_url('outgoing/print_issuance/'.$issuance->id)?>"><i class="fa fa-print"></i></a>
+                  <a class="btn btn-md btn-success" href="Javascript:print_so(<?=$issuance->id?>)"><i class="fa fa-print"></i></a>
                   
                   <?php if($issuance->confirmed == 0){?>
                   <a class="btn btn-md btn-success" href="Javascript:confirm_issuance()"><i class="fa fa-check"></i> Confirm Sales Order</a>
@@ -235,6 +235,27 @@
   </div>
 </form>
 <script type="text/javascript">
+
+  function print_so(id) {
+        Swal.fire({
+            title: 'Print Sales Order',
+            text: "Print sales order with part number included?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',          // Red confirm button
+            cancelButtonColor: '#3085d6',        // Blue cancel button
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If Yes is clicked
+                window.open("<?php echo base_url('outgoing/print_issuance') ?>/"+id+'?with_partnumber=1', '_blank');
+            } else {
+                // If No is clicked
+                window.open("<?php echo base_url('outgoing/print_issuance') ?>/"+id, '_blank');
+            }
+        });
+  }
  
   var c = 0;
   var all = 0; 

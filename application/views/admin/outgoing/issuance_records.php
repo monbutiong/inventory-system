@@ -48,6 +48,28 @@
 </div>
 
 <script type="text/javascript">
+
+function print_so(id) {
+      Swal.fire({
+          title: 'Print Quotation',
+          text: "Print quotation with part number included?",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',          // Red confirm button
+          cancelButtonColor: '#3085d6',        // Blue cancel button
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              // If Yes is clicked
+              window.open("<?php echo base_url('outgoing/print_issuance') ?>/"+id+'?with_partnumber=1', '_blank');
+          } else {
+              // If No is clicked
+              window.open("<?php echo base_url('outgoing/print_issuance') ?>/"+id, '_blank');
+          }
+      });
+}
+
 function delete_ii(id){
   reset(); 
 

@@ -14,13 +14,13 @@
         <div class="page-title-box">
             <div class="row align-items-center">
                 <div class="col-md-8"> 
-                    <h6 class="page-title">Create Return Inventory</h6>
+                    <h6 class="page-title">Create Inventory Return</h6>
                    
                 </div>
                 <div class="col-md-4">
                     <div class="float-end d-none d-md-block">
                        
-                        <a class="btn btn-md btn-primary" href="Javascript:save_returns()"  ><i class="fa fa-save"></i> Save Return Inventory</a>
+                        <a class="btn btn-md btn-primary" href="Javascript:save_returns()"  ><i class="fa fa-save"></i> Save Inventory Return</a>
                     </div>
                 </div>
             </div>
@@ -99,6 +99,10 @@
               <th>S.O. Quantity</th> 
               <th>Retail Price</th>  
               <th nowrap>Return Quantity</th> 
+              <th nowrap>Line Total</th>
+              <th nowrap>Discount %</th>
+              <th nowrap>Discount Amt</th>
+              <th nowrap>Total Amount</th> 
               <th nowrap>Remarks</th>  
               <th style="width:10px;"></th>  
             </tr>
@@ -106,10 +110,15 @@
             <tbody>
                    
                     <tr id="item_selector">
-                      <td colspan="6" class="add_item">
+                      <td colspan="9" class="add_item">
                         <div class="select2-ajax-ri" style="width: 100%;"> 
                       </td> 
-                      <td></td>
+                     
+                      <td align="right">
+                        <h5 id="grand_total">0.00</h5>
+                        <input type="hidden" id="grand_total_amt" name="grand_total_amt">
+                      </td>
+                      <td colspan="2"></td>
                     </tr> 
                   </tbody>
                 </table>
@@ -161,24 +170,50 @@
 
   function save_returns(){ 
 
-    if($('#issue_id').val() == ''){
-      alertify.error("Job Order is required");
-    }else if($('#return_date').val() == ''){
-      alertify.error("Return date is required"); 
-    }else{
-
-      reset(); 
-
-      alertify.confirm("Save inventory return details?", function (e) {
-            if (e) {  
-                alertify.log("saving...");
+    if ($('#issuance_id').val() === '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Missing Information',
+            text: 'Job Order is required'
+        });
+    } else if ($('#return_date').val() === '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Missing Information',
+            text: 'Return date is required'
+        });
+    } else {
+        Swal.fire({
+            title: 'Confirm Save',
+            text: 'Do you want to save the inventory return details?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, save it',
+            cancelButtonText: 'No, cancel',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Saving...',
+                    text: 'Your return details are being saved.',
+                    icon: 'success',
+                    timer: 1000,
+                    showConfirmButton: false
+                });
                 document.frm_returns.submit();
             } else {
-                alertify.log("cancelled");
+                Swal.fire({
+                    title: 'Cancelled',
+                    text: 'Inventory return not saved.',
+                    icon: 'info',
+                    timer: 1000,
+                    showConfirmButton: false
+                });
             }
-        }, "Confirm");
-    
+        });
     }
+
 
   }
 

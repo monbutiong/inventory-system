@@ -35,7 +35,7 @@ select, .text_input {
           </tr>
           <tr>
             <td style="padding: 10px;" valign="top"><b>Stock Qunatity: </b></td>
-            <td style="padding: 10px;"><div class="badge bg-success"><?=@$inv->qty?></div></td>
+            <td style="padding: 10px;"><div class="badge bg-success"><span style="font-size: 15px;"><?=@$inv->qty?></span></div></td>
           </tr>
           <tr>
             <td style="padding: 10px;" valign="top"><b>Log Date: </b></td>

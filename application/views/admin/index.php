@@ -1250,10 +1250,7 @@
   
           }
 
-          function formatMoney(value) {
-            return parseFloat(value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-          }
-
+     
           let isUpdating = false;
 
           function formatMoney(value) {
@@ -1544,6 +1541,8 @@
                         inv_stock: obj.inv_stock,
                         unit_cost_price: obj.unit_cost_price,
                         retail_price: obj.retail_price,
+                        discount_percentage: obj.discount_percentage,
+                        discount_amount: obj.discount_amount,
                         image_url: obj.image_url 
                             ? '<?=base_url("assets/uploads/inventory/")?>' + obj.image_url 
                             : '<?=base_url("assets/images/no-image.png")?>'
@@ -1597,12 +1596,7 @@
               var e_obj = e.params.data;
               c += 1;
 
-              // if (e_obj.qty <= 0) {
-              //   alert("Error: The item quantity is zero, and cannot be issued.");
-              //   $('.add_item .select2-container .select2-selection__rendered').html('(+) add more item');
-              //   return;
-              // }
-          
+              
               if ($('#added' + e_obj.id).length == 0) {
                 $('#selected_ids').val($('#selected_ids').val() + '(' + e_obj.id + ')-');
                    
@@ -1623,9 +1617,14 @@
                     </td>
                     <td>${e_obj.item_name}</td>
                     <td>${e_obj.brand}</td>
-                    <td style="text-align:right;" id="t_qty${e_obj.id}">${e_obj.qty} 
+                    <td style="text-align:right;" 
+                        id="t_qty${e_obj.id}" 
+                        data-price="${e_obj.retail_price}" 
+                        data-discount-percentage="${e_obj.discount_percentage}">
+                        ${e_obj.qty}
                     </td>
                     <td style="text-align:right;">${formatMoney(e_obj.retail_price)} 
+                        <input type="hidden" name="retail_price${e_obj.id}" value="${e_obj.retail_price}"/>
                     </td>
 
                     <td style="text-align:center;  width:60px;">
@@ -1633,22 +1632,42 @@
                              id="qty${e_obj.id}" 
                              name="qty${e_obj.id}" 
                              required 
-                             value="1" 
+                             value="${e_obj.qty}" 
                              min="1" 
                              max="${e_obj.qty}" 
                              style="border:0; background:transparent; text-align:right; width:60px;">
                       <input type="hidden" name="issued_qty${e_obj.id}" value="${e_obj.qty}"/>
                       <input type="hidden" name="old_stock_qty${e_obj.id}" value="${e_obj.inv_stock}"/>
                     </td> 
+                    <td style="text-align:right;">
+ 
+                    <font id="line_total${e_obj.id}">${formatMoney(e_obj.retail_price * e_obj.qty)}</font>
+                    </td>
+
+                    <td style="text-align:right;"> 
+                        ${formatMoney(e_obj.discount_percentage)}
+                        <input type="hidden" name="discount_percentage${e_obj.id}" value="${e_obj.discount_percentage}" >
+                    </td>
+
+                    <td style="text-align:right;">
+                        <span id="discount_amount_total${e_obj.id}">
+                        ${formatMoney(e_obj.discount_amount)}
+                        </span>
+                        <input type="hidden" 
+                        id="discount_amount${e_obj.id}"
+                        name="discount_amount${e_obj.id}" value="${e_obj.discount_amount}" >
+                    </td>
+
+                    <td style="text-align:right;"><font id="line_total${e_obj.id}">${formatMoney((e_obj.retail_price * e_obj.qty)-e_obj.discount_amount)}</font>
+                    </td>
 
                     <td style="text-align:center;  width:260px;">
                       <input type="text" 
                              id="remarks${e_obj.id}" 
-                             name="remarks${e_obj.id}"  
-                             min="1" 
-                             max="${e_obj.qty}" 
+                             name="remarks${e_obj.id}"   
                              style="border:0; background:transparent; text-align:left; width:260px;">
                     </td>  
+
 
                     <td style="text-align:center;">
                       <a href="javascript:remove_item(${e_obj.id})">
@@ -1661,6 +1680,18 @@
 
                 $('#item_selector').before(newRow);
 
+                // Store price and discount in DOM for easy access later
+                $(`#t_qty${e_obj.id}`).data('price', e_obj.retail_price);
+                $(`#t_qty${e_obj.id}`).data('discount', e_obj.discount_amount);
+
+                // Add listener to auto-update line and grand total on qty change
+                $(`#qty${e_obj.id}`).on('input', function () {
+                    recalculateLineAndGrandTotal(e_obj.id);
+                });
+
+                // Trigger initial calculation
+                recalculateLineAndGrandTotal(e_obj.id);
+
                 const newRowEl = $(`#tr${e_obj.id}`);
  
               }
@@ -1670,6 +1701,58 @@
               $('#row_counter').val(c);
               $(".select2-ajax-so").val('').trigger('change');
             });
+
+        function recalculateLineAndGrandTotal(id) {
+            const qty = parseFloat($(`#qty${id}`).val()) || 0;
+            const price = parseFloat($(`#t_qty${id}`).data('price')) || 0;
+            const discountPercentage = parseFloat($(`#t_qty${id}`).data('discount-percentage')) || 0;
+
+            const total = qty * price;
+            const discountAmount = (total * discountPercentage) / 100;
+            const lineTotal = total - discountAmount;
+
+            $(`#discount_amount_total${id}`).text(formatMoney(discountAmount));
+            $(`#discount_amount${id}`).text(discountAmount);
+            $(`#line_total${id}`).text(formatMoney(lineTotal));
+
+            let grandTotal = 0;
+            $('[id^="line_total"]').each(function () {
+                const amount = parseFloat($(this).text().replace(/,/g, '')) || 0;
+                grandTotal += amount;
+            });
+
+            $('#grand_total').text(formatMoney(grandTotal));
+            $('#grand_total_amt').val(grandTotal.toFixed(2));
+        }
+
+        function initializeExistingRows() {
+            $(".data-row").each(function () {
+                const row = $(this);
+                const id = row.attr('id').replace('tr', '');
+                const qtyInput = $(`#qty${id}`);
+                const price = parseFloat(row.find(`#line_total${id}`).text().replace(/,/g, '')) / (parseFloat(qtyInput.val()) || 1);
+                const discountPercentage = parseFloat($(`input[name="discount_percentage${id}"]`).val()) || 0;
+
+                // Set data attributes
+                $(`#t_qty${id}`).data('price', price);
+                $(`#t_qty${id}`).data('discount-percentage', discountPercentage);
+
+                // Bind qty change listener
+                qtyInput.off('input').on('input', function () {
+                    recalculateLineAndGrandTotal(id);
+                });
+
+                // Trigger initial calculation
+                recalculateLineAndGrandTotal(id);
+            });
+        }
+
+        if($('#item_retrun_id').length){
+            initializeExistingRows(); // if edit, will re stablish the id's
+        }
+
+
+
         }
 
 

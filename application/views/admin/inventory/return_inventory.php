@@ -20,11 +20,11 @@
           <thead>
             <tr style="font-size: 12px;">
               <th>Date</th> 
-              <th>Return Number</th>
-              <th>Job Order</th>
-              <th>Project</th>
+              <th>Return Number</th> 
               <th>Return Date</th>
-              <th>Reference Number</th>  
+              <th>Sales Order #</th>
+              <th>Customer</th>
+              <th>Contact #</th>  
               <td>Remarks</td>  
               <td>Created By</td>    
               <th>Options</th>
@@ -36,41 +36,26 @@
               foreach($users as $rs){
               $arr_user[$rs->id] = $rs->name;
             }}
-
-            if(@$ii){
-              foreach($ii as $rs){
-              $arr_ii[$rs->id] = $rs->job_order_id;
-            }}
-
-            if(@$jo){
-              foreach($jo as $rs){
-              $arr_jo[$rs->id] = $rs->job_order_number;
-            }}
-
-            if(@$projects){
-              foreach($projects as $rs){
-              $arr_pr[$rs->id] = $rs->name;
-            }}
   
             if(@$returns){
               foreach($returns as $rs){ 
             ?>
             <tr>
               <td data-order="-<?=$rs->id?>"><?=date('M d, Y',strtotime($rs->date_created))?></td> 
-              <td>RT<?=sprintf("%06d",$rs->id)?></td>
-              <td><?=@$arr_jo[@$rs->job_order_id]?></td> 
-              <td><?=@$arr_pr[@$rs->project_id]?></td> 
+              <td>IR<?=sprintf("%06d",$rs->id)?></td> 
               <td><?=date('M d, Y',strtotime($rs->return_date))?></td> 
-              <td><?=$rs->ref_no?></td> 
+              <td>IR<?=sprintf("%06d",$rs->issuance_id)?></td> 
+              <td><?=@$rs->customer?></td>
+              <td><?=$rs->phone?></td> 
               <td><?=$rs->remarks?></td> 
               <td><?=@$arr_user[$rs->user_id]?></td>
               <td nowrap>
 
-                <a href="<?php echo base_url('inventory/view_returns/'.$rs->id.'/1');?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" ><i class="fa fa-check"></i> Confirm</a>
+                <a href="#" ><i class="fa fa-eye"></i> Confirm</a>
                   |  
-                <a href="<?php echo base_url('inventory/view_returns/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" ><i class="fa fa-file-text-o"></i> View</a>
+                <a href="<?php echo base_url('inventory/view_returns/'.$rs->id);?>"  ><i class="fa fa-file-text-o"></i> View</a>
                   |  
-                <a href="Javascript:edit_return(<?=$rs->id?>)" ><i class="fa fa-edit"></i> Edit</a>
+                <a href="<?php echo base_url('inventory/edit_returns/'.$rs->id);?>"><i class="fa fa-edit"></i> Edit</a>
                   |  
                 <a href="Javascript:del_return(<?=$rs->id?>)" ><i class="fa fa-trash"></i> Delete</a>
                

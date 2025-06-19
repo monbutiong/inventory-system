@@ -133,7 +133,8 @@
                      </td>
                      <td><?=$rs->item_name?></td>
                      <td><?=$rs->item_brand?></td>
-                     <td style="text-align:right;" id="t_qty<?=$rs->id?>"><?=$rs->so_qty?> 
+                     <td style="text-align:right;" id="t_qty<?=$rs->id?>"      data-price="<?=$rs->retail_price?>" 
+                        data-discount-percentage="<?=$rs->discount_percentage?>"><?=$rs->so_qty?> 
                      </td>
                      <td style="text-align:right;"> 
                       <?=$rs->retail_price ? number_format($rs->retail_price,2) : '0.00'?>
@@ -146,7 +147,7 @@
                               required 
                               value="1" 
                               min="1" 
-                              max="${e_obj.qty}" 
+                              max="<?=$rs->so_qty?>" 
                               style="border:0; background:transparent; text-align:right; width:60px;">
                        <input type="hidden" name="issued_qty<?=$rs->id?>" value="<?=$rs->qty?>"/>
                        <input type="hidden" name="old_stock_qty<?=$rs->id?>" value="<?=$rs->inv_stock?> "/>
@@ -169,7 +170,7 @@
                          name="discount_amount<?=$rs->id?>" value="<?=round($rs->discount_amount,2)?>" >
                      </td>
 
-                     <td style="text-align:right;"><font id="line_total<?=$rs->id?>"><?=number_format(($rs->retail_price * $rs->qty)-$rs->discount_amount,2)?></font>
+                     <td style="text-align:right;"><font id="line_grand_total<?=$rs->id?>"><?=number_format(($rs->retail_price * $rs->qty)-$rs->discount_amount,2)?></font>
                      </td>
 
 
@@ -306,6 +307,8 @@
     all-=1;
     var excluded_ids = $('#selected_ids').val();
     $('#selected_ids').val( excluded_ids.replace("("+id+")-", "") );
+
+    initializeExistingRows();
   }
 
 

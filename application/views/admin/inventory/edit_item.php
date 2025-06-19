@@ -60,7 +60,7 @@ select, .text_input {
                 <div class="row mb-3">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="item_code">Part Number <font id="exist" style="display: none;" color="red">(exist)</font></label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="text" id="item_code" name="item_code" required onkeyup="chk_item_code(this.value)" class="form-control col-md-7 col-xs-12" value="<?=htmlspecialchars($item->item_code)?>">
+                    <input type="text" id="item_code" name="item_code" required readonly onkeyup="chk_item_code(this.value)" class="form-control col-md-7 col-xs-12 readonlyx" value="<?=htmlspecialchars($item->item_code)?>">
                   </div>
                 </div> 
 

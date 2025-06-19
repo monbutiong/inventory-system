@@ -11,7 +11,7 @@
  Target Server Version : 100427
  File Encoding         : 65001
 
- Date: 18/06/2025 17:58:28
+ Date: 19/06/2025 18:17:01
 */
 
 SET NAMES utf8mb4;
@@ -46,7 +46,7 @@ CREATE TABLE `account`  (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 1, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, '8e030b619005eb2bdec310a3bb3003393ed0de9658c0b1e1e6bfd145c7f92a1b', '2025-06-18 12:55:10');
+INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 1, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, 'b0d434917d854af5b23fa6cb9c0364bf461e4e9388ceb399e5404f427befd5e6', '2025-06-19 10:20:05');
 INSERT INTO `account` VALUES (37, '', NULL, '2024-05-15', 'silambu', '$2a$08$j.FhunOL0ywwPrANlITow.mveuu/bCghDmEQGlCdBxKtElgkiprMC', 1, NULL, 'Accounts', NULL, 0, 'Silambu', 0, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
@@ -90,7 +90,7 @@ CREATE TABLE `audit_trail`  (
   `log` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 150 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 153 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of audit_trail
@@ -244,6 +244,9 @@ INSERT INTO `audit_trail` VALUES (146, 2, 'login page', 'login to account.', '20
 INSERT INTO `audit_trail` VALUES (147, 2, 'login page', 'login to account.', '2025-06-17 17:37:05', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (148, 2, 'login page', 'login to account.', '2025-06-18 12:00:53', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (149, 2, 'login page', 'login to account.', '2025-06-18 12:55:10', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (150, 2, 'login page', 'login to account.', '2025-06-19 09:01:47', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (151, 2, 'login page', 'login to account.', '2025-06-19 10:20:05', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (152, 2, 'account page', 'logout to account.', '2025-06-19 10:48:24', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for clients
@@ -277,7 +280,7 @@ CREATE TABLE `clients`  (
   `customer_type` int NULL DEFAULT 0,
   `business_registration_no` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 95 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 96 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of clients
@@ -309,6 +312,7 @@ INSERT INTO `clients` VALUES (91, '', NULL, 0, '', NULL, '', NULL, 'MAKE YANADF'
 INSERT INTO `clients` VALUES (92, '', NULL, 0, '', NULL, '', NULL, 'MANRW', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '345345', 0, NULL);
 INSERT INTO `clients` VALUES (93, '2025-06-11 16:50:31', 2, 0, '', NULL, '', NULL, 'GAAS REE', '', '', '', '', '', NULL, NULL, NULL, '', NULL, '', '', 'CNO00018', '', '151515151515', 0, '');
 INSERT INTO `clients` VALUES (94, '2025-06-11 16:51:25', 2, 0, '', NULL, '', NULL, 'RAESWT YAWAS', '', '', '', '', '', NULL, NULL, NULL, '', NULL, '', '9098908', 'CNO00019', '', '1512315123', 0, '');
+INSERT INTO `clients` VALUES (95, '2025-06-19 17:07:56', 2, 0, '', NULL, '', NULL, 'DFGDFG', '', '', '', '', '', NULL, NULL, NULL, '', NULL, '', '', 'CNO00020', '', '', 0, '');
 
 -- ----------------------------
 -- Table structure for clients_documents
@@ -1154,8 +1158,8 @@ INSERT INTO `inventory` VALUES (25, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '20
 INSERT INTO `inventory` VALUES (26, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0026', 'Item Name 26', 0, 'manual', '0', '1173', '903', 6, '', '', '0', '[1,2]', '[3,4]', 4, 1, 2, 'A1', 'B2', 'C3', 9, 44, '', '', '', 1, 'Sedan, SUV');
 INSERT INTO `inventory` VALUES (27, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0027', 'Item Name 27', 0, 'manual', '0', '403', '218', 15, '', '', '0', '[1,2]', '[3,4]', 1, 3, 5, 'A1', 'B2', 'C3', 9, 43, '', '', '', 8, 'Sedan, SUV');
 INSERT INTO `inventory` VALUES (28, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0028', 'Item Name 28', 0, 'manual', '0', '438', '208', 1, '', '', '0', '[1,2]', '[3,4]', 4, 5, 5, 'A1', 'B2', 'C3', 6, 30, '', '', '', 7, 'Sedan, SUV');
-INSERT INTO `inventory` VALUES (29, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0029', 'Item Name 29', 0, 'manual', '0', '992', '693', 7, '', '', '0', '[1,2]', '[3,4]', 3, 5, 3, 'A1', 'B2', 'C3', 14, 37, '', '', '', 3, 'Sedan, SUV');
-INSERT INTO `inventory` VALUES (30, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0030', 'Item Name 30', 0, 'manual', '0', '1077', '0', 0, '[{\"rr_id\":\"2\",\"date\":\"2025-06-17 16:37\",\"qty\":51,\"ucp\":2012.1}]', '', '0', '[1,2]', '[3,4]', 3, 4, 5, 'A1', 'B2', 'C3', 9, 20, '', '', '', 2, 'Sedan, SUV');
+INSERT INTO `inventory` VALUES (29, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-19 15:31:44', 2, 'ITM0029', 'ITEM NAME 29', 0, 'manual', '0', '992', '693', 7, '', '', '0', '[1,2]', '[\"3\",\"4\"]', 3, 5, 3, 'A1', 'B2', 'C3', 14, 37, '', '', '', 3, 'Sedan, SUV');
+INSERT INTO `inventory` VALUES (30, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-19 15:31:30', 2, 'ITM0030', 'ITEM NAME 30F', 0, 'manual', '0', '1077', '0', 0, '[{\"rr_id\":\"2\",\"date\":\"2025-06-17 16:37\",\"qty\":51,\"ucp\":2012.1}]', '', '0', '[1,2]', '[\"3\",\"4\"]', 3, 4, 5, 'A1', 'B2', 'C3', 9, 20, '', '', '', 2, 'Sedan, SUV');
 
 -- ----------------------------
 -- Table structure for inventory_adjustments
@@ -1334,7 +1338,7 @@ CREATE TABLE `inventory_returns`  (
 -- ----------------------------
 -- Records of inventory_returns
 -- ----------------------------
-INSERT INTO `inventory_returns` VALUES (1, '2025-06-18 22:47', 2, 0, '', NULL, '', NULL, 'TEST 1', 0, '2025-06-18', NULL, 2, '2025-06-18 19:04', NULL, 91, 11, '0789678554', '12532.00');
+INSERT INTO `inventory_returns` VALUES (1, '2025-06-19 15:19', 2, 0, '', NULL, '', NULL, 'RTDFGDFG DFG DF GDFG', 0, '2025-06-19', NULL, 2, '2025-06-18 19:04', NULL, 91, 11, '0789678554', '12532.00');
 
 -- ----------------------------
 -- Table structure for inventory_returns_items
@@ -1371,9 +1375,9 @@ CREATE TABLE `inventory_returns_items`  (
 -- ----------------------------
 -- Records of inventory_returns_items
 -- ----------------------------
-INSERT INTO `inventory_returns_items` VALUES (1, '2025-06-18 22:47', 2, 0, '', NULL, '', NULL, 'FSD', NULL, '1', '27', '28', 0, 1, 1, 1, 11, 91, '2025-06-18 19:04', '4', '20.00', '569.60', '712');
-INSERT INTO `inventory_returns_items` VALUES (2, '2025-06-18 22:47', 2, 0, '', NULL, '', NULL, 'WER', NULL, '1', '88', '89', 0, 2, 2, 1, 11, 91, '2025-06-18 19:04', '6', '20.00', '1182.00', '985');
-INSERT INTO `inventory_returns_items` VALUES (3, '2025-06-18 22:47', 2, 0, '', NULL, '', NULL, 'SDF', NULL, '1', '47', '48', 0, 3, 3, 1, 11, 91, '2025-06-18 19:04', '4', '20.00', '833.60', '1042');
+INSERT INTO `inventory_returns_items` VALUES (1, '2025-06-19 15:19', 2, 0, '', NULL, '', NULL, '', NULL, '1', '27', '28', 0, 1, 1, 1, 11, 91, '2025-06-18 19:04', '4', '20.00', '142.4', '712');
+INSERT INTO `inventory_returns_items` VALUES (2, '2025-06-19 15:19', 2, 0, '', NULL, '', NULL, '', NULL, '1', '88', '89', 0, 2, 2, 1, 11, 91, '2025-06-18 19:04', '6', '20.00', '197', '985');
+INSERT INTO `inventory_returns_items` VALUES (3, '2025-06-19 15:19', 2, 0, '', NULL, '', NULL, '', NULL, '1', '47', '48', 0, 3, 3, 1, 11, 91, '2025-06-18 19:04', '4', '20.00', '208.4', '1042');
 
 -- ----------------------------
 -- Table structure for issuance

@@ -1320,7 +1320,7 @@ class Outgoing extends CI_Controller {
 	
 		$module['quotation'] = $this->core->load_core_data('issuance_quotation',$id);
  		
- 		$this->db->where('issuance_quotation_id',$id);
+ 		$this->db->where(['deleted'=>0,'issuance_quotation_id'=>$id]);
 		$this->db->select('
 			i.id as id, 
 			i.qty as qty, 

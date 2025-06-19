@@ -1658,7 +1658,8 @@
                         name="discount_amount${e_obj.id}" value="${e_obj.discount_amount}" >
                     </td>
 
-                    <td style="text-align:right;"><font id="line_total${e_obj.id}">${formatMoney((e_obj.retail_price * e_obj.qty)-e_obj.discount_amount)}</font>
+                    <td style="text-align:right;">
+                        <font id="line_grand_total${e_obj.id}">${formatMoney((e_obj.retail_price * e_obj.qty)-e_obj.discount_amount)}</font>
                     </td>
 
                     <td style="text-align:center;  width:260px;">
@@ -1712,11 +1713,13 @@
             const lineTotal = total - discountAmount;
 
             $(`#discount_amount_total${id}`).text(formatMoney(discountAmount));
-            $(`#discount_amount${id}`).text(discountAmount);
-            $(`#line_total${id}`).text(formatMoney(lineTotal));
+            $(`#discount_amount${id}`).val(discountAmount);
+
+            $(`#line_total${id}`).text(formatMoney(total)); // Before discount
+            $(`#line_grand_total${id}`).text(formatMoney(lineTotal)); // After discount
 
             let grandTotal = 0;
-            $('[id^="line_total"]').each(function () {
+            $('[id^="line_grand_total"]').each(function () {
                 const amount = parseFloat($(this).text().replace(/,/g, '')) || 0;
                 grandTotal += amount;
             });
@@ -1724,6 +1727,7 @@
             $('#grand_total').text(formatMoney(grandTotal));
             $('#grand_total_amt').val(grandTotal.toFixed(2));
         }
+
 
         function initializeExistingRows() {
             $(".data-row").each(function () {
@@ -1751,8 +1755,7 @@
             initializeExistingRows(); // if edit, will re stablish the id's
         }
 
-
-
+ 
         }
 
 

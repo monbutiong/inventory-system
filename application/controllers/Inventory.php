@@ -1076,17 +1076,16 @@ class Inventory extends CI_Controller {
 
 		$module['module'] = "inventory/return_inventory";
 		$module['map_link']   = "inventory->return_inventory";   
-
-		$module['ii'] = $this->core->load_core_data('issuance','','id,job_order_id','confirmed=1');
-
-		$module['users'] = $this->core->load_core_data('account','','id,name');
  
-		$module['jo'] = $this->core->load_core_data('projects_job_order','','id,job_order_number');
-
-		$module['returns'] = $this->core->load_core_data('inventory_returns','','','confirmed=0');
-		
-		$module['projects'] = $this->core->load_core_data('projects','','id,name');
-
+		$module['users'] = $this->core->load_core_data('account','','id,name');
+   
+ 		$this->db->where(['a.deleted'=>0, 'a.confirmed'=>0]);
+		$this->db->select('
+			a.*,b.name as customer'); 
+        $this->db->from('inventory_returns a');   
+        $this->db->join('clients b', 'b.id=a.customer_id', 'left');  
+		$module['returns'] = $this->db->get()->result(); 
+		  
 		$this->load->view('admin/index',$module);
 
 	}

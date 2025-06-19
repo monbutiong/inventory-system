@@ -35,6 +35,12 @@
           <div class="row">
 
             <div class="col-md-2 col-sm-12 ">
+              <label >Return Date *</label>
+              <input type="date" required name="return_date" id="return_date" class="form-control">
+            </div>
+
+
+            <div class="col-md-2 col-sm-12 ">
               <label >Inventory Return Number</label>
               <input type="text" readonly class="form-control ridonly" value="RT<?=sprintf("%06d",count($this->db->select('id')->get_where('inventory_returns',['deleted'=>0])->result())+1);?>">
             </div>
@@ -68,11 +74,7 @@
               <input type="text" required readonly name="puchase_date" id="puchase_date" class="form-control ridonly">
             </div>
 
-            <div class="col-md-2 col-sm-12 ">
-              <label >Return Date *</label>
-              <input type="date" required name="return_date" id="return_date" class="form-control">
-            </div>
-
+            
              
 
             
@@ -225,6 +227,7 @@
     all-=1;
     var excluded_ids = $('#selected_ids').val();
     $('#selected_ids').val( excluded_ids.replace("("+id+")-", "") );
+    initializeExistingRows();
   }
 
     

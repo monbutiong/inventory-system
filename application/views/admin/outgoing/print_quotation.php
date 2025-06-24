@@ -7,29 +7,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        /* Base Styles */
+        /* Print Page Setup */
         @page {
             size: A4;
             margin: 15mm;
         }
-        
-        body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.5;
-            color: #333;
-            background-color: #fff;
+
+        html, body {
             margin: 0;
             padding: 0;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            background-color: #fff;
         }
-        
-        /* Container */
+
+        .page {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content {
+            flex: 1;
+            padding: 0;
+        }
+
         .a4-container {
-            width: 210mm;
+            width: 100%;
+            max-width: 210mm;
             margin: 0 auto;
-            padding: 5mm;
-            box-sizing: border-box;
+            padding: 0;
         }
-        /* Header Section */
+
+        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
@@ -38,125 +49,114 @@
             border-bottom: 2px solid #65aadb;
             padding-bottom: 15px;
         }
-        
+
         .logo {
             height: 80px;
         }
-        
+
         .document-title {
             text-align: right;
         }
-        
+
         .document-title h1 {
             color: #65aadb;
             margin: 0;
             font-size: 24px;
         }
-        
+
         .document-title .quotation-no {
             font-weight: bold;
             font-size: 18px;
         }
-        
-        /* Customer Details */
-        .details-table {
+
+        /* Tables and Content */
+        .details-table, .qtable {
             width: 100%;
-            margin-bottom: 20px;
             border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 12px;
         }
-        
+
         .details-table td {
-            padding: 5px 0;
+            padding: 4px 2px;
             vertical-align: top;
         }
-        
-        .details-table tr td:first-child {
-            width: 30%;
-            font-weight: bold;
-        }
-        
-        /* Items Table */
-        .qtable {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 14px;
-        }
-        
+
         .qtable th {
             background-color: #65aadb;
             color: white;
-            padding: 10px 8px;
+            padding: 8px;
             text-align: left;
-            font-weight: bold;
-            font-size: 11px;
         }
-        
+
         .qtable td {
             padding: 8px;
             border-bottom: 1px solid #ddd;
         }
-        
-        .qtable tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        
-        .qtable tr:hover {
-            background-color: #f1f1f1;
-        }
-        
+
         .td_currency {
             text-align: right;
         }
-        
-        /* Totals Row */
+
         .total-row {
             font-weight: bold;
-            background-color: #e6f2ff !important;
+            background-color: #e6f2ff;
         }
-        
-        /* Footer */
+
         .remarks {
             margin-top: 30px;
             padding: 15px;
             background-color: #f5f5f5;
             border-left: 4px solid #65aadb;
         }
-        
-        /* Print Specific Styles */
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            font-size: 11px;
+            color: #fff;
+            padding: 10px 0;
+            border-top: 1px solid #fff;
+            margin-top: auto;
+            background-color: #fff;
+            page-break-after: always;
+        }
+
+        .footer img {
+            height: 40px;
+            margin: 5px;
+        }
+
+        /* Print Specific */
         @media print {
-            body {
-                background: none;
+            html, body {
+                height: 100%;
                 -webkit-print-color-adjust: exact;
             }
-            
-            .a4-container {
-                width: auto;
-                margin: 0;
-                padding: 0;
+
+            .page {
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
             }
-            
+
+            .content {
+                flex: 1;
+            }
+
+            .footer {
+                position: relative;
+                bottom: 0;
+                margin-top: auto;
+                page-break-inside: avoid;
+            }
+
             .no-print {
                 display: none !important;
             }
-            
-            .qtable {
-                page-break-inside: avoid;
-            }
-        }
-
-        .footer {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          height: 25mm;
-          text-align: center;
-          font-size: 11px;
-          color: #666;
-          border-top: 1px solid #ccc;
         }
     </style>
+
 </head>
 <body>
     <div class="page">
@@ -195,7 +195,7 @@
                 </tr>
                 <?php }?>
                 
-                <?php if($quotation->customer_qid_bus){?>
+                <?php if($quotation->customer_qid_bus && $quotation->customer_type==0){?>
                 <tr>
                     <td><?= $quotation->customer_type==1 ? 'Business Reg #' : 'QID' ?>:</td>
                     <td><?= $quotation->customer_qid_bus ?></td>
@@ -334,8 +334,17 @@
       <div class="footer">
         <table style="border: 0; width:100%;">
             <tr>
-                <td style="background-color: #999;">
-                    <img src="<?=base_url('assets/images/footer.png')?>"  style="border: 0; width:100%;">
+                <td  >
+                    <img src="<?=base_url('assets/logos/audi-logo.png')?>" style="height: 40px; margin: 5px;" >
+                    <img src="<?=base_url('assets/logos/bentley-logo.png')?>" style="height: 40px; margin: 5px;" >
+                    <img src="<?=base_url('assets/logos/bmw-logo.png')?>" style="height: 40px; margin: 5px;" >
+                    <img src="<?=base_url('assets/logos/lamborghini-logo.png')?>" style="height: 40px; margin: 5px;" >
+                    <img src="<?=base_url('assets/logos/land-rover-logo.png')?>" style="height: 40px; margin: 5px;" >
+                    <img src="<?=base_url('assets/logos/maserati-logo.png')?>" style="height: 40px; margin: 5px;" >
+                    <img src="<?=base_url('assets/logos/mercedes-benz-logo.png')?>" style="height: 40px; margin: 5px;" >
+                    <img src="<?=base_url('assets/logos/porsche-logo.png')?>" style="height: 40px; margin: 5px;" >
+                    <img src="<?=base_url('assets/logos/rolls-royce-logo.png')?>" style="height: 40px; margin: 5px;" >
+                    <img src="<?=base_url('assets/logos/volkswagen-logo.png')?>" style="height: 40px; margin: 5px;" > 
                 </td>
             </tr>
         </table>
@@ -344,12 +353,12 @@
 
     <script>
         // Auto print when loaded (uncomment if needed)
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                window.print();
-                window.close();
-            }, 500);
-        });
+        // window.addEventListener('load', function() {
+        //     setTimeout(function() {
+        //         window.print();
+        //         window.close();
+        //     }, 500);
+        // });
     </script>
 </body>
 </html>

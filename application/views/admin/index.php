@@ -266,6 +266,10 @@
 
         <!-- Sweet Alerts js -->
         <script src="<?=base_url('assets/template/assets')?>/libs/sweetalert2/sweetalert2.min.js"></script>
+ 
+        <!--tinymce js-->
+        <script src="<?=base_url('assets/template/assets')?>/libs/tinymce/tinymce.min.js"></script>
+        <script src="<?=base_url('assets/template/assets')?>/js/pages/form-editor.init.js?2"></script>
 
         <!-- for Select2 js -->
         <script src="<?=base_url('assets/template/assets')?>/libs/select2/js/select2.min.js"></script>
@@ -304,6 +308,11 @@
             $('.select2-tags_').select2({  
                 tags: true 
             }); 
+          }
+          if($('.elm1').length){
+              tinymce.init({
+                    selector: '.elm1' 
+                  });
           }
 
          $("body").on("click", ".load_modal_details", function(event) {
@@ -504,9 +513,7 @@
                        });
 
                  }
-
-
-
+  
                  });
              }, 300);
          });
@@ -855,7 +862,7 @@
                          data-modal-size="xl">
                          ${e_obj.item_code}
                       </a>
-                      <input type="hidden" name="items[${e_obj.id}]" id="added${e_obj.id}" value="${e_obj.id}"/>
+                      <input type="hidden" class="item_exist" name="items[${e_obj.id}]" id="added${e_obj.id}" value="${e_obj.id}"/>
                       <input type="hidden" name="inventory_id${e_obj.id}" value="${e_obj.id}"/>
                     </td>
                     <td>${e_obj.item_name}</td>
@@ -1533,6 +1540,7 @@
                     results: $.map(data, function (obj) {
                       return {
                         id: obj.id,
+                        issuance_item_id: obj.issuance_item_id,
                         text: obj.text,
                         item_code: obj.item_code,
                         item_name: obj.item_name,
@@ -1613,6 +1621,7 @@
                          ${e_obj.item_code}
                       </a>
                       <input type="hidden" name="items[${e_obj.id}]" id="added${e_obj.id}" value="${e_obj.id}"/>
+                      <input type="hidden" name="issuance_item_id${e_obj.id}" value="${e_obj.issuance_item_id}"/>
                       <input type="hidden" name="inventory_id${e_obj.id}" value="${e_obj.id}"/>
                     </td>
                     <td>${e_obj.item_name}</td>

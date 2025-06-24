@@ -11,7 +11,7 @@
  Target Server Version : 100427
  File Encoding         : 65001
 
- Date: 19/06/2025 18:17:01
+ Date: 24/06/2025 17:47:55
 */
 
 SET NAMES utf8mb4;
@@ -46,7 +46,7 @@ CREATE TABLE `account`  (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 1, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, 'b0d434917d854af5b23fa6cb9c0364bf461e4e9388ceb399e5404f427befd5e6', '2025-06-19 10:20:05');
+INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 1, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, 'b26d8734a8c5b8d6bf3df365f443e873d69e8a55784d20b4f340c14d907ebe3b', '2025-06-24 12:55:07');
 INSERT INTO `account` VALUES (37, '', NULL, '2024-05-15', 'silambu', '$2a$08$j.FhunOL0ywwPrANlITow.mveuu/bCghDmEQGlCdBxKtElgkiprMC', 1, NULL, 'Accounts', NULL, 0, 'Silambu', 0, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
@@ -90,7 +90,7 @@ CREATE TABLE `audit_trail`  (
   `log` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 153 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 161 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of audit_trail
@@ -247,6 +247,14 @@ INSERT INTO `audit_trail` VALUES (149, 2, 'login page', 'login to account.', '20
 INSERT INTO `audit_trail` VALUES (150, 2, 'login page', 'login to account.', '2025-06-19 09:01:47', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (151, 2, 'login page', 'login to account.', '2025-06-19 10:20:05', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (152, 2, 'account page', 'logout to account.', '2025-06-19 10:48:24', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (153, 2, 'login page', 'login to account.', '2025-06-22 12:08:53', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (154, 2, 'login page', 'login to account.', '2025-06-22 12:08:53', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (155, 2, 'account page', 'logout to account.', '2025-06-22 12:19:59', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (156, 2, 'login page', 'login to account.', '2025-06-23 15:57:30', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (157, 2, 'login page', 'login to account.', '2025-06-24 09:55:57', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (158, 2, 'login page', 'login to account.', '2025-06-24 12:55:07', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (159, 2, 'account page', 'logout to account.', '2025-06-24 12:57:53', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (160, 2, 'home > system user > update user roles', 'update system user restriction, user id : 2', '2025-06-24 13:40:39', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for clients
@@ -1130,9 +1138,9 @@ CREATE TABLE `inventory`  (
 -- ----------------------------
 -- Records of inventory
 -- ----------------------------
-INSERT INTO `inventory` VALUES (1, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0001', 'Item Name 1', 27, 'manual', '376.28', '712', '0', 31, '[{\"rr_id\":\"2\",\"date\":\"2025-06-17 16:13\",\"qty\":112,\"ucp\":148.23},{\"rr_id\":\"1\",\"date\":\"2025-06-17 16:24\",\"qty\":31,\"ucp\":362.19},{\"rr_id\":\"2\",\"date\":\"2025-06-17 16:37\",\"qty\":41,\"ucp\":3018.15},{\"rr_id\":\"1\",\"date\":\"2025-06-17 17:00\",\"qty\":31,\"ucp\":355},{\"rr_id\":\"2\",\"date\":\"2025-06-17 17:02\",\"qty\":82,\"ucp\":367.16},{\"rr_id\":\"1\",\"date\":\"2025-06-18 18:47\",\"qty\":31,\"ucp\":376.28}]', '[{\"ii_id\":1,\"date\":\"2025-06-17 17:09\",\"qty\":0,\"ucp\":\"367.16\"},{\"ii_id\":2,\"date\":\"2025-06-18 19:04\",\"qty\":27,\"ucp\":\"376.28\"}]', '355', '[1,2]', '[3,4]', 4, 2, 5, 'A1', 'B2', 'C3', 12, 51, '', '', '', 1, 'Sedan, SUV');
-INSERT INTO `inventory` VALUES (2, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0002', 'Item Name 2', 88, 'manual', '641.56', '985', '466.38', 94, '[{\"rr_id\":\"1\",\"date\":\"2025-06-17 15:59\",\"qty\":115,\"ucp\":346.39},{\"rr_id\":\"2\",\"date\":\"2025-06-17 16:13\",\"qty\":146,\"ucp\":443.4},{\"rr_id\":\"1\",\"date\":\"2025-06-17 16:24\",\"qty\":41,\"ucp\":448.91},{\"rr_id\":\"1\",\"date\":\"2025-06-17 16:36\",\"qty\":53,\"ucp\":796.68},{\"rr_id\":\"1\",\"date\":\"2025-06-17 17:00\",\"qty\":41,\"ucp\":440},{\"rr_id\":\"2\",\"date\":\"2025-06-17 17:02\",\"qty\":102,\"ucp\":456.85},{\"rr_id\":\"1\",\"date\":\"2025-06-18 18:47\",\"qty\":41,\"ucp\":466.38},{\"rr_id\":\"2\",\"date\":\"2025-06-18 18:47\",\"qty\":94,\"ucp\":641.56}]', '[{\"ii_id\":1,\"date\":\"2025-06-17 17:09\",\"qty\":0,\"ucp\":\"456.85\"},{\"ii_id\":2,\"date\":\"2025-06-18 19:04\",\"qty\":88,\"ucp\":\"641.56\"}]', '735', '[1,2]', '[3,4]', 4, 3, 2, 'A1', 'B2', 'C3', 12, 50, '', '', '', 10, 'Sedan, SUV');
-INSERT INTO `inventory` VALUES (3, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0003', 'Item Name 3', 47, 'manual', '455.78', '1042', '0', 51, '[{\"rr_id\":\"1\",\"date\":\"2025-06-17 16:24\",\"qty\":51,\"ucp\":438.71},{\"rr_id\":\"1\",\"date\":\"2025-06-17 17:00\",\"qty\":51,\"ucp\":430},{\"rr_id\":\"2\",\"date\":\"2025-06-17 17:02\",\"qty\":132,\"ucp\":446.9},{\"rr_id\":\"1\",\"date\":\"2025-06-18 18:47\",\"qty\":51,\"ucp\":455.78}]', '[{\"ii_id\":1,\"date\":\"2025-06-17 17:09\",\"qty\":0,\"ucp\":\"446.9\"},{\"ii_id\":2,\"date\":\"2025-06-18 19:04\",\"qty\":47,\"ucp\":\"455.78\"}]', '430', '[1,2]', '[3,4]', 2, 3, 3, 'A1', 'B2', 'C3', 7, 31, '', '', '', 4, 'Sedan, SUV');
+INSERT INTO `inventory` VALUES (1, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0001', 'Item Name 1', 28, 'manual', '376.28', '712', '0', 27, '[{\"rr_id\":\"2\",\"date\":\"2025-06-17 16:13\",\"qty\":112,\"ucp\":148.23},{\"rr_id\":\"1\",\"date\":\"2025-06-17 16:24\",\"qty\":31,\"ucp\":362.19},{\"rr_id\":\"2\",\"date\":\"2025-06-17 16:37\",\"qty\":41,\"ucp\":3018.15},{\"rr_id\":\"1\",\"date\":\"2025-06-17 17:00\",\"qty\":31,\"ucp\":355},{\"rr_id\":\"2\",\"date\":\"2025-06-17 17:02\",\"qty\":82,\"ucp\":367.16},{\"rr_id\":\"1\",\"date\":\"2025-06-18 18:47\",\"qty\":31,\"ucp\":376.28}]', '[{\"ii_id\":1,\"date\":\"2025-06-17 17:09\",\"qty\":0,\"ucp\":\"367.16\"},{\"ii_id\":2,\"date\":\"2025-06-18 19:04\",\"qty\":27,\"ucp\":\"376.28\"}]', '355', '[1,2]', '[3,4]', 4, 2, 5, 'A1', 'B2', 'C3', 12, 51, '', '', '', 1, 'Sedan, SUV');
+INSERT INTO `inventory` VALUES (2, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0002', 'Item Name 2', 89, 'manual', '641.56', '985', '466.38', 88, '[{\"rr_id\":\"1\",\"date\":\"2025-06-17 15:59\",\"qty\":115,\"ucp\":346.39},{\"rr_id\":\"2\",\"date\":\"2025-06-17 16:13\",\"qty\":146,\"ucp\":443.4},{\"rr_id\":\"1\",\"date\":\"2025-06-17 16:24\",\"qty\":41,\"ucp\":448.91},{\"rr_id\":\"1\",\"date\":\"2025-06-17 16:36\",\"qty\":53,\"ucp\":796.68},{\"rr_id\":\"1\",\"date\":\"2025-06-17 17:00\",\"qty\":41,\"ucp\":440},{\"rr_id\":\"2\",\"date\":\"2025-06-17 17:02\",\"qty\":102,\"ucp\":456.85},{\"rr_id\":\"1\",\"date\":\"2025-06-18 18:47\",\"qty\":41,\"ucp\":466.38},{\"rr_id\":\"2\",\"date\":\"2025-06-18 18:47\",\"qty\":94,\"ucp\":641.56}]', '[{\"ii_id\":1,\"date\":\"2025-06-17 17:09\",\"qty\":0,\"ucp\":\"456.85\"},{\"ii_id\":2,\"date\":\"2025-06-18 19:04\",\"qty\":88,\"ucp\":\"641.56\"}]', '735', '[1,2]', '[3,4]', 4, 3, 2, 'A1', 'B2', 'C3', 12, 50, '', '', '', 10, 'Sedan, SUV');
+INSERT INTO `inventory` VALUES (3, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0003', 'Item Name 3', 48, 'manual', '455.78', '1042', '0', 47, '[{\"rr_id\":\"1\",\"date\":\"2025-06-17 16:24\",\"qty\":51,\"ucp\":438.71},{\"rr_id\":\"1\",\"date\":\"2025-06-17 17:00\",\"qty\":51,\"ucp\":430},{\"rr_id\":\"2\",\"date\":\"2025-06-17 17:02\",\"qty\":132,\"ucp\":446.9},{\"rr_id\":\"1\",\"date\":\"2025-06-18 18:47\",\"qty\":51,\"ucp\":455.78}]', '[{\"ii_id\":1,\"date\":\"2025-06-17 17:09\",\"qty\":0,\"ucp\":\"446.9\"},{\"ii_id\":2,\"date\":\"2025-06-18 19:04\",\"qty\":47,\"ucp\":\"455.78\"}]', '430', '[1,2]', '[3,4]', 2, 3, 3, 'A1', 'B2', 'C3', 7, 31, '', '', '', 4, 'Sedan, SUV');
 INSERT INTO `inventory` VALUES (4, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0004', 'Item Name 4', 0, 'manual', '0', '362', '0', 0, '[{\"rr_id\":\"2\",\"date\":\"2025-06-17 17:02\",\"qty\":71,\"ucp\":0}]', '', '0', '[1,2]', '[3,4]', 1, 4, 3, 'A1', 'B2', 'C3', 13, 42, '', '', '', 3, 'Sedan, SUV');
 INSERT INTO `inventory` VALUES (5, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0005', 'Item Name 5', 0, 'manual', '0', '1040', '0', 0, '[{\"rr_id\":\"2\",\"date\":\"2025-06-17 16:13\",\"qty\":69,\"ucp\":410.98},{\"rr_id\":\"2\",\"date\":\"2025-06-17 16:37\",\"qty\":61,\"ucp\":2103.56}]', '', '0', '[1,2]', '[3,4]', 3, 2, 5, 'A1', 'B2', 'C3', 7, 24, '', '', '', 10, 'Sedan, SUV');
 INSERT INTO `inventory` VALUES (6, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0006', 'Item Name 6', 61, 'manual', '360.38', '489', '0', 0, '[{\"rr_id\":\"2\",\"date\":\"2025-06-17 16:13\",\"qty\":61,\"ucp\":119.97},{\"rr_id\":\"1\",\"date\":\"2025-06-17 16:24\",\"qty\":61,\"ucp\":346.89},{\"rr_id\":\"1\",\"date\":\"2025-06-17 17:00\",\"qty\":61,\"ucp\":340},{\"rr_id\":\"1\",\"date\":\"2025-06-18 18:47\",\"qty\":61,\"ucp\":360.38}]', '', '340', '[1,2]', '[3,4]', 4, 4, 3, 'A1', 'B2', 'C3', 14, 53, '', '', '', 1, 'Sedan, SUV');
@@ -1245,7 +1253,7 @@ CREATE TABLE `inventory_movement`  (
   `retail_price` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `customer_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC STATS_AUTO_RECALC = 1;
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC STATS_AUTO_RECALC = 1;
 
 -- ----------------------------
 -- Records of inventory_movement
@@ -1276,6 +1284,9 @@ INSERT INTO `inventory_movement` VALUES (23, '2025-06-18 18:47', 2, 0, '', NULL,
 INSERT INTO `inventory_movement` VALUES (24, '2025-06-18 19:04', 2, 0, '', NULL, '', NULL, 1, 'sales order', '31', '4', '27', 0, NULL, 2, NULL, 4, '376.28', 11, '712', 91);
 INSERT INTO `inventory_movement` VALUES (25, '2025-06-18 19:04', 2, 0, '', NULL, '', NULL, 2, 'sales order', '94', '6', '88', 0, NULL, 2, NULL, 5, '641.56', 11, '985', 91);
 INSERT INTO `inventory_movement` VALUES (26, '2025-06-18 19:04', 2, 0, '', NULL, '', NULL, 3, 'sales order', '51', '4', '47', 0, NULL, 2, NULL, 6, '455.78', 11, '1042', 91);
+INSERT INTO `inventory_movement` VALUES (27, '2025-06-24 22:33', 2, 0, '', NULL, '', NULL, 1, 'returns', '27', '1', '28', 1, NULL, 1, NULL, NULL, '376.28', NULL, NULL, NULL);
+INSERT INTO `inventory_movement` VALUES (28, '2025-06-24 22:33', 2, 0, '', NULL, '', NULL, 2, 'returns', '88', '1', '89', 1, NULL, 1, NULL, NULL, '641.56', NULL, NULL, NULL);
+INSERT INTO `inventory_movement` VALUES (29, '2025-06-24 22:33', 2, 0, '', NULL, '', NULL, 3, 'returns', '47', '1', '48', 1, NULL, 1, NULL, NULL, '455.78', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for inventory_quotation
@@ -1338,7 +1349,7 @@ CREATE TABLE `inventory_returns`  (
 -- ----------------------------
 -- Records of inventory_returns
 -- ----------------------------
-INSERT INTO `inventory_returns` VALUES (1, '2025-06-19 15:19', 2, 0, '', NULL, '', NULL, 'RTDFGDFG DFG DF GDFG', 0, '2025-06-19', NULL, 2, '2025-06-18 19:04', NULL, 91, 11, '0789678554', '12532.00');
+INSERT INTO `inventory_returns` VALUES (1, '2025-06-24 16:48', 2, 0, '', NULL, '2025-06-24 21:18', 2, 'DS SDF SDF SDF SDF  XXX', 1, '2025-06-24', 2, 2, '2025-06-18 19:04', '2025-06-24 22:33', 91, 11, '0789678554', '2191.20');
 
 -- ----------------------------
 -- Table structure for inventory_returns_items
@@ -1375,9 +1386,9 @@ CREATE TABLE `inventory_returns_items`  (
 -- ----------------------------
 -- Records of inventory_returns_items
 -- ----------------------------
-INSERT INTO `inventory_returns_items` VALUES (1, '2025-06-19 15:19', 2, 0, '', NULL, '', NULL, '', NULL, '1', '27', '28', 0, 1, 1, 1, 11, 91, '2025-06-18 19:04', '4', '20.00', '142.4', '712');
-INSERT INTO `inventory_returns_items` VALUES (2, '2025-06-19 15:19', 2, 0, '', NULL, '', NULL, '', NULL, '1', '88', '89', 0, 2, 2, 1, 11, 91, '2025-06-18 19:04', '6', '20.00', '197', '985');
-INSERT INTO `inventory_returns_items` VALUES (3, '2025-06-19 15:19', 2, 0, '', NULL, '', NULL, '', NULL, '1', '47', '48', 0, 3, 3, 1, 11, 91, '2025-06-18 19:04', '4', '20.00', '208.4', '1042');
+INSERT INTO `inventory_returns_items` VALUES (1, '2025-06-24 16:48', 2, 0, '', 0, '2025-06-24 21:18', 2, ' CZ      ', NULL, '1', '27 ', '28', 0, 1, 1, 1, 11, 91, '2025-06-18 19:04', '1', '20.00', '142.4', '712');
+INSERT INTO `inventory_returns_items` VALUES (2, '2025-06-24 16:48', 2, 0, '', 0, '2025-06-24 21:18', 2, ' CZXC      ', NULL, '1', '88 ', '89', 0, 2, 2, 1, 11, 91, '2025-06-18 19:04', '1', '20.00', '197', '985');
+INSERT INTO `inventory_returns_items` VALUES (3, '2025-06-24 16:48', 2, 0, '', 0, '2025-06-24 21:18', 2, ' ZXCZXC      ', NULL, '1', '47 ', '48', 0, 3, 3, 1, 11, 91, '2025-06-18 19:04', '1', '20.00', '208.4', '1042');
 
 -- ----------------------------
 -- Table structure for issuance
@@ -1491,13 +1502,16 @@ CREATE TABLE `issuance_quotation`  (
   `quotation_id` int NULL DEFAULT NULL,
   `discount_percentage_total` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `discount_amount_total` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `terms_and_conditions` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `terms_and_conditions_arabic` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of issuance_quotation
 -- ----------------------------
-INSERT INTO `issuance_quotation` VALUES (1, '2025-06-17 17:09:18', 2, 0, '', NULL, '', NULL, NULL, 'TEST', NULL, NULL, 1, NULL, NULL, 90, 10, 0, '856567', 'SASDFSD234234234', '3455', '2025-07-12', '234234', '7900.20', '', NULL, '30.00', '3385.80');
+INSERT INTO `issuance_quotation` VALUES (1, '2025-06-17 17:09:18', 2, 0, '', NULL, '2025-06-24 17:56:20', 2, NULL, 'TEST', NULL, NULL, 1, NULL, NULL, 90, 10, 0, '856567', 'SASDFSD234234234', '3455', '2025-07-12', '234234', '4253.20', '', NULL, '30.00', '1822.80', NULL, NULL);
+INSERT INTO `issuance_quotation` VALUES (2, '2025-06-24 18:03:56', 2, 0, '', NULL, '2025-06-24 20:41:33', 2, NULL, 'SDASDASDASD', NULL, NULL, 1, NULL, NULL, 91, 11, 1, '9780786', 'SASDFSD234234234', '3455', '2025-06-04', '5435', '2032.02', 'DASDAS A', NULL, '30.85', '649.99', '<p><strong>Terms & Conditions: </strong></p>\r\n<div>1- Invoices to be issued in the name of German Auto Line. </div>\r\n<div>2- Payment Terms: As per agreement </div>\r\n<div>3- Delivery: Immediate </div>\r\n<div>4- If no PO confirmation nor comments/remarks are received within 2 working days from official PO transmittal date, this PO including all its content is considered in effect.  </div>', '<p data-pm-slice=\"0 0 []\"><strong>الشروط والأحكام:</strong></p>\r\n<p>١- يجب إصدار الفواتير باسم German Auto Line.</p>\r\n<p>٢- شروط الدفع: حسب الاتفاق.</p>\r\n<p>٣- التسليم: فوري.</p>\r\n<p>٤- إذا لم يتم استلام تأكيد أمر الشراء أو أي تعليقات/ملاحظات خلال يومي عمل من تاريخ إرسال أمر الشراء الرسمي، فسيُعتبر هذا الأمر بما في ذلك جميع محتوياته ساري المفعول.</p>');
 
 -- ----------------------------
 -- Table structure for issuance_quotation_items
@@ -1527,14 +1541,18 @@ CREATE TABLE `issuance_quotation_items`  (
   `customer_id` int NULL DEFAULT NULL,
   `supplier_price` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of issuance_quotation_items
 -- ----------------------------
-INSERT INTO `issuance_quotation_items` VALUES (1, '2025-06-17 17:09', 2, 0, '', NULL, '', NULL, NULL, 10, 1, 3, NULL, 1, '367.16', 82, '30.00', '640.80', NULL, '712', 90, NULL);
-INSERT INTO `issuance_quotation_items` VALUES (2, '2025-06-17 17:09', 2, 0, '', NULL, '', NULL, NULL, 10, 1, 4, NULL, 2, '456.85', 102, '30.00', '1182.00', NULL, '985', 90, NULL);
-INSERT INTO `issuance_quotation_items` VALUES (3, '2025-06-17 17:09', 2, 0, '', NULL, '', NULL, NULL, 10, 1, 5, NULL, 3, '446.9', 132, '30.00', '1563.00', NULL, '1042', 90, NULL);
+INSERT INTO `issuance_quotation_items` VALUES (1, '2025-06-17 17:09', 2, 0, NULL, NULL, '', NULL, NULL, 10, 1, 3, NULL, 1, '367.16', 27, '30.00', '640.80', NULL, '712', 90, NULL);
+INSERT INTO `issuance_quotation_items` VALUES (2, '2025-06-17 17:09', 2, 0, NULL, NULL, '', NULL, NULL, 10, 1, 4, NULL, 2, '456.85', 88, '30.00', '1182.00', NULL, '985', 90, NULL);
+INSERT INTO `issuance_quotation_items` VALUES (3, '2025-06-17 17:09', 2, 1, '2025-06-24', 2, '', NULL, NULL, 10, 1, 5, NULL, 3, '446.9', 132, '30.00', '1563.00', NULL, '1042', 90, NULL);
+INSERT INTO `issuance_quotation_items` VALUES (4, '2025-06-24 18:03', 2, 0, NULL, NULL, '', NULL, NULL, 11, 2, 1, NULL, 1, '376.28', 27, '44.95', '320.01', NULL, '712', 91, NULL);
+INSERT INTO `issuance_quotation_items` VALUES (5, '2025-06-24 18:03', 2, 1, '2025-06-24', 2, '', NULL, NULL, 11, 2, 1, NULL, 2, '641.56', 88, '', '0.00', NULL, '985', 91, NULL);
+INSERT INTO `issuance_quotation_items` VALUES (6, '2025-06-24 18:26', 2, 0, NULL, NULL, '', NULL, NULL, 11, 2, 2, NULL, 2, '641.56', 88, '16.75', '329.98', NULL, '985', 91, NULL);
+INSERT INTO `issuance_quotation_items` VALUES (7, '2025-06-24 18:26', 2, 1, '2025-06-24', 2, '', NULL, NULL, 11, 2, 1, NULL, 8, '0', 0, '', '0.00', NULL, '962', 91, NULL);
 
 -- ----------------------------
 -- Table structure for landed_cost_rate
@@ -1685,7 +1703,7 @@ INSERT INTO `menu_sub` VALUES (106, 'Create P.O.', NULL, 2, NULL, 'purchasing/cr
 INSERT INTO `menu_sub` VALUES (107, 'Confirmed P.O.', NULL, 5, NULL, 'purchasing/confirmed_po', 1, 3, 0, NULL);
 INSERT INTO `menu_sub` VALUES (108, 'Create GRV', NULL, 4, NULL, 'receiving/create_receiving', 1, 16, 0, 'Receiving Transactions');
 INSERT INTO `menu_sub` VALUES (109, 'Unconfirmed GRV', NULL, 5, NULL, 'receiving/receiving_records', 1, 16, 0, NULL);
-INSERT INTO `menu_sub` VALUES (110, 'Create Sales Order', NULL, 3, NULL, 'outgoing/create_issuance', 1, 18, 1, 'Issueance Transactions');
+INSERT INTO `menu_sub` VALUES (110, 'Create Sales Order', NULL, 4, NULL, 'outgoing/create_issuance', 1, 18, 1, 'Issueance Transactions');
 INSERT INTO `menu_sub` VALUES (111, 'Unconfirmed Sales Order', NULL, 4, NULL, 'outgoing/issuance_records', 1, 18, 0, NULL);
 INSERT INTO `menu_sub` VALUES (114, 'Currency Rates', NULL, 11, NULL, 'maintenance/table/currency_rate', 1, 16, 1, 'System Tables');
 INSERT INTO `menu_sub` VALUES (115, 'Foreign Charges Types', NULL, 12, NULL, 'maintenance/table/foreign_charges', 1, 16, 0, NULL);
@@ -1693,7 +1711,7 @@ INSERT INTO `menu_sub` VALUES (116, 'Local Charges Types', NULL, 13, NULL, 'main
 INSERT INTO `menu_sub` VALUES (117, 'Confirmed GRV', NULL, 6, NULL, 'receiving/confirmed_receiving_records', 1, 16, 0, NULL);
 INSERT INTO `menu_sub` VALUES (118, 'Confirmed Sales Order', NULL, 5, NULL, 'outgoing/confirm_issuance_records', 1, 18, 0, NULL);
 INSERT INTO `menu_sub` VALUES (119, 'Vehicle Masterlist', NULL, 1, NULL, 'vehicles/masterlist', 1, 19, 0, NULL);
-INSERT INTO `menu_sub` VALUES (122, 'Terms and Condition Temaplates', NULL, 7, NULL, 'purchasing/terms_and_conditions', 0, 3, 1, 'System Tables');
+INSERT INTO `menu_sub` VALUES (122, 'Terms and Condition Temaplates', NULL, 3, NULL, 'outgoing/terms_and_conditions', 1, 18, 0, 'System Tables');
 INSERT INTO `menu_sub` VALUES (123, 'Suppliers', NULL, 6, NULL, 'purchasing/supplier_po', 1, 3, 1, 'Supplier Masterfile');
 INSERT INTO `menu_sub` VALUES (124, 'Model', NULL, 3, NULL, 'maintenance/table/models', 1, 19, 0, NULL);
 INSERT INTO `menu_sub` VALUES (126, 'Manufacturer', NULL, 2, NULL, 'maintenance/table/manufacturers', 1, 19, 0, NULL);
@@ -2071,17 +2089,15 @@ CREATE TABLE `terms_and_conditions`  (
   `description` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `type` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `arabic` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of terms_and_conditions
 -- ----------------------------
-INSERT INTO `terms_and_conditions` VALUES (1, '2023-09-13', 2, 0, '', NULL, '2023-09-13', 2, '<div><font color=\"#2697de\"><span style=\"font-weight: 700;\">Terms and Conditions: </span></font></div><div><span style=\"font-weight: 700;\"><font color=\"#2697de\">1-</font></span> Supply, Delivery, Installation, Testing and Commission of the above AV system.</div><div><font color=\"#2697de\">2- </font>The above design is based on the provided layout drawing, BoQ, and specification.</div><div><font color=\"#2697de\"><span style=\"font-weight: 700;\">3- </span></font>Civil, structural works, conduits and cable pulling not mentioned on the quotes are excluded.</div><div><font color=\"#2697de\">5- </font>Any Changes in the mentioned quantity will be considered as a variation </div><div><font color=\"#2697de\"><span style=\"font-weight: 700;\">6- Payment: - </span></font>50% advance against order confirmation.</div><div>- 40% against material delivery to site.</div><div>- 10% immediately after completion. </div><div><font color=\"#2697de\"><span style=\"font-weight: 700;\">7-</span></font> Warranty: The sole warranty for the supplied material is the original equipment manufacturer warranty against manufacturing defects only. </div><div><span style=\"font-weight: 700;\"><font color=\"#2697de\">8-</font></span> Delivery: TBA as per project schedule. </div><div><span style=\"font-weight: 700;\"><font color=\"#2697de\">9-</font></span> All approvals and site access, scaffolding for Ventum to complete its scope of work is the client’s responsibility. </div><div><span style=\"font-weight: 700;\"><font color=\"#2697de\">10-</font></span> If PO is issued it cannot be revoked for any reason. Advance payments are not reimbursed. Ventum is not responsible for any delay that may occur due to material shortage or shipping equipment or no space availability.</div><div>12- The above prices are applicable to the above package offer. Individual items are priced differently. Errors and omissions are excluded.</div>', 'template 1', 'quotation');
-INSERT INTO `terms_and_conditions` VALUES (2, '2023-09-13', 2, 0, '', NULL, '2023-09-13', 2, '<div><font color=\"#2697de\"><b>Terms and Conditions: </b></font></div><div><b><font color=\"#2697de\">1-</font></b> Supply, Delivery, Installation, Testing and Commission of the above AV system.</div><div><font color=\"#2697de\">2- </font>The above design is based on the provided layout drawing, BoQ, and specification.</div><div><font color=\"#2697de\"><b>3- </b></font>Civil, structural works, conduits and cable pulling not mentioned on the quotes are excluded.</div><div><font color=\"#2697de\">5- </font>Any Changes in the mentioned quantity will be considered as a variation </div><div><font color=\"#2697de\"><b>6- Payment: - </b></font>50% advance against order confirmation.</div><div>- 40% against material delivery to site.</div><div>- 10% immediately after completion. </div><div><font color=\"#2697de\"><b>7-</b></font> Warranty: The sole warranty for the supplied material is the original equipment manufacturer warranty against manufacturing defects only. <b><font color=\"#2697de\">8-</font></b> Delivery: TBA as per project schedule. </div><div><font color=\"#2697de\"><b> </b></font></div>', 'template 2', 'quotation');
-INSERT INTO `terms_and_conditions` VALUES (3, '2023-09-13', 2, 0, '', NULL, '2023-09-13', 2, '<div><font color=\"#2697de\"><span style=\"font-weight: 700;\">Terms and Conditions: </span></font></div><div><span style=\"font-weight: 700;\"><font color=\"#2697de\">1-</font></span> Supply, Delivery, Installation, Testing and Commission of the above AV system.</div><div><font color=\"#2697de\">2- </font>The above design is based on the provided layout drawing, BoQ, and specification.</div><div><font color=\"#2697de\"><span style=\"font-weight: 700;\">3- </span></font>Civil, structural works, conduits and cable pulling not mentioned on the quotes are excluded.</div><div><font color=\"#2697de\"> </font></div>', 'template 3', 'quotation');
-INSERT INTO `terms_and_conditions` VALUES (4, '2023-09-17', 2, 0, '', NULL, '2023-09-20', 2, '<font color=\"#2697de\">T<b>erms &amp; Conditions:&nbsp;</b></font><div>1- Invoices to be issued in the name of Ventum Tech Security Systems and Services.&nbsp;</div><div>2- Payment Terms: As per agreement&nbsp;</div><div>3- Delivery: Immediate&nbsp;</div><div>4- If no PO confirmation nor comments/remarks are received within 2 working days from official PO transmittal date, this PO including all its content is considered in effect.&nbsp;</div><div>5- Ventum Tech is not held responsible in any way for not accepting the goods or services described above if it proves to be not conforming to the agreement and specifications or late delivery.</div>', 'Template 1', 'po');
-INSERT INTO `terms_and_conditions` VALUES (5, '2023-09-17', 2, 0, '', NULL, '2023-09-20', 2, '<b><font color=\"#2697de\">Terms &amp; Conditions:&nbsp;</font></b><div><font color=\"#2697de\">1- </font>Invoices to be issued in the name of Ventum Tech Security Systems and Services.&nbsp;</div><div><font color=\"#2697de\">2-</font> Payment Terms: As per agreement&nbsp;</div><div><font color=\"#2697de\">3-</font> Delivery: Immediate&nbsp;</div><div><font color=\"#2697de\">4-</font> If no PO confirmation nor comments/remarks are received within 2 working days from official PO transmittal date, this PO including all its content is considered in effect.&nbsp;&nbsp;</div>', 'Template 2', 'po');
+INSERT INTO `terms_and_conditions` VALUES (4, '2023-09-17', 2, 0, '', NULL, '2025-06-24 20:07', 2, '<p><span style=\"box-sizing: border-box; color: #5b626b; font-family: Roboto, sans-serif; font-size: 14px;\"><span style=\"box-sizing: border-box; color: #2697de;\">Terms &amp; Conditions:&nbsp;</span></span></p>\r\n<div style=\"box-sizing: border-box; color: #5b626b; font-family: Roboto, sans-serif; font-size: 14px;\"><span style=\"box-sizing: border-box; color: #2697de;\">1-&nbsp;</span>Invoices to be issued in the name of German Auto Line.&nbsp;</div>\r\n<div style=\"box-sizing: border-box; color: #5b626b; font-family: Roboto, sans-serif; font-size: 14px;\"><span style=\"box-sizing: border-box; color: #2697de;\">2-</span>&nbsp;Payment Terms: As per agreement&nbsp;</div>\r\n<div style=\"box-sizing: border-box; color: #5b626b; font-family: Roboto, sans-serif; font-size: 14px;\"><span style=\"box-sizing: border-box; color: #2697de;\">3-</span>&nbsp;Delivery: Immediate&nbsp;</div>\r\n<div style=\"box-sizing: border-box; color: #5b626b; font-family: Roboto, sans-serif; font-size: 14px;\"><span style=\"box-sizing: border-box; color: #2697de;\">4-</span>&nbsp;If no PO confirmation nor comments/remarks are received within 2 working days from official PO transmittal date, this PO including all its content is considered in effect.&nbsp;&nbsp;</div>', 'Template 1', 'quotation', '<p data-pm-slice=\"0 0 []\"><span style=\"color: #3598db;\">الشروط والأحكام:</span></p>\r\n<p>١- يجب إصدار الفواتير باسم German Auto Line.</p>\r\n<p>٢- شروط الدفع: حسب الاتفاق.</p>\r\n<p>٣- التسليم: فوري.</p>\r\n<p>٤- إذا لم يتم استلام تأكيد أمر الشراء أو أي تعليقات/ملاحظات خلال يومي عمل من تاريخ إرسال أمر الشراء الرسمي، فسيُعتبر هذا الأمر بما في ذلك جميع محتوياته ساري المفعول.</p>');
+INSERT INTO `terms_and_conditions` VALUES (5, '2023-09-17', 2, 0, '', NULL, '2025-06-24 20:08', 2, '<p><strong><span style=\"color: #2697de;\">Terms &amp; Conditions:&nbsp;</span></strong></p>\r\n<div><span style=\"color: #2697de;\">1- </span>Invoices to be issued in the name of German Auto Line.&nbsp;</div>\r\n<div><span style=\"color: #2697de;\">2-</span> Payment Terms: As per agreement&nbsp;</div>\r\n<div><span style=\"color: #2697de;\">3-</span> Delivery: Immediate&nbsp;</div>\r\n<div><span style=\"color: #2697de;\">4-</span> If no PO confirmation nor comments/remarks are received within 2 working days from official PO transmittal date, this PO including all its content is considered in effect.&nbsp;&nbsp;</div>', 'Template 2', 'quotation', '<p data-pm-slice=\"0 0 []\">الشروط والأحكام:</p>\r\n<p>١- يجب إصدار الفواتير باسم German Auto Line.</p>\r\n<p>٢- شروط الدفع: حسب الاتفاق.</p>\r\n<p>٣- التسليم: فوري.</p>\r\n<p>٤- إذا لم يتم استلام تأكيد أمر الشراء أو أي تعليقات/ملاحظات خلال يومي عمل من تاريخ إرسال أمر الشراء الرسمي، فسيُعتبر هذا الأمر بما في ذلك جميع محتوياته ساري المفعول.</p>');
 
 -- ----------------------------
 -- Table structure for theme
@@ -2127,7 +2143,7 @@ CREATE TABLE `user_roles`  (
   `sub_menu_id` int NOT NULL,
   `main_menu_id` int NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2588 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2630 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_roles
@@ -2581,47 +2597,48 @@ INSERT INTO `user_roles` VALUES (2289, 37, 136, 20);
 INSERT INTO `user_roles` VALUES (2290, 37, 142, 20);
 INSERT INTO `user_roles` VALUES (2291, 37, 143, 11);
 INSERT INTO `user_roles` VALUES (2292, 37, 144, 11);
-INSERT INTO `user_roles` VALUES (2547, 2, 8, 1);
-INSERT INTO `user_roles` VALUES (2548, 2, 11, 5);
-INSERT INTO `user_roles` VALUES (2549, 2, 45, 1);
-INSERT INTO `user_roles` VALUES (2550, 2, 50, 11);
-INSERT INTO `user_roles` VALUES (2551, 2, 82, 5);
-INSERT INTO `user_roles` VALUES (2552, 2, 89, 17);
-INSERT INTO `user_roles` VALUES (2553, 2, 105, 3);
-INSERT INTO `user_roles` VALUES (2554, 2, 106, 3);
-INSERT INTO `user_roles` VALUES (2555, 2, 107, 3);
-INSERT INTO `user_roles` VALUES (2556, 2, 108, 16);
-INSERT INTO `user_roles` VALUES (2557, 2, 109, 16);
-INSERT INTO `user_roles` VALUES (2558, 2, 110, 18);
-INSERT INTO `user_roles` VALUES (2559, 2, 111, 18);
-INSERT INTO `user_roles` VALUES (2560, 2, 114, 16);
-INSERT INTO `user_roles` VALUES (2561, 2, 115, 16);
-INSERT INTO `user_roles` VALUES (2562, 2, 116, 16);
-INSERT INTO `user_roles` VALUES (2563, 2, 117, 16);
-INSERT INTO `user_roles` VALUES (2564, 2, 118, 18);
-INSERT INTO `user_roles` VALUES (2565, 2, 119, 19);
-INSERT INTO `user_roles` VALUES (2566, 2, 123, 3);
-INSERT INTO `user_roles` VALUES (2567, 2, 124, 19);
-INSERT INTO `user_roles` VALUES (2568, 2, 126, 19);
-INSERT INTO `user_roles` VALUES (2569, 2, 127, 21);
-INSERT INTO `user_roles` VALUES (2570, 2, 128, 21);
-INSERT INTO `user_roles` VALUES (2571, 2, 129, 21);
-INSERT INTO `user_roles` VALUES (2572, 2, 130, 21);
-INSERT INTO `user_roles` VALUES (2573, 2, 131, 11);
-INSERT INTO `user_roles` VALUES (2574, 2, 132, 11);
-INSERT INTO `user_roles` VALUES (2575, 2, 133, 11);
-INSERT INTO `user_roles` VALUES (2576, 2, 141, 16);
-INSERT INTO `user_roles` VALUES (2577, 2, 143, 11);
-INSERT INTO `user_roles` VALUES (2578, 2, 144, 11);
-INSERT INTO `user_roles` VALUES (2579, 2, 145, 11);
-INSERT INTO `user_roles` VALUES (2580, 2, 146, 18);
-INSERT INTO `user_roles` VALUES (2581, 2, 147, 18);
-INSERT INTO `user_roles` VALUES (2582, 2, 148, 18);
-INSERT INTO `user_roles` VALUES (2583, 2, 149, 5);
-INSERT INTO `user_roles` VALUES (2584, 2, 150, 5);
-INSERT INTO `user_roles` VALUES (2585, 2, 151, 5);
-INSERT INTO `user_roles` VALUES (2586, 2, 152, 5);
-INSERT INTO `user_roles` VALUES (2587, 2, 153, 5);
+INSERT INTO `user_roles` VALUES (2588, 2, 8, 1);
+INSERT INTO `user_roles` VALUES (2589, 2, 11, 5);
+INSERT INTO `user_roles` VALUES (2590, 2, 45, 1);
+INSERT INTO `user_roles` VALUES (2591, 2, 50, 11);
+INSERT INTO `user_roles` VALUES (2592, 2, 82, 5);
+INSERT INTO `user_roles` VALUES (2593, 2, 89, 17);
+INSERT INTO `user_roles` VALUES (2594, 2, 105, 3);
+INSERT INTO `user_roles` VALUES (2595, 2, 106, 3);
+INSERT INTO `user_roles` VALUES (2596, 2, 107, 3);
+INSERT INTO `user_roles` VALUES (2597, 2, 108, 16);
+INSERT INTO `user_roles` VALUES (2598, 2, 109, 16);
+INSERT INTO `user_roles` VALUES (2599, 2, 110, 18);
+INSERT INTO `user_roles` VALUES (2600, 2, 111, 18);
+INSERT INTO `user_roles` VALUES (2601, 2, 114, 16);
+INSERT INTO `user_roles` VALUES (2602, 2, 115, 16);
+INSERT INTO `user_roles` VALUES (2603, 2, 116, 16);
+INSERT INTO `user_roles` VALUES (2604, 2, 117, 16);
+INSERT INTO `user_roles` VALUES (2605, 2, 118, 18);
+INSERT INTO `user_roles` VALUES (2606, 2, 119, 19);
+INSERT INTO `user_roles` VALUES (2607, 2, 122, 18);
+INSERT INTO `user_roles` VALUES (2608, 2, 123, 3);
+INSERT INTO `user_roles` VALUES (2609, 2, 124, 19);
+INSERT INTO `user_roles` VALUES (2610, 2, 126, 19);
+INSERT INTO `user_roles` VALUES (2611, 2, 127, 21);
+INSERT INTO `user_roles` VALUES (2612, 2, 128, 21);
+INSERT INTO `user_roles` VALUES (2613, 2, 129, 21);
+INSERT INTO `user_roles` VALUES (2614, 2, 130, 21);
+INSERT INTO `user_roles` VALUES (2615, 2, 131, 11);
+INSERT INTO `user_roles` VALUES (2616, 2, 132, 11);
+INSERT INTO `user_roles` VALUES (2617, 2, 133, 11);
+INSERT INTO `user_roles` VALUES (2618, 2, 141, 16);
+INSERT INTO `user_roles` VALUES (2619, 2, 143, 11);
+INSERT INTO `user_roles` VALUES (2620, 2, 144, 11);
+INSERT INTO `user_roles` VALUES (2621, 2, 145, 11);
+INSERT INTO `user_roles` VALUES (2622, 2, 146, 18);
+INSERT INTO `user_roles` VALUES (2623, 2, 147, 18);
+INSERT INTO `user_roles` VALUES (2624, 2, 148, 18);
+INSERT INTO `user_roles` VALUES (2625, 2, 149, 5);
+INSERT INTO `user_roles` VALUES (2626, 2, 150, 5);
+INSERT INTO `user_roles` VALUES (2627, 2, 151, 5);
+INSERT INTO `user_roles` VALUES (2628, 2, 152, 5);
+INSERT INTO `user_roles` VALUES (2629, 2, 153, 5);
 
 -- ----------------------------
 -- Table structure for vehicles

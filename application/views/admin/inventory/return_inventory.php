@@ -2,16 +2,24 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Inventory <small>Return Inventory Records</small></h2> 
- 
- 
-           
-        <div class="clearfix"></div>
+
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-md-8"> 
+                    <h6 class="page-title">Unconfirmed Return Inventory Records</h6>
+                </div>
+                <div class="col-md-4">
+                    <div class="float-end d-none d-md-block">
+                         
+                    </div>
+                </div>
+            </div>
+        </div>
+
       </div>
       <div class="x_content">
-        <p class="text-muted font-13 m-b-30">
-          
-        </p>
+        <div class="card">
+            <div class="card-body">
 
         
         
@@ -43,7 +51,7 @@
             <tr>
               <td data-order="-<?=$rs->id?>"><?=date('M d, Y',strtotime($rs->date_created))?></td> 
               <td>IR<?=sprintf("%06d",$rs->id)?></td> 
-              <td><?=date('M d, Y',strtotime($rs->return_date))?></td> 
+              <td><?=date('d M, Y',strtotime($rs->return_date))?></td> 
               <td>IR<?=sprintf("%06d",$rs->issuance_id)?></td> 
               <td><?=@$rs->customer?></td>
               <td><?=$rs->phone?></td> 
@@ -51,9 +59,9 @@
               <td><?=@$arr_user[$rs->user_id]?></td>
               <td nowrap>
 
-                <a href="#" ><i class="fa fa-eye"></i> Confirm</a>
+                <a href="#" ><i class="fa fa-check"></i> Confirm</a>
                   |  
-                <a href="<?php echo base_url('inventory/view_returns/'.$rs->id);?>"  ><i class="fa fa-file-text-o"></i> View</a>
+                <a href="<?php echo base_url('inventory/view_returns/'.$rs->id);?>"  ><i class="fa fa-eye"></i> View</a>
                   |  
                 <a href="<?php echo base_url('inventory/edit_returns/'.$rs->id);?>"><i class="fa fa-edit"></i> Edit</a>
                   |  
@@ -66,6 +74,9 @@
 
         </table>
       </div>
+    </div>
+  </div> 
+
     </div>
   </div> 
    

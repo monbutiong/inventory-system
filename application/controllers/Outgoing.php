@@ -386,6 +386,7 @@ class Outgoing extends CI_Controller {
 		$this->db->where('issuance_id', $so_id);
 		$this->db->select('
 			a.id, 
+			i.id as issuance_item_id, 
 			a.item_code, 
 			a.item_name, 
 			a.supplier_price, 
@@ -406,6 +407,7 @@ class Outgoing extends CI_Controller {
 		foreach ($items as $r) {
 		    $json[] = [
 		        'id' => $r->id,
+		        'issuance_item_id' => $r->issuance_item_id,
 		        'text' => $r->item_code . ' | ' . $r->item_name,
 		        'item_code' => $r->item_code,
 		        'item_name' => $r->item_name,
@@ -747,9 +749,17 @@ class Outgoing extends CI_Controller {
 		$module['manufacturers'] = $result['maintenance_data'];
 
 		$module['customers'] = $this->core->load_core_data('clients');
+
+		$module['tnc'] = $this->core->load_core_data('terms_and_conditions','','','type="quotation"');
 		
 		$this->load->view('admin/index',$module);
 
+	}
+
+	public function load_tnc($id)
+	{
+		$module['tnc'] = $this->core->load_core_data('terms_and_conditions',$id);
+		$this->load->view('admin/outgoing/load_tnc',$module);
 	}
 
 	public function save_quotation(){
@@ -1080,7 +1090,7 @@ class Outgoing extends CI_Controller {
 	
 		$module['quotation'] = $this->core->load_core_data('issuance_quotation',$id);
  		
- 		$this->db->where('issuance_quotation_id',$id);
+ 		$this->db->where(['i.issuance_quotation_id'=>$id,'i.deleted'=>0]);
 		$this->db->select('
 			i.id as id, 
 			i.qty as qty, 
@@ -1120,6 +1130,8 @@ class Outgoing extends CI_Controller {
 		$module['manufacturers'] = $result['maintenance_data']; 
 
 		$module['user'] = $this->core->load_core_data('account',$module['quotation']->user_id);
+
+		$module['tnc'] = $this->core->load_core_data('terms_and_conditions','','','type="quotation"');
 		
 		$this->load->view('admin/index',$module);
 
@@ -1320,7 +1332,7 @@ class Outgoing extends CI_Controller {
 	
 		$module['quotation'] = $this->core->load_core_data('issuance_quotation',$id);
  		
- 		$this->db->where(['deleted'=>0,'issuance_quotation_id'=>$id]);
+ 		$this->db->where(['i.deleted'=>0,'i.issuance_quotation_id'=>$id]);
 		$this->db->select('
 			i.id as id, 
 			i.qty as qty, 
@@ -1926,6 +1938,115 @@ class Outgoing extends CI_Controller {
 		$module['qitems'] = $this->db->get()->result();
 
 		$this->load->view('admin/outgoing/quotation_packages',$module);
+
+	}
+
+	public function terms_and_conditions($option='',$id=''){
+
+		$module = $this->system_menu;
+
+        $module['id'] = $id;
+		$module['option'] = $option;
+
+		if(@$id){
+			$module['tnc'] = $this->core->load_core_data('terms_and_conditions',$id);
+		}else{
+			$module['tnc'] = $this->core->load_core_data('terms_and_conditions','','','type="quotation"');
+		}
+
+		$url = $this->router->class.'/'.$this->router->method; 
+		$this->check_access($url, $module['sub_menu'], $module['index_user_roles']);
+
+		$module['module'] = "outgoing/terms_and_conditions";
+		$module['map_link']   = "outgoing->terms_and_conditions";  
+	   
+		$this->load->view('admin/index',$module);
+
+	}
+
+	public function add_tnc(){
+
+		$module['type'] = 'quotation';
+
+		$this->load->view('admin/outgoing/add_tnc',$module);
+
+	}
+
+	public function edit_tnc($id){
+
+		$module['type'] = 'quotation';
+
+		$module['tnc'] = $this->core->load_core_data('terms_and_conditions',$id);
+
+		$this->load->view('admin/outgoing/edit_tnc',$module);
+		
+	}
+
+	public function save_tnc(){
+
+		$q = $this->db->insert('terms_and_conditions',[
+			'user_id' => $this->session->user_id,
+			'date_created' => date('Y-m-d H:i'),
+			'title' => $this->input->post('title',TRUE),
+			'description' => $this->input->post('description'),
+			'arabic' => $this->input->post('arabic'),
+			'type' => 'quotation'
+		]);
+
+		if($q){ 
+			 
+			$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
+			  
+		}else{
+
+			$this->session->set_flashdata("error","error saving.");
+
+		}
+
+		redirect("outgoing/terms_and_conditions","refresh");
+
+	}
+
+	public function update_tnc($id){
+
+		$q = $this->db->where('id',$id)->update('terms_and_conditions',[
+			'modified_by' => $this->session->user_id,
+			'date_modified' => date('Y-m-d H:i'),
+			'title' => $this->input->post('title',TRUE),
+			'description' => $this->input->post('description'),
+			'arabic' => $this->input->post('arabic'),
+			'type' => 'quotation'
+		]);
+
+		if($q){ 
+			 
+			$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
+			  
+		}else{
+
+			$this->session->set_flashdata("error","error saving.");
+
+		}
+
+		redirect("outgoing/terms_and_conditions","refresh");
+
+	}
+
+	public function delete_tnc($id){
+
+		$q = $this->db->where('id',$id)->delete('terms_and_conditions');
+
+		if($q){ 
+			 
+			$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
+			  
+		}else{
+
+			$this->session->set_flashdata("error","error saving.");
+
+		}
+
+		redirect("outgoing/terms_and_conditions","refresh");
 
 	}
 	

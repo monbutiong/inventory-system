@@ -2,29 +2,41 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Inventory <small>Confirmed Return Inventory Records</small></h2> 
- 
- 
-           
-        <div class="clearfix"></div>
+      
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-md-8"> 
+                    <h6 class="page-title">Confirmed Return Inventory Records</h6>
+                </div>
+                <div class="col-md-4">
+                    <div class="float-end d-none d-md-block">
+                         
+                    </div>
+                </div>
+            </div>
+        </div>
+  
       </div>
       <div class="x_content">
-        <p class="text-muted font-13 m-b-30">
-          
-        </p>
- 
+        <div class="card">
+            <div class="card-body">
+
+        
         
         <table id="datatable" class="table table-striped table-bordered table-hover">
            
           <thead>
             <tr style="font-size: 12px;">
               <th>Date</th> 
-              <th>Job Order</th>
+              <th>Return Number</th> 
               <th>Return Date</th>
-              <th>Reference Number</th>  
+              <th>Sales Order #</th>
+              <th>Customer</th>
+              <th>Contact #</th>  
               <td>Remarks</td>  
-              <td>Created By</td>   
-              <td>Date Confirmed</td> 
+              <td>Created By</td> 
+              <td>Confirmed By</td> 
+              <td>Confirmed Date</td>    
               <th>Options</th>
             </tr>
             </thead> 
@@ -34,30 +46,28 @@
               foreach($users as $rs){
               $arr_user[$rs->id] = $rs->name;
             }}
-
-            if(@$ii){
-              foreach($ii as $rs){
-              $arr_ii[$rs->id] = $rs->job_order_id;
-            }}
-
-            if(@$jo){
-              foreach($jo as $rs){
-              $arr_jo[$rs->id] = $rs->job_order_number;
-            }}
   
             if(@$returns){
               foreach($returns as $rs){ 
             ?>
             <tr>
               <td data-order="-<?=$rs->id?>"><?=date('M d, Y',strtotime($rs->date_created))?></td> 
-              <td><?=@$arr_jo[@$arr_ii[$rs->issuance_id]]?></td> 
-              <td><?=date('M d, Y',strtotime($rs->return_date))?></td> 
-              <td><?=$rs->ref_no?></td> 
+              <td>IR<?=sprintf("%06d",$rs->id)?></td> 
+              <td><?=date('d M, Y',strtotime($rs->return_date))?></td> 
+              <td>IR<?=sprintf("%06d",$rs->issuance_id)?></td> 
+              <td><?=@$rs->customer?></td>
+              <td><?=$rs->phone?></td> 
               <td><?=$rs->remarks?></td> 
-              <td><?=@$arr_user[$rs->user_id]?></td>
-              <td><?=date('M d, Y',strtotime($rs->confirmed_date))?></td> 
-              <td nowrap> 
-                <a href="<?php echo base_url('inventory/view_returns/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" ><i class="fa fa-file-text-o"></i> View</a>  
+              <td><?=@$arr_user[$rs->user_id]?></td> 
+              <td><?=@$arr_user[$rs->confirmed_by]?></td>
+              <td><?=date('d M, Y',strtotime($rs->confirmed_date))?></td>
+              <td nowrap>
+
+                <a target="_blank" href="<?php echo base_url('inventory/print_returns/'.$rs->id);?>" ><i class="fa fa-print"></i> Print</a>
+                  |  
+                <a href="<?php echo base_url('inventory/view_returns/'.$rs->id);?>"  ><i class="fa fa-eye"></i> View</a>
+                
+               
               </td>
             </tr>
             <?php }}?>
@@ -66,6 +76,9 @@
         </table>
       </div>
     </div>
+  </div> 
+
+  </div>
   </div> 
    
 </div>

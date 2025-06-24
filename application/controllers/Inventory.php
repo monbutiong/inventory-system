@@ -1098,15 +1098,34 @@ class Inventory extends CI_Controller {
 		$module['map_link']   = "inventory->view_returns";   
   
 		$module['inv'] = $this->core->load_core_data('inventory','','id,item_code,item_name,qty');
-
 		 
 		$module['users'] = $this->core->load_core_data('account','','id,name');
-		 
+
 		$module['ir'] = $this->core->load_core_data('inventory_returns',$id);
 
-		$module['so'] = $this->core->load_core_data('issuance',$module['ir']->issuance_id);
-
-		$module['return_items'] = $this->core->load_core_data('inventory_returns_items','','','return_id='.$module['ir']->id);
+		 
+		$module['so'] = $this->core->load_core_data('issuance','','id',['confirmed'=>1]);
+ 
+		$this->db->select('
+			a.id as id,
+			a.inventory_id as inventory_id,
+			a.issuance_item_id as issuance_item_id,
+			b.item_code as item_code,
+			b.item_name as item_name,
+			c.title as item_brand,
+			a.issued_qty as so_qty,
+			a.qty as qty,
+			a.retail_price as retail_price,
+			b.qty as inv_stock,
+			a.remarks as remarks,
+			a.discount_percentage as discount_percentage,
+			a.discount_amount as discount_amount
+		');
+		$this->db->from('inventory_returns_items a');
+		$this->db->join('inventory b', 'b.id = a.inventory_id', 'left');
+		$this->db->join('fm_item_brand c', 'c.id = b.item_brand_id', 'left'); 
+		$this->db->where(['a.return_id'=>$module['ir']->id, 'a.deleted'=>0]);
+		$module['return_items'] = $this->db->get()->result();
 
 		$module['ii'] = $this->core->load_core_data('issuance',$module['ir']->issuance_id);
 
@@ -1144,6 +1163,8 @@ class Inventory extends CI_Controller {
  
 		$this->db->select('
 			a.id as id,
+			a.inventory_id as inventory_id,
+			a.issuance_item_id as issuance_item_id,
 			b.item_code as item_code,
 			b.item_name as item_name,
 			c.title as item_brand,
@@ -1178,64 +1199,77 @@ class Inventory extends CI_Controller {
 
 	}
 
-	public function update_return_inventory(int $id){
+	public function update_inventory_return(int $r_id){
  
+		$ri = $this->db->select('issuance_id')->get_where('inventory_returns',['id'=>$r_id])->row();
+		$so = $this->db->select('customer_id,vehicle_id,confirmed_date')->get_where('issuance',['id'=>$ri->issuance_id])->row();
+
 		$items = $this->input->post('items',TRUE);
 
 		if($items){
 
-			$r = $this->db->where('id',$id)->update('inventory_returns',[ 
-				'return_date' => $this->input->post('return_date',TRUE), 
-				'ref_no' => $this->input->post('ref_no',TRUE),  
-				'remarks' => $this->input->post('remarks',TRUE)
+			$r = $this->db->where('id',$r_id)->update('inventory_returns',[
+				'date_modified' => date('Y-m-d H:i'),
+				'modified_by' => $this->session->user_id, 
+				'return_date' => $this->input->post('return_date',TRUE),  
+				'remarks' => $this->input->post('remarks',TRUE),
+				'grand_total_amt' => $this->input->post('grand_total_amt',TRUE),
 			]); 
+ 
+			$i_id = $ri->issuance_id;
+ 
+			if($r){ 
 
-			 $this->db->where('return_id',$id)->update('inventory_returns_items',[ 
-				'deleted' => 1,
-				'date_deleted' => date('Y-m-d'),
-				'deleted_by' => $this->session->user_id
-			]); 
-  
-	
-			if(@$r){ 
-
-				foreach ($this->db->select('id,qty')->get_where('inventory',['deleted'=>0])->result() as $rs) {
-					$arr_inv[$rs->id] = $rs;
-				}
+				$r = $this->db->where('return_id',$r_id)->update('inventory_returns_items',[
+					'date_deleted'=> date("Y-m-d H:i"),
+					'deleted_by'=>$this->session->user_id,
+					'deleted' => 1
+				]); 
 
 				foreach ($items as $key => $ii_id) {
 
 					$qty = $this->input->post('qty'.$ii_id,TRUE);
-	
-				    $new_qty = @$arr_inv[$ii_id]->qty+$qty;
+					$old_stock_qty = $this->input->post('old_stock_qty'.$ii_id,TRUE);
+					$remarks = $this->input->post('remarks'.$ii_id,TRUE);
  
-				    $update = $this->db->where([
-				    	'return_id'=>$id,
-				    	'issuance_item_id'=>$ii_id
-				    ])->update('inventory_returns_items',[
-				    	'qty'=>$this->input->post('qty'.$ii_id,TRUE), 
-						'remarks'=>$this->input->post('remarks'.$ii_id,TRUE),
-						'deleted'=>0,
-						'date_deleted' => '',
-						'deleted_by' => ''
-				    ]); 
+				    $new_qty = @$old_stock_qty+$qty;
 
-				    if($this->db->affected_rows() == 0){ 
+				    if($this->input->post('exist'.$ii_id,TRUE)){
+
+				    	$this->db->where('id',$this->input->post('exist'.$ii_id,TRUE))->update('inventory_returns_items',[
+				    		'qty'=>$qty,
+				    		'qty_before'=>@$old_stock_qty,
+				    		'qty_after'=>$new_qty,
+				    		'remarks'=>$this->input->post('remarks'.$ii_id,TRUE),
+				    		'date_issued'=>$so->confirmed_date,
+				    		'retail_price'=>@$this->input->post('retail_price'.$ii_id,TRUE),
+				    		'issued_qty'=>@$this->input->post('issued_qty'.$ii_id,TRUE),
+				    		'discount_percentage'=>@$this->input->post('discount_percentage'.$ii_id,TRUE),
+				    		'discount_amount'=>@$this->input->post('discount_amount'.$ii_id,TRUE),
+				    		'modified_by'=>$this->session->user_id,
+				    		'date_modified'=>date("Y-m-d H:i"),
+				    		'date_deleted'=> '',
+				    		'deleted_by'=>'',
+				    		'deleted' => 0
+				    	]);
+
+				    }else{
 					  
 						$this->db->insert('inventory_returns_items',[ 
 							'return_id'=>$r_id,
-							'project_id'=>$jo->project_id,
-							'job_order_id'=>$jo_id,
-							'client_id'=>$jo->client_id,
-							'issuance_id'=>$this->input->post('issuance_id'.$ii_id,TRUE),
+							'vehicle_id'=>$so->vehicle_id, 
+							'customer_id'=>$so->customer_id,
 							'issuance_item_id'=>$ii_id,
-							'inventory_id'=>$this->input->post('inventory_id'.$ii_id,TRUE),  
-							'qty'=>$this->input->post('qty'.$ii_id,TRUE),
-							'qty_before'=>@$arr_inv[$ii_id]->qty,
+							'inventory_id'=>$ii_id,  
+							'qty'=>$qty,
+							'qty_before'=>@$old_stock_qty,
 							'qty_after'=>$new_qty,
 							'remarks'=>$this->input->post('remarks'.$ii_id,TRUE),
-							'date_issued'=>@$this->input->post('date_issued'.$ii_id,TRUE),
+							'date_issued'=>$so->confirmed_date,
+							'retail_price'=>@$this->input->post('retail_price'.$ii_id,TRUE),
 							'issued_qty'=>@$this->input->post('issued_qty'.$ii_id,TRUE),
+							'discount_percentage'=>@$this->input->post('discount_percentage'.$ii_id,TRUE),
+							'discount_amount'=>@$this->input->post('discount_amount'.$ii_id,TRUE),
 							'user_id'=>$this->session->user_id,
 							'date_created'=>date("Y-m-d H:i"),
 							'confirmed' => 0 
@@ -1259,12 +1293,16 @@ class Inventory extends CI_Controller {
 
 		}
 
-		redirect("inventory/edit_returns/".$id,"refresh");
+		redirect("inventory/edit_returns/".$r_id,"refresh");
 
 	}
 
-	public function confirm_return_iventory($id)
+	public function confirm_returns($id)
 	{
+		$ir = $this->core->load_core_data('inventory_returns',$id);
+
+		if($ir->confirmed == 1){die('Already Confirmed!');}
+
 		$r = $this->db->where('id',$id)->update('inventory_returns',[
 			'confirmed_by' => $this->session->user_id,
 			'confirmed_date' => date('Y-m-d H:i'), 
@@ -1272,22 +1310,36 @@ class Inventory extends CI_Controller {
 		]); 
 
 		if($r){
+ 
 
-			$inv = $this->core->load_core_data('inventory','','id,qty,unit_cost_price');
-			if($inv){
-				foreach ($inv as $rs) {
-					$arr_inv[$rs->id] = $rs;
-				}
-			}
-
-			$items = $this->core->load_core_data('inventory_returns_items','','','return_id='.$id); 
+			$this->db->select('
+				a.id as id,
+				a.inventory_id as inventory_id,
+				a.issuance_item_id as issuance_item_id,
+				b.item_code as item_code,
+				b.item_name as item_name,
+				c.title as item_brand,
+				a.issued_qty as so_qty,
+				a.qty as qty,
+				a.retail_price as retail_price,
+				b.qty as inv_stock,
+				b.unit_cost_price as unit_cost_price,
+				a.remarks as remarks,
+				a.discount_percentage as discount_percentage,
+				a.discount_amount as discount_amount
+			');
+			$this->db->from('inventory_returns_items a');
+			$this->db->join('inventory b', 'b.id = a.inventory_id', 'left');
+			$this->db->join('fm_item_brand c', 'c.id = b.item_brand_id', 'left'); 
+			$this->db->where(['a.return_id'=>$id, 'a.deleted'=>0]);
+			$items = $this->db->get()->result();
 			 
 			if(@$items){
 				foreach ($items as $rs) {
 					
 					$update_inventory = $this->db->where('id',$rs->inventory_id)->update('inventory',[
-						'old_qty'=>@$arr_inv[$rs->inventory_id]->qty, 
-						'qty'=>@$arr_inv[$rs->inventory_id]->qty + $rs->qty
+						'old_qty'=>@$rs->inv_stock, 
+						'qty'=>@$rs->inv_stock + $rs->qty
 					]); 
 
 					if($update_inventory){
@@ -1296,16 +1348,13 @@ class Inventory extends CI_Controller {
 							'date_created' => date('Y-m-d H:i'),
 							'user_id' => $this->session->user_id,
 							'inventory_id' => @$rs->inventory_id,
-							'ref_id' => $id, 
-							'project_id' => 0, 
-							'quotation_id' => 0, 
-							'inventory_quotation_id' => 0, 
+							'ref_id' => $id,   
 							'qty' => $rs->qty,
-							'qty_before' => @$arr_inv[$rs->inventory_id]->qty,
-							'qty_after' => @$arr_inv[$rs->inventory_id]->qty + $rs->qty, 
+							'qty_before' => @$rs->inv_stock,
+							'qty_after' => @$rs->inv_stock + $rs->qty, 
 							'movement_from' => 'returns',
 							'addition' => 1,
-							'unit_cost_price' => @$arr_inv[$rs->inventory_id]->unit_cost_price
+							'unit_cost_price' => @$rs->unit_cost_price
 						]);
 
 					}
@@ -1321,7 +1370,59 @@ class Inventory extends CI_Controller {
 
 		}
 
-		redirect("inventory/return_inventory","refresh");
+		redirect("inventory/view_returns/".$id,"refresh");
+	}
+
+
+	public function print_returns(int $id){
+	
+		$module = $this->system_menu;
+				  
+	 
+		$module['inv'] = $this->core->load_core_data('inventory','','id,item_code,item_name,qty');
+	
+		$module['users'] = $this->core->load_core_data('account','','id,name');
+		 
+		$module['ir'] = $this->core->load_core_data('inventory_returns',$id);
+ 
+		$module['so'] = $this->core->load_core_data('issuance','','id',['confirmed'=>1]);
+	
+		$this->db->select('
+			a.id as id,
+			a.inventory_id as inventory_id,
+			a.issuance_item_id as issuance_item_id,
+			b.item_code as item_code,
+			b.item_name as item_name,
+			c.title as item_brand,
+			a.issued_qty as so_qty,
+			a.qty as qty,
+			a.retail_price as retail_price,
+			b.qty as inv_stock,
+			a.remarks as remarks,
+			a.discount_percentage as discount_percentage,
+			a.discount_amount as discount_amount
+		');
+		$this->db->from('inventory_returns_items a');
+		$this->db->join('inventory b', 'b.id = a.inventory_id', 'left');
+		$this->db->join('fm_item_brand c', 'c.id = b.item_brand_id', 'left'); 
+		$this->db->where(['a.return_id'=>$module['ir']->id, 'a.deleted'=>0]);
+		$module['return_items'] = $this->db->get()->result();
+
+		$module['ii'] = $this->core->load_core_data('issuance',$module['ir']->issuance_id);
+
+	  
+		$module['vehicle'] = $this->core->load_core_data('vehicles',$module['ir']->vehicle_id);
+
+		$module['client'] = $this->core->load_core_data('clients',$module['ir']->customer_id);
+
+		$module['user'] = $this->core->load_core_data('account',$module['ir']->user_id); 
+  
+		if(@$module['ir']->confirmed_by){
+			$module['confirm_user'] = $this->core->load_core_data('account',$module['ir']->confirmed_by); 
+		} 
+		
+		$this->load->view('admin/inventory/print_returns',$module);
+
 	}
 
 	public function confirmed_return_inventory()
@@ -1331,14 +1432,15 @@ class Inventory extends CI_Controller {
 		$module['module'] = "inventory/return_inventory_confirmed";
 		$module['map_link']   = "inventory->return_inventory_confirmed";   
 
-		$module['ii'] = $this->core->load_core_data('issuance','','id,job_order_id','confirmed=1');
-
 		$module['users'] = $this->core->load_core_data('account','','id,name');
-		
-		$module['jo'] = $this->core->load_core_data('projects_job_order','','id,job_order_number');
-
-		$module['returns'] = $this->core->load_core_data('inventory_returns','','','confirmed=1');
-		
+   
+ 		$this->db->where(['a.deleted'=>0, 'a.confirmed'=>1]);
+		$this->db->select('
+			a.*,b.name as customer'); 
+        $this->db->from('inventory_returns a');   
+        $this->db->join('clients b', 'b.id=a.customer_id', 'left');  
+		$module['returns'] = $this->db->get()->result(); 
+		  
 		$this->load->view('admin/index',$module);
 	}
   

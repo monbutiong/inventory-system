@@ -214,6 +214,22 @@
 
               <input type="hidden" name="row_counter" id="row_counter" value="<?=@$counter?>">
               <input type="hidden" id="selected_ids" value="<?=@$selected_ids?>">
+
+              <div id="load_template">
+                <div class="row">
+              
+                  <div class="col-md-6 mb-12">
+                     
+                   <?=@$quotation->terms_and_conditions?> 
+                  </div>
+
+                  <div class="col-md-6 mb-12">
+                   
+                    <?=@$quotation->terms_and_conditions_arabic?> 
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>

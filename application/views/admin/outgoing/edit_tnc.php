@@ -16,9 +16,7 @@ select, .text_input {
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-         
-
-        <h2>Quotation<small>Add Terms and Conditions Template</small></h2>
+        <h2>Sales<small>Edit Terms and Conditions Template</small></h2>
         <ul class="nav navbar-right panel_toolbox">
            
            
@@ -26,36 +24,26 @@ select, .text_input {
           </li>
         </ul>
         <div class="clearfix"></div>
-
       </div>
       <div class="x_content">
         <br />
-        <form method="post" id="frm_validation" action="<?php echo base_url('purchasing/save_tnc');?>" data-bs-toggle="validator" class="form-horizontal form-label-left">
+        <form method="post" id="frm_validation" action="<?php echo base_url('purchasing/update_tnc/'.$tnc->id);?>" data-bs-toggle="validator" class="form-horizontal form-label-left">
  
-          <div class="row mb-3">
+          <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Title
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <input type="text" name="title"  value="<?php echo @$i->title?>" class="form-control col-md-7 col-xs-12">
+              <input type="text" name="title"  value="<?php echo @$tnc->title?>" class="form-control col-md-7 col-xs-12">
             </div>
           </div>  
 
-          <div class="row mb-3" >
+          <div class="form-group" >
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Description
             </label>
-            <div class="col-md-9 col-sm-9 col-xs-12">
-                 <textarea class="elm1" name="description"></textarea>
-            </div>
-          </div>
-
-          <div class="row mb-3" >
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Arabic Description
-            </label>
-            <div class="col-md-9 col-sm-9 col-xs-12">
-                 <textarea class="elm1" name="arabic"></textarea>
-            </div>
-          </div>
- 
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                
+           </div>
+         </div>
 
            
           <div class="ln_solid"></div>
@@ -69,8 +57,6 @@ select, .text_input {
                
             </div>
           </div>
-
-          
 
         </form>
       </div>

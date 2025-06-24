@@ -238,6 +238,34 @@
                           </tbody>
                         </table>
 
+                        <div class="row"> 
+                            <div class="col-md-12 mb-12">
+                            <label>Terms and Conditions Templates  </label>
+                            <select class="form-control" onchange="update_templ(this.value)" style="width: 20%;">
+                              <option value="">select</option>
+                              <?php if($tnc){
+                                foreach ($tnc as $rs) { ?>
+                              <option value="<?=$rs->id?>"><?=$rs->title?></option>
+                              <?php }}?>
+                            </select>
+                          </div>
+                        </div>
+                        <div id="load_template">
+                          <div class="row">
+                        
+                            <div class="col-md-6 mb-12">
+                              <label>Terms and Conditions  
+                              </label>
+                              <textarea class="elm1" name="terms_and_conditions"><?=@$quotation->terms_and_conditions?></textarea>
+                            </div>
+
+                            <div class="col-md-6 mb-12">
+                              <label>Arabic Terms and Conditions</label>
+                              <textarea class="elm1" name="terms_and_conditions_arabic"><?=@$quotation->terms_and_conditions_arabic?></textarea>
+                            </div>
+                          </div>
+                        </div>
+
               <input type="hidden" name="row_counter" id="row_counter" value="<?=@$counter?>">
               <input type="hidden" id="selected_ids" value="<?=@$selected_ids?>">
             </div>
@@ -248,6 +276,10 @@
   </div>
 </form>
 <script type="text/javascript">
+
+  function update_templ(id) {
+    $('#load_template').load('<?=base_url("outgoing/load_tnc")?>/'+id);
+  }
  
   var c = 0;
   var all = 0; 

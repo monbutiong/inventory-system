@@ -29,7 +29,10 @@ select, .text_input {
   white-space: normal;
 } 
 
-
+.readonlyx{
+  border: 1px dashed #999;
+  background-color: #f9f9f9;
+}
 </style>
  <div class="row">
   <div class="col-md-12 col-sm-12 col-xs-12">
@@ -71,7 +74,7 @@ select, .text_input {
                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Quantity on Hand
                   </label>
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="number" id="qty" name="qty" value="0" class="form-control col-md-7 col-xs-12">
+                    <input type="number" readonly id="qty" name="qty" value="0" class="form-control col-md-7 col-xs-12 readonlyx">
                   </div>
                 </div>
 

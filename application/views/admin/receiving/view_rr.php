@@ -28,7 +28,7 @@
                     </ol>
                     <?php if($rr->confirmed == 1){?>
                     <ol class="breadcrumb m-0"> 
-                        <li class="breadcrumb-item active" aria-current="page">Confirmed By: <?=$user->name.' - '.date('M d, Y H:i',strtotime($rr->confirmed_date))?></li>
+                        <li class="breadcrumb-item active" aria-current="page">Confirmed By: <?=$user_confirmed->name.' - '.date('M d, Y H:i',strtotime($rr->confirmed_date))?></li>
                     </ol>
                     <?php }?>
                 </div>

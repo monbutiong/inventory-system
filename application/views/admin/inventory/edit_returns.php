@@ -4,7 +4,7 @@
     border-style: dashed !important;
   }
 </style>
-<form method="post" name="frm_returns" action="<?=base_url('inventory/save_return_inventory')?>" enctype="multipart/form-data">
+<form method="post" name="frm_returns" action="<?=base_url('inventory/update_inventory_return/'.$ir->id)?>" enctype="multipart/form-data">
 <div class="row">
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
@@ -22,7 +22,8 @@
                 <div class="col-md-4">
                     <div class="float-end d-none d-md-block">
                        
-                        
+                        <a class="btn btn-md btn-success" href="Javascript:update_returns()"><i class="fa fa-save"></i> Update Inventory Returns</a>
+
                         <a class="btn btn-md btn-warning" href="<?=base_url("inventory/view_returns/".$ir->id)?>">Go Back</a>  
                          
                     </div>
@@ -38,11 +39,12 @@
               <p class="text-muted font-13 m-b-30">
           <div class="row">
 
+             
             <div class="col-md-2 col-sm-12 ">
-              <label >Inventory Return Number</label>
-              <input type="text" id="item_retrun_id" readonly class="form-control ridonly" value="RT<?=sprintf("%06d", $ir->id);?>">
+              <label >Return Date *</label>
+              <input type="date" required name="return_date" id="return_date" value="<?=$ir->return_date?>" class="form-control">
             </div>
-            
+
             <div class="col-md-2 col-sm-12 ">
               <label >Sales Order </label>
               <select name="issuance_id" id="so_id" class="form-control select2_" onchange="load_so(this.value)">
@@ -72,10 +74,7 @@
               <input type="text" required readonly name="puchase_date" id="puchase_date" class="form-control ridonly"  value="<?=$ir->puchase_date?>">
             </div>
 
-            <div class="col-md-2 col-sm-12 ">
-              <label >Return Date *</label>
-              <input type="date" required name="return_date" id="return_date" value="<?=$ir->return_date?>" class="form-control">
-            </div>
+            
 
              
 
@@ -116,68 +115,70 @@
                    if(@$return_items){
                     foreach($return_items as $rs){
                       @$counter+=1;
-                      @$selected_ids.='('.$rs->id.')-';
+                      @$selected_ids.='('.$rs->inventory_id.')-';
                    ?>
-                   <tr id="tr<?=$rs->id?>" class="data-row">
+                   <tr id="tr<?=$rs->inventory_id?>" class="data-row">
                      <td> 
-                       <a href="<?=base_url('inventory/view_inventory')?>/<?=$rs->id?>" 
+                       <a href="<?=base_url('inventory/view_inventory')?>/<?=$rs->inventory_id?>" 
                           class="load_modal_details" 
                           data-bs-toggle="modal" 
                           data-bs-target=".bs-example-modal-lg" 
                           data-modal-size="xl">
                           <?=$rs->item_code?>
                        </a>
-                       <input type="hidden" name="items[<?=$rs->id?>]" id="added<?=$rs->id?>" value="<?=$rs->id?>"/>
-                       <input type="hidden" name="inventory_id<?=$rs->id?>" value="<?=$rs->id?>"/>
-                       <input type="hidden" name="exist<?=$rs->id?>" value="<?=$rs->id?>"/>
+                       <input type="hidden" class="item_exist" name="items[<?=$rs->inventory_id?>]" id="added<?=$rs->inventory_id?>" value="<?=$rs->inventory_id?>"/>
+                       <input type="hidden" name="inventory_id<?=$rs->inventory_id?>" value="<?=$rs->inventory_id?>"/>
+                       <input type="hidden" name="ii_id<?=$rs->inventory_id?>" value="<?=$rs->issuance_item_id?>"/>
+                       <input type="hidden" name="exist<?=$rs->inventory_id?>" value="<?=$rs->inventory_id?>"/>
                      </td>
                      <td><?=$rs->item_name?></td>
                      <td><?=$rs->item_brand?></td>
-                     <td style="text-align:right;" id="t_qty<?=$rs->id?>"      data-price="<?=$rs->retail_price?>" 
+                     <td style="text-align:right;" id="t_qty<?=$rs->inventory_id?>" data-price="<?=$rs->retail_price?>" 
                         data-discount-percentage="<?=$rs->discount_percentage?>"><?=$rs->so_qty?> 
                      </td>
                      <td style="text-align:right;"> 
                       <?=$rs->retail_price ? number_format($rs->retail_price,2) : '0.00'?>
+                      <input type="hidden" name="retail_price<?=$rs->inventory_id?>" value="<?=$rs->retail_price ? round($rs->retail_price,2) : '0.00'?>">
                      </td>
 
                      <td style="text-align:center;  width:60px;">
                        <input type="number" 
-                              id="qty<?=$rs->id?>" 
-                              name="qty<?=$rs->id?>" 
+                              id="qty<?=$rs->inventory_id?>" 
+                              name="qty<?=$rs->inventory_id?>" 
                               required 
-                              value="1" 
+                              value="<?=$rs->qty?>" 
                               min="1" 
                               max="<?=$rs->so_qty?>" 
                               style="border:0; background:transparent; text-align:right; width:60px;">
-                       <input type="hidden" name="issued_qty<?=$rs->id?>" value="<?=$rs->qty?>"/>
-                       <input type="hidden" name="old_stock_qty<?=$rs->id?>" value="<?=$rs->inv_stock?> "/>
+                       <input type="hidden" name="issued_qty<?=$rs->inventory_id?>" value="<?=$rs->qty?>"/>
+                       <input type="hidden" name="old_stock_qty<?=$rs->inventory_id?>" value="<?=$rs->inv_stock?> "/>
                      </td> 
 
-                     <td style="text-align:right;"><font id="line_total<?=$rs->id?>"><?=number_format($rs->retail_price * $rs->qty,2)?></font>
+                     <td style="text-align:right;"><font id="line_total<?=$rs->inventory_id?>"><?=number_format($rs->retail_price * $rs->qty,2)?></font>
                      </td>
 
                      <td style="text-align:right;"> 
                          <?=$rs->discount_percentage?>
-                         <input type="hidden" name="discount_percentage<?=$rs->id?>" value="<?=$rs->discount_percentage?>" >
+                         <input type="hidden" name="discount_percentage<?=$rs->inventory_id?>" value="<?=$rs->discount_percentage?>" >
                      </td>
 
                      <td style="text-align:right;">
-                         <span id="discount_amount_total<?=$rs->id?>">
+                         <span id="discount_amount_total<?=$rs->inventory_id?>">
                          <?=number_format($rs->discount_amount,2)?>
                          </span>
                          <input type="hidden" 
-                         id="discount_amount<?=$rs->id?>"
-                         name="discount_amount<?=$rs->id?>" value="<?=round($rs->discount_amount,2)?>" >
+                         id="discount_amount<?=$rs->inventory_id?>"
+                         name="discount_amount<?=$rs->inventory_id?>" value="<?=round($rs->discount_amount,2)?>" >
                      </td>
 
-                     <td style="text-align:right;"><font id="line_grand_total<?=$rs->id?>"><?=number_format(($rs->retail_price * $rs->qty)-$rs->discount_amount,2)?></font>
+                     <td style="text-align:right;"><font id="line_grand_total<?=$rs->inventory_id?>"><?=number_format(($rs->retail_price * $rs->qty)-$rs->discount_amount,2)?></font>
                      </td>
 
 
                      <td style="text-align:center;  width:260px;">
                        <input type="text" 
-                              id="remarks<?=$rs->id?>" 
-                              name="remarks<?=$rs->id?>"  
+                              id="remarks<?=$rs->inventory_id?>" 
+                              name="remarks<?=$rs->inventory_id?>"  
                               value="<?=$rs->remarks?> " 
                               style="border:0; background:transparent; text-align:left; width:260px;">
                      </td>  
@@ -185,7 +186,7 @@
                      
 
                      <td style="text-align:center;">
-                       <a href="javascript:remove_item(<?=$rs->id?>)">
+                       <a href="javascript:remove_item(<?=$rs->inventory_id?>)">
                          <i title="remove" class="fa fa-trash" style="color:red"></i>
                        </a>
                      </td>
@@ -250,24 +251,18 @@
     })
   }
 
-  function save_returns(){ 
+  function update_returns(){ 
 
-    if ($('#inventory_return_id').val() === '') {
+    if ($('.item_exist').length == 0) {
         Swal.fire({
             icon: 'error',
-            title: 'Missing Information',
-            text: 'Job Order is required'
-        });
-    } else if ($('#return_date').val() === '') {
-        Swal.fire({
-            icon: 'error',
-            title: 'Missing Information',
-            text: 'Return date is required'
+            title: 'Missing Items',
+            text: 'Return item required.'
         });
     } else {
         Swal.fire({
             title: 'Confirm Save',
-            text: 'Do you want to save the inventory return details?',
+            text: 'Do you want to update the return inventory details?',
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Yes, save it',
@@ -284,15 +279,7 @@
                     showConfirmButton: false
                 });
                 document.frm_returns.submit();
-            } else {
-                Swal.fire({
-                    title: 'Cancelled',
-                    text: 'Inventory return not saved.',
-                    icon: 'info',
-                    timer: 1000,
-                    showConfirmButton: false
-                });
-            }
+            } 
         });
     }
 

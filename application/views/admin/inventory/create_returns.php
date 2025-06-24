@@ -40,11 +40,11 @@
             </div>
 
 
-            <div class="col-md-2 col-sm-12 ">
+            <!-- <div class="col-md-2 col-sm-12 ">
               <label >Inventory Return Number</label>
               <input type="text" readonly class="form-control ridonly" value="RT<?=sprintf("%06d",count($this->db->select('id')->get_where('inventory_returns',['deleted'=>0])->result())+1);?>">
             </div>
-            
+             -->
             <div class="col-md-2 col-sm-12 ">
               <label >Sales Order </label>
               <select name="issuance_id" id="so_id" class="form-control select2_" onchange="load_so(this.value)">

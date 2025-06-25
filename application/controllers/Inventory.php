@@ -135,7 +135,7 @@ class Inventory extends CI_Controller {
 	        $data[] = [
 	        	'id'=>$rs->id,
 	            'picture' => ($rs->picture_1 ? '<a href="' . base_url('inventory/view_item_images/'.$rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><img src="' . $item_image . '" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" /></a>' : '<img src="' . $item_image . '" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" />'),
-	            'item_code' => $rs->item_code,
+	            'item_code' => '<a href="' . base_url('inventory/view_inventory/' . $rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl">'.$rs->item_code.'</a>',
 	            'item_name' => $rs->item_name,
 	            'brand' => $rs->brand,
 	            'category' => $rs->category,
@@ -147,17 +147,22 @@ class Inventory extends CI_Controller {
 	            'retail_price' => number_format($rs->retail_price,2), 
 	            'options' => '
 	                <a href="' . base_url('inventory/view_inventory/' . $rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl">
-	                    <i class="fa fa-eye"></i> view
+	                    <i class="fa fa-eye"></i> View
 	                </a> |
 	                <a href="' . base_url('inventory/edit_inventory/' . $rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl">
-	                    <i class="fa fa-edit"></i> edit
-	                </a> <br/>
-	                <a href="javascript:prompt_delete(\'Delete\', \'Delete ' . addslashes($rs->item_code) . ' item?\', \'' . base_url('inventory/delete_inventory/' . $rs->id) . '\', \'tr' . $rs->id . '\')">
-	                    <i class="fa fa-trash"></i> Delete
+	                    <i class="fa fa-edit"></i> Edit
 	                </a> |
+	                <a href="javascript:prompt_delete(\'Delete\', \'Delete ' . addslashes($rs->item_code) . ' item?\', \'' . base_url('inventory/delete_inventory/' . $rs->id) . '\', \'tr' . $rs->id . '\')" style="color:red;">
+	                    <i class="fa fa-trash"></i> Delete
+	                </a> <br/>
 	                <a href="' . base_url('inventory/inventory_movement/' . $rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl">
-	                    <i class="fa fa-edit"></i> movement
-	                </a>'
+	                    <i class="fa fa-truck"></i> movement
+	                </a>
+	                 |
+	                <a href="' . base_url('inventory/lost_sale/' . $rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl">
+	                    <i class="fa fa-search"></i> Lost Sale
+	                </a>
+	                '
 
 
 	        ];
@@ -193,6 +198,51 @@ class Inventory extends CI_Controller {
 	        "recordsFiltered" => $filtered_records,
 	        "data" => $data
 	    ]);
+	}
+
+	public function lost_sale(int $id)
+	{
+		$module['lost_sale'] = $this->core->load_core_data('inventory_lost_sale','','','inventory_id='.$id);
+
+		$module['users'] = $this->core->load_core_data('account','','id,name');
+  
+		$module['inv'] = $this->core->load_core_data('inventory',$id);
+		
+		$this->load->view('admin/inventory/lost_sale',$module);
+	}
+
+	public function save_lost_sale(int $id)
+	{
+		$model = $this->core->global_query(1,'inventory_lost_sale','',['inventory_id'=>$id]); 
+
+		if($model['result']){ 
+ 
+			echo 1;   
+
+		}else{
+
+			echo 0;
+
+		}
+
+		die();
+	}
+
+	public function delete_lost_sale(int $id)
+	{
+		$model = $this->core->global_query(3,'inventory_lost_sale',$id); 
+
+		if($model['result']){ 
+		
+			echo 1;   
+
+		}else{
+
+			echo 0;
+
+		}
+
+		die();
 	}
 
 	public function view_item_images($id)

@@ -168,7 +168,7 @@
                 <img src="<?= base_url(); ?>assets/images/c_logo.png?2" alt="Company Logo" class="logo">
                 <div class="document-title">
                     <h1>QUOTATION</h1>
-                    <div class="quotation-no">QO<?= sprintf("%06d", $quotation->id); ?></div>
+                    <div class="quotation-no">#QO<?= sprintf("%06d", $quotation->id); ?></div>
                 </div>
             </div>
             

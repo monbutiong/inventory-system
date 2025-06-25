@@ -145,7 +145,7 @@ if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 if (preg_match('/([0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}/', $output, $matches)) {
     $mac = strtoupper(str_replace(':', '-', $matches[0]));
 }
-
-if (trim($mac) != '00-50-56-C0-00-01') { //34-17-EB-C5-DD-8E
+//00-50-56-C0-00-01
+if (trim($mac) != '34-17-EB-C5-DD-8E') { //34-17-EB-C5-DD-8E
     die();
 }

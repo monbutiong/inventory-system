@@ -11,7 +11,7 @@
  Target Server Version : 100427
  File Encoding         : 65001
 
- Date: 24/06/2025 17:47:55
+ Date: 25/06/2025 11:05:04
 */
 
 SET NAMES utf8mb4;
@@ -46,7 +46,7 @@ CREATE TABLE `account`  (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 1, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, 'b26d8734a8c5b8d6bf3df365f443e873d69e8a55784d20b4f340c14d907ebe3b', '2025-06-24 12:55:07');
+INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 1, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, 'f759f6252b039830169c9deab07dacd6c005249abe149827e47bd3e96563a253', '2025-06-25 08:19:44');
 INSERT INTO `account` VALUES (37, '', NULL, '2024-05-15', 'silambu', '$2a$08$j.FhunOL0ywwPrANlITow.mveuu/bCghDmEQGlCdBxKtElgkiprMC', 1, NULL, 'Accounts', NULL, 0, 'Silambu', 0, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
@@ -90,7 +90,7 @@ CREATE TABLE `audit_trail`  (
   `log` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 161 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 163 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of audit_trail
@@ -255,6 +255,8 @@ INSERT INTO `audit_trail` VALUES (157, 2, 'login page', 'login to account.', '20
 INSERT INTO `audit_trail` VALUES (158, 2, 'login page', 'login to account.', '2025-06-24 12:55:07', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (159, 2, 'account page', 'logout to account.', '2025-06-24 12:57:53', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (160, 2, 'home > system user > update user roles', 'update system user restriction, user id : 2', '2025-06-24 13:40:39', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (161, 2, 'login page', 'login to account.', '2025-06-25 08:19:40', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (162, 2, 'login page', 'login to account.', '2025-06-25 08:19:44', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for clients
@@ -1226,6 +1228,45 @@ CREATE TABLE `inventory_adjustments_items`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for inventory_lost_sale
+-- ----------------------------
+DROP TABLE IF EXISTS `inventory_lost_sale`;
+CREATE TABLE `inventory_lost_sale`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
+  `user_id` int NULL DEFAULT NULL,
+  `deleted` int NULL DEFAULT 0,
+  `date_deleted` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
+  `deleted_by` int NULL DEFAULT NULL,
+  `date_modified` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
+  `modified_by` int NULL DEFAULT NULL,
+  `inventory_id` int NULL DEFAULT NULL,
+  `qty` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `vin` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `plate_no` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `remarks` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC STATS_AUTO_RECALC = 1;
+
+-- ----------------------------
+-- Records of inventory_lost_sale
+-- ----------------------------
+INSERT INTO `inventory_lost_sale` VALUES (1, '2025-06-25 15:33:54', 2, 1, '2025-06-25 16:01:45', 2, '', NULL, NULL, '4', 'SDF23422342345', '2342', 'DSFSDFSDF');
+INSERT INTO `inventory_lost_sale` VALUES (2, '2025-06-25 15:35:28', 2, 0, '', NULL, '', NULL, NULL, '44', 'SDFS23234234', 'DSFSD', 'TEST');
+INSERT INTO `inventory_lost_sale` VALUES (3, '2025-06-25 15:36:17', 2, 1, '2025-06-25 15:58:28', 2, '', NULL, 30, '45', '23DFSDFSDF', 'FDDFGDFGD', 'TEST 12312');
+INSERT INTO `inventory_lost_sale` VALUES (4, '2025-06-25 15:36:43', 2, 1, '2025-06-25 15:54:18', 2, '', NULL, 30, '43534', 'SDSD32423423', 'DSF234234', 'TEST 123123');
+INSERT INTO `inventory_lost_sale` VALUES (5, '2025-06-25 15:48:34', 2, 1, '2025-06-25 15:54:49', 2, '', NULL, 30, '34', 'FSD234234234', '3242234', 'TEST');
+INSERT INTO `inventory_lost_sale` VALUES (6, '2025-06-25 15:58:22', 2, 1, '2025-06-25 16:00:50', 2, '', NULL, 30, '45', 'GDFG', 'DFDF', 'DFG');
+INSERT INTO `inventory_lost_sale` VALUES (7, '2025-06-25 16:00:38', 2, 0, '', NULL, '', NULL, 30, '32', 'SDFSDF', 'DSFSDF', 'SDFSDF');
+INSERT INTO `inventory_lost_sale` VALUES (8, '2025-06-25 16:01:02', 2, 0, '', NULL, '', NULL, 30, '32', 'FGDF', 'GFDSGD', 'GDFGDFG');
+INSERT INTO `inventory_lost_sale` VALUES (9, '2025-06-25 16:01:40', 2, 0, '', NULL, '', NULL, 30, '2', 'DFS', 'SDFS', 'DFSDFSDF');
+INSERT INTO `inventory_lost_sale` VALUES (10, '2025-06-25 16:02:42', 2, 1, '2025-06-25 16:04:08', 2, '', NULL, 30, '342', 'DFGDF', 'FGDF', 'DFGDFGDFG');
+INSERT INTO `inventory_lost_sale` VALUES (11, '2025-06-25 16:02:43', 2, 1, '2025-06-25 16:04:04', 2, '', NULL, 30, '342', 'DFGDF', 'FGDF', 'DFGDFGDFG');
+INSERT INTO `inventory_lost_sale` VALUES (12, '2025-06-25 16:03:53', 2, 0, '', NULL, '', NULL, 30, '3', 'SDF', 'FSDF', 'SDFSDF');
+INSERT INTO `inventory_lost_sale` VALUES (13, '2025-06-25 16:04:32', 2, 0, '', NULL, '', NULL, 30, '34', 'DFGDF', '4DFFG', 'GDFGDFG');
+INSERT INTO `inventory_lost_sale` VALUES (14, '2025-06-25 16:04:38', 2, 0, '', NULL, '', NULL, 30, '4', 'FGDF', 'FGD', 'FGDFG');
+
+-- ----------------------------
 -- Table structure for inventory_movement
 -- ----------------------------
 DROP TABLE IF EXISTS `inventory_movement`;
@@ -1711,7 +1752,7 @@ INSERT INTO `menu_sub` VALUES (116, 'Local Charges Types', NULL, 13, NULL, 'main
 INSERT INTO `menu_sub` VALUES (117, 'Confirmed GRV', NULL, 6, NULL, 'receiving/confirmed_receiving_records', 1, 16, 0, NULL);
 INSERT INTO `menu_sub` VALUES (118, 'Confirmed Sales Order', NULL, 5, NULL, 'outgoing/confirm_issuance_records', 1, 18, 0, NULL);
 INSERT INTO `menu_sub` VALUES (119, 'Vehicle Masterlist', NULL, 1, NULL, 'vehicles/masterlist', 1, 19, 0, NULL);
-INSERT INTO `menu_sub` VALUES (122, 'Terms and Condition Temaplates', NULL, 3, NULL, 'outgoing/terms_and_conditions', 1, 18, 0, 'System Tables');
+INSERT INTO `menu_sub` VALUES (122, 'Terms and Conditions Template', NULL, 3, NULL, 'outgoing/terms_and_conditions', 1, 18, 0, 'System Tables');
 INSERT INTO `menu_sub` VALUES (123, 'Suppliers', NULL, 6, NULL, 'purchasing/supplier_po', 1, 3, 1, 'Supplier Masterfile');
 INSERT INTO `menu_sub` VALUES (124, 'Model', NULL, 3, NULL, 'maintenance/table/models', 1, 19, 0, NULL);
 INSERT INTO `menu_sub` VALUES (126, 'Manufacturer', NULL, 2, NULL, 'maintenance/table/manufacturers', 1, 19, 0, NULL);
@@ -2096,7 +2137,7 @@ CREATE TABLE `terms_and_conditions`  (
 -- ----------------------------
 -- Records of terms_and_conditions
 -- ----------------------------
-INSERT INTO `terms_and_conditions` VALUES (4, '2023-09-17', 2, 0, '', NULL, '2025-06-24 20:07', 2, '<p><span style=\"box-sizing: border-box; color: #5b626b; font-family: Roboto, sans-serif; font-size: 14px;\"><span style=\"box-sizing: border-box; color: #2697de;\">Terms &amp; Conditions:&nbsp;</span></span></p>\r\n<div style=\"box-sizing: border-box; color: #5b626b; font-family: Roboto, sans-serif; font-size: 14px;\"><span style=\"box-sizing: border-box; color: #2697de;\">1-&nbsp;</span>Invoices to be issued in the name of German Auto Line.&nbsp;</div>\r\n<div style=\"box-sizing: border-box; color: #5b626b; font-family: Roboto, sans-serif; font-size: 14px;\"><span style=\"box-sizing: border-box; color: #2697de;\">2-</span>&nbsp;Payment Terms: As per agreement&nbsp;</div>\r\n<div style=\"box-sizing: border-box; color: #5b626b; font-family: Roboto, sans-serif; font-size: 14px;\"><span style=\"box-sizing: border-box; color: #2697de;\">3-</span>&nbsp;Delivery: Immediate&nbsp;</div>\r\n<div style=\"box-sizing: border-box; color: #5b626b; font-family: Roboto, sans-serif; font-size: 14px;\"><span style=\"box-sizing: border-box; color: #2697de;\">4-</span>&nbsp;If no PO confirmation nor comments/remarks are received within 2 working days from official PO transmittal date, this PO including all its content is considered in effect.&nbsp;&nbsp;</div>', 'Template 1', 'quotation', '<p data-pm-slice=\"0 0 []\"><span style=\"color: #3598db;\">الشروط والأحكام:</span></p>\r\n<p>١- يجب إصدار الفواتير باسم German Auto Line.</p>\r\n<p>٢- شروط الدفع: حسب الاتفاق.</p>\r\n<p>٣- التسليم: فوري.</p>\r\n<p>٤- إذا لم يتم استلام تأكيد أمر الشراء أو أي تعليقات/ملاحظات خلال يومي عمل من تاريخ إرسال أمر الشراء الرسمي، فسيُعتبر هذا الأمر بما في ذلك جميع محتوياته ساري المفعول.</p>');
+INSERT INTO `terms_and_conditions` VALUES (4, '2023-09-17', 2, 0, '', NULL, '2025-06-25 15:21', 2, '<p><span style=\"box-sizing: border-box; color: #5b626b; font-family: Roboto, sans-serif; font-size: 14px;\"><span style=\"box-sizing: border-box; color: #2697de;\">Terms &amp; Conditions:&nbsp;</span></span></p>\r\n<div style=\"box-sizing: border-box; color: #5b626b; font-family: Roboto, sans-serif; font-size: 14px;\"><span style=\"box-sizing: border-box; color: #2697de;\">1-&nbsp;</span>Invoices to be issued in the name of <span style=\"color: #ba372a;\">German Auto Line</span>.&nbsp;</div>\r\n<div style=\"box-sizing: border-box; color: #5b626b; font-family: Roboto, sans-serif; font-size: 14px;\"><span style=\"box-sizing: border-box; color: #2697de;\">2-</span>&nbsp;Payment Terms: As per agreement&nbsp;</div>\r\n<div style=\"box-sizing: border-box; color: #5b626b; font-family: Roboto, sans-serif; font-size: 14px;\"><span style=\"box-sizing: border-box; color: #2697de;\">3-</span>&nbsp;Delivery: Immediate&nbsp;</div>\r\n<div style=\"box-sizing: border-box; color: #5b626b; font-family: Roboto, sans-serif; font-size: 14px;\"><span style=\"box-sizing: border-box; color: #2697de;\">4-</span>&nbsp;If no PO confirmation nor comments/remarks are received within 2 working days from official PO transmittal date, this PO including all its content is considered in effect.&nbsp;&nbsp;</div>', 'Template 1', 'quotation', '<p data-pm-slice=\"0 0 []\"><span style=\"color: #3598db;\">الشروط والأحكام:</span></p>\r\n<p>١- يجب إصدار الفواتير باسم German Auto Line.</p>\r\n<p>٢- شروط الدفع: حسب الاتفاق.</p>\r\n<p>٣- التسليم: فوري.</p>\r\n<p>٤- إذا لم يتم استلام تأكيد أمر الشراء أو أي تعليقات/ملاحظات خلال يومي عمل من تاريخ إرسال أمر الشراء الرسمي، فسيُعتبر هذا الأمر بما في ذلك جميع محتوياته ساري المفعول.</p>');
 INSERT INTO `terms_and_conditions` VALUES (5, '2023-09-17', 2, 0, '', NULL, '2025-06-24 20:08', 2, '<p><strong><span style=\"color: #2697de;\">Terms &amp; Conditions:&nbsp;</span></strong></p>\r\n<div><span style=\"color: #2697de;\">1- </span>Invoices to be issued in the name of German Auto Line.&nbsp;</div>\r\n<div><span style=\"color: #2697de;\">2-</span> Payment Terms: As per agreement&nbsp;</div>\r\n<div><span style=\"color: #2697de;\">3-</span> Delivery: Immediate&nbsp;</div>\r\n<div><span style=\"color: #2697de;\">4-</span> If no PO confirmation nor comments/remarks are received within 2 working days from official PO transmittal date, this PO including all its content is considered in effect.&nbsp;&nbsp;</div>', 'Template 2', 'quotation', '<p data-pm-slice=\"0 0 []\">الشروط والأحكام:</p>\r\n<p>١- يجب إصدار الفواتير باسم German Auto Line.</p>\r\n<p>٢- شروط الدفع: حسب الاتفاق.</p>\r\n<p>٣- التسليم: فوري.</p>\r\n<p>٤- إذا لم يتم استلام تأكيد أمر الشراء أو أي تعليقات/ملاحظات خلال يومي عمل من تاريخ إرسال أمر الشراء الرسمي، فسيُعتبر هذا الأمر بما في ذلك جميع محتوياته ساري المفعول.</p>');
 
 -- ----------------------------

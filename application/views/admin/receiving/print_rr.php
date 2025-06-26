@@ -20,6 +20,7 @@
             padding: 10px;
             text-align: center;
         }
+
         .badge {
           display: inline-block;
           padding: 0.35em 0.65em;
@@ -67,46 +68,20 @@
           </td>
           <td width="40%" valign="top"> 
 
-            <strong style="color: #65aadb;">Transport:</strong> <?php 
-                if(@$grv_transport){
-                  foreach ($grv_transport as $rs) { if($rr->grv_transport_id==$rs->id){
-                echo $rs->title;  }}}?><br/>
+            
             <strong style="color: #65aadb;">Currency:</strong> <?=$rr->currency?><br/>
+            <strong style="color: #65aadb;">Exchane Rate:</strong> <?=number_format($xrate=$rr->exchange_rate,6)?> <br/>
+
             <strong style="color: #65aadb;">LC Factor:</strong> <?=$rr->lc_factor?><br/>
             <strong style="color: #65aadb;">Item Total:</strong> <font id="itm_ttl"></font> <br/>
             <strong style="color: #65aadb;">C&F Total:</strong> <font id="cf_ttl"></font> 
 
           </td>
           <td width="10%" valign="top" nowrap>
-            
-            <strong style="color: #65aadb;">Exchane Rate:</strong> <?=number_format($xrate=$rr->exchange_rate,6)?> <br/>
-
-            <strong style="color: #65aadb;">Project:</strong> <?php 
-            $show_prj_id = '';
-            if(@$projects){
-              foreach ($projects as $rs) {
-                if(!$show_prj_id){
-                  $show_prj_id = 1;
-                  echo  @$rs->name;
-                }else{
-                  echo  ', '.@$rs->name;
-                }
-              }
-            }
-            ?><br/> 
-            <strong style="color: #65aadb;">P.O. Number:</strong> <?php 
-            $show_po_id = '';
-            if(@$pos){
-              foreach ($pos as $rs) {
-                if(!$show_po_id){
-                  $show_po_id = 1;
-                  echo  @$rs->po_number;
-                }else{
-                  echo  ', '.@$rs->po_number;
-                }
-              }
-            }
-            ?>  <br/>
+            <strong style="color: #65aadb;">Transport:</strong> <?php 
+                if(@$grv_transport){
+                  foreach ($grv_transport as $rs) { if($rr->grv_transport_id==$rs->id){
+                echo $rs->title;  }}}?><br/> 
             <strong style="color: #65aadb;">Date:</strong> <?=date('M d, Y',strtotime($rr->date_created))?> <br/>
             <strong style="color: #65aadb;">Received By:</strong> <?=$user->name?>  <br/>
             
@@ -146,6 +121,7 @@
                   <table id="datatable" class="table table-bordered table-striped table-hover" style="width: 95%; border: 1px solid black;">
                     <thead>
                       <tr style="color: #65aadb;"> 
+                        <th rowspan="2">P.O. No.</th>
                         <th rowspan="2">Part No.</th>
                         <th rowspan="2">Description</th>
                         <th colspan="3">Quantity</th> 
@@ -168,6 +144,12 @@
                           $arr_poi[$rs->id] = $rs;
                         }
                       }
+
+                      if(@$pos){
+                        foreach ($pos as $rs) {
+                          $arr_pos[$rs->id] = $rs;
+                        }
+                      }
                       
                       $itm_ttl = 0;
                       $cf_ttl = 0;
@@ -176,6 +158,7 @@
                         foreach ($rri as $rs) { 
                       ?>
                       <tr  > 
+                        <td><?=@$arr_pos[$rs->po_id]->po_number?></td>
                         <td><?=@$arr_poi[$rs->po_item_id]->item_code?></td>
                         <td><?=@$arr_poi[$rs->po_item_id]->item_name?></td> 
 
@@ -209,21 +192,7 @@
       </div> 
     </div>
     </center>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
     <center>
     <div class="a4-container">
 
@@ -250,46 +219,22 @@
           </td>
           <td width="40%" valign="top"> 
 
-            <strong style="color: #65aadb;">Transport:</strong> <?php 
-                if(@$grv_transport){
-                  foreach ($grv_transport as $rs) { if($rr->grv_transport_id==$rs->id){
-                echo $rs->title;  }}}?><br/>
+            
             <strong style="color: #65aadb;">Currency:</strong> <?=$rr->currency?><br/>
+            <strong style="color: #65aadb;">Exchane Rate:</strong> <?=number_format($xrate=$rr->exchange_rate,6)?> <br/>
             <strong style="color: #65aadb;">LC Factor:</strong> <?=$rr->lc_factor?><br/>
             <strong style="color: #65aadb;">Item Total:</strong> <?=number_format($itm_ttl,2)?> <br/>
             <strong style="color: #65aadb;">C&F Total:</strong> <?=number_format($cf_ttl,2)?> </font> 
 
           </td>
-          <td width="10%" valign="top" nowrap>
-            
-            <strong style="color: #65aadb;">Exchane Rate:</strong> <?=number_format($xrate=$rr->exchange_rate,6)?> <br/>
+          <td width="10%" valign="top" nowrap>  
 
-            <strong style="color: #65aadb;">Project:</strong> <?php 
-            $show_prj_id = '';
-            if(@$projects){
-              foreach ($projects as $rs) {
-                if(!$show_prj_id){
-                  $show_prj_id = 1;
-                  echo  @$rs->name;
-                }else{
-                  echo  ', '.@$rs->name;
-                }
-              }
-            }
-            ?><br/> 
-            <strong style="color: #65aadb;">P.O. Number:</strong> <?php 
-            $show_po_id = '';
-            if(@$pos){
-              foreach ($pos as $rs) {
-                if(!$show_po_id){
-                  $show_po_id = 1;
-                  echo  @$rs->po_number;
-                }else{
-                  echo  ', '.@$rs->po_number;
-                }
-              }
-            }
-            ?>  <br/>
+            <strong style="color: #65aadb;">Transport:</strong> <?php 
+                if(@$grv_transport){
+                  foreach ($grv_transport as $rs) { if($rr->grv_transport_id==$rs->id){
+                echo $rs->title;  }}}?><br/>
+            
+  
             <strong style="color: #65aadb;">Date:</strong> <?=date('M d, Y',strtotime($rr->date_created))?> <br/>
             <strong style="color: #65aadb;">Received By:</strong> <?=$user->name?>  <br/>
             
@@ -355,8 +300,7 @@
                   <?php }?> 
                   <tr>
                     <td>Total (In Qatari Riyals)</td> 
-                    <td align="right"><?=number_format($fc_ttl,2)?></td>
-                    <td></td>
+                    <td colspan="2" align="right"><?=number_format($fc_ttl,2)?></td> 
                   </tr>
                  </table>
 
@@ -429,6 +373,12 @@
 </body>
 </html>
 <!-- end of accordion -->
-<script type="text/javascript">
-  self.print()
+<script>
+    // Auto print when loaded (uncomment if needed)
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            window.print();
+            window.close();
+        }, 500);
+    });
 </script>

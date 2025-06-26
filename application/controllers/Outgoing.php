@@ -2049,5 +2049,29 @@ class Outgoing extends CI_Controller {
 		redirect("outgoing/terms_and_conditions","refresh");
 
 	}
+
+	public function purchase_history($type,int $id)
+	{
+		$module['type'] = $type;
+ 
+		$this->db->select('a.*, 
+		    b.item_code as item_code,
+		    b.item_name as item_name
+		');
+		$this->db->from('issuance_items as a');
+		$this->db->join('inventory b', 'b.id = a.inventory_id', 'left'); 
+
+		if($type == 'customer'){ 
+			$this->db->where(['a.customer_id'=>$id, 'a.deleted'=>0]);
+		}else{ 
+			$this->db->where(['a.vehicle_id'=>$id, 'a.deleted'=>0]);
+		}
+
+		$module['history'] = $this->db->get()->result();
+
+		$module['users'] = $this->core->load_core_data('account');
+ 
+		$this->load->view('admin/outgoing/purchase_history',$module);
+	}
 	
 }

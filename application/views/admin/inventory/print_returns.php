@@ -342,8 +342,7 @@
             <!-- Footer -->
             
         </div>
-
-
+ 
     </div>
       <div class="footer">
         <table style="border: 0; width:100%;">
@@ -357,7 +356,7 @@
     </div>
 
     <script>
-        // Auto print when loaded (uncomment if needed)
+        // Auto print when loaded (uncomment if needed) 
         window.addEventListener('load', function() {
             setTimeout(function() {
                 window.print();

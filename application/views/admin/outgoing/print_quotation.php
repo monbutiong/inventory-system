@@ -352,13 +352,13 @@
     </div>
 
     <script>
-        // Auto print when loaded (uncomment if needed)
-        // window.addEventListener('load', function() {
-        //     setTimeout(function() {
-        //         window.print();
-        //         window.close();
-        //     }, 500);
-        // });
+        //Auto print when loaded (uncomment if needed)
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                window.print();
+                window.close();
+            }, 500);
+        });
     </script>
 </body>
 </html>

@@ -20,8 +20,7 @@
       <div class="x_content">
         <div class="card">
             <div class="card-body">
-
-        
+ 
         
         <table id="datatable" class="table table-striped table-bordered table-hover">
            

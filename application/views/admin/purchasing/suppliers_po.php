@@ -18,9 +18,8 @@
             </div>
       </div>
       <div class="x_content">
-        <p class="text-muted font-13 m-b-30">
-          
-        </p>
+        <div class="card">
+            <div class="card-body">
 
         
         
@@ -77,6 +76,10 @@
         </table>
       </div>
     </div>
+
+    </div>
+    </div>
+    
   </div> 
    
 </div>

@@ -19,9 +19,8 @@
 
       </div>
       <div class="x_content">
-        <p class="text-muted font-13 m-b-30">
-          
-        </p>
+        <div class="card">
+            <div class="card-body">
  
         
         <table id="issuance_datatable" class="table table-striped table-bordered table-hover">
@@ -42,6 +41,9 @@
         </table>
 
       </div>
+    </div>
+
+    </div>
     </div>
   </div> 
    

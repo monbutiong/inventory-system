@@ -1392,6 +1392,11 @@ class Inventory extends CI_Controller {
 						'qty'=>@$rs->inv_stock + $rs->qty
 					]); 
 
+					$update_so = $this->db->where('id',$rs->issuance_item_id)->update('issuance_items',[
+						'return_qty'=>@$rs->qty, 
+						'return_id'=>$id
+					]); 
+					
 					if($update_inventory){
 
 						$this->db->insert('inventory_movement',[

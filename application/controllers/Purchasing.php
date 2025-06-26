@@ -531,7 +531,7 @@ class Purchasing extends CI_Controller {
 
 			$po_id = $this->db->insert_id();
 
-			$po_number = sprintf("%06d",($po_id));
+			$po_number = 'PO'.sprintf("%06d",($po_id));
 
 			$this->db->where('id',$po_id)->update('purchase_order',['po_number' => $po_number]);
 

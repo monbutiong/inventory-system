@@ -900,18 +900,7 @@ class Receiving extends CI_Controller {
 			}
 			$po_ids_q = '('.$po_ids_q.')';
 			$pos_ids_q = '('.$pos_ids_q.')'; 
-		}
-
-		if(json_decode(@$module['rr']->project_ids)){
-			foreach (json_decode($module['rr']->project_ids) as $project_id) {
-				if(@$proj_ids_q){  
-					$proj_ids_q.=' OR id='.$project_id; 
-				}else{  
-					$proj_ids_q.='id='.$project_id;
-				}
-			} 
-			$proj_ids_q = '('.$proj_ids_q.')';
-		}
+		} 
 
 		$module['pos'] = $this->core->load_core_data('purchase_order','','',$po_ids_q); 
 

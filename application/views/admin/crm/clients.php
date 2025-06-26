@@ -33,7 +33,7 @@
               <th>Name</th>
               <th>Address</th>
               <th>Contacts</th>        
-              <th>Options</th>
+              <th nowrap>Options</th>
             </tr>
             </thead> 
             <tbody>
@@ -76,16 +76,16 @@
                   <?=$rs->contact_person_2 ? $rs->contact_person_2.' | '.$rs->contact_number_2 : ''?>
                 </small>
               </td>   
-              <td>
+              <td nowrap style="width: 5%;">
                 
                 
                 <a href="<?php echo base_url('crm/edit_clients/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-edit"></i> edit</a>
                  | 
                 <a href="<?php echo base_url('crm/view_clients/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-eye"></i> view</a>
-                 | 
+                <br/>
                 <a href="Javascript:prompt_delete('Delete','Delete Customer?','<?=base_url('crm/delete_clients/'.$rs->id)?>','tr<?=$rs->id?>')" ><i class="fa fa-trash"></i> Delete</a>
                  | 
-                <a href="<?php echo base_url('crm/view_clients/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-archive"></i> Purchase History</a>
+                <a href="<?php echo base_url('outgoing/purchase_history/customer/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><i class="fa fa-archive"></i> Purchase History</a>
                
                  
               </td>

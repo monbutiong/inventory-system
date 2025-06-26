@@ -11,7 +11,7 @@
  Target Server Version : 100427
  File Encoding         : 65001
 
- Date: 25/06/2025 11:05:04
+ Date: 26/06/2025 16:09:33
 */
 
 SET NAMES utf8mb4;
@@ -46,7 +46,7 @@ CREATE TABLE `account`  (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 1, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, 'f759f6252b039830169c9deab07dacd6c005249abe149827e47bd3e96563a253', '2025-06-25 08:19:44');
+INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 1, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, 'f90a0b644f4cdd997492139dd51b5a4db9c4f653312ed22af146006c274d307c', '2025-06-26 08:36:34');
 INSERT INTO `account` VALUES (37, '', NULL, '2024-05-15', 'silambu', '$2a$08$j.FhunOL0ywwPrANlITow.mveuu/bCghDmEQGlCdBxKtElgkiprMC', 1, NULL, 'Accounts', NULL, 0, 'Silambu', 0, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
@@ -90,7 +90,7 @@ CREATE TABLE `audit_trail`  (
   `log` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 163 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 165 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of audit_trail
@@ -257,6 +257,8 @@ INSERT INTO `audit_trail` VALUES (159, 2, 'account page', 'logout to account.', 
 INSERT INTO `audit_trail` VALUES (160, 2, 'home > system user > update user roles', 'update system user restriction, user id : 2', '2025-06-24 13:40:39', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (161, 2, 'login page', 'login to account.', '2025-06-25 08:19:40', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (162, 2, 'login page', 'login to account.', '2025-06-25 08:19:44', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (163, 2, 'account page', 'logout to account.', '2025-06-25 11:13:29', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (164, 2, 'login page', 'login to account.', '2025-06-26 08:36:34', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for clients
@@ -1145,7 +1147,7 @@ INSERT INTO `inventory` VALUES (2, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '202
 INSERT INTO `inventory` VALUES (3, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0003', 'Item Name 3', 48, 'manual', '455.78', '1042', '0', 47, '[{\"rr_id\":\"1\",\"date\":\"2025-06-17 16:24\",\"qty\":51,\"ucp\":438.71},{\"rr_id\":\"1\",\"date\":\"2025-06-17 17:00\",\"qty\":51,\"ucp\":430},{\"rr_id\":\"2\",\"date\":\"2025-06-17 17:02\",\"qty\":132,\"ucp\":446.9},{\"rr_id\":\"1\",\"date\":\"2025-06-18 18:47\",\"qty\":51,\"ucp\":455.78}]', '[{\"ii_id\":1,\"date\":\"2025-06-17 17:09\",\"qty\":0,\"ucp\":\"446.9\"},{\"ii_id\":2,\"date\":\"2025-06-18 19:04\",\"qty\":47,\"ucp\":\"455.78\"}]', '430', '[1,2]', '[3,4]', 2, 3, 3, 'A1', 'B2', 'C3', 7, 31, '', '', '', 4, 'Sedan, SUV');
 INSERT INTO `inventory` VALUES (4, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0004', 'Item Name 4', 0, 'manual', '0', '362', '0', 0, '[{\"rr_id\":\"2\",\"date\":\"2025-06-17 17:02\",\"qty\":71,\"ucp\":0}]', '', '0', '[1,2]', '[3,4]', 1, 4, 3, 'A1', 'B2', 'C3', 13, 42, '', '', '', 3, 'Sedan, SUV');
 INSERT INTO `inventory` VALUES (5, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0005', 'Item Name 5', 0, 'manual', '0', '1040', '0', 0, '[{\"rr_id\":\"2\",\"date\":\"2025-06-17 16:13\",\"qty\":69,\"ucp\":410.98},{\"rr_id\":\"2\",\"date\":\"2025-06-17 16:37\",\"qty\":61,\"ucp\":2103.56}]', '', '0', '[1,2]', '[3,4]', 3, 2, 5, 'A1', 'B2', 'C3', 7, 24, '', '', '', 10, 'Sedan, SUV');
-INSERT INTO `inventory` VALUES (6, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0006', 'Item Name 6', 61, 'manual', '360.38', '489', '0', 0, '[{\"rr_id\":\"2\",\"date\":\"2025-06-17 16:13\",\"qty\":61,\"ucp\":119.97},{\"rr_id\":\"1\",\"date\":\"2025-06-17 16:24\",\"qty\":61,\"ucp\":346.89},{\"rr_id\":\"1\",\"date\":\"2025-06-17 17:00\",\"qty\":61,\"ucp\":340},{\"rr_id\":\"1\",\"date\":\"2025-06-18 18:47\",\"qty\":61,\"ucp\":360.38}]', '', '340', '[1,2]', '[3,4]', 4, 4, 3, 'A1', 'B2', 'C3', 14, 53, '', '', '', 1, 'Sedan, SUV');
+INSERT INTO `inventory` VALUES (6, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-25 16:13:05', 2, 'ITM0006', 'Item Name 6', 61, 'manual', '360.38', '489.00', '0', 0, '[{\"rr_id\":\"2\",\"date\":\"2025-06-17 16:13\",\"qty\":61,\"ucp\":119.97},{\"rr_id\":\"1\",\"date\":\"2025-06-17 16:24\",\"qty\":61,\"ucp\":346.89},{\"rr_id\":\"1\",\"date\":\"2025-06-17 17:00\",\"qty\":61,\"ucp\":340},{\"rr_id\":\"1\",\"date\":\"2025-06-18 18:47\",\"qty\":61,\"ucp\":360.38}]', '', '340.00', '[1,2]', '[\"3\",\"4\",\"7\"]', 4, 4, 3, 'A1', 'B2', 'C3', 14, 53, '', '', '', 1, 'Sedan, SUV');
 INSERT INTO `inventory` VALUES (7, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0007', 'Item Name 7', 0, 'manual', '0', '952', '0', 0, '[{\"rr_id\":\"2\",\"date\":\"2025-06-17 16:37\",\"qty\":51,\"ucp\":2515.12}]', '', '0', '[1,2]', '[3,4]', 1, 3, 2, 'A1', 'B2', 'C3', 9, 46, '', '', '', 3, 'Sedan, SUV');
 INSERT INTO `inventory` VALUES (8, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0008', 'Item Name 8', 0, 'manual', '0', '962', '743', 20, '', '', '0', '[1,2]', '[3,4]', 2, 2, 3, 'A1', 'B2', 'C3', 10, 52, '', '', '', 3, 'Sedan, SUV');
 INSERT INTO `inventory` VALUES (9, '2025-06-17 10:53:12', 1, 0, NULL, NULL, '2025-06-17 10:53:12', 1, 'ITM0009', 'Item Name 9', 0, 'manual', '0', '748', '478', 14, '', '', '0', '[1,2]', '[3,4]', 5, 4, 3, 'A1', 'B2', 'C3', 13, 39, '', '', '', 1, 'Sedan, SUV');
@@ -1246,7 +1248,7 @@ CREATE TABLE `inventory_lost_sale`  (
   `plate_no` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `remarks` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC STATS_AUTO_RECALC = 1;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC STATS_AUTO_RECALC = 1;
 
 -- ----------------------------
 -- Records of inventory_lost_sale
@@ -1265,6 +1267,8 @@ INSERT INTO `inventory_lost_sale` VALUES (11, '2025-06-25 16:02:43', 2, 1, '2025
 INSERT INTO `inventory_lost_sale` VALUES (12, '2025-06-25 16:03:53', 2, 0, '', NULL, '', NULL, 30, '3', 'SDF', 'FSDF', 'SDFSDF');
 INSERT INTO `inventory_lost_sale` VALUES (13, '2025-06-25 16:04:32', 2, 0, '', NULL, '', NULL, 30, '34', 'DFGDF', '4DFFG', 'GDFGDFG');
 INSERT INTO `inventory_lost_sale` VALUES (14, '2025-06-25 16:04:38', 2, 0, '', NULL, '', NULL, 30, '4', 'FGDF', 'FGD', 'FGDFG');
+INSERT INTO `inventory_lost_sale` VALUES (15, '2025-06-25 17:13:25', 2, 0, '', NULL, '', NULL, 10, '86', 'JKHJK', 'JHJKH', 'HJKHJ');
+INSERT INTO `inventory_lost_sale` VALUES (16, '2025-06-25 17:13:30', 2, 0, '', NULL, '', NULL, 10, '7', 'HJK', 'JHKHJ', 'HJKHJK');
 
 -- ----------------------------
 -- Table structure for inventory_movement
@@ -1500,15 +1504,17 @@ CREATE TABLE `issuance_items`  (
   `retail_price` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `customer_id` int NULL DEFAULT NULL,
   `supplier_price` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `return_qty` int NULL DEFAULT NULL,
+  `return_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of issuance_items
 -- ----------------------------
-INSERT INTO `issuance_items` VALUES (4, '2025-06-18 18:48', 2, 0, '', NULL, '', NULL, NULL, 11, 2, 4, NULL, 1, '376.28', 31, '20.00', '569.60', NULL, '712', 91, NULL);
-INSERT INTO `issuance_items` VALUES (5, '2025-06-18 18:48', 2, 0, '', NULL, '', NULL, NULL, 11, 2, 6, NULL, 2, '641.56', 94, '20.00', '1182.00', NULL, '985', 91, NULL);
-INSERT INTO `issuance_items` VALUES (6, '2025-06-18 18:48', 2, 0, '', NULL, '', NULL, NULL, 11, 2, 4, NULL, 3, '455.78', 51, '20.00', '833.60', NULL, '1042', 91, NULL);
+INSERT INTO `issuance_items` VALUES (4, '2025-06-18 18:48', 2, 0, '', NULL, '', NULL, NULL, 11, 2, 4, NULL, 1, '376.28', 31, '20.00', '569.60', NULL, '712', 91, NULL, NULL, NULL);
+INSERT INTO `issuance_items` VALUES (5, '2025-06-18 18:48', 2, 0, '', NULL, '', NULL, NULL, 11, 2, 6, NULL, 2, '641.56', 94, '20.00', '1182.00', NULL, '985', 91, NULL, NULL, NULL);
+INSERT INTO `issuance_items` VALUES (6, '2025-06-18 18:48', 2, 0, '', NULL, '', NULL, NULL, 11, 2, 4, NULL, 3, '455.78', 51, '20.00', '833.60', NULL, '1042', 91, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for issuance_quotation
@@ -1819,13 +1825,13 @@ CREATE TABLE `purchase_order`  (
 -- ----------------------------
 -- Records of purchase_order
 -- ----------------------------
-INSERT INTO `purchase_order` VALUES (1, '2025-06-17 15:55', 2, 0, '', NULL, '', NULL, '000001', NULL, NULL, 4, 'TEST@MAIL.COM', NULL, 'TEST PO 1', NULL, '', 550.000000, 'TEST', 1, '2025-06-17 15:55', 2, 1, NULL, '1.000000', 12);
-INSERT INTO `purchase_order` VALUES (2, '2025-06-17 15:56', 2, 0, '', NULL, '', NULL, '000002', NULL, NULL, 4, 'YRA@SJHSAN', NULL, 'TEST POI 2', NULL, '', 0.000000, 'YMRAS', 1, '2025-06-17 15:56', 2, 1, NULL, '1.000000', 14);
-INSERT INTO `purchase_order` VALUES (3, '2025-06-17 15:57', 2, 0, '', NULL, '', NULL, '000003', NULL, NULL, 0, 'FSSDF@DFG.GG', NULL, 'FGDF DFG DFG DFG', NULL, '', 60.000000, 'WWWEWE', 0, NULL, NULL, 1, NULL, '1.000000', 13);
-INSERT INTO `purchase_order` VALUES (4, '2025-06-17 16:20', 2, 0, '', NULL, '', NULL, '000004', NULL, NULL, 1, 'EWR@SFSD', NULL, 'SDFSDFSDFSDF', NULL, '', 0.000000, 'DEEWR', 1, '2025-06-17 16:21', 2, 1, NULL, '1.000000', 7);
-INSERT INTO `purchase_order` VALUES (5, '2025-06-17 16:22', 2, 0, '', NULL, '', NULL, '000005', NULL, NULL, 2, 'ERW@SDFS', NULL, 'TEST213', NULL, '', 450.000000, 'TESR', 1, '2025-06-17 16:22', 2, 2, NULL, '4.521300', 13);
-INSERT INTO `purchase_order` VALUES (6, '2025-06-17 16:54', 2, 0, '', NULL, '', NULL, '000006', NULL, NULL, 2, 'FRREW@SDF', NULL, 'DSFS DFSDFSF ', NULL, '', 0.000000, 'EWRW WERWER', 0, NULL, NULL, 1, NULL, '1.000000', 8);
-INSERT INTO `purchase_order` VALUES (7, '2025-06-17 17:01', 2, 0, '', NULL, '', NULL, '000007', NULL, NULL, 1, 'DFGDF@SDFSD', NULL, 'SDFSDF SDFS DFSDFS ', NULL, '', 440.000000, 'FGDF GDFGDFG', 1, '2025-06-17 17:01', 2, 1, NULL, '1.000000', 11);
+INSERT INTO `purchase_order` VALUES (1, '2025-06-17 15:55', 2, 0, '', NULL, '', NULL, 'PO000001', NULL, NULL, 4, 'TEST@MAIL.COM', NULL, 'TEST PO 1', NULL, '', 550.000000, 'TEST', 1, '2025-06-17 15:55', 2, 1, NULL, '1.000000', 12);
+INSERT INTO `purchase_order` VALUES (2, '2025-06-17 15:56', 2, 0, '', NULL, '', NULL, 'PO000002', NULL, NULL, 4, 'YRA@SJHSAN', NULL, 'TEST POI 2', NULL, '', 0.000000, 'YMRAS', 1, '2025-06-17 15:56', 2, 1, NULL, '1.000000', 14);
+INSERT INTO `purchase_order` VALUES (3, '2025-06-17 15:57', 2, 0, '', NULL, '', NULL, 'PO000003', NULL, NULL, 0, 'FSSDF@DFG.GG', NULL, 'FGDF DFG DFG DFG', NULL, '', 60.000000, 'WWWEWE', 0, NULL, NULL, 1, NULL, '1.000000', 13);
+INSERT INTO `purchase_order` VALUES (4, '2025-06-17 16:20', 2, 0, '', NULL, '', NULL, 'PO000004', NULL, NULL, 1, 'EWR@SFSD', NULL, 'SDFSDFSDFSDF', NULL, '', 0.000000, 'DEEWR', 1, '2025-06-17 16:21', 2, 1, NULL, '1.000000', 7);
+INSERT INTO `purchase_order` VALUES (5, '2025-06-17 16:22', 2, 0, '', NULL, '', NULL, 'PO000005', NULL, NULL, 2, 'ERW@SDFS', NULL, 'TEST213', NULL, '', 450.000000, 'TESR', 1, '2025-06-17 16:22', 2, 2, NULL, '4.521300', 13);
+INSERT INTO `purchase_order` VALUES (6, '2025-06-17 16:54', 2, 0, '', NULL, '', NULL, 'PO000006', NULL, NULL, 2, 'FRREW@SDF', NULL, 'DSFS DFSDFSF ', NULL, '', 0.000000, 'EWRW WERWER', 0, NULL, NULL, 1, NULL, '1.000000', 8);
+INSERT INTO `purchase_order` VALUES (7, '2025-06-17 17:01', 2, 0, '', NULL, '', NULL, 'PO000007', NULL, NULL, 1, 'DFGDF@SDFSD', NULL, 'SDFSDF SDFS DFSDFS ', NULL, '', 440.000000, 'FGDF GDFGDFG', 1, '2025-06-17 17:01', 2, 1, NULL, '1.000000', 11);
 
 -- ----------------------------
 -- Table structure for purchase_order_items

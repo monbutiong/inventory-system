@@ -383,7 +383,7 @@ class Outgoing extends CI_Controller {
 
 		$this->db->limit(7, 0);
 
-		$this->db->where('issuance_id', $so_id);
+		$this->db->where(['i.issuance_id'=>$so_id,'i.deleted'=>0]);
 		$this->db->select('
 			a.id, 
 			i.id as issuance_item_id, 

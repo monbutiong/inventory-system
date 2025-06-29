@@ -11,7 +11,7 @@
  Target Server Version : 100427
  File Encoding         : 65001
 
- Date: 26/06/2025 16:09:33
+ Date: 29/06/2025 17:52:36
 */
 
 SET NAMES utf8mb4;
@@ -46,7 +46,7 @@ CREATE TABLE `account`  (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 1, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, 'f90a0b644f4cdd997492139dd51b5a4db9c4f653312ed22af146006c274d307c', '2025-06-26 08:36:34');
+INSERT INTO `account` VALUES (2, '1', '', '2017-05-01', 'admin', '$2a$08$HMSs9g77UdvwR7QJDA8dwuzqOj5qb1UZeKNc0s9aR4QuH7TT8tExi', 1, 1, 'Super Admin', '656d695223630_face2.jpg', 0, 'Mon Butiong', 0, NULL, NULL, 3, 'da2e2655ff3d102205581d5e4ce128147aa51fb7477305dc49bdc73c1a073a94', '2025-06-29 15:40:57');
 INSERT INTO `account` VALUES (37, '', NULL, '2024-05-15', 'silambu', '$2a$08$j.FhunOL0ywwPrANlITow.mveuu/bCghDmEQGlCdBxKtElgkiprMC', 1, NULL, 'Accounts', NULL, 0, 'Silambu', 0, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
@@ -90,7 +90,7 @@ CREATE TABLE `audit_trail`  (
   `log` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `date_created` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 165 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 167 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of audit_trail
@@ -259,6 +259,8 @@ INSERT INTO `audit_trail` VALUES (161, 2, 'login page', 'login to account.', '20
 INSERT INTO `audit_trail` VALUES (162, 2, 'login page', 'login to account.', '2025-06-25 08:19:44', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (163, 2, 'account page', 'logout to account.', '2025-06-25 11:13:29', NULL, NULL, NULL);
 INSERT INTO `audit_trail` VALUES (164, 2, 'login page', 'login to account.', '2025-06-26 08:36:34', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (165, 2, 'login page', 'login to account.', '2025-06-29 08:45:11', NULL, NULL, NULL);
+INSERT INTO `audit_trail` VALUES (166, 2, 'login page', 'login to account.', '2025-06-29 15:40:56', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for clients
@@ -1195,11 +1197,13 @@ CREATE TABLE `inventory_adjustments`  (
   `covered_date` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `ref_no` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of inventory_adjustments
 -- ----------------------------
+INSERT INTO `inventory_adjustments` VALUES (1, '2025-06-29 20:47', 2, 0, '', NULL, '', NULL, 'TEST 123 ', NULL, 0, NULL, NULL, 2, '2025-06-29', '07967554');
+INSERT INTO `inventory_adjustments` VALUES (2, '2025-06-29 20:55', 2, 0, '', NULL, '', NULL, 'TESAR 123123123', NULL, 0, NULL, NULL, 2, '2025-06-24', '87978067AA');
 
 -- ----------------------------
 -- Table structure for inventory_adjustments_items
@@ -1222,12 +1226,19 @@ CREATE TABLE `inventory_adjustments_items`  (
   `confirmed` int NULL DEFAULT 0,
   `inventory_id` int NULL DEFAULT NULL,
   `unit_cost_price` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `adjustment_type_id` int NULL DEFAULT NULL,
+  `adjustment_type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of inventory_adjustments_items
 -- ----------------------------
+INSERT INTO `inventory_adjustments_items` VALUES (1, '2025-06-29 20:47', 2, 0, '', NULL, '', NULL, 'TEST ADD', 1, '2', NULL, '2', 0, 1, '376.28', 2, 'addition');
+INSERT INTO `inventory_adjustments_items` VALUES (2, '2025-06-29 20:47', 2, 0, '', NULL, '', NULL, 'TEST DED', 1, '9', NULL, '0', 0, 2, '641.56', 2, 'deduction');
+INSERT INTO `inventory_adjustments_items` VALUES (3, '2025-06-29 20:55', 2, 0, '', NULL, '', NULL, 'TEST 123', 2, '2', NULL, '2', 0, 1, '376.28', 2, 'addition');
+INSERT INTO `inventory_adjustments_items` VALUES (4, '2025-06-29 20:55', 2, 0, '', NULL, '', NULL, 'ADSDAS', 2, '9', NULL, '0', 0, 2, '641.56', 2, 'deduction');
+INSERT INTO `inventory_adjustments_items` VALUES (5, '2025-06-29 20:55', 2, 0, '', NULL, '', NULL, 'DA SD A', 2, '8', NULL, '0', 0, 3, '455.78', 2, 'deduction');
 
 -- ----------------------------
 -- Table structure for inventory_lost_sale
@@ -1763,7 +1774,7 @@ INSERT INTO `menu_sub` VALUES (123, 'Suppliers', NULL, 6, NULL, 'purchasing/supp
 INSERT INTO `menu_sub` VALUES (124, 'Model', NULL, 3, NULL, 'maintenance/table/models', 1, 19, 0, NULL);
 INSERT INTO `menu_sub` VALUES (126, 'Manufacturer', NULL, 2, NULL, 'maintenance/table/manufacturers', 1, 19, 0, NULL);
 INSERT INTO `menu_sub` VALUES (127, 'Create Stock Adjustments', NULL, 2, NULL, 'inventory/create_stock_adjustments', 1, 21, 0, 'Adjustment Transactions');
-INSERT INTO `menu_sub` VALUES (128, 'Stock Adjustments Records', NULL, 3, NULL, 'inventory/stock_adjustments', 1, 21, 0, NULL);
+INSERT INTO `menu_sub` VALUES (128, 'Unconfirmed Stock Adjustments', NULL, 3, NULL, 'inventory/stock_adjustments', 1, 21, 0, NULL);
 INSERT INTO `menu_sub` VALUES (129, 'Confirmed Stock Adjustments', NULL, 4, NULL, 'inventory/confirmed_stock_adjustments', 1, 21, 0, NULL);
 INSERT INTO `menu_sub` VALUES (130, 'Adjustments Types', NULL, 5, NULL, 'maintenance/table/adjustments_types', 1, 21, 1, 'System Tables');
 INSERT INTO `menu_sub` VALUES (131, 'Create Inventory Return', NULL, 6, NULL, 'inventory/create_returns', 1, 11, 1, 'Return Inventory Transactions');

@@ -520,7 +520,7 @@
              }, 300);
          });
 
-        function updateDtatable() { 
+        function updateDtatable() {
             var value = $('#transaction_type').val().toLowerCase(); 
             // Apply filter on 3rd column (index 2)
             dt.column(2).search(value).draw();
@@ -1720,60 +1720,264 @@
               $(".select2-ajax-so").val('').trigger('change');
             });
 
-        function recalculateLineAndGrandTotal(id) {
-            const qty = parseFloat($(`#qty${id}`).val()) || 0;
-            const price = parseFloat($(`#t_qty${id}`).data('price')) || 0;
-            const discountPercentage = parseFloat($(`#t_qty${id}`).data('discount-percentage')) || 0;
+            function recalculateLineAndGrandTotal(id) {
+                const qty = parseFloat($(`#qty${id}`).val()) || 0;
+                const price = parseFloat($(`#t_qty${id}`).data('price')) || 0;
+                const discountPercentage = parseFloat($(`#t_qty${id}`).data('discount-percentage')) || 0;
 
-            const total = qty * price;
-            const discountAmount = (total * discountPercentage) / 100;
-            const lineTotal = total - discountAmount;
+                const total = qty * price;
+                const discountAmount = (total * discountPercentage) / 100;
+                const lineTotal = total - discountAmount;
 
-            $(`#discount_amount_total${id}`).text(formatMoney(discountAmount));
-            $(`#discount_amount${id}`).val(discountAmount);
+                $(`#discount_amount_total${id}`).text(formatMoney(discountAmount));
+                $(`#discount_amount${id}`).val(discountAmount);
 
-            $(`#line_total${id}`).text(formatMoney(total)); // Before discount
-            $(`#line_grand_total${id}`).text(formatMoney(lineTotal)); // After discount
+                $(`#line_total${id}`).text(formatMoney(total)); // Before discount
+                $(`#line_grand_total${id}`).text(formatMoney(lineTotal)); // After discount
 
-            let grandTotal = 0;
-            $('[id^="line_grand_total"]').each(function () {
-                const amount = parseFloat($(this).text().replace(/,/g, '')) || 0;
-                grandTotal += amount;
-            });
-
-            $('#grand_total').text(formatMoney(grandTotal));
-            $('#grand_total_amt').val(grandTotal.toFixed(2));
-        }
-
-
-        function initializeExistingRows() {
-            $(".data-row").each(function () {
-                const row = $(this);
-                const id = row.attr('id').replace('tr', '');
-                const qtyInput = $(`#qty${id}`);
-                const price = parseFloat(row.find(`#line_total${id}`).text().replace(/,/g, '')) / (parseFloat(qtyInput.val()) || 1);
-                const discountPercentage = parseFloat($(`input[name="discount_percentage${id}"]`).val()) || 0;
-
-                // Set data attributes
-                $(`#t_qty${id}`).data('price', price);
-                $(`#t_qty${id}`).data('discount-percentage', discountPercentage);
-
-                // Bind qty change listener
-                qtyInput.off('input').on('input', function () {
-                    recalculateLineAndGrandTotal(id);
+                let grandTotal = 0;
+                $('[id^="line_grand_total"]').each(function () {
+                    const amount = parseFloat($(this).text().replace(/,/g, '')) || 0;
+                    grandTotal += amount;
                 });
 
-                // Trigger initial calculation
-                recalculateLineAndGrandTotal(id);
-            });
-        }
+                $('#grand_total').text(formatMoney(grandTotal));
+                $('#grand_total_amt').val(grandTotal.toFixed(2));
+            }
 
-        if($('#item_retrun_id').length){
-            initializeExistingRows(); // if edit, will re stablish the id's
-        }
+
+            function initializeExistingRows() {
+                $(".data-row").each(function () {
+                    const row = $(this);
+                    const id = row.attr('id').replace('tr', '');
+                    const qtyInput = $(`#qty${id}`);
+                    const price = parseFloat(row.find(`#line_total${id}`).text().replace(/,/g, '')) / (parseFloat(qtyInput.val()) || 1);
+                    const discountPercentage = parseFloat($(`input[name="discount_percentage${id}"]`).val()) || 0;
+
+                    // Set data attributes
+                    $(`#t_qty${id}`).data('price', price);
+                    $(`#t_qty${id}`).data('discount-percentage', discountPercentage);
+
+                    // Bind qty change listener
+                    qtyInput.off('input').on('input', function () {
+                        recalculateLineAndGrandTotal(id);
+                    });
+
+                    // Trigger initial calculation
+                    recalculateLineAndGrandTotal(id);
+                });
+            }
+
+            if($('#item_retrun_id').length){
+                initializeExistingRows(); // if edit, will re stablish the id's
+            }
 
  
         }
+
+
+
+      //================= INVENTORY ADJUSTMENT
+      if ($(".select2-ajax-adj").length) {
+
+        var c = $('#row_counter').val();
+        var all = 0;  
+         
+        $(".select2-ajax-adj").select2({
+          placeholder: "Select Item",
+          ajax: {
+            url: "<?= base_url('inventory/load_inv_items') ?>",
+            type: "post",
+            dataType: 'json',
+            delay: 250,
+            dropdownAutoWidth: true,
+            data: function (params) {
+              return {
+                searchTerm: params.term,
+                excluded_ids: $('#selected_ids').val() 
+              };
+            },
+            processResults: function (data) {
+              return {
+                results: $.map(data, function (obj) {
+                  return {
+                    id: obj.id, 
+                    text: obj.text,
+                    item_code: obj.item_code,
+                    item_name: obj.item_name,
+                    brand: obj.brand,
+                    qty: obj.qty,  
+                    unit_cost_price: obj.unit_cost_price, 
+                    image_url: obj.image_url 
+                        ? '<?=base_url("assets/uploads/inventory/")?>' + obj.image_url 
+                        : '<?=base_url("assets/images/no-image.png")?>'
+                  };
+      
+
+                })
+              };
+            },
+            cache: true
+          },
+
+          // ✅ This formats the dropdown result
+          templateResult: function (item) {
+            if (!item.id) return item.text;
+
+            var markup =
+              '<div style="display:flex; align-items:center;">' +
+                '<div style="flex:0 0 40px; margin-right:8px;">' +
+                  '<img src="' + item.image_url + '" style="width:75px; height:75px; object-fit:cover; border-radius:4px;" />' +
+                '</div>' +
+                '<div style="flex:1;">' +
+                  '<div><strong>Code:</strong> ' + item.item_code + '</div>' +
+                  '<div><strong>Name:</strong> ' + item.item_name + '</div>' +
+                  '<div><small>Brand: ' + item.brand + '</small></div>' +
+                  '<div><small>Unit Cost Price: ' + formatMoney(item.unit_cost_price) + '</small></div>' +
+                '</div>' +
+                '<div style="flex:0 0 80px; text-align:right; font-weight:bold;">' +
+                  'QOH: ' + item.qty +
+                '</div>' +
+              '</div>';
+            return markup
+
+          },
+
+          // ✅ This controls how selected item appears
+          templateSelection: function (item) {
+            if (!item.id) return item.text;
+            return `${item.item_code} - ${item.item_name}`;
+          },
+
+          // ✅ Important to allow HTML rendering
+          escapeMarkup: function (markup) {
+            return markup;
+          }
+        });
+
+        // Select handler
+        $(".select2-ajax-adj").on("select2:select", function (e) {
+          var e_obj = e.params.data;
+          c += 1;
+
+          
+          if ($('#added' + e_obj.id).length == 0) {
+            $('#selected_ids').val($('#selected_ids').val() + '(' + e_obj.id + ')-');
+                
+            var newRow = `
+              <tr id="tr${e_obj.id}" class="data-row">
+                <td>
+                  <a href="<?=base_url('inventory/view_inventory')?>/${e_obj.id}" 
+                     class="load_modal_details" 
+                     data-bs-toggle="modal" 
+                     data-bs-target=".bs-example-modal-lg" 
+                     data-modal-size="xl">
+                     ${e_obj.item_code}
+                  </a>
+                  <input type="hidden" name="items[${e_obj.id}]" id="added${e_obj.id}" value="${e_obj.id}"/> 
+                  <input type="hidden" name="inventory_id${e_obj.id}" value="${e_obj.id}"/>
+                  <input type="hidden" name="old_qty${e_obj.id}" value="${e_obj.qty}"/>
+                </td>
+                <td>${e_obj.item_name}</td>
+                <td>${e_obj.brand}</td>
+                <td style="text-align:right;">${formatMoney(e_obj.unit_cost_price)}
+
+                    <input type="hidden" name="unit_cost_price${e_obj.id}" value="${e_obj.unit_cost_price}"/>  
+                </td>
+                <td style="text-align:right;"  >
+                    ${e_obj.qty}
+                </td> 
+                <td nowrap style="text-align:center;  width:60px;">
+                  <select id="type${e_obj.id}" 
+                         name="type${e_obj.id}"   
+                         style="border:0; background:transparent; text-align:left; width:40px;">
+                        <option value="addition">+</option>
+                        <option value="deduction">-</option>
+                  </select>
+
+                  <input type="number" 
+                         id="qty${e_obj.id}" 
+                         name="qty${e_obj.id}" 
+                         required 
+                         value="1" 
+                         min="1" 
+                         class="itemclass"  
+                         style="border:0; background:transparent; text-align:right; width:40px;">
+                  <input type="hidden" name="issued_qty${e_obj.id}" />
+                 
+                </td> 
+                <td style="text-align:right;">
+    
+                <font id="new_qty${e_obj.id}">${Number(e_obj.qty)+1}</font>
+                </td>
+
+                <td style="text-align:center;  width:260px;"> 
+                  <input type="text" 
+                         id="remarks${e_obj.id}" 
+                         name="remarks${e_obj.id}"   
+                         style="border:0; background:transparent; text-align:left; width:260px;">
+                </td>  
+
+                <td style="text-align:center;">
+                  <a href="javascript:remove_item(${e_obj.id})">
+                    <i title="remove" class="fa fa-trash" style="color:red"></i>
+                  </a>
+                </td>
+              </tr>`;
+
+              $('#item_selector').before(newRow);
+
+              $(`#type${e_obj.id}, #qty${e_obj.id}`).on('change keyup', function () {
+                updateNewQtyRow(e_obj.id);
+              }); 
+
+              updateNewQtyRow(e_obj.id);
+
+            const newRowEl = $(`#tr${e_obj.id}`);
+    
+          } 
+
+          all += 1;
+          $('#row_counter').val(c);
+          $(".select2-ajax-adj").val('').trigger('change');
+        });
+
+        function updateNewQtyRow(id) {
+          const type = $(`#type${id}`).val();
+          const baseQty = parseFloat($(`#tr${id} td:eq(4)`).text()) || 0;
+          let adjustQty = parseFloat($(`#qty${id}`).val()) || 0;
+
+          // 🚫 Disallow negative input
+          if (adjustQty < 0) {
+            adjustQty = 0;
+            $(`#qty${id}`).val(0);
+          }
+
+          // 🚫 If deduction, do not allow more than stock
+          if (type === 'deduction' && adjustQty > baseQty) {
+            adjustQty = baseQty;
+            $(`#qty${id}`).val(baseQty);
+          }
+
+          let newQty = type === 'addition'
+            ? baseQty + adjustQty
+            : baseQty - adjustQty;
+
+          if (newQty < 0) newQty = 0;
+
+          $(`#new_qty${id}`).text(newQty);
+        }
+
+        $(`#qty${e_obj.id}`).on('keydown', function (e) {
+          if (e.key === '-' || e.keyCode === 189) {
+            e.preventDefault();
+          }
+        });
+
+
+ 
+  
+    }
 
 
         </script>

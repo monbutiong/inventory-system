@@ -9,27 +9,37 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Inventory <small>Create Stock Adjustments</small></h2> 
- 
-          <div class="input-group-btn pull-right" style="padding-right: 110px;">
-                  <a class="btn btn-sm btn-primary" href="Javascript:save_adj()"  >Save Adjustments</a>
-              </div>
-           
-        <div class="clearfix"></div>
+         
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-md-8"> 
+                    <h6 class="page-title">Create Stock Adjustments</h6>
+                </div>
+                <div class="col-md-4">
+                    <div class="float-end d-none d-md-block">
+                         <a class="btn btn-md btn-primary" href="Javascript:save_adj()"  ><i class="fa fa-save"></i> Save Adjustments</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
       </div>
       <div class="x_content">
+        <div class="card">
+            <div class="card-body">
+
         <p class="text-muted font-13 m-b-30">
             
           <div class="row">
 
             <div class="col-md-2 col-sm-12 ">
-              <label >Inventory Return Number</label>
-              <input type="text" readonly class="form-control ridonly" value="AJ<?=sprintf("%06d",count($this->db->select('id')->get_where('inventory_adjustments',['deleted'=>0])->result())+1);?>">
+              <label >Covered Date *</label>
+              <input type="date" required name="covered_date" id="covered_date" class="form-control">
             </div>
 
             <div class="col-md-2 col-sm-12 ">
-              <label >Adjustment Type </label>
-              <select name="adjustment_type_id" id="adjustment_type_id" class="form-control select2_" onchange="load_jo(this.value)">
+              <label >Adjustment Type *</label>
+              <select required name="adjustment_type_id" id="adjustment_type_id" class="form-control" onchange="load_jo(this.value)">
                 <option value="">select</option> 
                 <?php  
                 if($adj_types){
@@ -41,17 +51,14 @@
               
             </div>
  
-            <div class="col-md-2 col-sm-12 ">
-              <label >Covered Date *</label>
-              <input type="date" required name="covered_date" id="covered_date" class="form-control">
-            </div>
+            
 
             <div class="col-md-2 col-sm-12 ">
               <label >Reference Number</label>
               <input type="text" name="ref_no" id="ref_no" class="form-control">
             </div>
 
-            <div class="col-md-4 col-sm-12 ">
+            <div class="col-md-6 col-sm-12 ">
               <label >Attach Documents</label>
               <input type="file" name="attach[]" multiple="" class="form-control">
             </div>
@@ -73,10 +80,11 @@
             <tr style="font-size: 12px;">
                
               <th>Part No.</th>
-              <th>Description</th>  
+              <th>Description</th>
+              <th>Brand</th>  
               <th>Unit Cost Price</th> 
               <th>Stock Qty</th>
-              <th>Adjustment</th>
+              <th nowrap>Adjustment (+/-)</th>
               <th>New Qty</th> 
               <th>Remarks</th>
               <th></th>  
@@ -85,7 +93,7 @@
             <tbody>
               <tr id="item_selector">
                 <td colspan="9" class="add_item">
-                  <div class="select2-ajax" style="width: 100%;"> 
+                  <div class="select2-ajax-adj" style="width: 100%;"></div>
                 </td>
               </tr>
             </tbody>
@@ -95,14 +103,7 @@
 
           <input type="hidden" id="selected_ids">
           
-          <!-- <table class="table" id="add_item_section" >
-            <tr>
-              <td colspan="7" id="add_row">
-                <a id="add_item_link" class="btn btn-info load_modal_details" href="<?php echo base_url('outgoing/issue_batch');?>" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-plus"></i> Add By Batch</a> 
-              </td>
-            </tr>
-          </table>   -->    
-         
+            
       </div>
  
     </div>
@@ -151,28 +152,57 @@
     
  
 
-  function save_adj(){ 
-
-    if($('#adjustment_type_id').val() == ''){
-      alertify.error("Adjustment type id is required");
-    }else if($('#issued_date').val() == ''){
-      alertify.error("Issue date is required"); 
-    }else{
-
-      reset(); 
-
-      alertify.confirm("Save adjustments details?", function (e) {
-            if (e) {  
-                alertify.log("saving...");
-                document.frm_adj.submit();
-            } else {
-                alertify.log("cancelled");
-            }
-        }, "Confirm");
-    
+  function save_adj() {
+    if ($('.itemclass').length == 0){
+      Swal.fire({
+        icon: 'warning',
+        title: 'Missing Items',
+        text: 'Please add an item to the list before submitting.',
+      });
+    } else if ($('#adjustment_type_id').val() === '') {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Missing Adjustment Type',
+        text: 'Please select an adjustment type before submitting.',
+      });
+    } else if ($('#issued_date').val() === '') {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Missing Issue Date',
+        text: 'Please enter the issue date before proceeding.',
+      });
+    } else {
+      Swal.fire({
+        title: 'Confirm Save',
+        text: 'Do you want to save this adjustment?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Save it',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: 'Saving...',
+            text: 'Please wait while we save the details.',
+            icon: 'info',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            timer: 1500
+          });
+          document.frm_adj.submit();
+        } else {
+          Swal.fire({
+            title: 'Cancelled',
+            text: 'Adjustment was not saved.',
+            icon: 'info',
+            timer: 1200,
+            showConfirmButton: false
+          });
+        }
+      });
     }
-
   }
+
 
 
   function remove_item(c,id){ 

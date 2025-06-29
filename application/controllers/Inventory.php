@@ -685,29 +685,31 @@ class Inventory extends CI_Controller {
 		    }
 
 			if($r){ 
-
-				foreach ($this->db->select('id,qty,unit_cost_price')->get_where('inventory',['deleted'=>0])->result() as $rs) {
-					$arr_inv[$rs->id] = $rs;
-				}
+ 
 
 				foreach ($items as $key => $inventory_id) {
 
-					$qty = str_replace('-', '', $this->input->post('adj_qty'.$inventory_id,TRUE));
+					$qty = str_replace('-', '', $this->input->post('qty'.$inventory_id,TRUE));
+					$old_qty = @$this->input->post('old_qty'.$inventory_id,TRUE);
 
-					if($this->input->post('adj_qty'.$inventory_id,TRUE)>0){
-						$new_qty = @$arr_inv[$inventory_id]->qty+$qty;
+					if($this->input->post('type'.$inventory_id,TRUE) == 'addition'){
+						$new_qty = @$old_qty+$qty;
 					}else{
-						$new_qty = @$arr_inv[$inventory_id]->qty-$qty;
+						$new_qty = @$old_qty-$qty;
 					}
+
+					if($new_qty<0){$new_qty = 0;}
 				  
 					$this->db->insert('inventory_adjustments_items',[ 
 						'adjustment_id'=>$a_id,
 						'inventory_id'=>$inventory_id,  
-						'unit_cost_price'=>@$arr_inv[$inventory_id]->unit_cost_price,
-						'adj_qty'=>$this->input->post('adj_qty'.$inventory_id,TRUE),
-						'qty_before'=>@$arr_inv[$inventory_id]->qty,
+						'adjustment_type' => @$this->input->post('type'.$inventory_id,TRUE),
+						'unit_cost_price'=>@$this->input->post('unit_cost_price'.$inventory_id,TRUE),
+						'adj_qty'=>$qty,
+						'qty_before'=>$old_qty,
 						'qty_after'=>$new_qty,
 						'remarks'=>$this->input->post('remarks'.$inventory_id,TRUE),
+						'adjustment_type_id' => $this->input->post('adjustment_type_id',TRUE), 
 						'user_id'=>$this->session->user_id,
 						'date_created'=>date("Y-m-d H:i"),
 						'confirmed' => 0 
@@ -729,29 +731,47 @@ class Inventory extends CI_Controller {
 
 		}
 
-		redirect("inventory/create_stock_adjustments","refresh");
+		redirect("inventory/view_adjustments/".$a_id,"refresh");
 
 	}
 
 	public function edit_adjustment(int $id){
 
 		$module = $this->system_menu; 
-
-		$module['module'] = "inventory/edit_stock_adjustments";
-		$module['map_link']   = "inventory->edit_stock_adjustments";   
 		
+		$module['module'] = "inventory/edit_stock_adjustments";
+		$module['map_link']   = "inventory->edit_stock_adjustments";
+ 
+		
+		$module['ia'] = $this->core->load_core_data('inventory_adjustments',$id);
+		
+		$this->db->where(['i.adjustment_id'=>$id,'i.deleted'=>0]);
+		$this->db->select('
+			a.id, 
+			i.id as adj_item_id,
+			i.adj_qty as adj_qty, 
+			i.adjustment_type as adjustment_type,
+			i.remarks as remarks, 
+			a.item_code, 
+			a.item_name, 
+			a.qty, 
+			a.picture_1, 
+			b.title as brand, 
+			a.unit_cost_price,  
+			a.qty as inv_stock');
+		$this->db->from('inventory_adjustments_items as i');
+		$this->db->join('inventory as a', 'a.id = i.inventory_id', 'left');
+		$this->db->join('fm_item_brand as b', 'b.id = a.item_brand_id', 'left');
+		$module['ia_items']  = $this->db->get()->result();
+		
+		$module['user'] = $this->core->load_core_data('account',$module['ia']->user_id); 
+
+		$module['confirm_user'] = $this->core->load_core_data('account',$module['ia']->confirmed_by); 
+
 		$result = $this->admin_model->load_filemaintenance('fm_adjustments_types');
 		$module['adj_types'] = $result['maintenance_data'];
-
-		$module['ia'] = $this->core->load_core_data('inventory_adjustments',$id);
-
-		$module['ia_items'] = $this->core->load_core_data('inventory_adjustments_items','','','adjustment_id='.$id);
-
-		$module['user'] = $this->core->load_core_data('account',$module['ia']->user_id,'id,name');
-
-		$module['inv'] = $this->core->load_core_data('inventory','','id,item_code,item_name,qty');
 		
-		$this->load->view('admin/index',$module);
+		$this->load->view('admin/index',$module); 
 
 	}
 
@@ -808,31 +828,35 @@ class Inventory extends CI_Controller {
 
 			if($r){ 
 
-				foreach ($this->db->select('id,qty,unit_cost_price')->get_where('inventory',['deleted'=>0])->result() as $rs) {
-					$arr_inv[$rs->id] = $rs;
-				}
+				 
 
 				$this->db->where('adjustment_id',$id)->update('inventory_adjustments_items',['deleted'=>1,'date_deleted'=>date('Y-m-d H:i')]);
 
 				foreach ($items as $key => $inventory_id) {
 
 					$qty = str_replace('-', '', $this->input->post('adj_qty'.$inventory_id,TRUE));
+					$old_qty = @$this->input->post('old_qty'.$inventory_id,TRUE);
 
-					if($this->input->post('adj_qty'.$inventory_id,TRUE)>0){
-						$new_qty = @$arr_inv[$inventory_id]->qty+$qty;
+					if($this->input->post('type'.$inventory_id,TRUE) == 'addition'){
+						$new_qty = @$old_qty+$qty;x
 					}else{
-						$new_qty = @$arr_inv[$inventory_id]->qty-$qty;
+						$new_qty = @$old_qty-$qty;
 					}
+
+					if($new_qty<0){$new_qty = 0;}
+					  
 
 					if(@$this->input->post('existing'.$inventory_id,TRUE)){
 
 						$this->db->where('id',$this->input->post('existing'.$inventory_id,TRUE))->update('inventory_adjustments_items',[ 
-							'inventory_id'=>$inventory_id,  
+							'inventory_id'=>$inventory_id,
+							'adjustment_type' => @$this->input->post('type'.$inventory_id,TRUE),  
 							'unit_cost_price'=>@$arr_inv[$inventory_id]->unit_cost_price,
-							'adj_qty'=>$this->input->post('adj_qty'.$inventory_id,TRUE),
-							'qty_before'=>@$arr_inv[$inventory_id]->qty,
-							'qty_after'=>$new_qty,
+							'adj_qty'=>$qty,
+							'qty_before'=>@$old_qty,
+							'qty_after'=>$new_qty, 
 							'remarks'=>$this->input->post('remarks'.$inventory_id,TRUE),
+							'adjustment_type_id' => $this->input->post('adjustment_type_id',TRUE), 
 							'modified_by'=>$this->session->user_id,
 							'date_modified'=>date("Y-m-d H:i"),
 							'deleted' => 0,
@@ -844,11 +868,15 @@ class Inventory extends CI_Controller {
 						$this->db->insert('inventory_adjustments_items',[ 
 							'adjustment_id'=>$id,
 							'inventory_id'=>$inventory_id,  
+							'adjustment_type' => @$this->input->post('type'.$inventory_id,TRUE), 
 							'unit_cost_price'=>@$arr_inv[$inventory_id]->unit_cost_price,
-							'adj_qty'=>$this->input->post('adj_qty'.$inventory_id,TRUE),
-							'qty_before'=>@$arr_inv[$inventory_id]->qty,
-							'qty_after'=>$new_qty,
+							'adj_qty'=>$qty,
+							'qty_before'=>@$old_qty,
+							'qty_after'=>$new_qty, 
 							'remarks'=>$this->input->post('remarks'.$inventory_id,TRUE),
+							'adjustment_type_id' => $this->input->post('adjustment_type_id',TRUE), 
+							'modified_by'=>$this->session->user_id,
+							'date_modified'=>date("Y-m-d H:i"),
 							'user_id'=>$this->session->user_id,
 							'date_created'=>date("Y-m-d H:i"),
 							'confirmed' => 0 
@@ -885,9 +913,7 @@ class Inventory extends CI_Controller {
 
 		$module['module'] = "inventory/stock_adjustments";
 		$module['map_link']   = "inventory->stock_adjustments";   
-		
-		$result = $this->admin_model->load_filemaintenance('fm_adjustments_types');
-		$module['adj_types'] = $result['maintenance_data'];
+		 
 
 		$module['ia'] = $this->core->load_core_data('inventory_adjustments','','','confirmed=0');
 
@@ -920,22 +946,42 @@ class Inventory extends CI_Controller {
 
 	public function view_adjustments(int $id,$confirm = ''){
 
+		$module = $this->system_menu; 
+		
+		$module['module'] = "inventory/view_adjustments";
+		$module['map_link']   = "inventory->view_adjustments";
+
 		$module['confirm'] = $confirm;
-
-		$module['inv'] = $this->core->load_core_data('inventory','','id,item_code,item_name');
-
+  
 		$module['ia'] = $this->core->load_core_data('inventory_adjustments',$id);
-
-		$module['ia_items'] = $this->core->load_core_data('inventory_adjustments_items','','','adjustment_id='.$id);
-
-		$result = $this->admin_model->load_filemaintenance('fm_adjustments_types',$module['ia']->adjustment_type_id);
-		$module['adj_type'] = $result['maintenance_data'];
-
+ 
+		$this->db->where(['i.adjustment_id'=>$id,'i.deleted'=>0]);
+		$this->db->select('
+			a.id, 
+			i.id as adj_item_id,
+			i.adj_qty as adj_qty, 
+			i.adjustment_type as adjustment_type,
+			i.remarks as remarks, 
+			a.item_code, 
+			a.item_name, 
+			a.qty, 
+			a.picture_1, 
+			b.title as brand, 
+			a.unit_cost_price,  
+			a.qty as inv_stock');
+		$this->db->from('inventory_adjustments_items as i');
+		$this->db->join('inventory as a', 'a.id = i.inventory_id', 'left');
+		$this->db->join('fm_item_brand as b', 'b.id = a.item_brand_id', 'left');
+		$module['ia_items']  = $this->db->get()->result();
+  
 		$module['user'] = $this->core->load_core_data('account',$module['ia']->user_id); 
 
 		$module['confirm_user'] = $this->core->load_core_data('account',$module['ia']->confirmed_by); 
+
+		$result = $this->admin_model->load_filemaintenance('fm_adjustments_types');
+		$module['adj_types'] = $result['maintenance_data'];
 		
-		$this->load->view('admin/inventory/view_adjustments',$module);
+		$this->load->view('admin/index',$module); 
 
 	}	
 
@@ -1497,6 +1543,74 @@ class Inventory extends CI_Controller {
 		$module['returns'] = $this->db->get()->result(); 
 		  
 		$this->load->view('admin/index',$module);
+	}
+
+
+	public function load_inv_items(){
+		
+		$json = [];
+
+		// Check if specific IDs are passed (single or multiple) 
+
+		$is_new = $this->input->post('is_new', TRUE);
+	
+		// Continue with original logic if no ids requested
+
+		$excluded_id = '';
+
+		if ($this->input->post('excluded_ids', TRUE)) {
+		    foreach (explode('-', $this->input->post('excluded_ids', TRUE)) as $id) {
+		        if ($id) {
+		            $excluded_id .= ' AND a.id != ' . $id;
+		        }
+		    }
+		}
+
+		if ($excluded_id) {
+		    $excluded_id = '(' . $excluded_id . ')';
+		    $excluded_id = str_replace('( AND', '(', $excluded_id);
+		    $this->db->where($excluded_id);
+		}
+
+		$search = $this->input->post('searchTerm');
+
+		$this->db->group_start();
+		$this->db->like('a.item_code', $search);
+		$this->db->or_like('a.item_name', $search);
+		$this->db->or_like('b.title', $search);
+		$this->db->group_end();
+
+		$this->db->limit(7, 0);
+
+		$this->db->where('a.deleted', 0);
+		$this->db->select('
+			a.id,  
+			a.item_code, 
+			a.item_name,  
+			a.qty, 
+			a.picture_1, 
+			b.title as brand, 
+			a.unit_cost_price,    
+			a.qty as inv_stock'); 
+		$this->db->from('inventory as a');
+		$this->db->join('fm_item_brand as b', 'b.id = a.item_brand_id', 'left');
+		$items = $this->db->get()->result();
+
+		foreach ($items as $r) {
+		    $json[] = [
+		        'id' => $r->id, 
+		        'text' => $r->item_code . ' | ' . $r->item_name,
+		        'item_code' => $r->item_code,
+		        'item_name' => $r->item_name,
+		        'unit_cost_price' => $r->unit_cost_price,  
+		        'image_url' => $r->picture_1, 
+		        'qty' => $r->inv_stock,
+		        'brand' => $r->brand, 
+		    ];
+		}
+
+		print_r(json_encode($json));
+
 	}
   
 }	

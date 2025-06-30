@@ -1934,6 +1934,12 @@
               updateNewQtyRow(e_obj.id);
 
             const newRowEl = $(`#tr${e_obj.id}`);
+
+            $(`#qty${e_obj.id}`).on('keydown', function (e) {
+              if (e.key === '-' || e.keyCode === 189) {
+                e.preventDefault();
+              }
+            });
     
           } 
 
@@ -1968,13 +1974,20 @@
           $(`#new_qty${id}`).text(newQty);
         }
 
-        $(`#qty${e_obj.id}`).on('keydown', function (e) {
-          if (e.key === '-' || e.keyCode === 189) {
-            e.preventDefault();
-          }
-        });
+        $(".data-row").each(function () {
+            var id = $(this).attr("id").replace("tr", "");
 
+            $(`#type${id}, #qty${id}`).on('change keyup', function () {
+              updateNewQtyRow(id);
+            });
 
+            // Prevent "-" key in qty input
+            $(`#qty${id}`).on('keydown', function (e) {
+              if (e.key === '-' || e.keyCode === 189) {
+                e.preventDefault();
+              }
+            });
+          });
  
   
     }

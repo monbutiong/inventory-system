@@ -344,7 +344,7 @@
         </div>
  
     </div>
-      <div class="footer">
+      <!-- <div class="footer">
         <table style="border: 0; width:100%;">
             <tr>
                 <td style="background-color: #999;">
@@ -352,7 +352,7 @@
                 </td>
             </tr>
         </table>
-      </div>
+      </div> -->
     </div>
 
     <script>

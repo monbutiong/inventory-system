@@ -52,6 +52,7 @@ select, .text_input {
                       <option>receiving</option>
                       <option>sales order</option>
                       <option>returns</option>
+                      <option>adjustment</option>
                     </select>
                   </td>
                 </tr>
@@ -99,7 +100,14 @@ select, .text_input {
                 <td><?=@$arr_user[$rs->user_id]?></td>
                 <td><?=$rs->movement_from?></td> 
                 <!-- <td align="right"><?=number_format($rs->unit_cost_price,2)?></td> -->
-                <td align="right"><?=$rs->qty?></td>
+                <td align="right">
+                <?php if($rs->addition == 1){?>
+                  <font style="color: green;">+<?=$rs->qty?></font>
+                <?php }else{?>
+                  <font style="color: red;">-<?=$rs->qty?></font>
+                <?php }?>
+                    
+                </td>
                 <!-- <td><?=$rs->qty_before?></td> -->
                 <td align="right"><?=$rs->qty_after?></td>
               </tr>

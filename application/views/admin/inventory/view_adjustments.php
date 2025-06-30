@@ -16,15 +16,24 @@
                     <h6 class="page-title">Stock Adjustments #<?=sprintf("%06d",$ia->id)?></h6>
                     Date: <?=date('M d, Y', strtotime($ia->date_created))?><br/>
                     Filed by: <?=$user->name?> 
+                    <?php if($ia->confirmed == 1){?><br/>
+                     Confirmed By: <?=$confirm_user->name.' - '.date('M d, Y H:i',strtotime($ia->confirmed_date))?> 
+                    <?php }?> 
                 </div>
                 <div class="col-md-4">
                     <div class="float-end d-none d-md-block">
                           
-                         <a class="btn btn-md btn-primary" href="<?=base_url('inventory/print_adjustment/'.$ia->id)?>"  ><i class="fa fa-print"></i> </a> 
+                         <a target="_blank" class="btn btn-md btn-primary" href="<?=base_url('inventory/print_adjustments/'.$ia->id)?>"  ><i class="fa fa-print"></i> </a> 
                          
-                         <a class="btn btn-md btn-primary" href="Javascript:edit_adj()"  ><i class="fa fa-edit"></i> Edit Adjustments</a>
+                         <?php if($ia->confirmed == 0){?>
+                           <a class="btn btn-md btn-primary" href="Javascript:confirm_adj()"  ><i class="fa fa-check"></i> Confirm Adjustments</a>
 
-                         <a class="btn btn-md btn-warning" href="<?=base_url('inventory/stock_adjustments')?>"  >Go Back </a>
+                           <a class="btn btn-md btn-primary" href="Javascript:edit_adj()"  ><i class="fa fa-edit"></i> Edit Adjustments</a>
+
+                           <a class="btn btn-md btn-warning" href="<?=base_url('inventory/stock_adjustments')?>"  >Go Back </a>
+                         <?php }else{?>
+                           <a class="btn btn-md btn-warning" href="<?=base_url('inventory/confirmed_stock_adjustments')?>"  >Go Back </a>
+                         <?php }?>
 
                     </div>
                 </div>
@@ -42,31 +51,23 @@
 
                   <div class="col-md-2 col-sm-12 ">
                     <label >Covered Date *</label>
-                    <input type="date" required name="covered_date" id="covered_date" class="form-control" value="<?=$ia->covered_date?>">
+                    <input type="text" class="form-control ridonly" readonly value="<?=date('d M, Y',strtotime($ia->covered_date))?>">
                   </div>
 
                   <div class="col-md-2 col-sm-12 ">
                     <label >Adjustment Type </label>
-                    <select name="adjustment_type_id" id="adjustment_type_id" class="form-control" onchange="load_jo(this.value)">
-                      <option value="">select</option> 
-                      <?php  
+                     
+                    <input type="text" class="form-control ridonly" readonly value=" <?php  
                       if($adj_types){
-                        foreach ($adj_types as $rs) {
-                      ?>
-                      <option <?php if($rs->id = $ia->adjustment_type_id){echo 'selected';}?> value="<?=$rs->id?>"><?=$rs->title?></option>
-                    <?php }}?>
-                    </select> 
+                        foreach ($adj_types as $rs) { if($rs->id = $ia->adjustment_type_id){echo $rs->title; }}}?>">
                   </div>
         
                   <div class="col-md-2 col-sm-12 ">
                     <label >Reference Number</label>
-                    <input type="text" name="ref_no" id="ref_no" class="form-control" value="<?=$ia->ref_no?>">
+                    <input readonly type="text" name="ref_no" id="ref_no" class="form-control ridonly" value="<?=$ia->ref_no?>">
                   </div>
 
-                  <div class="col-md-2 col-sm-12 ">
-                    <label >Attach Documents</label>
-                    <input type="file" name="attach[]" multiple="" class="form-control">
-                  </div>
+                   
 
                     <?php 
                     if(@$ia->attachments){
@@ -90,7 +91,7 @@
        
                   <div class="col-md-12 col-sm-12 ">
                     <label >Remarks </label>
-                    <textarea name="remarks" id="remarks" class="form-control"><?=$ia->remarks?></textarea>
+                    <textarea readonly name="remarks" id="remarks" class="form-control ridonly"><?=$ia->remarks?></textarea>
                   </div>
           
                 </div>
@@ -107,10 +108,9 @@
                     <th>Brand</th>  
                     <th>Unit Cost Price</th> 
                     <th>Stock Qty</th>
-                    <th nowrap>Adjustment (+/-)</th>
+                    <th nowrap>Adjustment </th>
                     <th>New Qty</th> 
-                    <th>Remarks</th>
-                    <th></th>  
+                    <th>Remarks</th>  
                   </tr>
                   </thead> 
                   <tbody>
@@ -141,53 +141,28 @@
                           <?=number_format($rs->qty,2)?>
                       </td> 
                       <td nowrap style="text-align:center;  width:60px;">
-                        <select id="type<?=$rs->id?>" 
-                               name="type<?=$rs->id?>"   
-                               style="border:0; background:transparent; text-align:left; width:40px;">
+                        
                               <?php if($rs->adjustment_type == 'addition'){?>
-                                <option value="addition">+</option>
-                                <option value="deduction">-</option>
+                                +
                               <?php }else{?>
-                                <option value="deduction">-</option>
-                                <option value="addition">+</option>
+                                -
                               <?php }?>
-                        </select>
-
-                        <input type="number" 
-                               id="qty<?=$rs->id?>" 
-                               name="qty<?=$rs->id?>" 
-                               required 
-                               value="<?=$rs->adj_qty?>" 
-                               min="1" 
-                               class="itemclass"  
-                               style="border:0; background:transparent; text-align:right; width:40px;">
-                        <input type="hidden" name="issued_qty<?=$rs->id?>" />
+                          <?=$rs->adj_qty?> 
                        
                       </td> 
                       <td style="text-align:right;">
                     
-                      <font id="new_qty<?=$rs->id?>"><?= $rs->adjustment_type=='addition' ? ($rs->qty + $rs->adj_qty) : ($rs->qty - $rs->adj_qty)?></font>
+                      <font id="new_qty<?=$rs->id?>"><?= number_format($rs->adjustment_type=='addition' ? ($rs->qty + $rs->adj_qty) : ($rs->qty - $rs->adj_qty),2)?></font>
                       </td>
 
-                      <td style="text-align:center;  width:260px;"> 
-                        <input type="text" 
-                               id="remarks<?=$rs->id?>" 
-                               name="remarks<?=$rs->id?>"value="<?=$rs->remarks?>"   
-                               style="border:0; background:transparent; text-align:left; width:260px;">
+                      <td style="width:260px;"> 
+                        <?=$rs->remarks?> 
                       </td>  
 
-                      <td style="text-align:center;">
-                        <a href="javascript:remove_item(<?=$rs->id?>)">
-                          <i title="remove" class="fa fa-trash" style="color:red"></i>
-                        </a>
-                      </td>
+                       
                     </tr>
                     <?php }}?>
-                    <tr id="item_selector">
-                      <td colspan="9" class="add_item">
-                        <div class="select2-ajax-adj" style="width: 100%;"></div>
-                      </td>
-                    </tr>
+                     
                   </tbody>
                 </table>
                 
@@ -205,39 +180,7 @@
 </form>
 <script type="text/javascript">
 
- // 201919
- // 198991
-
- function update_adj(v,id,qty){ 
-    // Convert v and qty to numbers (assuming they are strings or other types)
-    v = Number(v);
-    qty = Number(qty);
-
-    // Check if v is negative or non-negative
-    if (v < 0) {
-      // If v is negative, deduct its absolute value from the quantity
-      var updatedQty = qty - Math.abs(v);
-    } else {
-      // If v is non-negative, add it to the quantity
-      var updatedQty = qty + v;
-    }
-
-    // Update the #adj_qty element with the new quantity
-    $('#new_qty' + id).val(updatedQty);
- }
-
- function update_new_qty(v,id,qty){
-
-  v = Number(v);
-  qty = Number(qty);
-
-  if(v>=qty){
-    $('#adj_qty'+id).val(v-qty);
-  }else{
-    $('#adj_qty'+id).val('-'+(qty-v));
-  }
-  
- }
+ 
 
   var c = 0;
   var all = 0; 
@@ -255,7 +198,24 @@
        cancelButtonText: 'Cancel'
      }).then((result) => {
        if (result.isConfirmed) {
-         location.href = "<?=base_url('inventory/edit_adjustment/'.$ia->id)?>";
+         location.href = "<?=base_url('inventory/edit_adjustments/'.$ia->id)?>";
+       }  
+     });
+
+  }
+
+  function confirm_adj(){ 
+
+     Swal.fire({
+       title: 'Confirm Adjustment',
+       text: 'Do you want to confirm this adjustment?',
+       icon: 'question',
+       showCancelButton: true,
+       confirmButtonText: 'Continue',
+       cancelButtonText: 'Cancel'
+     }).then((result) => {
+       if (result.isConfirmed) {
+         location.href = "<?=base_url('inventory/confirm_adjustments/'.$ia->id)?>";
        }  
      });
 

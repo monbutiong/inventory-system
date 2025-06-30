@@ -2,13 +2,25 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Inventory <small>Stock Adjustments Records</small></h2> 
- 
- 
-           
-        <div class="clearfix"></div>
+         
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-md-8"> 
+                    <h6 class="page-title">Unconfirm Stock Adjustments Records</h6> 
+                </div>
+                <div class="col-md-4">
+                    <div class="float-end d-none d-md-block">
+                           
+                    </div>
+                </div>
+            </div>
+        </div>
+
       </div>
       <div class="x_content">
+        <div class="card">
+            <div class="card-body">
+
         <p class="text-muted font-13 m-b-30">
           
         </p>
@@ -55,11 +67,11 @@
               <td><?=@$arr_user[$rs->user_id]?></td>
               <td nowrap>
 
-                <a href="<?php echo base_url('inventory/view_adjustments/'.$rs->id.'/1');?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" ><i class="fa fa-check"></i> Confirm</a>
+                <a href="Javascript:confirm_adj(<?=$rs->id?>)" ><i class="fa fa-check"></i> Confirm</a>
                   |  
-                <a href="<?php echo base_url('inventory/view_adjustments/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" ><i class="fa fa-file-text-o"></i> View</a>
+                <a href="<?php echo base_url('inventory/view_adjustments/'.$rs->id);?>" ><i class="fa fa-eye"></i> View</a>
                   |  
-                <a href="Javascript:edit_stock_adj(<?=$rs->id?>)" ><i class="fa fa-edit"></i> Edit</a>
+                <a href="<?=base_url('inventory/edit_adjustments/'.$rs->id);?>" ><i class="fa fa-edit"></i> Edit</a>
                   |  
                 <a href="Javascript:del_stock_adj(<?=$rs->id?>)" ><i class="fa fa-trash"></i> Delete</a>
                 <!--   |  
@@ -74,22 +86,11 @@
       </div>
     </div>
   </div> 
-   
+   </div>
+  </div> 
 </div>
 
 <script type="text/javascript">
-function del_stock_adj(id){
-  reset(); 
-
-  alertify.confirm("Confirm Deletion of stock adjustments? This action will permanently selected stock adjustments records.", function (e) {
-        if (e) {  
-            alertify.log("deleting...");
-            location.href = "<?php echo base_url();?>inventory/delete_adjustments/"+id;
-        } else {
-            alertify.log("cancelled");
-        }
-    }, "Confirm");
-}
 
 function edit_stock_adj(id){
   reset(); 

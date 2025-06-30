@@ -4,7 +4,7 @@
     border-style: dashed !important;
   }
 </style>
-<form method="post" name="frm_adj" action="<?=base_url('inventory/update_adjustment/'.$ia->id)?>" enctype="multipart/form-data">
+<form method="post" name="frm_adj" action="<?=base_url('inventory/update_adjustments/'.$ia->id)?>" enctype="multipart/form-data">
 <div class="row">
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
@@ -22,7 +22,7 @@
  
                          <a class="btn btn-md btn-primary" href="Javascript:update_adj()"  ><i class="fa fa-save"></i> Update Adjustments</a>
 
-                         <a class="btn btn-md btn-warning" href="<?=base_url('inventory/stock_adjustments')?>"  >Go Back </a>
+                         <a class="btn btn-md btn-warning" href="<?=base_url('inventory/view_adjustments/'.$ia->id)?>"  >Go Back </a>
 
                     </div>
                 </div>
@@ -96,7 +96,7 @@
               </p>
        
               
-              <table id="po_table" class="table table-striped table-bordered table-hover">
+              <table id="adj_table" class="table table-striped table-bordered table-hover">
                  
                 <thead>
                   <tr style="font-size: 12px;"> 
@@ -131,7 +131,7 @@
                         <input type="hidden" name="items[<?=$rs->id?>]" id="added<?=$rs->id?>" value="<?=$rs->id?>"/> 
                         <input type="hidden" name="inventory_id<?=$rs->id?>" value="<?=$rs->id?>"/>
                         <input type="hidden" name="old_qty<?=$rs->id?>" value="<?=$rs->qty?>"/>
-                        <input type="hidden" name="existing<?=$rs->id?>" value="<?=$rs->id?>"/>
+                        <input type="hidden" name="existing<?=$rs->id?>" value="<?=$rs->adj_item_id?>"/>
                       </td>
                       <td><?=$rs->item_name?></td>
                       <td><?=$rs->brand?></td>
@@ -168,7 +168,7 @@
                       </td> 
                       <td style="text-align:right;">
                     
-                      <font id="new_qty<?=$rs->id?>"><?= $rs->adjustment_type=='addition' ? ($rs->qty + $rs->adj_qty) : ($rs->qty - $rs->adj_qty)?></font>
+                      <font id="new_qty<?=$rs->id?>"><?= $rs->adjustment_type=='addition' ? ((int)$rs->qty + (int)$rs->adj_qty) : ((int)$rs->qty - (int)$rs->adj_qty)?></font>
                       </td>
 
                       <td style="text-align:center;  width:260px;"> 
@@ -212,32 +212,59 @@
 
  
 
- function update_new_qty(v,id,qty){
-
-  v = Number(v);
-  qty = Number(qty);
-
-  if(v>=qty){
-    $('#adj_qty'+id).val(v-qty);
-  }else{
-    $('#adj_qty'+id).val('-'+(qty-v));
-  }
-  
+ function update_adj() {
+   if ($('.itemclass').length == 0){
+     Swal.fire({
+       icon: 'warning',
+       title: 'Missing Items',
+       text: 'Please add an item to the list before submitting.',
+     });
+   } else if ($('#adjustment_type_id').val() === '') {
+     Swal.fire({
+       icon: 'warning',
+       title: 'Missing Adjustment Type',
+       text: 'Please select an adjustment type before submitting.',
+     });
+   } else if ($('#issued_date').val() === '') {
+     Swal.fire({
+       icon: 'warning',
+       title: 'Missing Issue Date',
+       text: 'Please enter the issue date before proceeding.',
+     });
+   } else {
+     Swal.fire({
+       title: 'Confirm Save',
+       text: 'Do you want to update this adjustment?',
+       icon: 'question',
+       showCancelButton: true,
+       confirmButtonText: 'Yes, Update it',
+       cancelButtonText: 'Cancel'
+     }).then((result) => {
+       if (result.isConfirmed) {
+         Swal.fire({
+           title: 'Saving...',
+           text: 'Please wait while we update the details.',
+           icon: 'info',
+           showConfirmButton: false,
+           allowOutsideClick: false,
+           timer: 1500
+         });
+         document.frm_adj.submit();
+       } else {
+         Swal.fire({
+           title: 'Cancelled',
+           text: 'Adjustment was not saved.',
+           icon: 'info',
+           timer: 1200,
+           showConfirmButton: false
+         });
+       }
+     });
+   }
  }
 
-  var c = 0;
-  var all = 0; 
-    
- 
 
-  function update_adj(){ 
-
-      
-
-  }
-
-
-  function remove_item(c,id){ 
+  function remove_item(id){ 
     $('#tr'+id).fadeOut();
     $('#tr'+id).remove();
     $('#added'+id).remove();

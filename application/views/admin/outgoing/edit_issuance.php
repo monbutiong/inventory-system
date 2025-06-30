@@ -270,47 +270,47 @@
 
   function update_issuance(){ 
 
-  	if($('#grand_total').html().trim()=='0.00' || $('#grand_total').html().trim()==''){
+    	if($('#grand_total').html().trim()=='0.00' || $('#grand_total').html().trim()==''){
 
-  		Swal.fire({
-  		    title: "Invalid",
-  		    text: "Sales Order total amount invalid",
-  		    icon: "error",
-  		    timer: 1500,
-  		    showConfirmButton: false
-  		});
+    		Swal.fire({
+    		    title: "Invalid",
+    		    text: "Sales Order total amount invalid",
+    		    icon: "error",
+    		    timer: 1500,
+    		    showConfirmButton: false
+    		});
 
-  	}else{
+    	}else{
 
-	    Swal.fire({
-	        title: "Update Sales Order?",
-	        text: "Do you want to update this sales order now?",
-	        icon: "question",
-	        showCancelButton: true,
-	        confirmButtonText: "Yes, save it",
-	        cancelButtonText: "No, cancel",
-	        reverseButtons: true
-	    }).then((result) => {
-	        if (result.isConfirmed) {
-	            Swal.fire({
-	                title: "Saving...",
-	                icon: "info",
-	                timer: 1000,
-	                showConfirmButton: false
-	            });
-	            document.so_form.submit();
-	        } else {
-	            Swal.fire({
-	                title: "Cancelled",
-	                text: "The sales order was not saved.",
-	                icon: "error",
-	                timer: 1500,
-	                showConfirmButton: false
-	            });
-	        }
-	    });
+  	    Swal.fire({
+  	        title: "Update Sales Order?",
+  	        text: "Do you want to update this sales order now?",
+  	        icon: "question",
+  	        showCancelButton: true,
+  	        confirmButtonText: "Yes, save it",
+  	        cancelButtonText: "No, cancel",
+  	        reverseButtons: true
+  	    }).then((result) => {
+  	        if (result.isConfirmed) {
+  	            Swal.fire({
+  	                title: "Saving...",
+  	                icon: "info",
+  	                timer: 1000,
+  	                showConfirmButton: false
+  	            });
+  	            document.so_form.submit();
+  	        } else {
+  	            Swal.fire({
+  	                title: "Cancelled",
+  	                text: "The sales order was not saved.",
+  	                icon: "error",
+  	                timer: 1500,
+  	                showConfirmButton: false
+  	            });
+  	        }
+  	    });
 
-	}
+  	}
 
 
   }

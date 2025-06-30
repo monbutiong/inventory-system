@@ -2,18 +2,28 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Inventory <small>Stock Adjustments Records</small></h2> 
- 
- 
-           
-        <div class="clearfix"></div>
+       
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-md-8"> 
+                    <h6 class="page-title">Confirmed Stock Adjustments Records</h6> 
+                </div>
+                <div class="col-md-4">
+                    <div class="float-end d-none d-md-block">
+                           
+                    </div>
+                </div>
+            </div>
+        </div>
+
       </div>
       <div class="x_content">
-        <p class="text-muted font-13 m-b-30">
-          
+        <div class="card">
+            <div class="card-body">
+
+        <p class="text-muted font-13 m-b-30"> 
         </p>
-        
-        
+         
         <table id="datatable" class="table table-striped table-bordered table-hover">
            
           <thead>
@@ -53,10 +63,12 @@
               <td><?=$rs->ref_no?></td> 
               <td><?=$rs->remarks?></td> 
               <td><?=@$arr_user[$rs->user_id]?></td>
-              <td><?=date('M d, Y',strtotime($rs->confirmed_date))?></td> 
+              <td><?=date('M d, Y H:i',strtotime($rs->confirmed_date))?></td> 
               <td nowrap>
+
+                <a target="_blank" href="<?=base_url('inventory/print_adjustments/'.$rs->id)?>" ><i class="fa fa-print"></i> Print</a> | 
  
-                <a href="<?php echo base_url('inventory/view_adjustments/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" ><i class="fa fa-file-text-o"></i> View</a> 
+                <a href="<?php echo base_url('inventory/view_adjustments/'.$rs->id);?>"><i class="fa fa-eye"></i> View</a> 
                 <!--   |  
                 <a target="_blank" href="<?php echo base_url('inventory/print_adjustment/'.$rs->id);?>" ><i class="fa fa-print"></i> Print</a>
                   -->
@@ -67,6 +79,10 @@
 
         </table>
       </div>
+
+        </div>
+      </div> 
+
     </div>
   </div> 
    

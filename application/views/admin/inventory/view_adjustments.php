@@ -13,7 +13,7 @@
         <div class="page-title-box">
             <div class="row align-items-center">
                 <div class="col-md-8"> 
-                    <h6 class="page-title">Stock Adjustments #<?=sprintf("%06d",$ia->id)?></h6>
+                    <h6 class="page-title">Stock Adjustments #SA<?=sprintf("%06d",$ia->id)?></h6>
                     Date: <?=date('M d, Y', strtotime($ia->date_created))?><br/>
                     Filed by: <?=$user->name?> 
                     <?php if($ia->confirmed == 1){?><br/>

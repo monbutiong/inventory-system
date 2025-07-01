@@ -59,7 +59,7 @@
             ?>
             <tr>
               <td data-order="-<?=$rs->id?>"><?=date('M d, Y',strtotime($rs->date_created))?></td> 
-              <td>AJ<?=sprintf("%06d",$rs->id)?></td>
+              <td>SA<?=sprintf("%06d",$rs->id)?></td>
               <td><?=@$arr_at[$rs->adjustment_type_id] ?></td> 
               <td><?=date('M d, Y',strtotime($rs->covered_date))?></td> 
               <td><?=$rs->ref_no?></td> 

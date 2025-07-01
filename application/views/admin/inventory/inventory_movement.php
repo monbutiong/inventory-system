@@ -76,7 +76,8 @@ select, .text_input {
             <tr style="font-size: 12px;"> 
               <th>Date</th>
               <th>Logged By</th>
-              <th>Module</th> 
+              <th>Module</th>
+              <th>Transaction #</th> 
               <!-- <th>Unit Cost</th>   -->
               <th align="right" style="text-align: right;">Quantity</th>
               <!-- <th>Qty. Before</th> -->
@@ -99,6 +100,27 @@ select, .text_input {
                 <td><?=date('M d, Y H:i', strtotime($rs->date_created))?></td>
                 <td><?=@$arr_user[$rs->user_id]?></td>
                 <td><?=$rs->movement_from?></td> 
+                <td>
+                  <?php 
+                  $tran_link = '';
+                  if($rs->movement_from == 'receiving'){
+                    $tran_link = base_url('receiving/print_rr/'.$rs->ref_id);
+                    $ref_number = 'GV'.sprintf("%06d",$rs->ref_id);
+                  }elseif($rs->movement_from == 'sales order'){
+                    $tran_link = base_url('outgoing//print_issuance/'.$rs->ref_id.'?with_partnumber=1');
+                    $ref_number = 'SO'.sprintf("%06d",$rs->ref_id);
+                  }elseif($rs->movement_from == 'returns'){
+                    $tran_link = base_url('inventory/print_returns/'.$rs->ref_id);
+                    $ref_number = 'IR'.sprintf("%06d",$rs->ref_id);
+                  }elseif($rs->movement_from == 'adjustment'){
+                    $tran_link = base_url('inventory/print_adjustments/'.$rs->ref_id);
+                    $ref_number = 'SA'.sprintf("%06d",$rs->ref_id);
+                  }
+
+                  if($tran_link){
+                  ?>
+                  <a target="_blank" href="<?=$tran_link?>"><i class="fa fa-print"></i> #<?=$ref_number?></a><?php }?>
+                </td>
                 <!-- <td align="right"><?=number_format($rs->unit_cost_price,2)?></td> -->
                 <td align="right">
                 <?php if($rs->addition == 1){?>

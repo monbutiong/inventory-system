@@ -80,10 +80,11 @@
               <td>
                <a href="<?php echo base_url('home/edit_user/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" ><i class="fa fa-edit"></i> Edit</a>
               
-              <?php if($count_users>1){?>
+              <?php if($this->session->user_id!=$rs->id){?>
                 |  
                
-                <a href="Javascript:prompt_delete('Delete','Delete User?','<?php echo base_url('home/edit_user/'.$rs->id);?>','tr<?=$rs->id?>')" ><i class="fa fa-trash"></i> Delete</a>
+                <a href="Javascript:prompt_delete('Delete','Delete User?','<?php echo base_url('home/delete_account/'.$rs->id);?>','tr<?=$rs->id?>')" ><i class="fa fa-trash"></i> Delete</a>
+
               <?php }?>
               </td>
             </tr> 

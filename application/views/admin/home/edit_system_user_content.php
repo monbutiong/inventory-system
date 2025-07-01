@@ -2,21 +2,20 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>System Users <small>Create New System Users</small></h2>
-        <ul class="nav navbar-right panel_toolbox">
-           
-           
-          <li><a data-bs-dismiss="modal"><i class="fa fa-close"></i> close</a>
-          </li>
-        </ul>
-        <div class="clearfix"></div>
+        
+
+        <div class="modal-header">
+            <h5 class="modal-title" id="mySmallModalLabel">Edit User</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
       </div>
-      <div class="x_content">
+      <div class="modal-body">
         <br />
         <form method="post" id="frm_validation" action="<?php echo base_url();?>home/update_system_user/<?=$user->id?>" data-bs-toggle="validator" class="form-horizontal form-label-left" enctype="multipart/form-data">
 
            
-          <div class="form-group">
+          <div class="row mb-3">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Avatar <span class="required"> </span>
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -24,7 +23,7 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="row mb-3">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Name <span class="required">*</span>
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -32,7 +31,7 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="row mb-3">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Account Details <span class="required">*</span>
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -41,7 +40,7 @@
           </div>
 
          
-          <div class="form-group">
+          <div class="row mb-3">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Username <span class="required">*</span>
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -51,12 +50,9 @@
  
            
            
-          <div class="ln_solid"></div>
-          <div class="form-group">
-            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-              <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Cancel</button> 
-              <button type="submit" class="btn btn-success">Submit</button>
-            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
           </div>
 
         </form>

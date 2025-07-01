@@ -464,12 +464,14 @@ class Home extends CI_Controller {
 				$log_description = "detele system user, user id : ".$id;
 				$audit_trail = $result = $this->admin_model->audit_trail_logging($log_module,$log_description);
 
-		 		$this->session->set_flashdata("success","account was successfully removed");  
+		 		//$this->session->set_flashdata("success","account was successfully removed"); 
+		 		echo 1; 
 			}else{
-				$this->session->set_flashdata("error","error deleting account");  
+				//$this->session->set_flashdata("error","error deleting account");  
+				echo 0;
 			}
-
-		 	redirect("home/system_users","refresh"); 
+			die();
+		 	//redirect("home/system_users","refresh"); 
 	}
 
 	public function change_picture(){

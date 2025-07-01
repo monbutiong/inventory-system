@@ -112,18 +112,24 @@
                         <div class="dropdown d-inline-block">
                             <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="rounded-circle header-profile-user" src="<?=base_url('assets/template/assets')?>/images/users/user-4.jpg"
+                                <img class="rounded-circle header-profile-user" src="<?php echo base_url(); if($avatar){echo 'assets/uploads/avatar/'.$avatar.'?'.time();}else{echo 'assets/images/img.png';}?>"
                                     alt="Header Avatar">
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <!-- item-->
-                               
-                                <a class="dropdown-item d-block" href="#"> <i
-                                        class="mdi mdi-cog font-size-17 align-middle me-1"></i> Change Password</a>
-                                 
+                                <a class="dropdown-item d-block load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" href="<?=base_url('admin/account_info')?>">
+                                    <i class="mdi mdi-account font-size-17 align-middle me-1"></i> Account Info.
+                                </a>
+
+                                <a class="dropdown-item d-block load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" href="<?=base_url('admin/change_password')?>">
+                                    <i class="mdi mdi-lock-reset font-size-17 align-middle me-1"></i> Change Password
+                                </a>
+
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" href="Javascript:logout()"><i
-                                        class="bx bx-power-off font-size-17 align-middle me-1 text-danger"></i> Logout</a>
+
+                                <a class="dropdown-item text-danger" href="Javascript:logout()">
+                                    <i class="mdi mdi-logout font-size-17 align-middle me-1 text-danger"></i> Logout
+                                </a>
                             </div>
                         </div>
 

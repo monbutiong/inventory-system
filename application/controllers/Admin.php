@@ -126,14 +126,101 @@ class Admin extends CI_Controller {
 
 	 
 
-	public function add_project(){
+	public function change_password(){
   		
-  		$result = $this->admin_model->load_filemaintenance('fm_project_status');
-		$module['project_status'] = $result['maintenance_data'];
+  		$module['account'] = $this->core->load_core_data('account',$this->session->user_id);
  
-		$this->load->view('admin/admin/project_add',$module);
+		$this->load->view('admin/admin/change_password',$module);
 
 	}
+
+	public function account_info(){
+  		
+  		$module['user'] = $this->core->load_core_data('account',$this->session->user_id);
+ 
+		$this->load->view('admin/admin/view_account',$module);
+
+	}
+
+	public function update_avatar()
+	{
+	    if (!empty($_FILES['avatar']['name'])) {
+	        $user_id = $this->session->userdata('user_id'); // use userdata()
+	        $path = './assets/uploads/avatar/';
+	        $filename = uniqid() . '_' . $_FILES['avatar']['name'];
+
+	        // Create directory if it doesn't exist
+	        if (!is_dir($path)) {
+	            mkdir($path, 0755, true);
+	        }
+
+	        // Move file from temp to destination
+	        if (!move_uploaded_file($_FILES['avatar']['tmp_name'], $path . $filename)) {
+	            echo json_encode(['status' => 'error', 'message' => 'Failed to move uploaded file.']);
+	            return;
+	        }
+
+	        // Save filename to DB
+	        $this->db->where('id', $user_id);
+	        $this->db->update('account', ['avatar' => $filename]);
+
+	        echo json_encode([
+	            'status' => 'success',
+	            'message' => 'Avatar updated successfully.',
+	            'filename' => $filename
+	        ]);
+	    } else {
+	        echo json_encode(['status' => 'error', 'message' => 'No image uploaded.']);
+	    }
+	}
+ 
+	public function update_password()
+	{
+	    // Only allow AJAX
+	    if (!$this->input->is_ajax_request()) {
+	        show_error('No direct script access allowed');
+	        return;
+	    }
+
+	    // Load PHPass 
+	    $phppass = new PasswordHash(PHPASS_HASH_STRENGTH, PHPASS_HASH_PORTABLE); // same as in your login logic
+
+	    // Get session user ID
+	    $user_id = $this->session->user_id;
+	    if (!$user_id) {
+	        echo json_encode(['status' => 'error', 'message' => 'Session expired. Please log in again.']);
+	        return;
+	    }
+
+	    // Get POST data
+	    $p1 = trim($this->input->post('p1'));
+	    $p2 = trim($this->input->post('p2'));
+
+	    // Validation
+	    if (strlen($p1) < 6) {
+	        echo json_encode(['status' => 'error', 'message' => 'Password must be at least 6 characters.']);
+	        return;
+	    }
+
+	    if ($p1 !== $p2) {
+	        echo json_encode(['status' => 'error', 'message' => 'Passwords do not match.']);
+	        return;
+	    }
+
+	    // Hash the new password using PHPass
+	    $hashed_pwd = $phppass->HashPassword($p1);
+
+	    // Update the DB
+	    $this->db->where('id', $user_id);
+	    $updated = $this->db->update('account', ['ps' => $hashed_pwd]);
+
+	    if ($updated) {
+	        echo json_encode(['status' => 'success', 'message' => 'Password successfully updated.']);
+	    } else {
+	        echo json_encode(['status' => 'error', 'message' => 'Failed to update password.']);
+	    }
+	}
+
 
 	public function save_project()
 	{

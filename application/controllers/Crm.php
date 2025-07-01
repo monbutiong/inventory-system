@@ -61,6 +61,7 @@ class Crm extends CI_Controller {
 	public function check_access($url, $sub_menu = [], $index_user_roles = []){
 
 		$granted = 0;
+		$access_features= [];
 
 		foreach($sub_menu as $rs){
 			if($url == $rs->url_link){
@@ -71,10 +72,17 @@ class Crm extends CI_Controller {
 		foreach($index_user_roles as $rs){
 			if($sub_menu_id == $rs->sub_menu_id){
 				$granted = 1;
+				if($rs->access_features){
+					$access_features = json_decode($rs->access_features);
+				}else{
+					$access_features = [];
+				}
 			}
 		} 
 
 		if($granted==0){ die('access denied'); }
+
+		return $access_features;
 
 	}
 
@@ -83,7 +91,7 @@ class Crm extends CI_Controller {
 		$module = $this->system_menu;
 
 		$url = $this->router->class.'/'.$this->router->method; 
-		$this->check_access($url, $module['sub_menu'], $module['index_user_roles']);
+		$module["access_features"] = $this->check_access($url, $module['sub_menu'], $module['index_user_roles']);
 
 		$module['module'] = "crm/clients";
 		$module['map_link']   = "crm->clients";  

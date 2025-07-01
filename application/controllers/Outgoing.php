@@ -1392,7 +1392,8 @@ class Outgoing extends CI_Controller {
 			i.discount_percentage as discount_percentage, 
 			i.discount_amount as discount_amount, 
 			inv.item_code, 
-			inv.item_name, 
+			inv.item_name,
+			inv.item_name_arabic, 
 			b.title as brand'); 
         $this->db->from('issuance_quotation_items i');  
         $this->db->join('inventory inv', 'i.inventory_id=inv.id', 'left');
@@ -1418,7 +1419,10 @@ class Outgoing extends CI_Controller {
 		$module['models'] = $result['maintenance_data'];
 		
 		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
-		$module['manufacturers'] = $result['maintenance_data']; 
+		$module['manufacturers'] = $result['maintenance_data'];
+
+		$result = $this->admin_model->load_filemaintenance('fm_english_to_arabic');
+		$module['eta'] = $result['maintenance_data']; 
 
 		$module['user'] = $this->core->load_core_data('account',$module['quotation']->user_id);
 		

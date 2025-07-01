@@ -20,13 +20,15 @@
                   Currency
                 <?php }elseif($table_name=='fm_manpower'){?>
                   Designation
+                <?php }elseif($table_name=='fm_english_to_arabic'){?>
+                  English 
                 <?php }else{?>
                   Title
                 <?php }?>
              <span class="required">*</span>
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <input type="text" id="title" name="title" required="required" class="form-control col-md-7 col-xs-12" autofocus>
+              <input type="text" id="title" name="title" required="required" class="form-control col-md-7 col-xs-12" autofocus  >
             </div>
           </div>
 
@@ -36,6 +38,8 @@
                 Convertion rate to QAR
               <?php }elseif($table_name=='fm_manpower'){?>
                   Unit Price
+              <?php }elseif($table_name=='fm_english_to_arabic'){?>
+                Arabic <span class="required">*</span>
               <?php }else{?>  
                 Description
               <?php }?>
@@ -52,7 +56,7 @@
 
               <?php }else{?>
 
-              <input type="text" id="ds" name="ds" class="form-control col-md-7 col-xs-12">
+              <input type="text" id="ds" name="ds" class="form-control col-md-7 col-xs-12"  <?php if($table_name=='fm_english_to_arabic'){ echo 'style="text-align: right;" dir="rtl"';}?>>
 
               <?php }?>
               

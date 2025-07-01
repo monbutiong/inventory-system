@@ -1,4 +1,12 @@
-<?php error_reporting(0) ?>
+<?php error_reporting(0);
+
+if(@$eta){
+    foreach($eta as $rs){
+        $arr_eta[strtolower($rs->title)] = $rs->ds;
+        $arr_etab[strtolower($rs->title)] = '<br/>'.$rs->ds;
+    }
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -165,13 +173,91 @@
         <div class="a4-container">
             <!-- Header -->
             <div class="header">
-                <img src="<?= base_url(); ?>assets/images/c_logo.png?2" alt="Company Logo" class="logo">
+                <table style="border: 0; padding: 0; margin: 0;" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td style="padding: 0; margin: 0;">
+                            <img src="<?= base_url(); ?>assets/images/c_logo.png?5" alt="Company Logo" class="logo">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0; margin: 0;">
+                            <font style="font-size: 16px; font-weight: bold;"><?= company_name ?></font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0; margin: 0;">
+                            <font style="font-size: 11px;"><?= company_address ?> - PO Box: <?= company_po_box ?></font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0; margin: 0;">
+                            <font style="font-size: 10px;"><?= company_contact ?> &nbsp; | &nbsp; <?= company_email ?></font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0; margin: 0;">
+                            <font style="font-size: 10px;"><b>Tax Reg. No:</b> <?= company_tax_reg_no ?></font>
+                        </td>
+                    </tr>
+                </table>
+
+
                 <div class="document-title">
                     <h1>QUOTATION</h1>
-                    <div class="quotation-no">#QO<?= sprintf("%06d", $quotation->id); ?></div>
+                    <div class="quotation-no">#QO<?= sprintf("%06d", $quotation->id); ?>
+                        <br/>
+                        <font style="font-size: 12px; font-weight: normal;"><b>Date:</b> <?=date('d M Y H:i',strtotime($quotation->date_created))?><br/>
+                        <?php if($quotation->valid_until){?>
+                         <b>Valid Until:</b> <?= date('d M Y', strtotime($quotation->valid_until)) ?> 
+                        <?php }?> 
+                        </font>
+
+                    </div>
+
                 </div>
             </div>
             
+            <table style="width: 100%; border-collapse: collapse; border: none;">
+                <tr>
+                    <td colspan="2" style="font-size: 12px; font-weight: bold; padding-bottom: 5px;">
+                        Customer Details
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50%; vertical-align: top;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px; width: 30%;">
+                                    Customer Name
+                                </td>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px;">
+                                    <!-- Empty for spacing or data -->
+                                </td>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px; text-align: right; width: 30%;">
+                                    <?= @$arr_eta[strtolower('Customer Name')] ?>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="width: 50%; vertical-align: top;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px; width: 30%;">
+                                    Sales Person
+                                </td>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px;">
+                                    <!-- Empty for spacing or data -->
+                                </td>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px; text-align: right; width: 30%;">
+                                    <?= @$arr_eta[strtolower('Sales Person')] ?>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+
             <!-- Customer Details -->
             <table class="details-table">
                 <?php if($quotation->attention_to){?>
@@ -180,14 +266,7 @@
                     <td><?= $quotation->attention_to ?></td>
                 </tr>
                 <?php }?>
-                
-                <?php if($quotation->valid_until){?>
-                <tr>
-                    <td>Valid Until:</td>
-                    <td><?= date('d M Y', strtotime($quotation->valid_until)) ?></td>
-                </tr>
-                <?php }?>
-
+                 
                 <?php if($quotation->name){?>
                 <tr>
                     <td>Customer:</td>
@@ -253,10 +332,11 @@
             <table class="qtable">
                 <thead>
                     <tr>
+                        <th>#</th>
                         <?php if(@$_GET['with_partnumber']==1){?>
                         <th>Part No.</th>
                         <?php }?>
-                        <th>Description</th>
+                        <th>Description<?=@$arr_etab[strtolower('Description')]?></th>
                         <th>Qty</th>
                         <th class="td_currency">Unit Price</th>
                         <th class="td_currency">Line Total</th> 
@@ -284,10 +364,11 @@
                             $ttl += $netTotal;
                             ?>
                             <tr>
+                                <td><?=@$cc+=1;?></td>
                                 <?php if(@$_GET['with_partnumber']==1){?>
                                 <td><?= @$rs->item_code ?></td>
                                 <?php }?>
-                                <td><?= @$rs->item_name ?></td>
+                                <td><?= @$rs->item_name.(@$rs->item_name_arabic ? '<br/>'.@$rs->item_name_arabic : '') ?></td>
                                 <td align="center"><?= $rs->qty ?></td>
                                 <td class="td_currency"><?= number_format($rs->retail_price, 2) ?></td>
                                 <td class="td_currency"><?= number_format($lineTotal, 2) ?></td> 
@@ -353,12 +434,12 @@
 
     <script>
         //Auto print when loaded (uncomment if needed)
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                window.print();
-                window.close();
-            }, 500);
-        });
+        // window.addEventListener('load', function() {
+        //     setTimeout(function() {
+        //         window.print();
+        //         window.close();
+        //     }, 500);
+        // });
     </script>
 </body>
 </html>

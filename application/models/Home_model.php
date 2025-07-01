@@ -62,40 +62,58 @@ class Home_model extends CI_model
 
 	}
 
-	public function update_user_roles($id){
+	public function update_user_roles($id) {
+	    $limited = 1;
+	    $result = false;
+ 
+	    $menu_sub = $this->db->get("menu_sub");
+	    if ($menu_sub->num_rows() > 0) {
+	        foreach ($menu_sub->result() as $data) {
+	            $role_key = 'user_role' . $data->id;
 
-		$limited = 1;
-		$result  = false;
+	            if ($this->input->post($role_key, TRUE)) {
+	                // Gather form data
+	                $main_menu_id = $this->input->post($role_key, TRUE);
+	                $features = $this->input->post('user_option' . $data->id, TRUE);
+	                $access_features = json_encode($features);
 
-		$this->db->delete('user_roles', array('user_id' => $id));
+	                // Prepare the data
+	                $role_data = array(
+	                    'user_id' => $id,
+	                    'sub_menu_id' => $data->id,
+	                    'main_menu_id' => $main_menu_id,
+	                    'access_features' => $access_features
+	                );
 
-		$menu_sub = $this->db->get("menu_sub");
-		if($menu_sub->num_rows()>0){
-			foreach($menu_sub->result() as $data){
-				
-				if($this->input->post('user_role'.$data->id ,TRUE)){
-					$data = array( 
-					'user_id' 	   => $id,
-					'sub_menu_id'  => $data->id,
-					'main_menu_id' => $this->input->post('user_role'.$data->id ,TRUE)
-					 );
+	                // Check if this user/sub_menu_id already exists
+	                $this->db->where('user_id', $id);
+	                $this->db->where('sub_menu_id', $data->id);
+	                $exists = $this->db->get('user_roles')->row();
 
-					$result = $this->db->insert('user_roles',$data);
-				}else{
-					$limited=0;
-				}
-			}
-		}   
+	                if ($exists) {
+	                    // UPDATE if exists
+	                    $this->db->where('user_id', $id);
+	                    $this->db->where('sub_menu_id', $data->id);
+	                    $result = $this->db->update('user_roles', $role_data);
+	                } else {
+	                    // INSERT if not exists
+	                    $result = $this->db->insert('user_roles', $role_data);
+	                }
 
-		$this->db->set('full_access',$limited);  
-	  
-		$this->db->where('id', $id);
-		$this->db->update('account'); 
+	            } else {
+	                $limited = 0; // No access checked at all
+	            }
+	        }
+	    }
 
-		//return ($this->db->affected_rows() != 1) ? false : true;
-		return ($result != true) ? false : true;
+	    // Update account full_access flag
+	    $this->db->set('full_access', $limited);
+	    $this->db->where('id', $id);
+	    $this->db->update('account');
 
+	    return ($result !== false) ? true : false;
 	}
+
 
 	public function settings_update(){
 

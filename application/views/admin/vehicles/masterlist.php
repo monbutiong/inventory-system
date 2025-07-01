@@ -68,18 +68,42 @@
               <td><?=@$arr_c[$rs->customer_id]?></td> 
               <td><?=date('M d, Y H:i', strtotime($rs->date_created))?></td>
               <td><?=$rs->last_transactions ? date('M d, Y H:i', strtotime($rs->last_transactions)) : ''?></td>
-              <td>
-                
-                
-                <a href="<?php echo base_url('vehicles/edit_vehicle/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-edit"></i> edit</a>
-                 | 
-                <a href="<?php echo base_url('vehicles/view_vehicle/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-eye"></i> view</a>
-                 | 
-                <a href="Javascript:prompt_delete('Delete','Delete Vehicle?','<?=base_url('vehicles/delete_vehicle/'.$rs->id)?>','tr<?=$rs->id?>')" ><i class="fa fa-trash"></i> Delete</a>
-                  | 
-                 <a href="<?php echo base_url('outgoing/purchase_history/vehicle/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><i class="fa fa-archive"></i> Purchase History</a>
-                 
-              </td>
+              <td style="white-space: nowrap;">
+                <?php if (in_array('edit', $access_features)): ?>
+                  <a href="<?= base_url('vehicles/edit_vehicle/' . $rs->id) ?>"
+                     class="text-primary load_modal_details"
+                     data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"
+                     style="margin-right: 5px;">
+                     <i class="fa fa-edit"></i> Edit
+                  </a>
+                <?php endif; ?>
+ 
+                  <a href="<?= base_url('vehicles/view_vehicle/' . $rs->id) ?>"
+                     class="text-info load_modal_details"
+                     data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"
+                     style="margin-right: 5px;">
+                     <i class="fa fa-eye"></i> View
+                  </a> 
+
+                <?php if (in_array('delete', $access_features)): ?>
+                  <a href="javascript:void(0);"
+                     onclick="prompt_delete('Delete','Delete Vehicle?','<?= base_url('vehicles/delete_vehicle/' . $rs->id) ?>','tr<?= $rs->id ?>')"
+                     class="text-danger"
+                     style="margin-right: 5px;">
+                     <i class="fa fa-trash"></i> Delete
+                  </a>
+                <?php endif; ?>
+
+                <?php if (in_array('purchase-history', $access_features)): ?>
+                  <a href="<?= base_url('outgoing/purchase_history/vehicle/' . $rs->id) ?>"
+                     class="text-warning load_modal_details"
+                     data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"
+                     data-modal-size="xl"
+                     style="margin-right: 5px;">
+                     <i class="fa fa-archive"></i> Purchase History
+                  </a>
+                <?php endif; ?>
+              </td> 
             </tr>
             <?php }}?>
            </tbody>

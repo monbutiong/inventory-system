@@ -11,8 +11,10 @@
                         <h6 class="page-title">Customer Masterlist</h6>
                     </div>
                     <div class="col-md-4">
-                        <div class="float-end d-none d-md-block">
+                        <div class="float-end d-md-block">
+                          <?php if(in_array('add', $access_features)){?>
                             <a class="btn btn-md btn-primary load_modal_details" href="<?php echo base_url('crm/add_clients');?>" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">Create New Customer</a>
+                          <?php }?>
                         </div>
                     </div>
                 </div>
@@ -24,7 +26,7 @@
         <div class="card">
             <div class="card-body">
         
-        
+        <div class="table-responsive">
         <table id="datatable" class="table table-striped table-bordered table-hover">
            
           <thead>
@@ -76,24 +78,49 @@
                   <?=$rs->contact_person_2 ? $rs->contact_person_2.' | '.$rs->contact_number_2 : ''?>
                 </small>
               </td>   
-              <td nowrap style="width: 5%;">
-                
-                
-                <a href="<?php echo base_url('crm/edit_clients/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-edit"></i> edit</a>
-                 | 
-                <a href="<?php echo base_url('crm/view_clients/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-eye"></i> view</a>
-                <br/>
-                <a href="Javascript:prompt_delete('Delete','Delete Customer?','<?=base_url('crm/delete_clients/'.$rs->id)?>','tr<?=$rs->id?>')" ><i class="fa fa-trash"></i> Delete</a>
-                 | 
-                <a href="<?php echo base_url('outgoing/purchase_history/customer/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><i class="fa fa-archive"></i> Purchase History</a>
-               
-                 
+              <td style="line-height: 1.5; width: 140px;">
+                <div class="d-flex flex-wrap gap-1">
+                  <?php if(in_array('edit', $access_features)): ?>
+                    <a href="<?= base_url('crm/edit_clients/'.$rs->id) ?>"
+                       class="text-primary load_modal_details"
+                       data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
+                       <i class="fa fa-edit"></i> Edit
+                    </a>
+                  <?php endif; ?>
+
+                  <a href="<?= base_url('crm/view_clients/'.$rs->id) ?>"
+                     class="text-info load_modal_details"
+                     data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
+                     <i class="fa fa-eye"></i> View
+                  </a>
+
+                  <?php if(in_array('delete', $access_features)): ?>
+                    <a href="javascript:void(0);"
+                       onclick="prompt_delete('Delete','Delete Customer?','<?= base_url('crm/delete_clients/'.$rs->id) ?>','tr<?= $rs->id ?>')"
+                       class="text-danger">
+                       <i class="fa fa-trash"></i> Delete
+                    </a>
+                  <?php endif; ?>
+
+                  <?php if(in_array('purchase-history', $access_features)): ?>
+                    <a href="<?= base_url('outgoing/purchase_history/customer/'.$rs->id) ?>"
+                       class="text-warning load_modal_details"
+                       data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"
+                       data-modal-size="xl">
+                       <i class="fa fa-archive"></i> Purchase History
+                    </a>
+                  <?php endif; ?>
+                </div>
               </td>
+
+
+
             </tr>
             <?php }}?>
            </tbody>
 
         </table>
+      </div>
 
           </div>
         </div>

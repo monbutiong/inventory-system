@@ -63,7 +63,7 @@
                     <div class="d-flex">
                         <!-- LOGO -->
                         <div class="navbar-brand-box">
-                            <a href="index.html" class="logo logo-dark">
+                            <a href="#" class="logo logo-dark">
                                 <span class="logo-sm">
                                     <img src="<?=base_url('assets/template/assets')?>/images/logo-sm.png?3" alt="" height="32">
                                 </span>
@@ -72,7 +72,7 @@
                                 </span>
                             </a>
 
-                            <a href="index.html" class="logo logo-light">
+                            <a href="#" class="logo logo-light">
                                 <span class="logo-sm">
                                     <img src="<?=base_url('assets/template/assets')?>/images/logo-sm.png?3" alt="" height="32">
                                 </span>
@@ -106,9 +106,7 @@
                                 <i class="mdi mdi-fullscreen"></i>
                             </button>
                         </div>
-
-                         
-
+ 
                         <div class="dropdown d-inline-block">
                             <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -202,7 +200,7 @@
               <div class="page-content">
                   <div class="container-fluid">
 
-                
+                  <script src="<?=base_url('assets/template/assets')?>/libs/jquery/jquery.min.js"></script>  
 
                   <?php  $this->view("admin/$module");  ?>
 
@@ -246,7 +244,7 @@
         <!-- /SYSTEM MODAL-->
 
         <!-- JAVASCRIPT -->
-        <script src="<?=base_url('assets/template/assets')?>/libs/jquery/jquery.min.js"></script>
+        
         <script src="<?=base_url('assets/template/assets')?>/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="<?=base_url('assets/template/assets')?>/libs/metismenu/metisMenu.min.js"></script>
         <script src="<?=base_url('assets/template/assets')?>/libs/simplebar/simplebar.min.js"></script>

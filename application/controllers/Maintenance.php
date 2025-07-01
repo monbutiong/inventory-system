@@ -34,7 +34,7 @@ class Maintenance extends CI_Controller {
 		$table_name = str_replace("fm_","",$table_name);
 
 		$url = $this->router->class.'/'.$this->router->method.'/'.$table_name; 
-		$this->check_access($url, $module['sub_menu'], $module['index_user_roles']);
+		$module["access_features"] = $this->check_access($url, $module['sub_menu'], $module['index_user_roles']);
 
 		$module["table_name"] = ucwords (str_replace("_"," ",$table_name));
 		$table_name_sql = 'fm_'.$table_name;
@@ -191,6 +191,7 @@ class Maintenance extends CI_Controller {
 	public function check_access($url, $sub_menu = [], $index_user_roles = []){
 
 		$granted = 0;
+		$access_features= 0;
 
 		foreach($sub_menu as $rs){
 			if($url == $rs->url_link){
@@ -201,10 +202,17 @@ class Maintenance extends CI_Controller {
 		foreach($index_user_roles as $rs){
 			if($sub_menu_id == $rs->sub_menu_id){
 				$granted = 1;
+				if($rs->access_features){
+					$access_features = json_decode($rs->access_features);
+				}else{
+					$access_features = $rs->access_features;
+				}
 			}
 		} 
 
 		if($granted==0){ die('access denied'); }
+
+		return $access_features;
 
 	}
 

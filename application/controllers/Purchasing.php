@@ -39,6 +39,7 @@ class Purchasing extends CI_Controller {
 	public function check_access($url, $sub_menu = [], $index_user_roles = []){
 
 		$granted = 0;
+		$access_features= 0;
 
 		foreach($sub_menu as $rs){
 			if($url == $rs->url_link){
@@ -49,16 +50,28 @@ class Purchasing extends CI_Controller {
 		foreach($index_user_roles as $rs){
 			if($sub_menu_id == $rs->sub_menu_id){
 				$granted = 1;
+				if($rs->access_features){
+					$access_features = json_decode($rs->access_features);
+				}else{
+					$access_features = [];
+				}
 			}
 		} 
 
 		if($granted==0){ die('access denied'); }
+
+		return $access_features;
 
 	}
 
 	 		
  	public function fetch_po_data($confirmed='')
  	{
+ 		$module = $this->system_menu;
+
+ 		$url = $this->router->class.'/po_list'; 
+ 		$access_features = $this->check_access($url, $module['sub_menu'], $module['index_user_roles']);
+
  		$request = $this->input->post();
 
  		    $columns = [
@@ -135,20 +148,55 @@ class Purchasing extends CI_Controller {
 
  		    foreach ($query->result() as $po) {
 
- 		    	if($confirmed){
- 		    		$option = ' 
- 		                <a href="' . base_url('purchasing/view_po/' . $po->id) . '"><i class="fa fa-eye"></i> View</a> |
- 		                <a target="_blank" href="' . base_url('vendor/print_po/' . $po->id) . '"><i class="fa fa-print"></i> Print</a>  
- 		            ';
- 		    	}else{
- 		    		$option = '
- 		                <a href="javascript:confirm_po(' . $po->id . ')"><i class="fa fa-check"></i> Confirm</a> |
- 		                <a href="' . base_url('purchasing/edit_po/' . $po->id) . '"><i class="fa fa-edit"></i> Edit</a> |
- 		                <a href="' . base_url('purchasing/view_po/' . $po->id) . '"><i class="fa fa-eye"></i> View</a> |
- 		                <a target="_blank" href="' . base_url('vendor/print_po/' . $po->id) . '"><i class="fa fa-print"></i> Print</a> |
- 		                <a href="javascript:prompt_delete(\'Delete\', \'Delete P.O. Number ' . $po->po_number . '?\', \'' . base_url('purchasing/delete_po/' . $po->id) . '\', \'tr' . $po->id . '\')"><i class="fa fa-trash"></i> Delete</a>
- 		            ';
+ 		    	if ($confirmed) {
+ 		    	    $option = '';
+
+ 		    	 
+ 		    	        $option .= '<a href="' . base_url('purchasing/view_po/' . $po->id) . '" class="text-info" style="margin-right:5px;">
+ 		    	                        <i class="fa fa-eye"></i> View
+ 		    	                    </a>';
+ 		    	 
+
+ 		    	    if (in_array('print', $access_features)) {
+ 		    	        $option .= '<a target="_blank" href="' . base_url('vendor/print_po/' . $po->id) . '" class="text-warning" style="margin-right:5px;">
+ 		    	                        <i class="fa fa-print"></i> Print
+ 		    	                    </a>';
+ 		    	    }
+
+ 		    	} else {
+ 		    	    $option = '';
+
+ 		    	    if (in_array('confirm', $access_features)) {
+ 		    	        $option .= '<a href="javascript:confirm_po(' . $po->id . ')" class="text-success" style="margin-right:5px;">
+ 		    	                        <i class="fa fa-check"></i> Confirm
+ 		    	                    </a>';
+ 		    	    }
+
+ 		    	    if (in_array('edit', $access_features)) {
+ 		    	        $option .= '<a href="' . base_url('purchasing/edit_po/' . $po->id) . '" class="text-primary" style="margin-right:5px;">
+ 		    	                        <i class="fa fa-edit"></i> Edit
+ 		    	                    </a>';
+ 		    	    }
+
+ 		    	 
+ 		    	        $option .= '<a href="' . base_url('purchasing/view_po/' . $po->id) . '" class="text-info" style="margin-right:5px;">
+ 		    	                        <i class="fa fa-eye"></i> View
+ 		    	                    </a>';
+ 		    	    
+
+ 		    	    if (in_array('print', $access_features)) {
+ 		    	        $option .= '<a target="_blank" href="' . base_url('vendor/print_po/' . $po->id) . '" class="text-warning" style="margin-right:5px;">
+ 		    	                        <i class="fa fa-print"></i> Print
+ 		    	                    </a>';
+ 		    	    }
+
+ 		    	    if (in_array('delete', $access_features)) {
+ 		    	        $option .= '<a href="javascript:prompt_delete(\'Delete\', \'Delete P.O. Number ' . addslashes($po->po_number) . '?\', \'' . base_url('purchasing/delete_po/' . $po->id) . '\', \'tr' . $po->id . '\')" class="text-danger" style="margin-right:5px;">
+ 		    	                        <i class="fa fa-trash"></i> Delete
+ 		    	                    </a>';
+ 		    	    }
  		    	}
+
 
  		        $data[] = [
  		            'date_created' => date('M d, Y', strtotime($po->date_created)),

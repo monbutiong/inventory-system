@@ -136,7 +136,7 @@ class Inventory extends CI_Controller {
 	        	'id'=>$rs->id,
 	            'picture' => ($rs->picture_1 ? '<a href="' . base_url('inventory/view_item_images/'.$rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl"><img src="' . $item_image . '" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" /></a>' : '<img src="' . $item_image . '" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" />'),
 	            'item_code' => '<a href="' . base_url('inventory/view_inventory/' . $rs->id) . '" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-modal-size="xl">'.$rs->item_code.'</a>',
-	            'item_name' => $rs->item_name,
+	            'item_name' => $rs->item_name.($rs->item_name_arabic ? '<br/>'.$rs->item_name_arabic : ''),
 	            'brand' => $rs->brand,
 	            'category' => $rs->category,
 	            'type' => $rs->type,

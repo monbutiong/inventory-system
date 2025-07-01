@@ -424,7 +424,6 @@ class Home extends CI_Controller {
 
 			if($result){ 
 
-
 				if(@$_FILES['avatar']['name']){
 
 					   $targetDir = "./assets/uploads/avatar/";

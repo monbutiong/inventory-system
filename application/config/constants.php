@@ -91,8 +91,13 @@ define('PHPASS_HASH_PORTABLE', FALSE);
 /* custom variable */
 define('developer','MonButiong');
 define('system_name', 'Inventory Management System');
-define('company_name', 'German Auto Line');
-define('company_email', 'support@german-ato-line.com');
+define('company_name', 'Classic German Car Parts Trading');
+define('company_email', 'classicgermanqa@gmail.com');
+define('company_tax_reg_no',"5002945244");
+define('company_contact',"+974 30424247");
+define('company_address',"Al Wakalat, Industrial Area, Street 27 & Street 14, Doha Qatar");
+define('company_po_box',"40240");
+
 define('cc_email', 'germanautoline@gmail.com');
 define('bcc_email', 'germanautoline@gmail.com');
 
@@ -108,3 +113,4 @@ define('dateformatdb',"Y-m-d");
 define('default_curreny',"ر.ق");
 //define('api_url','http://192.168.6.81/ventum-time');
 define('api_url','https://german-atuo-line.com');
+

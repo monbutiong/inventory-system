@@ -265,7 +265,7 @@ class Purchasing extends CI_Controller {
 		$module = $this->system_menu;
 
 		$url = $this->router->class.'/'.$this->router->method; 
-		$this->check_access($url, $module['sub_menu'], $module['index_user_roles']);
+		$module["access_features"] = $this->check_access($url, $module['sub_menu'], $module['index_user_roles']);
 
 		$module['module'] = "purchasing/suppliers";
 		$module['map_link']   = "purchasing->suppliers";  
@@ -889,7 +889,10 @@ class Purchasing extends CI_Controller {
 		$module = $this->system_menu; 
 
 		$module['module'] = "purchasing/view_po";
-		$module['map_link']   = "sales->quotations";   
+		$module['map_link']   = "sales->quotations"; 
+
+		$url = $this->router->class.'/po_list'; 
+		$module["access_features"] = $this->check_access($url, $module['sub_menu'], $module['index_user_roles']);  
 		
 		$result = $this->admin_model->load_filemaintenance('fm_manufacturers');
 		$module['manufacturers'] = $result['maintenance_data'];
@@ -1030,7 +1033,7 @@ class Purchasing extends CI_Controller {
 		$module = $this->system_menu;
 
 		$url = $this->router->class.'/'.$this->router->method; 
-		$this->check_access($url, $module['sub_menu'], $module['index_user_roles']);
+		$module["access_features"] = $this->check_access($url, $module['sub_menu'], $module['index_user_roles']);
 
 		$module['module'] = "purchasing/suppliers_po";
 		$module['map_link']   = "purchasing->suppliers_po";  

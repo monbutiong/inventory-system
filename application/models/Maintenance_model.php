@@ -25,49 +25,7 @@ class Maintenance_model extends CI_model
 
 	public function add_table_data($table_name){
 
-		if($table_name=='fm_asset_group'){
-
-			$data = array( 
-			'title' 		  	   => $this->input->post('title',TRUE),
-			'ds' 			 	   => $this->input->post('ds',TRUE),
-			'life_in_years' 	   => $this->input->post('life_in_years',TRUE),
-			'depriciation_process' => $this->input->post('depriciation_process',TRUE),
-			'user_id'	           => $this->session->user_id,
-			'dc' 	 		       => date("Y-m-d G:i")
-			 );
-		}elseif($table_name=='fm_classification_type'){
-
-			$data = array( 
-			'title' 		  	   => $this->input->post('title',TRUE),
-			'ds' 			 	   => $this->input->post('ds',TRUE),
-			'vs_peso_rate' 	       => $this->input->post('vs_peso_rate',TRUE),
-			'depriciation_process' => $this->input->post('depriciation_process',TRUE),
-			'user_id'	           => $this->session->user_id,
-			'dc' 	 		       => date("Y-m-d G:i")
-			 );
-
-	    }elseif($table_name=='fm_inventory_accounts'){
-
-			$data = array( 
-			'title' 		  	   => $this->input->post('title',TRUE),
-			'ds' 			 	   => $this->input->post('ds',TRUE),
-			'overhead_cost_id' 	   => $this->input->post('overhead_cost_id',TRUE),
-			'is_in_inventory'      => $this->input->post('is_in_inventory',TRUE),
-			'user_id'	           => $this->session->user_id,
-			'dc' 	 		       => date("Y-m-d G:i")
-			 );
-
-		}elseif($table_name=='fm_issue_type'){
-
-			$data = array( 
-			'title' 		  	   => $this->input->post('title',TRUE),
-			'ds' 			 	   => $this->input->post('ds',TRUE),
-			'is_project' 	       => $this->input->post('is_project',TRUE), 
-			'user_id'	           => $this->session->user_id,
-			'dc' 	 		       => date("Y-m-d G:i")
-			 );
-
-		}elseif($table_name=='fm_models'){
+		if($table_name=='fm_models'){
 
 			$data = array( 
 			'title' 		  	   => $this->input->post('title',TRUE),
@@ -93,6 +51,11 @@ class Maintenance_model extends CI_model
 		$inserted_id = $this->db->insert_id();
 		$result = ($this->db->affected_rows() != 1) ? false : true;
 
+		//==Logs
+		$data['row_id'] = $inserted_id;
+		$data['table_name'] = $table_name;
+		$result = $this->db->insert('fm_logs',$data);
+
 		return array(
 			'result'  	   =>   $result,
 			'inserted_id'  =>   $inserted_id
@@ -101,6 +64,15 @@ class Maintenance_model extends CI_model
 	}	
 
 	public function delete_table_data($table_name,$id){
+
+		//==Logs 
+		$result = $this->db->where([
+			'row_id'=>$id,
+			'table_name'=> $table_name
+		])->update('fm_logs',[
+			'deleted'=>date('Y-m-d H:i'),
+			'deleted_by'=> $this->session->user_id
+		]);
 
 		$this->db->delete($table_name, array('id' => $id));
 		return ($this->db->affected_rows() != 1) ? false : true;
@@ -125,6 +97,33 @@ class Maintenance_model extends CI_model
 	}
 
 	public function update_table_data($table_name,$id){
+
+		//==Logs
+		if($table_name=='fm_models'){
+
+			$data = array( 
+			'title' 		  	   => $this->input->post('title',TRUE),
+			'ds' 			 	   => $this->input->post('ds',TRUE),
+			'manufacturer_id'      => $this->input->post('manufacturer_id',TRUE), 
+			'model_year'           => $this->input->post('model_year',TRUE), 
+			'user_id'	           => $this->session->user_id,
+			'dc' 	 		       => date("Y-m-d G:i")
+			 );
+
+		}else{
+
+			$data = array( 
+			'title' 		  => $this->input->post('title',TRUE),
+			'ds' 			  => $this->input->post('ds',TRUE),
+			'user_id'	      => $this->session->user_id,
+			'dc' 	 		  => date("Y-m-d G:i")
+			 );
+
+		}
+		$data['row_id'] = $id;
+		$data['table_name'] = $table_name;
+		$result = $this->db->insert('fm_logs',$data);
+
 
 		$this->db->set('title',$this->input->post('title',TRUE));  
 		$this->db->set('ds',$this->input->post('ds',TRUE)); 

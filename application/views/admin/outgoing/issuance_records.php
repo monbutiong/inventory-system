@@ -53,8 +53,8 @@
 
 function print_so(id) {
       Swal.fire({
-          title: 'Print Quotation',
-          text: "Print quotation with part number included?",
+          title: 'Print Sales Order',
+          text: "Print Sales Order with part number included?",
           icon: 'question',
           showCancelButton: true,
           confirmButtonColor: '#d33',          // Red confirm button

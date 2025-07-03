@@ -12,7 +12,9 @@
                 <div class="col-md-4">
                     <div class="float-end d-none d-md-block">
                       <?php if(!@$option){?>
+                        <?php if (in_array('add', $access_features)) : ?>
                          <a class="btn btn-md btn-primary" href="<?php echo base_url('outgoing/terms_and_conditions/add');?>" >Add New</a>
+                         <?php endif; ?>
                       <?php }?>
                     </div>
                 </div>
@@ -110,15 +112,24 @@
               <td><?=$rs->title?></td>   
               <td><?=$rs->description?></td>  
               <td align="right"><?=$rs->arabic?></td>     
-              <td nowrap>
-                
-         
-                <a href="<?php echo base_url('outgoing/terms_and_conditions/edit/'.$rs->id);?>"><i class="fa fa-edit"></i> edit</a>
-                 | 
-                <a href="Javascript:delete_tnc(<?=$rs->id?>)" ><i class="fa fa-trash"></i> Delete</a>
-                 
-                 
-              </td> 
+              <td style="white-space: nowrap; font-size: 13px;">
+                <div class="d-flex flex-wrap gap-2">
+
+                  <?php if (in_array('edit', $access_features)) : ?>
+                    <a href="<?= base_url('outgoing/terms_and_conditions/edit/' . $rs->id); ?>" class="text-primary">
+                      <i class="fa fa-edit"></i> Edit
+                    </a>
+                  <?php endif; ?>
+
+                  <?php if (in_array('delete', $access_features)) : ?>
+                    <a href="javascript:delete_tnc(<?= $rs->id ?>);" class="text-danger">
+                      <i class="fa fa-trash"></i> Delete
+                    </a>
+                  <?php endif; ?>
+
+                </div>
+              </td>
+
             </tr>
             <?php }}?>
            </tbody>

@@ -31,11 +31,23 @@
               <div class="col-md-4">
                 <div class="float-end d-none d-md-block">
                   <?php if($po->confirmed == 0){?>
-                  <a class="btn btn-md btn-success" target="_blank" href="<?=base_url('vendor/print_po/'.$po->id)?>" title="print P.O." ><i class="fa fa-print"></i> </a>
-                  <a class="btn btn-md btn-success" href="Javascript:confirm_po()"  ><i class="fa fa-check"></i> Confirm P.O.</a>
-                  <a class="btn btn-md btn-primary" href="Javascript:edit_po()"  ><i class="fa fa-edit"></i> Edit P.O.</a>
+
+                    <?php if (in_array('print', $access_features)){ ?>
+                      <a class="btn btn-md btn-success" target="_blank" href="<?=base_url('vendor/print_po/'.$po->id)?>" title="print P.O." ><i class="fa fa-print"></i> </a>
+                    <?php }?>
+
+                    <?php if (in_array('confirm', $access_features)){ ?>
+                      <a class="btn btn-md btn-success" href="Javascript:confirm_po()"  ><i class="fa fa-check"></i> Confirm P.O.</a>
+                    <?php }?>
+                    <?php if (in_array('edit', $access_features)){ ?>
+                      <a class="btn btn-md btn-primary" href="Javascript:edit_po()"  ><i class="fa fa-edit"></i> Edit P.O.</a>
+                    <?php }?>
                   <?php }else{?>
-                  <a class="btn btn-md btn-success" target="_blank" href="<?=base_url('vendor/print_po/'.$po->id)?>"  ><i class="fa fa-print"></i> Print P.O.</a>
+
+                    <?php if (in_array('print', $access_features)){ ?>
+                      <a class="btn btn-md btn-success" target="_blank" href="<?=base_url('vendor/print_po/'.$po->id)?>"  ><i class="fa fa-print"></i> Print P.O.</a>
+                    <?php }?>
+
                   <?php }?>  
                   <a class="btn btn-md btn-warning" href="<?=($po->confirmed == 0) ? base_url('purchasing/po_list') : base_url('purchasing/confirmed_po') ?>">Go Back</a>
                 </div>
@@ -130,9 +142,9 @@
                   <tr style="font-size: 12px;">
                     <th width="10%">Part No.</th>
                     <th>Description</th>
-                    <th width="10%">Qty</th>
-                    <th width="10%">Unit Price</th>
-                    <th width="10%">Total Price</th>
+                    <th width="10%" style="text-align: right;">Qty</th>
+                    <th width="10%" style="text-align: right;">Unit Price</th>
+                    <th width="10%" style="text-align: right;">Total Price</th>
                 
                   </tr>
                 </thead>

@@ -206,10 +206,12 @@ if(@$eta){
                     <h1>QUOTATION</h1>
                     <div class="quotation-no">#QO<?= sprintf("%06d", $quotation->id); ?>
                         <br/>
-                        <font style="font-size: 12px; font-weight: normal;"><b>Date:</b> <?=date('d M Y H:i',strtotime($quotation->date_created))?><br/>
-                        <?php if($quotation->valid_until){?>
-                         <b>Valid Until:</b> <?= date('d M Y', strtotime($quotation->valid_until)) ?> 
-                        <?php }?> 
+                        <font style="font-size: 10px; font-weight: normal;">
+                            <b>Date:</b> <?=date('d M Y H:i',strtotime($quotation->date_created))?>
+                            <br/> 
+                            <?php if($quotation->valid_until){?>
+                             <b>Valid Until:</b> <?= date('d M Y', strtotime($quotation->valid_until)) ?> 
+                            <?php }?> 
                         </font>
 
                     </div>
@@ -231,10 +233,43 @@ if(@$eta){
                                     Customer Name
                                 </td>
                                 <td style="border: 1px solid #000; padding: 4px; font-size: 11px;">
-                                    <!-- Empty for spacing or data -->
+                                    <?= $clients->name ?>
                                 </td>
                                 <td style="border: 1px solid #000; padding: 4px; font-size: 11px; text-align: right; width: 30%;">
                                     <?= @$arr_eta[strtolower('Customer Name')] ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px; width: 30%;">
+                                    Address
+                                </td>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px;">
+                                    <!-- Empty for spacing or data -->
+                                </td>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px; text-align: right; width: 30%;">
+                                    <?= @$arr_eta[strtolower('Address')] ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px; width: 30%;">
+                                    QID
+                                </td>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px;">
+                                    <!-- Empty for spacing or data -->
+                                </td>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px; text-align: right; width: 30%;">
+                                    <?= @$arr_eta[strtolower('QID')] ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px; width: 30%;">
+                                    Contact Number
+                                </td>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px;">
+                                    <?= $quotation->phone ?>
+                                </td>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px; text-align: right; width: 30%;">
+                                    <?= @$arr_eta[strtolower('Contact Number')] ?>
                                 </td>
                             </tr>
                         </table>
@@ -246,10 +281,43 @@ if(@$eta){
                                     Sales Person
                                 </td>
                                 <td style="border: 1px solid #000; padding: 4px; font-size: 11px;">
-                                    <!-- Empty for spacing or data -->
+                                    <?= $user->name ?>
                                 </td>
                                 <td style="border: 1px solid #000; padding: 4px; font-size: 11px; text-align: right; width: 30%;">
                                     <?= @$arr_eta[strtolower('Sales Person')] ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px; width: 30%;">
+                                    Vehicle
+                                </td>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px;">
+                              
+                                </td>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px; text-align: right; width: 30%;">
+                                    <?= @$arr_eta[strtolower('Payment Term')] ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px; width: 30%;">
+                                    Plase Number
+                                </td>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px;">
+                                    <?= @$quotation->plate_no ?>
+                                </td>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px; text-align: right; width: 30%;">
+                                    <?= @$arr_eta[strtolower('Plase Number')] ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px; width: 30%;">
+                                    VIN
+                                </td>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px;">
+                                    <?= @$quotation->vin ?>
+                                </td>
+                                <td style="border: 1px solid #000; padding: 4px; font-size: 11px; text-align: right; width: 30%;">
+                                    <?= @$arr_eta[strtolower('VIN')] ?>
                                 </td>
                             </tr>
                         </table>
@@ -257,76 +325,7 @@ if(@$eta){
                 </tr>
             </table>
 
-
-            <!-- Customer Details -->
-            <table class="details-table">
-                <?php if($quotation->attention_to){?>
-                <tr>
-                    <td>Attention To:</td>
-                    <td><?= $quotation->attention_to ?></td>
-                </tr>
-                <?php }?>
-                 
-                <?php if($quotation->name){?>
-                <tr>
-                    <td>Customer:</td>
-                    <td><?= $clients->name ?></td>
-                </tr>
-                <?php }?>
-                
-                <?php if($quotation->customer_qid_bus && $quotation->customer_type==0){?>
-                <tr>
-                    <td><?= $quotation->customer_type==1 ? 'Business Reg #' : 'QID' ?>:</td>
-                    <td><?= $quotation->customer_qid_bus ?></td>
-                </tr>
-                <?php }?>
-                
-                <?php if($quotation->phone){?>
-                <tr>
-                    <td>Contact No:</td>
-                    <td><?= $quotation->phone ?></td>
-                </tr>
-                <?php }?>
-                
-                <?php if($quotation->plate_no){?>
-                <tr>
-                    <td>Plate No:</td>
-                    <td><?= $quotation->plate_no ?></td>
-                </tr>
-                <?php }?>
-
-                <?php if($quotation->vin){?>
-                <tr>
-                    <td>VIN:</td>
-                    <td><?= $quotation->vin ?></td> 
-                </tr>
-                <?php }?>
-
-                <?php 
-                if(@$manufacturers){
-                    foreach($manufacturers as $rs){
-                        $arr_manu[$rs->id] = $rs->title;
-                    }
-                }
-
-                if(@$models){
-                    foreach($models as $rs){
-                        $arr_mod[$rs->id] = $rs->title.' '.$rs->model_year;
-                    }
-                }
-                if(@$arr_manu[$vehicle->manufacturer_id]){
-                ?>
-                <tr>
-                    <td>Vehicle:</td>
-                    <td><?= @$arr_manu[$vehicle->manufacturer_id] . ' ' . @$arr_mod[$vehicle->vehicle_model_id] ?></td>
-                    <td align="right"><?=date('d M Y H:i',strtotime($quotation->date_created))?></td>
-                </tr>
-                <?php }else{?>
-                <tr> 
-                    <td colspan="2" align="right"><?=date('d M Y H:i',strtotime($quotation->date_created))?></td>
-                </tr>
-                <?php }?>
-            </table>
+            <br/>
 
             <!-- Items Table -->
             <table class="qtable">
@@ -334,14 +333,15 @@ if(@$eta){
                     <tr>
                         <th>#</th>
                         <?php if(@$_GET['with_partnumber']==1){?>
-                        <th>Part No.</th>
+                        <th>Part No.<?=@$arr_etab[strtolower('Part No.')]?></th>
                         <?php }?>
                         <th>Description<?=@$arr_etab[strtolower('Description')]?></th>
-                        <th>Qty</th>
-                        <th class="td_currency">Unit Price</th>
-                        <th class="td_currency">Line Total</th> 
-                        <th class="td_currency">Disc. Amt.</th>
-                        <th class="td_currency">Net Total</th>
+                        <th>Brand<?=@$arr_etab[strtolower('Brand')]?></th>
+                        <th>Qty<?=@$arr_etab[strtolower('Qty')]?></th>
+                        <th class="td_currency" style="text-align: right;">Unit Price<?=@$arr_etab[strtolower('Unit Price')]?></th>
+                        <th class="td_currency" style="text-align: right;">Line Total<?=@$arr_etab[strtolower('Line Total')]?></th> 
+                        <th class="td_currency" style="text-align: right;">Disc. Amt.<?=@$arr_etab[strtolower('Disc. Amt.')]?></th>
+                        <th class="td_currency" style="text-align: right;">Net Total<?=@$arr_etab[strtolower('Net Total')]?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -369,6 +369,7 @@ if(@$eta){
                                 <td><?= @$rs->item_code ?></td>
                                 <?php }?>
                                 <td><?= @$rs->item_name.(@$rs->item_name_arabic ? '<br/>'.@$rs->item_name_arabic : '') ?></td>
+                                <td><?=$rs->brand?></td>
                                 <td align="center"><?= $rs->qty ?></td>
                                 <td class="td_currency"><?= number_format($rs->retail_price, 2) ?></td>
                                 <td class="td_currency"><?= number_format($lineTotal, 2) ?></td> 
@@ -380,9 +381,12 @@ if(@$eta){
                     }
                     ?>
                     <tr class="total-row">
-                        <td align="right" colspan="<?php if(@$_GET['with_partnumber']==1){ echo '4'; }else{echo '3';}?>">DISCOUNT AMOUNT:</td>
+                        <td align="right" colspan="<?php if(@$_GET['with_partnumber']==1){ echo '6'; }else{echo '5';}?>">
+                            <small>TOTAL DISCOUNT:<?=@$arr_etab[strtolower('TOTAL DISCOUNT')]?></small>
+                        </td>
                         <td align="right"><?= number_format($discount_total, 2) ?></td>
-                        <td style="text-align: right;">TOTAL (QAR)</td>
+                        <td style="text-align: right;">
+                            <small>TOTAL (QAR) <?=@$arr_etab[strtolower('TOTAL (QAR)')]?></small></td>
                         <td class="td_currency"><?= number_format($ttl, 2) ?></td>
                     </tr>
                 </tbody>
@@ -390,7 +394,7 @@ if(@$eta){
             
             <!-- Remarks -->
             <?php if(!empty($quotation->remarks)): ?>
-            <div class="remarks">
+            <div class="remarks" style="font-size: 12px;">
                 <strong>Remarks:</strong> <?= nl2br($quotation->remarks) ?>
             </div>
             <?php endif; ?>
@@ -434,12 +438,12 @@ if(@$eta){
 
     <script>
         //Auto print when loaded (uncomment if needed)
-        // window.addEventListener('load', function() {
-        //     setTimeout(function() {
-        //         window.print();
-        //         window.close();
-        //     }, 500);
-        // });
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                window.print();
+                window.close();
+            }, 500);
+        });
     </script>
 </body>
 </html>

@@ -142,9 +142,9 @@
             <tr style="font-size: 12px;">
               <th width="10%">Part No.</th>
               <th>Description</th>
-              <th width="10%">Qty</th>
-              <th width="10%">Unit Price</th>
-              <th width="10%">Total Price</th>
+              <th width="10%" style="text-align: right;">Qty</th>
+              <th width="10%" style="text-align: right;">Unit Price</th>
+              <th width="10%" style="text-align: right;">Total Price</th>
               <th width="5%">Option</th>  
             </tr>
             </thead> 

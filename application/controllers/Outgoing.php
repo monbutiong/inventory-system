@@ -32,6 +32,7 @@ class Outgoing extends CI_Controller {
 	public function check_access($url, $sub_menu = [], $index_user_roles = []){
 
 		$granted = 0;
+		$access_features= 0;
 
 		foreach($sub_menu as $rs){
 			if($url == $rs->url_link){
@@ -42,10 +43,17 @@ class Outgoing extends CI_Controller {
 		foreach($index_user_roles as $rs){
 			if($sub_menu_id == $rs->sub_menu_id){
 				$granted = 1;
+				if($rs->access_features){
+					$access_features = json_decode($rs->access_features);
+				}else{
+					$access_features = [];
+				}
 			}
 		} 
 
 		if($granted==0){ die('access denied'); }
+
+		return $access_features;
 
 	}
 
@@ -118,7 +126,8 @@ class Outgoing extends CI_Controller {
 	}
 
 	public function load_vehicles()
-	{
+	{ 
+
 	    $search = $this->input->post('searchTerm');
 	    $id = $this->input->post('id'); // Support fetching by ID
 
@@ -841,6 +850,12 @@ class Outgoing extends CI_Controller {
 
 	public function quotations_ajax($modal = '')
 	{
+
+		$module = $this->system_menu;
+
+		$url = $this->router->class.'/quotation_list'; 
+		$access_features = $this->check_access($url, $module['sub_menu'], $module['index_user_roles']);
+
 	    // Get DataTables parameters
 	    $start = $this->input->get('start');
 	    $length = $this->input->get('length');
@@ -881,29 +896,49 @@ class Outgoing extends CI_Controller {
 	    foreach ($quotations as $q) {
 	        $qn = 'QO' . sprintf("%06d", $q->id);
 
-	        if($modal){
-	        	$option = '
-	                <a href="Javascript:select_quotatation(' . $q->id . ');"   >
-	                    <i class="fa fa-download"></i> Select
-	                </a> | 
-	                <a  href="Javascript:print_quo('.$q->id.')">
-	                    <i class="fa fa-print"></i> Print
-	                </a>
-	                ';
-	        }else{
-	        	$option = '
-	                <a href="' . base_url('outgoing/view_quotation/' . $q->id) . '"   >
-	                    <i class="fa fa-eye"></i> View
-	                </a> | 
-	                <a href="' . base_url('outgoing/edit_quotation/' . $q->id) . '">
-	                    <i class="fa fa-edit"></i> Edit
-	                </a> | 
-	                <a href="javascript:prompt_delete(\'Delete\', \'Delete Quotation # ' . $qn . '?\', \'' . base_url('outgoing/delete_quotation/' . $q->id) . '\', \'tr' . $q->id . '\')">
-	                    <i class="fa fa-trash"></i> Delete
-	                </a> | 
-	                <a href="Javascript:print_quo('.$q->id.')">
-	                    <i class="fa fa-print"></i> Print
-	                </a>'; 
+	        $option = '';
+
+	        if ($modal) {
+	             
+	                $option .= '
+	                    <a href="javascript:select_quotatation(' . $q->id . ');" class="text-success" style="margin-right:5px;">
+	                        <i class="fa fa-download"></i> Select
+	                    </a>';
+	             
+
+	            if (in_array('print', $access_features)) {
+	                $option .= '
+	                    <a href="javascript:print_quo(' . $q->id . ');" class="text-warning" style="margin-right:5px;">
+	                        <i class="fa fa-print"></i> Print
+	                    </a>';
+	            }
+	        } else {
+	            
+	                $option .= '
+	                    <a href="' . base_url('outgoing/view_quotation/' . $q->id) . '" class="text-info" style="margin-right:5px;">
+	                        <i class="fa fa-eye"></i> View
+	                    </a>'; 
+
+	            if (in_array('edit', $access_features)) {
+	                $option .= '
+	                    <a href="' . base_url('outgoing/edit_quotation/' . $q->id) . '" class="text-primary" style="margin-right:5px;">
+	                        <i class="fa fa-edit"></i> Edit
+	                    </a>';
+	            }
+
+	            if (in_array('delete', $access_features)) {
+	                $option .= '
+	                    <a href="javascript:prompt_delete(\'Delete\', \'Delete Quotation # ' . $qn . '?\', \'' . base_url('outgoing/delete_quotation/' . $q->id) . '\', \'tr' . $q->id . '\')" class="text-danger" style="margin-right:5px;">
+	                        <i class="fa fa-trash"></i> Delete
+	                    </a>';
+	            }
+
+	            if (in_array('print', $access_features)) {
+	                $option .= '
+	                    <a href="javascript:print_quo(' . $q->id . ');" class="text-warning" style="margin-right:5px;">
+	                        <i class="fa fa-print"></i> Print
+	                    </a>';
+	            }
 	        }
 
 	        $data[] = [
@@ -933,6 +968,12 @@ class Outgoing extends CI_Controller {
 
 	public function issuance_ajax($confirmed = '')
 	{
+
+		$module = $this->system_menu;
+
+		$url = $this->router->class.'/issuance_records'; 
+		$access_features = $this->check_access($url, $module['sub_menu'], $module['index_user_roles']);
+
 	    // Get DataTables parameters
 	    $start = $this->input->get('start');
 	    $length = $this->input->get('length');
@@ -986,27 +1027,61 @@ class Outgoing extends CI_Controller {
 	    foreach ($quotations as $q) {
 	        $qn = 'SO' . sprintf("%06d", $q->id);
 
-	        if($confirmed){
-	        	$option = ' 
-	                <a href="Javascript:print_so(' . $q->id . ')">
-	                    <i class="fa fa-print"></i> Print
-	                </a>
+	        $option = '';
+
+	        if ($confirmed) {
+
+	        	$option .= '
+	        	    <a href="' . base_url('outgoing/view_issuance/' . $q->id) . '" class="text-info">
+	        	        <i class="fa fa-eye"></i> View
+	        	    </a>
+	        	';
+
+	        	if (in_array('print', $access_features)) {
+
+		            $option .= '
+		                <a href="javascript:print_so(' . $q->id . ')" class="text-success">
+		                    <i class="fa fa-print"></i> Print
+		                </a>
+		            ';
+		        }
+	        } else {
+	             
+	                $option .= '
+	                    <a href="' . base_url('outgoing/view_issuance/' . $q->id) . '" class="text-info">
+	                        <i class="fa fa-eye"></i> View
+	                    </a>
 	                ';
-	        }else{
-	        	$option = '
-	                <a href="' . base_url('outgoing/view_issuance/' . $q->id) . '"   >
-	                    <i class="fa fa-eye"></i> View
-	                </a> | 
-	                <a href="' . base_url('outgoing/edit_issuance/' . $q->id) . '">
-	                    <i class="fa fa-edit"></i> Edit
-	                </a> | 
-	                <a href="javascript:prompt_delete(\'Delete\', \'Delete Sales Order # ' . $qn . '?\', \'' . base_url('outgoing/delete_issuance/' . $q->id) . '\', \'tr' . $q->id . '\')">
-	                    <i class="fa fa-trash"></i> Delete
-	                </a> | 
-	                <a href="Javascript:print_so(' . $q->id . ')">
-	                    <i class="fa fa-print"></i> Print
-	                </a>'; 
+	            
+
+	            if (in_array('edit', $access_features)) {
+	                $option .= '
+	                    <a href="' . base_url('outgoing/edit_issuance/' . $q->id) . '" class="text-primary">
+	                        <i class="fa fa-edit"></i> Edit
+	                    </a>
+	                ';
+	            }
+
+	            if (in_array('delete', $access_features)) {
+	                $option .= '
+	                    <a href="javascript:prompt_delete(\'Delete\', \'Delete Sales Order # ' . $qn . '?\', \'' . base_url('outgoing/delete_issuance/' . $q->id) . '\', \'tr' . $q->id . '\')" class="text-danger">
+	                        <i class="fa fa-trash"></i> Delete
+	                    </a>
+	                ';
+	            }
+
+	            if (in_array('print', $access_features)) {
+
+
+		            $option .= '
+		                <a href="javascript:print_so(' . $q->id . ')" class="text-warning">
+		                    <i class="fa fa-print"></i> Print
+		                </a>
+		            ';
+		        }
 	        }
+ 
+
 
 	        if($confirmed){
 
@@ -1959,7 +2034,7 @@ class Outgoing extends CI_Controller {
 		}
 
 		$url = $this->router->class.'/'.$this->router->method; 
-		$this->check_access($url, $module['sub_menu'], $module['index_user_roles']);
+		$module["access_features"] = $this->check_access($url, $module['sub_menu'], $module['index_user_roles']);
 
 		$module['module'] = "outgoing/terms_and_conditions";
 		$module['map_link']   = "outgoing->terms_and_conditions";  

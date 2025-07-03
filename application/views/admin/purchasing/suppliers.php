@@ -62,18 +62,38 @@
                   <?=$rs->contact_person_2.' | '.$rs->contact_number_2?>
                 </small>
               </td> 
-              <td>
-                
-                <a href="<?php echo base_url('purchasing/view_supplier/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-file-text-o"></i> view</a>
-                 | 
-                <a href="<?php echo base_url('purchasing/edit_supplier/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-edit"></i> edit</a>
+              <td style="line-height: 1.5;">
+                <div class="d-flex flex-wrap gap-2">
+                  
+                  <?php if (in_array('view', $access_features)) : ?>
+                    <a href="<?= base_url('purchasing/view_supplier/' . $rs->id); ?>"
+                       class="text-info load_modal_details"
+                       data-bs-toggle="modal"
+                       data-bs-target=".bs-example-modal-lg">
+                      <i class="fa fa-file-text-o"></i> View
+                    </a>
+                  <?php endif; ?>
 
-                 | 
-                <a href="Javascript:ddel(<?=$rs->id?>)"  ><i class="fa fa-trash"></i> delete</a>
-                <!--  | 
-                <a href="<?php echo base_url('purchasing/create_po/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-cube"></i> Products </a> -->
-                 
+                  <?php if (in_array('edit', $access_features)) : ?>
+                    <a href="<?= base_url('purchasing/edit_supplier/' . $rs->id); ?>"
+                       class="text-primary load_modal_details"
+                       data-bs-toggle="modal"
+                       data-bs-target=".bs-example-modal-lg">
+                      <i class="fa fa-edit"></i> Edit
+                    </a>
+                  <?php endif; ?>
+
+                  <?php if (in_array('delete', $access_features)) : ?>
+                    <a href="javascript:void(0);"
+                       onclick="ddel(<?= $rs->id ?>)"
+                       class="text-danger">
+                      <i class="fa fa-trash"></i> Delete
+                    </a>
+                  <?php endif; ?>
+
+                </div>
               </td>
+
             </tr>
             <?php }}?>
            </tbody>

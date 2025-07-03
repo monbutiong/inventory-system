@@ -139,13 +139,13 @@
                     <th>P.O. No.</th>
                     <th>Part No.</th>
                     <th>Description</th>
-                    <th>Qty in P.O.</th>
-                    <th>Unit Price</th>
-                    <th width="10%">Total Price</th>
-                    <th>Prev. Received Qty</th>  
-                    <th>Receive Qty</th>
-                    <th>Bad Qty</th>
-                    <th>Receive Total <span class="fob_symbol">QAR</span></th>
+                    <th style="text-align: right;">Qty in P.O.</th>
+                    <th style="text-align: right;">Unit Price</th>
+                    <th width="10%" style="text-align: right;">Total Price</th>
+                    <th style="text-align: right;">Prev. Received Qty</th>  
+                    <th style="text-align: right;">Receive Qty</th>
+                    <th style="text-align: right;">Bad Qty</th>
+                    <th style="text-align: right;">Receive Total <span class="fob_symbol">QAR</span></th>
                     <th colspan="2">Remarks</th>  
                   </tr>
                   </thead> 

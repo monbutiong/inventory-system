@@ -54,8 +54,7 @@ class Core_model extends CI_model
 	 
 
 	public function global_query($type,$table,$id = '',$additional_input='',$block_forms_fields=''){
-
-		
+ 
 		$user_id = $this->session->user_id; 
 
 		$data = [];

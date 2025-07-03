@@ -34,11 +34,23 @@
                 </div>
                 <div class="col-md-4">
                     <div class="float-end d-none d-md-block"> 
-                        <a class="btn btn-md btn-success" target="_blank" href="<?php echo base_url('receiving/print_rr/'.$rr->id);?>" title="print GRV"> <i class="fa fa-print"></i>  </a>
+
+                        <?php if (in_array('print', $access_features)){ ?>
+                          <a class="btn btn-md btn-success" target="_blank" href="<?php echo base_url('receiving/print_rr/'.$rr->id);?>" title="print GRV"> <i class="fa fa-print"></i>  </a>
+                        <?php }?>
+
                         <?php if($rr->confirmed == 0){?>
-                        <a class="btn btn-md btn-success" href="Javascript:confirm_receiving()"> <i class="fa fa-check"></i> Confirm GRV </a>
-                        <a class="btn btn-md btn-primary" href="Javascript:edit_receiving()"> <i class="fa fa-edit"></i> Edit Changes</a>
-                        <a class="btn btn-md btn-warning" href="<?=base_url("receiving/receiving_records")?>"> <i class="fa fa-close"></i> Go Back </a>
+
+                          <?php if (in_array('confirm', $access_features)){ ?>
+                            <a class="btn btn-md btn-success" href="Javascript:confirm_receiving()"> <i class="fa fa-check"></i> Confirm GRV </a>
+                          <?php }?>
+
+                          <?php if (in_array('edit', $access_features)){ ?>
+                            <a class="btn btn-md btn-primary" href="Javascript:edit_receiving()"> <i class="fa fa-edit"></i> Edit Changes</a>
+                          <?php }?>
+                          
+                          <a class="btn btn-md btn-warning" href="<?=base_url("receiving/receiving_records")?>"> <i class="fa fa-close"></i> Go Back </a>
+                           
                         <?php }else{?>
                         <a class="btn btn-md btn-warning" href="<?=base_url("receiving/confirmed_receiving_records")?>"> <i class="fa fa-close"></i> Go Back </a>
                         <?php }?>
@@ -177,11 +189,11 @@
               <th>P.O. No.</th>
               <th>Part No.</th>
               <th>Description</th>
-              <th>Received Qty</th>
-              <th>Bad Qty</th>
-              <th>Unit Price</th>
-              <th width="10%">Total Price <?=$rr->currency?></th>
-              <th width="10%">Total Price QAR</th> 
+              <th style="text-align: right;">Received Qty</th>
+              <th style="text-align: right;">Bad Qty</th>
+              <th style="text-align: right;">Unit Price</th>
+              <th style="text-align: right;" width="10%">Total Price <?=$rr->currency?></th>
+              <th style="text-align: right;" width="10%">Total Price QAR</th> 
               <th>Remarks</th>  
             </tr>
             </thead> 

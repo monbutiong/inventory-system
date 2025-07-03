@@ -11,7 +11,9 @@
                     </div>
                     <div class="col-md-4">
                         <div class="float-end d-none d-md-block">
+                          <?php if (in_array('add', $access_features)) : ?>
                             <a class="btn btn-md btn-primary load_modal_details" href="<?php echo base_url('purchasing/add_supplier_po');?>" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">Create New Supplier</a>
+                          <?php endif;?>
                         </div>
                     </div>
                 </div>
@@ -58,17 +60,37 @@
                   <?=$rs->contact_person_2.' | '.$rs->contact_number_2?>
                 </small>
               </td> 
-              <td>
-                
-                <a href="<?php echo base_url('purchasing/view_supplier_po/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-eye"></i> view</a>
-                 | 
-                <a href="<?php echo base_url('purchasing/edit_supplier_po/'.$rs->id);?>" class="load_modal_details" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-edit"></i> edit</a>
+              <td style="line-height: 1.5;">
+                <div class="d-flex flex-wrap gap-2">
 
-                 | 
-                <a href="javascript:prompt_delete('Delete', 'Delete <?=$rs->name?>?','<?=base_url('purchasing/delete_supplier_po/' . $rs->id)?>', 'tr<?=$rs->id?>')"  ><i class="fa fa-trash"></i> delete</a>
-                
-                 
+                  
+                    <a href="<?= base_url('purchasing/view_supplier_po/' . $rs->id); ?>"
+                       class="text-info load_modal_details"
+                       data-bs-toggle="modal"
+                       data-bs-target=".bs-example-modal-lg">
+                      <i class="fa fa-eye"></i> View
+                    </a> 
+
+                  <?php if (in_array('edit', $access_features)) : ?>
+                    <a href="<?= base_url('purchasing/edit_supplier_po/' . $rs->id); ?>"
+                       class="text-primary load_modal_details"
+                       data-bs-toggle="modal"
+                       data-bs-target=".bs-example-modal-lg">
+                      <i class="fa fa-edit"></i> Edit
+                    </a>
+                  <?php endif; ?>
+
+                  <?php if (in_array('delete', $access_features)) : ?>
+                    <a href="javascript:void(0);"
+                       onclick="prompt_delete('Delete', 'Delete <?= addslashes($rs->name) ?>?', '<?= base_url('purchasing/delete_supplier_po/' . $rs->id) ?>', 'tr<?= $rs->id ?>')"
+                       class="text-danger">
+                      <i class="fa fa-trash"></i> Delete
+                    </a>
+                  <?php endif; ?>
+
+                </div>
               </td>
+
             </tr>
             <?php }}?>
            </tbody>

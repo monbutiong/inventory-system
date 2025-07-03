@@ -394,13 +394,12 @@ class Inventory extends CI_Controller {
 			                $field_name => $random
 			            ]);
 
-			            
 			            // $this->session->set_flashdata("error", "Saved to DB field `$field_name` with value `$random`");
 			        } else { 
 			            //log_message('error', "Failed to move uploaded file: $field_name");
 			        }
 
-			       
+
 			    }
 
 			}
@@ -416,7 +415,22 @@ class Inventory extends CI_Controller {
 				'user_id'=>$this->session->user_id,
 				'date_created'=>date("Y-m-d H:i")
 			]);
-			
+
+			//====for logging
+			$inv_rows = $this->db->get_where('inventory',['id'=>$model['query_id']])->row();
+ 			
+ 			$inv_rows = json_decode(json_encode($inv_rows), true);
+
+			$inv_rows['inventory_id'] = $model['query_id'];
+			$inv_rows['date_log'] = date('Y-m-d H:i'); 
+			$inv_rows['logged_by'] = $this->session->user_id;
+			unset($inv_rows['id']); 
+
+			if (!empty($inv_rows)) {
+				$this->db->insert('inventory_logs',$inv_rows);
+			}
+			//====End Log
+
 			echo 1;
 			//$this->session->set_flashdata("success",$this->system_menu['clang'][$l="successfuly saved."] ?? $l); 
 			  
@@ -536,6 +550,22 @@ class Inventory extends CI_Controller {
 			        }
 			    }
 			}
+
+			//====for logging
+			$inv_rows = $this->db->get_where('inventory',['id'=>$id])->row();
+ 			
+ 			$inv_rows = json_decode(json_encode($inv_rows), true);
+
+			$inv_rows['inventory_id'] = $model['query_id'];
+			$inv_rows['date_log'] = date('Y-m-d H:i'); 
+			$inv_rows['logged_by'] = $this->session->user_id;
+			unset($inv_rows['id']); 
+
+			if (!empty($inv_rows)) {
+				$this->db->insert('inventory_logs',$inv_rows);
+			}
+			//====End Log
+
 			echo 1;
 			//$this->session->set_flashdata("success", $this->system_menu['clang'][$l = "successfuly saved."] ?? $l);
 

@@ -60,10 +60,9 @@
     }).then((result) => {
       if (result.isConfirmed) {
          
-        location.href = "<?=base_url('receiving/confirm_receiving/'.$rr->id)?>";
+        location.href = "<?=base_url('receiving/confirm_receiving')?>/"+id;
       }  
     });
   }
-
 
 </script>

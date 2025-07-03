@@ -20,9 +20,9 @@
                 </div>
                 <div class="col-md-4">
                     <div class="float-end d-none d-md-block"> 
-                        <a class="btn btn-md btn-success" href="Javascript:confirm_receiving()"> <i class="fa fa-check"></i> Confirm GRV </a>
+                        <!-- <a class="btn btn-md btn-success" href="Javascript:confirm_receiving()"> <i class="fa fa-check"></i> Confirm GRV </a> -->
                         <a class="btn btn-md btn-primary" href="Javascript:save_receiving()"> <i class="fa fa-save"></i> Save Changes</a>
-                        <a class="btn btn-md btn-warning" href="<?=base_url("receiving/receiving_records")?>"> <i class="fa fa-close"></i> Go Back </a>
+                        <a class="btn btn-md btn-warning" href="<?=base_url("receiving/view_rr/".$rr->id)?>"> <i class="fa fa-close"></i> Go Back </a>
                     </div>
                 </div>
             </div>
@@ -161,13 +161,13 @@
               <th>P.O. No.</th>
               <th>Part No.</th>
               <th>Description</th>
-              <th>Qty in P.O.</th>
-              <th>Unit Price</th>
-              <th width="10%">Total Price</th>
-              <th>Prev. Received Qty</th>  
-              <th>Receive Qty</th>
-              <th>Bad Qty</th>
-              <th>Receive Total <span class="fob_symbol">QAR</span></th>
+              <th style="text-align: right;">Qty in P.O.</th>
+              <th style="text-align: right;">Unit Price</th>
+              <th style="text-align: right;" width="10%">Total Price</th>
+              <th style="text-align: right;">Prev. Received Qty</th>  
+              <th style="text-align: right;">Receive Qty</th>
+              <th style="text-align: right;">Bad Qty</th>
+              <th style="text-align: right;">Receive Total <span class="fob_symbol">QAR</span></th>
               <th colspan="2">Remarks</th>  
             </tr>
             </thead> 

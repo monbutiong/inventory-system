@@ -32,6 +32,7 @@ class Receiving extends CI_Controller {
 	public function check_access($url, $sub_menu = [], $index_user_roles = []){
 
 		$granted = 0;
+		$access_features= 0;
 
 		foreach($sub_menu as $rs){
 			if($url == $rs->url_link){
@@ -42,10 +43,17 @@ class Receiving extends CI_Controller {
 		foreach($index_user_roles as $rs){
 			if($sub_menu_id == $rs->sub_menu_id){
 				$granted = 1;
+				if($rs->access_features){
+					$access_features = json_decode($rs->access_features);
+				}else{
+					$access_features = [];
+				}
 			}
 		} 
 
 		if($granted==0){ die('access denied'); }
+
+		return $access_features;
 
 	}
  
@@ -82,6 +90,11 @@ class Receiving extends CI_Controller {
 
 	public function fetch_grv_data($confirmed = '')
 	{
+		$module = $this->system_menu;
+
+		$url = $this->router->class.'/receiving_records'; 
+		$access_features = $this->check_access($url, $module['sub_menu'], $module['index_user_roles']);
+
 	    $request = $this->input->post();
 
 	    $columns = [
@@ -145,21 +158,54 @@ class Receiving extends CI_Controller {
 	            return '<a target="_blank" href="'.base_url('vendor/print_po/'.$id).'">PO' . str_pad($id, 6, '0', STR_PAD_LEFT).'</a>';
 	        }, $po_ids_array));
 
-	        if($confirmed){
-	        	$option = '
-	        	     
-	        	    <a href="' . base_url('receiving/view_rr/' . $grv->id) . '"><i class="fa fa-eye"></i> View</a> | 
-	        	    <a target="_blank" href="' . base_url('receiving/print_rr/' . $grv->id) . '"><i class="fa fa-print"></i> Print</a>
-	        	';
-	        }else{
-	        	$option = '
-	        	    <a href="javascript:confirm_receiving(' . $grv->id . ', \'' . $grv_number . '\')"><i class="fa fa-check"></i> Confirm</a> |
-	        	    <a href="' . base_url('receiving/view_rr/' . $grv->id) . '"><i class="fa fa-eye"></i> View</a> |
-	        	    <a href="' . base_url('receiving/edit_rr/' . $grv->id) . '"><i class="fa fa-edit"></i> Edit</a><br>
-	        	    <a href="javascript:prompt_delete(\'Delete\', \'Delete GRV# ' . $grv->dr_number . '?\', \'' . base_url('receiving/delete_rr/' . $grv->id) . '\', \'tr' . $grv->id . '\')"><i class="fa fa-trash"></i> Delete</a> |
-	        	    <a target="_blank" href="' . base_url('receiving/print_rr/' . $grv->id) . '"><i class="fa fa-print"></i> Print</a>
-	        	';
+	        if ($confirmed) {
+	            $option = '<div class="d-flex flex-wrap gap-2" style="line-height: 1.5;">';
+
+	            $option .= '<a href="' . base_url('receiving/view_rr/' . $grv->id) . '" class="text-info">
+	                            <i class="fa fa-eye"></i> View
+	                        </a>';
+
+	            if (in_array('print', $access_features)) {
+	                $option .= '<a target="_blank" href="' . base_url('receiving/print_rr/' . $grv->id) . '" class="text-warning">
+	                                <i class="fa fa-print"></i> Print
+	                            </a>';
+	            }
+
+	            $option .= '</div>';
+	        } else {
+	            $option = '<div class="d-flex flex-wrap gap-2" style="line-height: 1.5;">';
+
+	            if (in_array('confirm', $access_features)) {
+	                $option .= '<a href="javascript:confirm_receiving(' . $grv->id . ', \'' . addslashes($grv_number) . '\')" class="text-success">
+	                                <i class="fa fa-check"></i> Confirm
+	                            </a>';
+	            }
+
+	            $option .= '<a href="' . base_url('receiving/view_rr/' . $grv->id) . '" class="text-info">
+	                            <i class="fa fa-eye"></i> View
+	                        </a>';
+
+	            if (in_array('edit', $access_features)) {
+	                $option .= '<a href="' . base_url('receiving/edit_rr/' . $grv->id) . '" class="text-primary">
+	                                <i class="fa fa-edit"></i> Edit
+	                            </a>';
+	            }
+
+	            if (in_array('delete', $access_features)) {
+	                $option .= '<a href="javascript:prompt_delete(\'Delete\', \'Delete GRV# ' . addslashes($grv->dr_number) . '?\', \'' . base_url('receiving/delete_rr/' . $grv->id) . '\', \'tr' . $grv->id . '\')" class="text-danger">
+	                                <i class="fa fa-trash"></i> Delete
+	                            </a>';
+	            }
+
+	            if (in_array('print', $access_features)) {
+	                $option .= '<a target="_blank" href="' . base_url('receiving/print_rr/' . $grv->id) . '" class="text-warning">
+	                                <i class="fa fa-print"></i> Print
+	                            </a>';
+	            }
+
+	            $option .= '</div>';
 	        }
+
 
 	        $data[] = [
 	            'date_created'    => date('M d, Y', strtotime($grv->date_created)),
@@ -266,13 +312,30 @@ class Receiving extends CI_Controller {
 
 		if(!@$po_ids){
 
-			echo '<p>
-			<center>
-			<font color="red">
-			SUPPLIER AND P.O. NUMBER REQUIRED
-			</font>
-			</center>
-			</p>';
+			echo '
+
+			<div class="row">
+			 <div class="col-md-12 col-sm-12 col-xs-12">
+			     
+				<p>
+				<center>
+				<font color="red">
+				SUPPLIER AND P.O. NUMBER REQUIRED
+				</font>
+				</center>
+				</p>
+				<div class="ln_solid"></div>
+				<div class="form-group">
+				  <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+				    
+				      <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Close</button>  
+				     
+				  </div>
+				</div>
+
+				</div>
+			</div>
+			';
 
 		}else{
 
@@ -551,6 +614,9 @@ class Receiving extends CI_Controller {
 	public function view_rr($id,$confirm=0){
 
 		$module = $this->system_menu; 
+
+		$url = $this->router->class.'/receiving_records'; 
+		$module["access_features"] = $this->check_access($url, $module['sub_menu'], $module['index_user_roles']);
 
 		$module['module'] = "receiving/view_rr"; 
 		$module['map_link']   = "receiving->view_rr"; 

@@ -135,14 +135,14 @@
                             <th>Part No.</th>
                             <th>Description</th>   
                             <th>Brand</th>
-                            <th>Quantity on Hand</th> 
-                            <th>Unit Cost Price</th>  
-                            <th nowrap>Quantity</th> 
-                            <th>Unit Price</th>
-                            <th>Line Total</th>
-                            <th nowrap>Discount. %</th>
-                            <th nowrap>Discount. Amt.</th>
-                            <th>Net Total</th>    
+                            <th style="text-align: right;">Quantity on Hand</th> 
+                            <th style="text-align: right;">Unit Cost Price</th>  
+                            <th style="text-align: right;" nowrap>Quantity</th> 
+                            <th style="text-align: right;">Unit Price</th>
+                            <th style="text-align: right;">Line Total</th>
+                            <th style="text-align: right;" nowrap>Discount. %</th>
+                            <th style="text-align: right;" nowrap>Discount. Amt.</th>
+                            <th style="text-align: right;">Net Total</th>    
                           </tr>
                           </thead> 
                           <tbody>
